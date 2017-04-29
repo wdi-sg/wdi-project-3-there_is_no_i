@@ -12,11 +12,6 @@ Rails.application.routes.draw do
   get 'account/password'
   get 'account/credit_cards'
 
-  # queue
-  get 'queue', to: 'queue#index'
-  get 'queue/login'
-  get 'queue/logout'
-
   # My Restaurant
   get 'myrestaurant', to: 'main#myrestaurant'
   # dashboard
@@ -24,10 +19,15 @@ Rails.application.routes.draw do
   get 'dashboard/table'
   get 'dashboard/schedule'
   get 'dashboard/service'
-  # menu
+  # menu <---
   resources :menu_item
 
-  # Restaurants
+  # queue
+  get 'queue', to: 'queue#index'
+  get 'queue/login'
+  get 'queue/logout'
+
+  # Restaurants <---
   resources :restaurants, only: [:index, :show] do
     member do
       get 'call'
