@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  table_id: 1
+  user_id: 1
+  restaurant_id: 1
+  item_id: 1
+  request_description: MyText
+  transaction_id: 1
+  is_take_away: false
+  time_end: 2017-04-29 17:28:52
+
+two:
+  table_id: 1
+  user_id: 1
+  restaurant_id: 1
+  item_id: 1
+  request_description: MyText
+  transaction_id: 1
+  is_take_away: false
+  time_end: 2017-04-29 17:28:52

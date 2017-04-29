@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  user_name: MyString
+  table_id: 1
+  restaurant_id: 1
+  time_end: 2017-04-29 17:55:10
+  takeaway_time: 2017-04-29 17:55:10
+
+two:
+  user_id: 1
+  user_name: MyString
+  table_id: 1
+  restaurant_id: 1
+  time_end: 2017-04-29 17:55:10
+  takeaway_time: 2017-04-29 17:55:10
