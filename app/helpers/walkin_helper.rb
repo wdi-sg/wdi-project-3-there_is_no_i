@@ -1,0 +1,2 @@
+module WalkinHelper
+end
