@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WdiProject3ThereIsNoI</title>
+    <title>Locavorus</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css">
   </head>
 
   <body>
+    <nav class="nav">
+      <div class="nav-left">
+      </div>
+
+      <div class="nav-center">
+        <input type="text" name="Search" value="" placeholder="Search">
+        <input type="text" name="Location" value="" placeholder="Location">
+      </div>
+
+
+      <div class="nav-right nav-menu">
+        <a class="nav-item">
+          Login
+        </a>
+        <a class="nav-item">
+          Signup
+        </a>
+      </div>
+    </nav>
     <%= yield %>
   </body>
 </html>
