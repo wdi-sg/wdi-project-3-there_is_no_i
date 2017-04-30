@@ -1,2 +1,72 @@
-<h1>Restaurants#reserve</h1>
+<h1>Add a new reservation</h1>
 <p>Find me in app/views/restaurants/reserve.html.erb</p>
+
+<%= form_for @reserve do |r| %>
+  <div>
+  <%= r.label :name %>
+  <%= r.text_field :name %>
+  </div>
+
+  <div>
+  <%= f.label :pax %>
+  <%= f.select :pax, ['1-2','3-4','5-8'], :prompt => 'Select One' %>
+  </div>
+
+  <div>
+  <%= r.label :date %>
+  <%= r.date_field :date %>
+  </div>
+
+  <div>
+  <%= f.label :time %>
+  <!-- must make the timing unselectable if no seats available -->
+  <%= f.select :time, ['11:00am','11:30am','12:00pm','12:30pm','1:00pm','1:30pm','2:00pm'], :prompt => 'Select One' %>
+  </div>
+
+  <%= r.submit %>
+<% end %>
+
+
+<!-- <form action="  dunno what to put here  " method="POST" id="add-reservation">
+  <div class="form-group">
+    <label>Name: </label>
+    <input type="text" name="name" form="add-reservation" id="name" autofocus="autofocus">
+  </div><br>
+
+  <div class="form-group">
+    <label>Number of pax: </label>
+    <select>
+    <option value="" disabled="disabled" selected="selected">Please select number of diners</option>
+    <option value="1">1-2</option>
+    <option value="2">3-4</option>
+    <option value="3">5-8</option>
+</select>
+  </div><br>
+
+  <div class="form-group">
+    <label>Date: </label>
+    <input type="date" name="date" form="add-reservation" id="date">
+  </div>
+
+  <div class="form-group">
+    <label>Time: </label>
+    <select>
+    <option value="" disabled="disabled" selected="selected">Please select a time</option>
+    <option value="1">11:00</option>
+    <option value="2">11:30</option>
+    <option value="3">12:00</option>
+    <option value="1">12:30</option>
+    <option value="2">13:00</option>
+    <option value="3">13:30</option>
+    <option value="1">14:00</option>
+    <option value="2">14:30</option>
+    <option value="3">15:00</option>
+    <option value="1">15:30</option>
+    <option value="2">13:00</option>
+    <option value="3">13:30</option>
+    <option value="1">14:00</option>
+    <option value="2">14:30</option>
+</select>
+  </div><br>
+<input type="submit" value="SUBMIT">
+</form> -->
