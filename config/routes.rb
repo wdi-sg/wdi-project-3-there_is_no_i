@@ -2,14 +2,17 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'main#index'
 
-  # auth
-  get 'signup', to: 'main#get_signup'
-  post 'signup', to: 'main#post_signup'
-  get 'login', to: 'main#get_login'
-  get 'logout', to: 'main#logout'
+  # signup
+  get 'signup' => 'signup#new'
+  post 'signup' => 'signup#create'
+  # sessions
+  get 'login' => 'sessions#new'
+  post 'login' => 'sessions#create'
+  # delete 'logout' => 'sessions#destroy'
+  get 'logout' => 'sessions#destroy'
 
   # account
-  get 'account', to: 'account#index'
+  get 'account' => 'account#index'
   get 'account/password'
   get 'account/credit_cards'
 

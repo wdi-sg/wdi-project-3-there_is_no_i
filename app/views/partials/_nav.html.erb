@@ -29,18 +29,29 @@
   </div>
 
   <div class="nav-right nav-menu">
-    <a class="nav-item is-tab" href="/account">
-      Profile
+    <% if current_user%>
+    <!--https://jsfiddle.net/crabbly/218o6g2g/-->
+    <!--http://codepen.io/tdaved/pen/XdxJZZ-->
+    <li class="nav-item is-tab">
+      <a href="/account"><%= current_user.name%></a>
+    </li>
+
+    <li class="nav-item">
+      <a href="/logout">
+        Logout
+      </a>
+    </li>
+
+    <% else %>
+
+    <a class="nav-item" href="/login">
+      Login
     </a>
     <a class="nav-item" href="/signup">
       Signup
     </a>
-    <a class="nav-item" href="/login">
-      Login
-    </a>
-    <a class="nav-item">
-      Logout
-    </a>
+    
+    <% end %>
   </div>
 
 </nav>
