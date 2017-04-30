@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get 'dashboard/schedule'
   get 'dashboard/service'
   # menu <---
-  resources :menu_item
+  resources :menu_items
 
   # queue
   get 'queue', to: 'queue#index'
