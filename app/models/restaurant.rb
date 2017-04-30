@@ -7,4 +7,6 @@ class Restaurant < ApplicationRecord
   validates :address_postal, presence: true
   validates :description, presence: true
   validates :cuisine, presence: true
+  validates :email, presence: true
+  validates :password, presence: true
 end

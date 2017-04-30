@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.string   "address_country"
     t.string   "address_postal"
     t.string   "email"
+    t.string   "password"
     t.string   "phone"
     t.string   "website"
     t.string   "description"
