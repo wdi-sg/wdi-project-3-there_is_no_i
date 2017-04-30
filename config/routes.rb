@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get 'dashboard/table'
   get 'dashboard/schedule'
   get 'dashboard/service'
-  # menu <---
+  # menu
   resources :menu_items
 
   # queue
@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   get 'queue/login'
   get 'queue/logout'
 
-  # Restaurants <---
+  # Restaurants
   resources :restaurants, only: [:index, :show] do
     member do
       get 'call'

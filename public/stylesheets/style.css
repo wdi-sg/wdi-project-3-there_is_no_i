@@ -1,0 +1,9 @@
+.nav-left, .nav-center, .nav-right {
+  background-color: #FF5376;
+}
+
+.nav-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
