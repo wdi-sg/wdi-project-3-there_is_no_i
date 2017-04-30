@@ -3,8 +3,9 @@ Rails.application.routes.draw do
   root 'main#index'
 
   # auth
-  get 'signup', to: 'main#signup'
-  get 'login', to: 'main#login'
+  get 'signup', to: 'main#get_signup'
+  post 'signup', to: 'main#post_signup'
+  get 'login', to: 'main#get_login'
   get 'logout', to: 'main#logout'
 
   # account
@@ -13,7 +14,7 @@ Rails.application.routes.draw do
   get 'account/credit_cards'
 
   # My Restaurant
-  get 'myrestaurant', to: 'main#myrestaurant'
+  get 'account/myrestaurant', to: 'account#myrestaurant'
   # dashboard
   get 'dashboard', to: 'dashboard#index'
   get 'dashboard/table'
