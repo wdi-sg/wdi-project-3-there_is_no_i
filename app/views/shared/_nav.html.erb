@@ -6,6 +6,7 @@
   </div>
 
   <div class="nav-center">
+    <% if !@is_main%>
     <div class="field is-grouped">
       <p class="control">
         <input type="text" name="Search" value="" placeholder="Search">
@@ -19,6 +20,7 @@
       <i class="fa fa-search" aria-hidden="true"></i>
       </span> -->
       </p>
+      <% end %>
     </div>
   </div>
 
@@ -36,5 +38,5 @@
       Logout
     </a>
   </div>
-  
+
 </nav>
