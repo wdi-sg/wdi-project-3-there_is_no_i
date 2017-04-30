@@ -13,4 +13,11 @@ class RestaurantsController < ApplicationController
 
   def menu
   end
+
+  private
+
+  def reserve_params
+    params.require(:reserve).permit()
+    # params.require(:tweet).permit(:content, :username)
+  end
 end
