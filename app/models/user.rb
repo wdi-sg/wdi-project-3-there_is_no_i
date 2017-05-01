@@ -1,5 +1,9 @@
 class User < ApplicationRecord
-  validates :name, presence: true, length: {minimum: 1}
+  # has_many :transactions
+  # has_many :credit_cards
+  # has_many :reviews
+
+  validates :name, presence: true, length: { minimum: 1 }
 
   validates :email, email: true
   # validates :email, presence: true, length: {minimum: 1}, uniqueness: {case_sensitive: false}, format: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -10,5 +14,4 @@ class User < ApplicationRecord
   def self.find_and_authenticate_user(params)
     User.find_by_email(params[:email]).try(:authenticate, params[:password])
   end
-
 end

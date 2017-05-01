@@ -1,26 +1,73 @@
-<h1>Restaurants#index</h1>
+<h1>Restaurants</h1>
 
 <% @restaurant.each do |restaurant| %>
-<div>
 <p>
+  Name:
   <%= link_to restaurant.name, restaurant_path(restaurant) %>
-  <!-- <%= restaurant.name %> -->
 </p>
+
 <p>
-  <%= restaurant.address1 %>  <%= restaurant.address_city %> <%= restaurant.address_country %>  <%= restaurant.address_postal %>
+  Address 1:
+  <%= restaurant.address1 %>
 </p>
+
 <p>
+  Address 2:
+  <%= restaurant.address2 %>
+</p>
+
+<p>
+  City:
+  <%= restaurant.address_city %>
+</p>
+
+<p>
+  State:
+  <%= restaurant.address_state %>
+</p>
+
+<p>
+  Country:
+  <%= restaurant.address_country %>
+</p>
+
+<p>
+  Postal:
+  <%= restaurant.address_postal %>
+</p>
+
+<p>
+  Email:
+  <%= restaurant.email %>
+</p>
+
+<p>
+  Phone:
+  <%= restaurant.phone %>
+</p>
+
+<p>
+  Website:
   <%= restaurant.website %>
 </p>
+
 <p>
+  Description:
   <%= restaurant.description %>
 </p>
+
 <p>
+  Cuisine:
   <%= restaurant.cuisine %>
 </p>
+
 <p>
+  Picture:
+  <%= restaurant.picture %>
+</p>
+
+<p>
+  Rating:
   <%= restaurant.rating %>
 </p>
-<br/>
-</div>
 <% end %>

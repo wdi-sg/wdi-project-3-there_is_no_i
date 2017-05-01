@@ -18,6 +18,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    if @user.restaurant_id
+      @restaurant = Restaurant.find(@user.restaurant_id)
+    end
   end
 
   def edit
@@ -34,7 +37,7 @@ class UsersController < ApplicationController
 
   def destroy
     User.find(params[:id]).destroy
-    redirect_to users_path
+    redirect_to root_path
   end
 
   private

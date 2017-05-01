@@ -1,6 +1,5 @@
 class ReservationsController < ApplicationController
   def new
-    # @reservation = Reservation.new
     @restaurant = Restaurant.find(params[:restaurant_id])
   end
 
@@ -25,6 +24,7 @@ class ReservationsController < ApplicationController
       else
         render :new
       end
+
   end
 
 private
