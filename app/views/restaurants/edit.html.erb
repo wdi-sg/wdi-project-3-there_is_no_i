@@ -1,5 +1,5 @@
 <h1>Edit Restaurant</h1>
-<%= form_for @restaurant, url: restaurants_path(@restaurant), html: {method: :post} do |f| %>
+<%= form_for @restaurant, url: restaurant_path(@restaurant), html: {method: :put} do |f| %>
   <%= f.label "name" %>
   <%= f.text_field :name, placeholder: "Name" %>
   <%= f.label "address 1" %>
