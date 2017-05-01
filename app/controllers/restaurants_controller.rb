@@ -14,22 +14,15 @@ class RestaurantsController < ApplicationController
     else
       render :new
     end
-
-
   end
 
   def show
     @restaurant = Restaurant.find(params[:id])
-    @reservation = Reservation.new
   end
 
 
   # def call
   # end
-
-  def reserve
-    @reserve = Reservation.new()
-  end
 
 
   # def reserve
