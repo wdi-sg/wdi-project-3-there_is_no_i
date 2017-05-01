@@ -6,17 +6,29 @@
 
 <% @menu_items.each do |item| %>
 <p>
+  Name:
   <%= item.name %>
 </p>
 <p>
+  Price:
+  <%= item.price %>
+</p>
+<p>
+  Description:
   <%= item.description %>
 </p>
 <p>
-  <%= item.price %>
+  Ingredients:
+  <%= item.ingredients %>
 </p>
+<p>
+  tags:
+  <%= item.tags %>
+</p>
+
 <%= link_to 'Show', restaurant_menu_item_path(@restaurant.id, item) %> |
 <%= link_to 'Edit', edit_restaurant_menu_item_path(@restaurant.id, item) %> |
-<!-- <%= link_to 'Destroy', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %> -->
+<%= link_to 'Destroy', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %>
 <br>
 <br>
 <% end %>
