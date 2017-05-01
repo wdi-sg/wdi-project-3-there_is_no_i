@@ -18,6 +18,7 @@
 </table>
 
 <%= link_to 'New Restaurant', new_restaurant_path %> |
+<%= link_to 'Show Restaurant', restaurant_path(@restaurant) %> |
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Back', users_path %>
