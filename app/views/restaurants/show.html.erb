@@ -1,2 +1,22 @@
-<h1>Restaurants#show</h1>
-<p>Find me in app/views/restaurants/show.html.erb</p>
+<h1>@restaurants#show</h1>
+
+<p>
+  <%= @restaurant.name %>
+</p>
+<p>
+  <%= @restaurant.address1 %>  <%= @restaurant.address_city %> <%= @restaurant.address_country %>  <%= @restaurant.address_postal %>
+</p>
+<p>
+  <%= @restaurant.website %>
+</p>
+<p>
+  <%= @restaurant.description %>
+</p>
+<p>
+  <%= @restaurant.cuisine %>
+</p>
+<p>
+  <%= @restaurant.rating %>
+</p>
+
+<%= link_to 'Reservation', new_restaurant_reservation_path(@restaurant) %>

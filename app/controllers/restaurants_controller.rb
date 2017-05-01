@@ -1,4 +1,8 @@
 class RestaurantsController < ApplicationController
+  def index
+    @restaurant = Restaurant.all
+  end
+
   def new
     @restaurant = Restaurant.new
   end
@@ -10,9 +14,13 @@ class RestaurantsController < ApplicationController
     else
       render :new
     end
+
+
   end
 
   def show
+    @restaurant = Restaurant.find(params[:id])
+    @reservation = Reservation.new
   end
 
 
@@ -32,10 +40,9 @@ class RestaurantsController < ApplicationController
 
   private
 
-
-  def restaurant_params
-    params.require(:restaurant).permit(:name, :email, :password, :password_confirmation)
-  end
+  # def restaurant_params
+  #   params.require(:restaurant).permit(:name, :email, :password, :password_confirmation)
+  # end
 
   # def reserve_params
   #   params.require(:reserve).permit()
