@@ -7,8 +7,7 @@ class CreateReservations < ActiveRecord::Migration[5.0]
       t.string :email
       t.integer :party_size
       t.integer :restaurant_id
-      t.date :date
-      t.date :time
+      t.datetime :date_time
       t.boolean :is_queuing
       t.integer :table_id
 
