@@ -23,18 +23,14 @@ class RestaurantsController < ApplicationController
     @restaurant = Restaurant.find(params[:id])
   end
 
-  def edit
+  def edit; end
 
-  end
+  def update; end
 
-  def update
-  end
-
-  def destroy
-  end
+  def destroy; end
 
   private
-  
+
   def restaurant_params
     params.require(:restaurant).permit(:name, :address1, :address2, :city, :state, :country, :postal, :description, :cuisine, :email)
   end

@@ -20,3 +20,15 @@
 </p>
 
 <%= link_to 'Reservation', new_restaurant_reservation_path(@restaurant) %>
+
+<% @menu_items.each do |item| %>
+<p>
+  <%= item.name %>
+</p>
+<p>
+  <%= item.description %>
+</p>
+<p>
+  <%= item.price %>
+</p>
+<% end %>
