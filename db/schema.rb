@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.string   "user_name"
     t.string   "phone"
     t.string   "email"
-    t.integer  "party_size"
+    t.string   "party_size"
     t.integer  "restaurant_id"
     t.datetime "date_time"
     t.boolean  "is_queuing"

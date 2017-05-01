@@ -1,5 +1,9 @@
 <h1>Menu</h1>
-<p><%= @test %></p>
+
+<%= link_to 'New Menu Item', new_restaurant_menu_item_path(@restaurant.id) %>
+<br>
+<br>
+
 <% @menu_items.each do |item| %>
 <p>
   <%= item.name %>
@@ -10,6 +14,9 @@
 <p>
   <%= item.price %>
 </p>
-
+<%= link_to 'Show', restaurant_menu_item_path(@restaurant.id, item) %> |
+<%= link_to 'Edit', edit_restaurant_menu_item_path(@restaurant.id, item) %> |
+<!-- <%= link_to 'Destroy', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %> -->
+<br>
 <br>
 <% end %>
