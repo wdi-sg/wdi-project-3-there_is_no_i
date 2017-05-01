@@ -3,7 +3,8 @@
 <% @restaurant.each do |restaurant| %>
 <div>
 <p>
-  <%= restaurant.name %>
+  <%= link_to restaurant.name, restaurant_path(restaurant) %>
+  <!-- <%= restaurant.name %> -->
 </p>
 <p>
   <%= restaurant.address1 %>  <%= restaurant.address_city %> <%= restaurant.address_country %>  <%= restaurant.address_postal %>
