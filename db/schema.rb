@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.text     "tags"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["restaurant_id"], name: "index_menu_items_on_restaurant_id", using: :btree
   end
 
   create_table "orders", force: :cascade do |t|
@@ -47,6 +48,9 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.datetime "time_end"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.index ["restaurant_id"], name: "index_orders_on_restaurant_id", using: :btree
+    t.index ["table_id"], name: "index_orders_on_table_id", using: :btree
+    t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
   create_table "reservations", force: :cascade do |t|
@@ -56,12 +60,15 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.string   "email"
     t.integer  "party_size"
     t.integer  "restaurant_id"
-    t.date     "date"
-    t.date     "time"
+    t.datetime "date"
+    t.datetime "time"
     t.boolean  "is_queuing"
     t.integer  "table_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["restaurant_id"], name: "index_reservations_on_restaurant_id", using: :btree
+    t.index ["table_id"], name: "index_reservations_on_table_id", using: :btree
+    t.index ["user_id"], name: "index_reservations_on_user_id", using: :btree
   end
 
   create_table "restaurants", force: :cascade do |t|
@@ -90,6 +97,7 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.text     "comments"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["restaurant_id"], name: "index_reviews_on_restaurant_id", using: :btree
   end
 
   create_table "tables", force: :cascade do |t|
@@ -99,6 +107,7 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.integer  "capacity_current"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.index ["restaurant_id"], name: "index_tables_on_restaurant_id", using: :btree
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -110,6 +119,9 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.datetime "takeaway_time"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["restaurant_id"], name: "index_transactions_on_restaurant_id", using: :btree
+    t.index ["table_id"], name: "index_transactions_on_table_id", using: :btree
+    t.index ["user_id"], name: "index_transactions_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -121,6 +133,20 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.integer  "restaurant_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.index ["restaurant_id"], name: "index_users_on_restaurant_id", using: :btree
   end
 
+  add_foreign_key "menu_items", "restaurants"
+  add_foreign_key "orders", "restaurants"
+  add_foreign_key "orders", "tables"
+  add_foreign_key "orders", "users"
+  add_foreign_key "reservations", "restaurants"
+  add_foreign_key "reservations", "tables"
+  add_foreign_key "reservations", "users"
+  add_foreign_key "reviews", "restaurants"
+  add_foreign_key "tables", "restaurants"
+  add_foreign_key "transactions", "restaurants"
+  add_foreign_key "transactions", "tables"
+  add_foreign_key "transactions", "users"
+  add_foreign_key "users", "restaurants"
 end
