@@ -5,6 +5,8 @@ class CreateTables < ActiveRecord::Migration[5.0]
       t.string :name
       t.integer :capacity_total
       t.integer :capacity_current
+      t.datetime :time_start
+      t.datetime :time_end
 
       t.timestamps
     end
