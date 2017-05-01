@@ -22,18 +22,19 @@ Rails.application.routes.draw do
 
   # Sessions
   get 'login' => 'sessions#new'
-  post 'login' => 'sessions#create'
+  # post 'login' => 'sessions#create'
   # delete 'logout' => 'sessions#destroy'
-  get 'logout' => 'sessions#destroy'
+  # get 'logout' => 'sessions#destroy'
 
-  # Customer (Unique - /:id not accessible)
-  # signup
-  get 'signup' => 'users#new'
-  post 'signup' => 'users#create'
-  # account <--- ?
-  get 'account' => 'users#edit'
-  post 'account' => 'users#update'
-  # get 'account/password'
+  # Users (Unique - /:id not accessible)
+  resources :users
+  # # signup
+  # get 'signup' => 'users#new'
+  # post 'signup' => 'users#create'
+  # # account
+  # get 'account' => 'users#show'
+  # get 'account/edit' => 'users#edit'
+  # put 'account/edit' => 'users#update'
   # credit_cards
   # get 'account/credit_cards'
 

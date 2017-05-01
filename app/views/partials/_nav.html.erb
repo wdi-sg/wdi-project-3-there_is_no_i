@@ -28,11 +28,10 @@
       <a href="/dashboard">Dashboard</a>
     </li>
 
-    <% if current_user%>
     <!--https://jsfiddle.net/crabbly/218o6g2g/-->
     <!--http://codepen.io/tdaved/pen/XdxJZZ-->
     <li class="nav-item is-tab">
-      <a href="/account"><%= current_user.name%></a>
+      <a href="/users">Accounts?</a>
     </li>
 
     <li class="nav-item">
@@ -41,13 +40,13 @@
       </a>
     </li>
 
-    <% else %>
-
     <a class="nav-item" href="/login">
       Login
     </a>
 
-    <% end %>
-  </div>
+    <a class="nav-item" href="/users/new">
+      Signup
+    </a>
 
+  </div>
 </nav>

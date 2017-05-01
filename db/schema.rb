@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.string   "name"
     t.string   "email"
     t.string   "phone"
+    t.string   "password"
     t.string   "password_digest"
     t.integer  "restaurant_id"
     t.datetime "created_at",      null: false
