@@ -77,9 +77,12 @@ document.querySelector('.ordered-items-list').addEventListener('click', (event) 
 function redrawList () {
   $('.ordered-items-list').empty()
   count(orders).sort((a, b) => { return a['id'] - b['id'] }).forEach((item) => {
-    addToList('<button class="remove-one" value=' + item['id'] + '>-</button> ' + item['count'] + ' <button class="add-one" value=' + item['id'] + '>+</button>' + ' x ' + item['name'] + ' => ' + (item['count'] * item['price']).toFixed(2).toString())
+    addToList('<button class="remove-one" value=' + item['id'] + ' type="button">-</button> ' + item['count'] + ' <button class="add-one" value=' + item['id'] + ' type="button">+</button>' + ' x ' + item['name'] + ' => ' + (item['count'] * item['price']).toFixed(2).toString())
   })
-  addToList('Total: ' + totalPrice().toFixed(2))
+  if (orders.length > 0) {
+    addToList('Total: ' + totalPrice().toFixed(2))
+    addToList('<button class="submit-orders" type="button">Submit Your Order</button>')
+  }
 }
 
 // adds a <li> to the orders
