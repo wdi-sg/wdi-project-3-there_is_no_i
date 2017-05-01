@@ -76,17 +76,3 @@
 <%= link_to 'Menu', restaurant_menu_items_path(@restaurant) %> |
 <!-- <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> | -->
 <%= link_to 'Back', user_path(@user) %>
-
-<% @menu_items.each do |item| %>
-<p>
-  <%= item.name %>
-</p>
-<p>
-  <%= item.description %>
-</p>
-<p>
-  <%= item.price %>
-</p>
-<% end %>
-
-<%= javascript_include_tag('restaurants/show.js') %>

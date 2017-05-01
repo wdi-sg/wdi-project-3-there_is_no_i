@@ -1,4 +1,8 @@
 <h1>Menu</h1>
+
+<button id="takeaway-show-hide" type="button" name="button">Order Takeaway</button>
+
+<div class="all-menu-items">
 <p><%= @test %></p>
 <% @menu_items.each do |item| %>
 <p>
@@ -10,6 +14,18 @@
 <p>
   <%= item.price %>
 </p>
+<p>
+  <button class="add-to-order" style="display:none" type="button" name="button" value='<%=item.id.to_s + '/' + item.name + '/' + item.price.to_s%>'>Add to Order</button>
+</p>
 
 <br>
 <% end %>
+</div>
+
+<div class="ordered-items">
+<ul class="ordered-items-list">
+
+</ul>
+</div>
+
+<%= javascript_include_tag('menu_items/show.js') %>
