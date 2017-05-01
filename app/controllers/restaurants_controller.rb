@@ -10,6 +10,8 @@ class RestaurantsController < ApplicationController
     else
       render :new
     end
+
+
   end
 
   def show
@@ -32,10 +34,9 @@ class RestaurantsController < ApplicationController
 
   private
 
-
-  def restaurant_params
-    params.require(:restaurant).permit(:name, :email, :password, :password_confirmation)
-  end
+  # def restaurant_params
+  #   params.require(:restaurant).permit(:name, :email, :password, :password_confirmation)
+  # end
 
   # def reserve_params
   #   params.require(:reserve).permit()
