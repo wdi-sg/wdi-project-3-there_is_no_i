@@ -4,7 +4,7 @@ class ReservationsController < ApplicationController
   end
 
   def index
-    @reservations = Reservation.all
+    @reservations = Reservation.where(restaurant_id: params[:restaurant_id])
   end
 
   def create
@@ -13,9 +13,11 @@ class ReservationsController < ApplicationController
     month = d.strftime('%m')
     year = d.strftime('%Y')
     t = Time.parse(params[:reservation][:time])
-    date_time = t.change(day: day, month: month, year: year)
+    date_time = t.change(day: day, month: month, year: year, offset: +0o000)
     puts date_time
     x = {}
+    x[:name] = params[:reservation][:name]
+    x[:phone] = params[:reservation][:phone]
     x[:date_time] = date_time
     x[:party_size] = params[:reservation][:party_size]
     x[:restaurant_id] = params[:restaurant_id]
@@ -33,6 +35,6 @@ class ReservationsController < ApplicationController
   private
 
   def reservation_params
-    params.require(:reservation).permit(:party_size, :date_time)
+    params.require(:reservation).permit(:name, :party_size, :date_time)
   end
 end
