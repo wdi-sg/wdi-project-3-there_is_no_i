@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :email
       t.string :phone
-      # t.string :password
+      t.string :password
       t.string :password_digest
       t.integer :restaurant_id
 

@@ -1,0 +1,22 @@
+<h1>Accounts</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |f| %>
+      <tr>
+        <td><%= f.name %></td>
+        <td><%= f.email %></td>
+        <td><%= f.phone %></td>
+        <td><%= link_to 'Show', f %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
