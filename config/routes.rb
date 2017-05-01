@@ -1,20 +1,12 @@
 Rails.application.routes.draw do
   get 'reservations/index'
-
   get 'reservations/create'
-
   get 'reservations/new'
-
   get 'reservations/edit'
-
   get 'reservations/show'
-
   get 'reservations/update'
-
   get 'reservations/destroy'
-
   get 'testing/hello'
-
   get 'testing/moto'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -40,8 +32,8 @@ Rails.application.routes.draw do
 
   # Restaurant (Unique - /:id not accessible)
   # register
-  get 'register' => 'restaurants#new'
-  post 'register' => 'restaurants#create'
+  # get 'register' => 'restaurants#new'
+  # post 'register' => 'restaurants#create'
   # menu <--?
   # resources :menu_items
   # walk in queue

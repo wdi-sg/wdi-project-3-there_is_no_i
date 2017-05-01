@@ -1,8 +1,7 @@
 <h1>Register Restaurant</h1>
-<%= form_for @restaurant, url: register_path do |f| %>
+<%= form_for @restaurant, url: restaurants_path(@restaurant), html: {method: :post} do |f| %>
   <%= f.label "name" %>
   <%= f.text_field :name, placeholder: "Name" %>
-
   <%= f.label "address 1" %>
   <%= f.text_field :address1, placeholder: "Address 1" %>
   <%= f.label "address 2" %>
@@ -21,9 +20,5 @@
   <%= f.text_field :cuisine, placeholder: "Cuisine" %>
   <%= f.label "email" %>
   <%= f.email_field :email, placeholder: "Email" %>
-  <%= f.label "password" %>
-  <%= f.password_field :password, placeholder: "Password" %>
-  <%= f.label "password confirmation" %>
-  <%= f.password_field :password_confirmation, placeholder: "Password Confirmation" %>
   <%= f.submit "Signup" %>
 <% end %>

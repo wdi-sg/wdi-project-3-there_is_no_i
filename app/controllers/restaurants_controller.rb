@@ -9,47 +9,32 @@ class RestaurantsController < ApplicationController
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
-    if @restaurant.save
-      redirect_to root_path
+    if @restaurant.save!
+      @user = User.find(1)
+      @user.restaurant_id = @restaurant.id
+      @user.save!
+      redirect_to restaurant_path(@restaurant)
     else
       render :new
     end
-
-
   end
 
   def show
     @restaurant = Restaurant.find(params[:id])
-    @reservation = Reservation.new
   end
 
-
-  # def call
-  # end
-
-  def reserve
-    @reserve = Reservation.new()
+  def edit
+    
   end
 
+  def update
+  end
 
-  # def reserve
-  # end
-
-  # def menu
-  # end
+  def destroy
+  end
 
   private
-
-  # def restaurant_params
-  #   params.require(:restaurant).permit(:name, :email, :password, :password_confirmation)
-  # end
-
-  # def reserve_params
-  #   params.require(:reserve).permit()
-  #   # params.require(:tweet).permit(:content, :username)
-
-  # def reserve_params
-  #   permitted = params.require(:reserve).permit(:party_size, :date, :time)
-
-  # end
+  def restaurant_params
+    params.require(:restaurant).permit(:name, :address1, :address2, :city, :state, :country, :postal, :description, :cuisine, :email)
+  end
 end
