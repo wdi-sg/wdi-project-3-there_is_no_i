@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   # get 'queue/login'
   # get 'queue/logout'
   # dashboard
-  # get 'dashboard' => 'dashboard#index'
+  get 'dashboard' => 'dashboard#index'
   # get 'dashboard/table'
   # get 'dashboard/schedule'
   # get 'dashboard/service'
