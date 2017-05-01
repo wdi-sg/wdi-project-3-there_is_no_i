@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  has_many :transactions
+  has_many :credit_cards
+  has_many :reviews
+  
   validates :name, presence: true, length: {minimum: 1}
 
   validates :email, email: true

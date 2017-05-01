@@ -104,3 +104,50 @@ restaurants = Restaurant.create([
     rating: 100
   }
   ])
+
+users = User.create([
+  {
+    name: 'user1',
+    email: 'user1@email.com',
+    password: 'password',
+    restaurant_id: 1
+  },
+  {
+    name: 'user2',
+    email: 'user2@email.com',
+    password: 'password',
+    restaurant_id: 3
+  },
+  {
+    name: 'user3',
+    email: 'user3@email.com',
+    password: 'password',
+    restaurant_id: 5
+  },
+  {
+    name: 'user4',
+    email: 'user1@email.com',
+    password: 'password',
+    restaurant_id: 7
+  },
+  {
+    name: 'user5',
+    email: 'user5@email.com',
+    password: 'password'
+  },
+  {
+    name: 'user6',
+    email: 'user6@email.com',
+    password: 'password'
+  },
+  {
+    name: 'user7',
+    email: 'user7@email.com',
+    password: 'password'
+  },
+  {
+    name: 'user8',
+    email: 'user8@email.com',
+    password: 'password'
+  }
+  ])

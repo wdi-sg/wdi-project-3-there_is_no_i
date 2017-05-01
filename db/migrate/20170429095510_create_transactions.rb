@@ -1,10 +1,10 @@
 class CreateTransactions < ActiveRecord::Migration[5.0]
   def change
     create_table :transactions do |t|
-      t.integer :user_id
+      t.references :user, foreign_key: true
       t.string :user_name
-      t.integer :table_id
-      t.integer :restaurant_id
+      t.references :table, foreign_key: true
+      t.references :restaurant, foreign_key: true
       t.datetime :time_end
       t.datetime :takeaway_time
 

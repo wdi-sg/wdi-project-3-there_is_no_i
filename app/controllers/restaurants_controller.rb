@@ -36,13 +36,4 @@ class RestaurantsController < ApplicationController
   # def restaurant_params
   #   params.require(:restaurant).permit(:name, :email, :password, :password_confirmation)
   # end
-
-  # def reserve_params
-  #   params.require(:reserve).permit()
-  #   # params.require(:tweet).permit(:content, :username)
-
-  # def reserve_params
-  #   permitted = params.require(:reserve).permit(:party_size, :date, :time)
-
-  # end
 end
