@@ -4,7 +4,7 @@ class ReservationsController < ApplicationController
   end
 
   def index
-    @reservations = Reservation.all
+    @reservations = Reservation.where(restaurant_id: params[:restaurant_id])
   end
 
   def create
@@ -13,7 +13,7 @@ class ReservationsController < ApplicationController
     month = d.strftime('%m')
     year = d.strftime('%Y')
     t = Time.parse(params[:reservation][:time])
-    date_time = t.change(day: day, month: month, year: year)
+    date_time = t.change(day: day, month: month, year: year, offset: +0o000)
     puts date_time
     x = {}
     x[:name] = params[:reservation][:name]
