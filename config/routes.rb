@@ -49,9 +49,8 @@ Rails.application.routes.draw do
   # Public (Restaurants accessible by /:id)<--?
   # resources :restaurants, only: [:show] do
   resources :restaurants do
-    # resources :reservations, only: [:new, :create]
     resources :reservations
-    resources :menu_items, only: [:show]
+    resources :menu_items
   end
 
   # resources :restaurants do
