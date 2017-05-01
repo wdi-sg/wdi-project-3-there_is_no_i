@@ -9,6 +9,7 @@ class RestaurantsController < ApplicationController
   end
 
   def reserve
+    @reserve = Reservation.new()
   end
 
   def menu
@@ -16,8 +17,7 @@ class RestaurantsController < ApplicationController
 
   private
 
-  def reserve_params
-    params.require(:reserve).permit()
-    # params.require(:tweet).permit(:content, :username)
-  end
+  # def reserve_params
+  #   permitted = params.require(:reserve).permit(:party_size, :date, :time)
+  # end
 end
