@@ -1,6 +1,6 @@
 <h1>Add a new reservation</h1>
 
-<%= form_for :reservation do |f| %>
+<%= form_for :reservation, :url => restaurant_reservations_path do |f| %>
 
   <div>
   <%= f.label :party_size %>
