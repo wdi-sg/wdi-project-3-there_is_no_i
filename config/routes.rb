@@ -8,38 +8,37 @@ Rails.application.routes.draw do
   # delete 'logout' => 'sessions#destroy'
   get 'logout' => 'sessions#destroy'
 
-  # Customer
+  # Customer (Unique - /:id not accessible)
   # signup
-  get 'signup' => 'signup#new'
-  post 'signup' => 'signup#create'
-  # account
-  get 'account' => 'account#index'
-  get 'account/password'
-  get 'account/credit_cards'
+  get 'signup' => 'users#new'
+  post 'signup' => 'users#create'
+  # account <--- ?
+  get 'account' => 'users#edit'
+  post 'account' => 'users#update'
+  # get 'account/password'
+  # credit_cards
+  # get 'account/credit_cards'
 
-  # Restaurant
+  # Restaurant (Unique - /:id not accessible)
   # register
-  get 'register' => 'register#new'
-  post 'register' => 'register#create'
-  # dashboard
-  get 'dashboard' => 'dashboard#index'
-  get 'dashboard/table'
-  get 'dashboard/schedule'
-  get 'dashboard/service'
-  # menu
-  resources :menu_items
+  get 'register' => 'restaurants#new'
+  post 'register' => 'restaurants#create'
+  # menu <--?
+  # resources :menu_items
   # walk in queue
-  get 'queue' => 'queue#index'
+  # get 'queue' => 'queue#index'
   # get 'queue/login'
   # get 'queue/logout'
+  # dashboard
+  # get 'dashboard' => 'dashboard#index'
+  # get 'dashboard/table'
+  # get 'dashboard/schedule'
+  # get 'dashboard/service'
 
-  # Restaurants <--
-  resources :restaurants, only: [:index, :show] do
-    member do
-      get 'call'
-      get 'reserve'
-      get 'menu'
-    end
+  # Public (Restaurants accessible by /:id)<--?
+  resources :restaurants, only: [:show] do
+    resources :reservations, only: [:new, :create]
+    resources :menu_items, only: [:show]
   end
 
   # routes for Stripe credit cards charges

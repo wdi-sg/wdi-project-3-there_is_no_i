@@ -1,4 +1,4 @@
-class SignupController < ApplicationController
+class UsersController < ApplicationController
   def new
     @user = User.new
   end
@@ -10,6 +10,12 @@ class SignupController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
+  end
+
+  def update
   end
 
   private

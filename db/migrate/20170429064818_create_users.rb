@@ -9,7 +9,6 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.integer :restaurant_id
 
       t.timestamps
-      # rename_column("users", "password", "password_digest")
     end
   end
 end
