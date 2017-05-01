@@ -56,7 +56,8 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.string   "email"
     t.integer  "party_size"
     t.integer  "restaurant_id"
-    t.datetime "date"
+    t.date     "date"
+    t.date     "time"
     t.boolean  "is_queuing"
     t.integer  "table_id"
     t.datetime "created_at",    null: false
