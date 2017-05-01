@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Stripe Integration - Credit Cards</title>
+  </head>
+  <body>
+    <a href="/">Home Page</a>
+    <a href="/charges/new">Test Credit Card</a><p>
+You must start the server with the following commands to test the credit card:
+PUBLISHABLE_KEY=pk_test_6pRNASCoBOKtIshFeQd4XMUh
+SECRET_KEY=sk_test_BQokikJOvBiI2HlWgH4olfQ2
+rails s
+</p>
+    <%= yield %>
+  </body>
+</html>
