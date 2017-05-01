@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20170429095825) do
   create_table "reservations", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "user_name"
+    t.string   "name"
     t.string   "phone"
     t.string   "email"
     t.string   "party_size"
