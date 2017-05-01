@@ -4,4 +4,5 @@ class Review < ApplicationRecord
 
   validates :restaurant_id, presence: true
   validates :rating, presence: true
+  validates :user_id, presence: true
 end
