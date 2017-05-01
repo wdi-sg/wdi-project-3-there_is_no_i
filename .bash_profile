@@ -1,0 +1,2 @@
+export PGHOST=localhost
+

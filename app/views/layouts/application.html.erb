@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WdiProject3ThereIsNoI</title>
+    <title>Locavorus</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <%= stylesheet_link_tag "style" %>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css">
   </head>
 
   <body>
-    <%= yield %>
+
+    <header>
+      <%= render partial: "partials/nav"%>
+      <!-- <%= render partial: "partials/flash" %> -->
+    </header>
+
+    <main>
+      <%= javascript_include_tag "index" %>
+      <a href="/">Home Page</a>
+      <a href="/charges/new">Test Credit Card</a>
+      <p>
+        You must start the server with the following commands to test the credit card:
+        PUBLISHABLE_KEY=pk_test_6pRNASCoBOKtIshFeQd4XMUh
+        SECRET_KEY=sk_test_BQokikJOvBiI2HlWgH4olfQ2
+        rails s
+      </p>
+      <br>
+      <%= yield %>
+    </main>
+
   </body>
 </html>
