@@ -10,7 +10,7 @@ class RestaurantsController < ApplicationController
   def create
     @restaurant = Restaurant.new(restaurant_params)
     if @restaurant.save!
-      @user = User.find(1)
+      @user = User.find(1) # Change when auth
       @user.restaurant_id = @restaurant.id
       @user.save!
       redirect_to restaurant_path(@restaurant)
@@ -20,11 +20,12 @@ class RestaurantsController < ApplicationController
   end
 
   def show
+    @user = User.find(1) # Change when auth
     @restaurant = Restaurant.find(params[:id])
   end
 
   def edit
-    
+
   end
 
   def update
@@ -36,8 +37,8 @@ class RestaurantsController < ApplicationController
   end
 
   private
-  
+
   def restaurant_params
-    params.require(:restaurant).permit(:name, :address1, :address2, :city, :state, :country, :postal, :description, :cuisine, :email)
+    params.require(:restaurant).permit(:name, :address1, :address2, :address_city, :address_state, :address_country, :address_postal, :email, :phone, :website, :description, :cuisine, :picture)
   end
 end

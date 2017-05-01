@@ -18,7 +18,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @restaurant = Restaurant.find(@user.restaurant_id)
+    if @user.restaurant_id
+      @restaurant = Restaurant.find(@user.restaurant_id)
+    end
   end
 
   def edit
