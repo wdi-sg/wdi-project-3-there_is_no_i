@@ -1,4 +1,7 @@
 class RestaurantsController < ApplicationController
+  before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
+  before_action :set_owner, only: [:create, :destroy]
+
   def index
     @restaurant = Restaurant.all
   end
@@ -10,7 +13,6 @@ class RestaurantsController < ApplicationController
   def create
     @restaurant = Restaurant.new(restaurant_params)
     if @restaurant.save!
-      @user = User.find(1) # Change when auth
       @user.restaurant_id = @restaurant.id
       @user.save!
       redirect_to restaurant_path(@restaurant)
@@ -20,17 +22,14 @@ class RestaurantsController < ApplicationController
   end
 
   def show
-    @user = User.find(1) # Change when auth
-    @restaurant = Restaurant.find(params[:id])
-    @menu_items = MenuItem.where(restaurant_id: params[:id])
+    # @menu_items = MenuItem.where(restaurant_id: params[:id])
   end
 
   def edit
-    @restaurant = Restaurant.find(params[:id])
   end
 
   def update
-    if Restaurant.update(params[:id], restaurant_params)
+    if @restaurant.update(restaurant_params)
       redirect_to restaurant_path
     else
       render :edit
@@ -38,11 +37,20 @@ class RestaurantsController < ApplicationController
   end
 
   def destroy
-    Restaurant.find(params[:id]).destroy
-    redirect_to user_path
+    @user.restaurant_id = nil
+    @restaurant.destroy
+    redirect_to restaurants_path
   end
 
   private
+
+  def set_owner
+    @user = User.find(1) # Change when auth
+  end
+
+  def set_restaurant
+    @restaurant = Restaurant.find(params[:id])
+  end
 
   def restaurant_params
     params.require(:restaurant).permit(:name, :address1, :address2, :address_city, :address_state, :address_country, :address_postal, :email, :phone, :website, :description, :cuisine, :picture)

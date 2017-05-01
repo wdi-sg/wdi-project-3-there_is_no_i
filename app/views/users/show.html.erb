@@ -18,11 +18,10 @@
 </table>
 
 <% if @user.restaurant_id%>
-<%= link_to 'Show Restaurant', restaurant_path(@restaurant) %> |
+<%= link_to 'Manage Restaurant', restaurant_path(@restaurant) %> |
 <% else %>
-<%= link_to 'New Restaurant', new_restaurant_path %> |
+<%= link_to 'Register Restaurant', new_restaurant_path %> |
 <% end %>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<!-- <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %> | -->
-<%= link_to 'Back', users_path %>
+<%= link_to 'Edit Account', edit_user_path(@user) %> |
+<%= link_to 'Delete Account', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
