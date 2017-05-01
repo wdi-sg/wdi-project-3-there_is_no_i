@@ -1,12 +1,12 @@
 <h1>Signup</h1>
-<%= form_for @user, url: signup_path do |f| %>
+<%= form_for @user, url:users_path(@user), html: {method: :post} do |f| %>
   <%= f.label "name" %>
   <%= f.text_field :name, placeholder: "Name" %>
   <%= f.label "email" %>
   <%= f.email_field :email, placeholder: "Email" %>
+  <%= f.label "phone" %>
+  <%= f.text_field :phone, placeholder: "Phone" %>
   <%= f.label "password" %>
   <%= f.password_field :password, placeholder: "Password" %>
-  <%= f.label "password confirmation" %>
-  <%= f.password_field :password_confirmation, placeholder: "Password Confirmation" %>
   <%= f.submit "Signup" %>
 <% end %>

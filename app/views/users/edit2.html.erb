@@ -1,12 +1,14 @@
 <h1>Edit User</h1>
-<%= form_for(@user) do |f| %>
+<%= form_for @user, url: account_edit_path do |f| %>
   <%= f.label "name" %>
   <%= f.text_field :name, placeholder: "Name" %>
   <%= f.label "email" %>
   <%= f.email_field :email, placeholder: "Email" %>
   <%= f.label "phone" %>
-  <%= f.text_field :phone, placeholder: "Phone" %>
-  <%= f.label "password" %>
+  <%= f.email_field :phone, placeholder: "Phone" %>
+  <!-- <%= f.label "password" %>
   <%= f.password_field :password, placeholder: "Password" %>
+  <%= f.label "password confirmation" %>
+  <%= f.password_field :password_confirmation, placeholder: "Password Confirmation" %> -->
   <%= f.submit "Update" %>
 <% end %>
