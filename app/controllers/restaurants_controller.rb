@@ -22,6 +22,7 @@ class RestaurantsController < ApplicationController
   def show
     @user = User.find(1) # Change when auth
     @restaurant = Restaurant.find(params[:id])
+    @menu_items = MenuItem.where(restaurant_id: params[:id])
   end
 
   def edit

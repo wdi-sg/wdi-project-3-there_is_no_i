@@ -70,6 +70,23 @@
   <%= @restaurant.rating %>
 </p>
 
+<<<<<<< HEAD
 <%= link_to 'Edit', edit_restaurant_path(@restaurant) %> |
+=======
+<%= link_to 'Reservation', new_restaurant_reservation_path(@restaurant) %>
+<%= link_to 'Edit', edit_user_path(@restaurant) %> |
+>>>>>>> bcb9c5657c29baea65bb3af6b77138db303e3650
 <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Back', user_path(@user) %>
+
+<% @menu_items.each do |item| %>
+<p>
+  <%= item.name %>
+</p>
+<p>
+  <%= item.description %>
+</p>
+<p>
+  <%= item.price %>
+</p>
+<% end %>
