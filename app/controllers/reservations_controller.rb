@@ -15,15 +15,14 @@ class ReservationsController < ApplicationController
     t = Time.parse(params[:reservation][:time])
     date_time = t.change(day: day, month: month, year: year, offset: +0o000)
     puts date_time
-    x = {}
-    x[:name] = params[:reservation][:name]
-    x[:phone] = params[:reservation][:phone]
-    x[:date_time] = date_time
-    x[:party_size] = params[:reservation][:party_size]
-    x[:restaurant_id] = params[:restaurant_id]
-    puts x
+    new_res = {}
+    new_res[:name] = params[:reservation][:name]
+    new_res[:phone] = params[:reservation][:phone]
+    new_res[:date_time] = date_time
+    new_res[:party_size] = params[:reservation][:party_size]
+    new_res[:restaurant_id] = params[:restaurant_id]
 
-    @reservation = Reservation.new(x)
+    @reservation = Reservation.new(new_res)
 
     if @reservation.save
       redirect_to restaurant_path(params[:restaurant_id])

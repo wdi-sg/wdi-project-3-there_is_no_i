@@ -1,6 +1,7 @@
 class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
   before_action :set_owner, only: [:create, :destroy]
+  helper RestaurantsHelper
 
   def index
     @restaurant = Restaurant.all

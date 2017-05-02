@@ -3,7 +3,7 @@
 
 <div>
   <p>Name: <%= reservation.name %> </p>
-  <p>Contact: <%= reservation.phone %></p>
+  <p>Contact: <%= formatPhone(reservation.phone) %></p>
   <p>No. of pax: <%= reservation.party_size %> </p>
   <p>Date and time: <%= reservation.date_time %> </p>
 </div><br>
