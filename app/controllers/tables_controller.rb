@@ -3,21 +3,22 @@ class TablesController < ApplicationController
   before_action :set_table, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tables = Table.where(restaurant_id: params[:restaurant_id])
-  end
-
-  def new
-    @table = Table.new
+    @tables = Table.where(restaurant_id: params[:restaurant_id]).order('name ASC')
   end
 
   def create
     @table = Table.new(table_params)
+    @table.capacity_current = 0
     @table.restaurant_id = @restaurant.id
     if @table.save!
       redirect_to restaurant_tables_path(@restaurant)
     else
       render :new
     end
+  end
+
+  def new
+    @table = Table.new
   end
 
   def edit
@@ -50,6 +51,6 @@ class TablesController < ApplicationController
   end
 
   def table_params
-    params.require(:table).permit(:name, :capacity_total, :capacity_current)
+    params.require(:table).permit(:name, :capacity_total)
   end
 end

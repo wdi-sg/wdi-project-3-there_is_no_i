@@ -2,6 +2,9 @@
 <% @reservations.each do |reservation| %>
 
 <div>
+  <p>Date: <%= formatDate(reservation.start_time) %> </p>
+  <p>For: <%= number_with_precision((reservation.end_time - reservation.start_time) / 60, precision: 0) %> minutes</p>
+  <p>Party: <%= reservation.party_size  %> </p>
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
   <p>Party: <%= reservation.party_size == '1-2' ? reservation.party_size + ' person' : reservation.party_size + ' people'  %> </p>
@@ -14,6 +17,7 @@
   <%= link_to 'Show', restaurant_reservation_path(@restaurant.id, reservation) %> |
   <%= link_to 'Edit', edit_restaurant_reservation_path(@restaurant.id, reservation) %> |
   <%= link_to 'Destroy', restaurant_reservation_path(@restaurant.id, reservation), method: :delete, data: { confirm: 'Are you sure?' } %>
-  <br>
+  <br/>
+  <br/>
 </div>
 <% end %>

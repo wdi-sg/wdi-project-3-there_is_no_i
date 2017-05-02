@@ -31,7 +31,7 @@ end
   )
 end
 
-1000.times do
+500.times do
   MenuItem.create(
     name: Faker::Food.ingredient,
     price: ActionController::Base.helpers.number_with_precision(rand * 100, precision: 2),
@@ -40,23 +40,28 @@ end
   )
 end
 
-10_000.times do
+500.times do
+  x = Faker::Time.between(DateTime.now + 1, DateTime.now + rand(30) + 1)
   Reservation.create(
     user_id: rand(100) + 1,
     restaurant_id: rand(100) + 1,
     party_size: rand(10) + 1,
-    start_time: Faker::Date.forward(rand(365))
-    # end_time
+    phone: rand(10_000_000..99_999_999),
+    name: Faker::StarWars.character,
+    start_time: x,
+    end_time: x + 60 * 90
   )
 end
 
-1000.times do
+500.times do
   Table.create(
     restaurant_id: rand(100) + 1,
     name: rand(10).to_s,
+    capacity_current: 0,
     capacity_total: rand(10) + 1
   )
 end
+
 # Restaurant.create([
 #                     {
 #                       name: 'Thai Restaurant',

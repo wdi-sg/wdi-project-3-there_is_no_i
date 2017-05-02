@@ -1,14 +1,10 @@
 class MenuItemsController < ApplicationController
   before_action :set_restaurant, only: [:index, :create, :edit, :update, :destroy]
-  before_action :set_menu_item, only: [:show, :edit, :update, :destroy]
-helper MenuItemsHelper
+  before_action :set_menu_item, only: [:edit, :show, :update, :destroy]
+  helper MenuItemsHelper
 
   def index
-    @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id])
-  end
-
-  def new
-    @menu_item = MenuItem.new
+    @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order('name ASC')
   end
 
   def create
@@ -19,6 +15,10 @@ helper MenuItemsHelper
     else
       render :new
     end
+  end
+
+  def new
+    @menu_item = MenuItem.new
   end
 
   def edit
