@@ -1,4 +1,4 @@
-<h1>My Restaurant</h1>
+<h1>Restaurant</h1>
 
 <p>
   Name:
@@ -6,13 +6,8 @@
 </p>
 
 <p>
-  Address 1:
-  <%= @restaurant.address1 %>
-</p>
-
-<p>
-  Address 2:
-  <%= @restaurant.address2 %>
+  Address:
+  <%= @restaurant.address1 + ', ' + @restaurant.address2.to_s %>
 </p>
 
 <p>
@@ -31,13 +26,13 @@
 </p>
 
 <p>
-  Postal:
+  Post Code:
   <%= @restaurant.address_postal %>
 </p>
 
 <p>
   Email:
-  <%= @restaurant.email %>
+  <a href="mailto:<%= @restaurant.email %>"><%= @restaurant.email %></a>
 </p>
 
 <p>
@@ -47,7 +42,7 @@
 
 <p>
   Website:
-  <%= @restaurant.website %>
+  <a href="<%= @restaurant.website %>"><%= @restaurant.website %></a>
 </p>
 
 <p>
@@ -71,8 +66,8 @@
 </p>
 
 <%= link_to 'Edit Restaurant', edit_restaurant_path(@restaurant) %> |
-<%= link_to 'Make New Reservation', new_restaurant_reservation_path(@restaurant) %> |
-<%= link_to 'View All Reservations', restaurant_reservations_path(@restaurant) %> |
+<%= link_to 'New Reservation', new_restaurant_reservation_path(@restaurant) %> |
+<%= link_to 'View Reservations', restaurant_reservations_path(@restaurant) %> |
 <%= link_to 'View Menu', restaurant_menu_items_path(@restaurant) %> |
 <%= link_to 'View Tables', restaurant_tables_path(@restaurant) %> |
 <!-- <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> -->
