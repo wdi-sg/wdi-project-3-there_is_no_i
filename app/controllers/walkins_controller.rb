@@ -12,12 +12,12 @@ class WalkinsController < ApplicationController
     month = d.strftime('%m')
     year = d.strftime('%Y')
     t = Time.parse(params[:reservation][:time])
-    date_time = t.change(day: day, month: month, year: year, offset: +0o000)
-    puts date_time
+    start_time = t.change(day: day, month: month, year: year, offset: +0o000)
+    puts start_time
     x = {}
     x[:name] = params[:reservation][:name]
     x[:phone] = params[:reservation][:phone]
-    x[:date_time] = date_time
+    x[:start_time] = start_time
     x[:party_size] = params[:reservation][:party_size]
     x[:restaurant_id] = params[:restaurant_id]
     puts x
