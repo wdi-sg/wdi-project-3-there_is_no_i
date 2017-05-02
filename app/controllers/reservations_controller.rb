@@ -6,7 +6,7 @@ class ReservationsController < ApplicationController
   def new; end
 
   def index
-    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('date_time ASC')
+    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('start_time ASC')
   end
 
   def create

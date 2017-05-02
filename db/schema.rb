@@ -59,7 +59,6 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.string   "phone"
     t.string   "email"
     t.integer  "party_size"
-    t.integer  "restaurant_id"
     t.string   "special_requests"
     t.datetime "start_time"
     t.integer  "restaurant_id"

@@ -2,7 +2,7 @@
 <% @reservations.each do |reservation| %>
 
 <div>
-  <p>Date: <%= formatDate(reservation.date_time) %> </p>
+  <p>Date: <%= formatDate(reservation.start_time) %> </p>
   <p>Party: <%= reservation.party_size  %> </p>
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
