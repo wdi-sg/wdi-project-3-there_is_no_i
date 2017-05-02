@@ -16,7 +16,7 @@ helper ReservationsHelper
     month = d.strftime('%m')
     year = d.strftime('%Y')
     t = Time.parse(params[:reservation][:time])
-    date_time = t.change(day: day, month: month, year: year, offset: +0o000)
+    date_time = t.change(day: day, month: month, year: year, offset: +0000)
     puts date_time
     new_res = {}
     new_res[:name] = params[:reservation][:name]
