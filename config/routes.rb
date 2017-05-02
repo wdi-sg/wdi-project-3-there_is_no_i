@@ -49,6 +49,8 @@ Rails.application.routes.draw do
     get 'walkins' => 'walkins#index'
     post 'walkins' => 'walkins#create'
     get 'walkins/new' => 'walkins#new', as: 'new_walkin'
+    post 'public' => 'walkins#public_create'
+    get 'public' => 'walkins#public_new'
     get 'walkins/:id/edit' => 'walkins#edit', as: 'edit_walkin'
     get 'walkins/:id' => 'walkins#show', as: 'walkin'
     put 'walkins/:id' => 'walkins#update'

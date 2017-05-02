@@ -5,7 +5,12 @@
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
   <p>Party: <%= reservation.party_size == '1-2' ? reservation.party_size + ' person' : reservation.party_size + ' people'  %> </p>
-  <p>Date: <%= formatDate(reservation.start_time) %> </p>
+  <p>
+    Date:
+    <% if reservation.start_time%>
+      <%= formatDate(reservation.start_time) %>
+    <% end %>
+  </p>
   <%= link_to 'Show', restaurant_reservation_path(@restaurant.id, reservation) %> |
   <%= link_to 'Edit', edit_restaurant_reservation_path(@restaurant.id, reservation) %> |
   <%= link_to 'Destroy', restaurant_reservation_path(@restaurant.id, reservation), method: :delete, data: { confirm: 'Are you sure?' } %>
