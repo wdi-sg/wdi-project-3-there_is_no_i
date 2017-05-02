@@ -14,7 +14,7 @@ class TablesController < ApplicationController
     @table = Table.new(table_params)
     @table.restaurant_id = @restaurant.id
     if @table.save!
-      redirect_to restaurant_menu_items_path(@restaurant)
+      redirect_to restaurant_tables_path(@restaurant)
     else
       render :new
     end
@@ -28,7 +28,7 @@ class TablesController < ApplicationController
 
   def update
     if @table.update(table_params)
-      redirect_to restaurant_menu_items_path(@restaurant)
+      redirect_to restaurant_tables_path(@restaurant)
     else
       render :edit
     end
@@ -36,7 +36,7 @@ class TablesController < ApplicationController
 
   def destroy
     @table.destroy
-    redirect_to restaurant_menu_items_path(@restaurant)
+    redirect_to restaurant_tables_path(@restaurant)
   end
 
   private
