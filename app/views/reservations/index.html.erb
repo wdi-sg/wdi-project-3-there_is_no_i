@@ -1,6 +1,8 @@
 <h1>All Reservations</h1>
 <% @reservations.each do |reservation| %>
 
+<%= reservation.inspect %>
+
 <div>
   <p>Name: <%= reservation.name %> </p>
   <p>Contact: <%= reservation.phone %></p>

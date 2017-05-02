@@ -32,6 +32,18 @@ class ReservationsController < ApplicationController
     end
   end
 
+  def edit
+    @reservation = Reservation.find(params[:id])
+  end
+
+  def update
+    if Reservation.update(params[:id], params[:restaurant_id])
+      redirect_to edit_restaurant_reservation_path
+    else
+      render :edit
+    end
+  end
+
   private
 
   def reservation_params
