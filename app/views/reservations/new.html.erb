@@ -17,7 +17,7 @@
 
   <div>
   <%= f.label :party_size %>
-  <%= f.select :party_size, ['1-2','3-4','5-8'], :prompt => 'Select One' %>
+  <%= f.select :party_size, [*1..12], :prompt => 'Select One' %>
   </div>
 
   <div>

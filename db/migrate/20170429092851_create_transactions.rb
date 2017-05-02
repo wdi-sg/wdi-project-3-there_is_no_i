@@ -7,6 +7,7 @@ class CreateTransactions < ActiveRecord::Migration[5.0]
       t.references :restaurant, foreign_key: true
       t.datetime :time_end
       t.datetime :takeaway_time
+      t.references :reservation, foreign_key: true
 
       t.timestamps
     end
