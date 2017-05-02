@@ -1,0 +1,16 @@
+<h1>---WALK IN QUEUE---</h1>
+
+<%= form_for @reservation, :url => restaurant_walkins_path do |f| %>
+
+  <div>
+    <%= f.label :party_size %>
+    <%= f.select :party_size, ['1-2','3-4','5-8'], :prompt => 'Select One' %>
+  </div>
+
+  <div>
+    <%= f.label :phone %>
+    <%= f.text_field :phone, minlength: 8 maxlength: 8 %>
+  </div>
+
+  <%= f.submit %>
+<% end %>
