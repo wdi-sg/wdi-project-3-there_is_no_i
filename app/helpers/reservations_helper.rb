@@ -1,8 +1,9 @@
 module ReservationsHelper
   def formatDate(date)
-    ampm = date.strftime('%H').to_i < 12 ? 'am' : 'pm'
-    x = ((date.to_i - DateTime.now.to_i)/(60*60*24)).to_s
-    date.strftime('%A %d %B %Y %l:%M ' + ampm + ' (in ' + x + ' days)')
+    ampm = date.localtime.strftime('%H').to_i < 12 ? 'am' : 'pm'
+    x = (date - DateTime.now)/(60*60*24)
+    y = x >= 1 ? number_with_precision(x, precision: 0).to_str + ' days' : number_with_precision((x * 24), precision: 0).to_str + ' hours'
+    date.localtime.strftime('%A %d %B %Y %l:%M ') + ampm + ' (in ' + y + ')'
   end
 
   def formatPhone (phone)

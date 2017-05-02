@@ -3,6 +3,7 @@
 
 <div>
   <p>Date: <%= formatDate(reservation.start_time) %> </p>
+  <p>For: <%= number_with_precision((reservation.end_time - reservation.start_time) / 60, precision: 0) %> minutes</p>
   <p>Party: <%= reservation.party_size  %> </p>
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
