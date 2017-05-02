@@ -79,6 +79,7 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
+  adapter: postgresql
   <<: *default
   database: wdi-project-3-there_is_no_i_production
   username: wdi-project-3-there_is_no_i
