@@ -1,6 +1,9 @@
 class ReservationsController < ApplicationController
+  before_action :set_restaurant, only: [:new, :index, :show, :create, :edit, :update, :destroy]
+before_action :set_reservation, only: [:show, :edit, :update, :destroy]
+helper ReservationsHelper
+
   def new
-    @restaurant = Restaurant.find(params[:restaurant_id])
   end
 
   def index
@@ -31,9 +34,36 @@ class ReservationsController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def show
+  end
+
+  def update
+    if @reservation.update(reservation_params)
+      redirect_to restaurant_reservations_path(@restaurant)
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @reservation.destroy
+    redirect_to restaurant_reservations_path(@restaurant)
+  end
+
   private
 
   def reservation_params
     params.require(:reservation).permit(:name, :party_size, :date_time)
+  end
+
+  def set_restaurant
+    @restaurant = Restaurant.find(params[:restaurant_id])
+  end
+
+  def set_reservation
+    @reservation = Reservation.find(params[:id])
   end
 end

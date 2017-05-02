@@ -1,30 +1,61 @@
 <h1>Edit Restaurant</h1>
 <%= form_for @restaurant, url: restaurant_path(@restaurant), html: {method: :put} do |f| %>
-  <%= f.label "name" %>
-  <%= f.text_field :name, placeholder: "Name" %>
-  <%= f.label "address 1" %>
-  <%= f.text_field :address1, placeholder: "Address 1" %>
-  <%= f.label "address 2" %>
-  <%= f.text_field :address2, placeholder: "Address 2" %>
-  <%= f.label "city" %>
-  <%= f.text_field :address_city, placeholder: "City" %>
-  <%= f.label "state" %>
-  <%= f.text_field :address_state, placeholder: "State" %>
-  <%= f.label "country" %>
-  <%= f.text_field :address_country, placeholder: "Country" %>
-  <%= f.label "postal" %>
-  <%= f.text_field :address_postal, placeholder: "Postal Code" %>
-  <%= f.label "email" %>
-  <%= f.email_field :email, placeholder: "Email" %>
-  <%= f.label "phone" %>
-  <%= f.text_field :phone, placeholder: "Phone" %>
-  <%= f.label "website" %>
-  <%= f.text_field :website, placeholder: "Website" %>
-  <%= f.label "description" %>
-  <%= f.text_field :description, placeholder: "Description" %>
-  <%= f.label "cuisine" %>
-  <%= f.text_field :cuisine, placeholder: "Cuisine" %>
-  <%= f.label "picture" %>
-  <%= f.text_field :picture, placeholder: "Picture" %>
-  <%= f.submit "Update" %>
+  <p>
+    <%= f.label "name" %>
+    <%= f.text_field :name, placeholder: "Name" %>
+  </p>
+  <p>
+    <%= f.label "address 1" %>
+    <%= f.text_field :address1, placeholder: "Address 1" %>
+  </p>
+  <p>
+    <%= f.label "address 2" %>
+    <%= f.text_field :address2, placeholder: "Address 2" %>
+  </p>
+  <p>
+    <%= f.label "city" %>
+    <%= f.text_field :address_city, placeholder: "City" %>
+  </p>
+  <p>
+    <%= f.label "state" %>
+    <%= f.text_field :address_state, placeholder: "State" %>
+  </p>
+  <p>
+    <%= f.label "country" %>
+    <%= f.text_field :address_country, placeholder: "Country" %>
+  </p>
+  <p>
+    <%= f.label "postal" %>
+    <%= f.text_field :address_postal, placeholder: "Postal Code" %>
+  </p>
+  <p>
+    <%= f.label "email" %>
+    <%= f.email_field :email, placeholder: "Email" %>
+  </p>
+  <p>
+    <%= f.label "phone" %>
+    <%= f.text_field :phone, placeholder: "Phone" %>
+  </p>
+  <p>
+    <%= f.label "website" %>
+    <%= f.text_field :website, placeholder: "Website" %>
+  </p>
+  <p>
+    <%= f.label "description" %>
+    <%= f.text_field :description, placeholder: "Description" %>
+  </p>
+  <p>
+    <%= f.label "cuisine" %>
+    <%= f.text_field :cuisine, placeholder: "Cuisine" %>
+  </p>
+  <p>
+    <%= f.label "picture" %>
+    <%= f.text_field :picture, placeholder: "Picture" %>
+  </p>
+
+  <p>
+      <%= f.submit "Update" %>
+  </p>
+
+
 <% end %>
