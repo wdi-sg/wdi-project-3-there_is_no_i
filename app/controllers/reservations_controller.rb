@@ -33,13 +33,9 @@ class ReservationsController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
   def edit
     # @reservation = Reservation.find(params[:id])
   end
-=======
-  def edit; end
->>>>>>> 988e9effa94c383bc385821604fa8283a98f318c
 
   def show; end
 
