@@ -61,11 +61,12 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.string   "email"
     t.string   "party_size"
     t.integer  "restaurant_id"
+    t.string   "special_requests"
     t.datetime "date_time"
     t.boolean  "is_queuing"
     t.integer  "table_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.index ["restaurant_id"], name: "index_reservations_on_restaurant_id", using: :btree
     t.index ["table_id"], name: "index_reservations_on_table_id", using: :btree
     t.index ["user_id"], name: "index_reservations_on_user_id", using: :btree

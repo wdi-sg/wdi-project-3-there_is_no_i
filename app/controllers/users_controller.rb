@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+
   def index
     @users = User.all
   end
@@ -17,18 +19,16 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
     if @user.restaurant_id
       @restaurant = Restaurant.find(@user.restaurant_id)
     end
   end
 
   def edit
-    @user = User.find(params[:id])
   end
 
   def update
-    if User.update(params[:id], user_params)
+    if @user.update(user_params)
       redirect_to user_path
     else
       render :edit
@@ -36,11 +36,15 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
+    @user.destroy
     redirect_to root_path
   end
 
   private
+
+  def set_user
+    @user = User.find(params[:id])
+  end
 
   def user_params
     params.require(:user).permit(:name, :email, :phone, :password)
