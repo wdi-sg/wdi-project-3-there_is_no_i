@@ -1,5 +1,7 @@
 class Table < ApplicationRecord
   # belongs_to :restaurant
+  # has_many :reservations
+  # has_many :transactions
 
   validates :restaurant_id, presence: true
   validates :name, presence: true

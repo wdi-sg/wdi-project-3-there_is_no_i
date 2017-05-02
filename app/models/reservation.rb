@@ -1,5 +1,8 @@
 class Reservation < ApplicationRecord
   # belongs_to :restaurant
+  # belongs_to :user
+  # belongs_to :transaction
+  # belongs_to :table
 
   # validates :user_name, presence: true
   validates :party_size, presence: true

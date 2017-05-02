@@ -1,5 +1,8 @@
 class Order < ApplicationRecord
-  # has_many :menu_items
+  # belongs_to :menu_items
+  # belongs_to :transaction
+  # belongs_to :user
+  # belongs_to :restaurant
 
   validates :restaurant_id, presence: true
   validates :item_id, presence: true
