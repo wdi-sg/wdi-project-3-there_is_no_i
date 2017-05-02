@@ -1,0 +1,25 @@
+<h1>Menu</h1>
+
+<%= link_to 'New Table', new_restaurant_table_path(@restaurant.id) %>
+<br>
+<br>
+
+<% @tables.each do |table| %>
+<p>
+  Name:
+  <%= table.name %>
+</p>
+<p>
+  Current Capacity:
+  <%= table.capacity_current %>
+</p>
+<p>
+  Total Capacity:
+  <%= table.capacity_total %>
+</p>
+<%= link_to 'Show', restaurant_table_path(@restaurant.id, table) %> |
+<%= link_to 'Edit', edit_restaurant_table_path(@restaurant.id, table) %> |
+<%= link_to 'Destroy', restaurant_table_path(@restaurant.id, table), method: :delete, data: { confirm: 'Are you sure?' } %>
+<br>
+<br>
+<% end %>

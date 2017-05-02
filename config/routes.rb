@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   resources :restaurants do
     resources :reservations
     resources :menu_items
+    resources :tables
   end
 
   # routes for Stripe credit cards charges
