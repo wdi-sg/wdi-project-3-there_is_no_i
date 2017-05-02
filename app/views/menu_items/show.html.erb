@@ -7,7 +7,7 @@
 </p>
 <p>
   Price:
-  <%= @menu_item.price %>
+  <%= formatPrice(@menu_item.price) %>
 </p>
 <p>
   Description:
@@ -18,6 +18,6 @@
   <%= @menu_item.ingredients %>
 </p>
 <p>
-  Tags: 
+  Tags:
   <%= @menu_item.tags %>
 </p>

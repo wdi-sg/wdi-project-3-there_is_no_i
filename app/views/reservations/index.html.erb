@@ -3,8 +3,12 @@
 
 <div>
   <p>Name: <%= reservation.name %> </p>
-  <p>Contact: <%= reservation.phone %></p>
-  <p>No. of pax: <%= reservation.party_size %> </p>
-  <p>Date and time: <%= reservation.date_time %> </p>
-</div><br>
+  <p>Phone: <%= formatPhone(reservation.phone) %></p>
+  <p>Party: <%= reservation.party_size == '1-2' ? reservation.party_size + ' person' : reservation.party_size + ' people'  %> </p>
+  <p>Date: <%= formatDate(reservation.date_time) %> </p>
+  <%= link_to 'Show', restaurant_reservation_path(@restaurant.id, reservation) %> |
+  <%= link_to 'Edit', edit_restaurant_reservation_path(@restaurant.id, reservation) %> |
+  <%= link_to 'Destroy', restaurant_reservation_path(@restaurant.id, reservation), method: :delete, data: { confirm: 'Are you sure?' } %>
+  <br>
+</div>
 <% end %>

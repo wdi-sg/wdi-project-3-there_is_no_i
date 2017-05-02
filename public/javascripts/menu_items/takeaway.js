@@ -14,7 +14,10 @@ document.getElementById('takeaway-show-hide').addEventListener('click', () => {
       if (window.confirm('You have pending orders. Are you sure you want to cancel takeaway?')) {
         document.getElementById('takeaway-show-hide').textContent = 'Order Takeaway'
         orders = []
-        $('.ordered-items-list').empty()
+        var list = document.querySelector('.ordered-items-list')
+        while (list.firstChild) {
+          list.removeChild(list.firstChild)
+        }
         document.querySelectorAll('.add-to-order').forEach((button) => {
           button.style.display = 'none'
         })
@@ -45,14 +48,15 @@ document.querySelector('.ordered-items-list').addEventListener('click', (event) 
   if (target.className === 'remove-one') {
     var removed = false
     var removeIndex = 0
-    orders.forEach((obj, ind) => {
+    for (var i = 0; i < orders.length; i++) {
       if (!removed) {
-        if (obj['id'] === parseInt(target.value)) {
-          removeIndex = ind
+        if (orders[i]['id'] === parseInt(target.value)) {
+          removeIndex = i
           removed = true
+          break
         }
       }
-    })
+    }
     orders.splice(removeIndex, 1)
     redrawList()
   }
@@ -75,12 +79,15 @@ document.querySelector('.ordered-items-list').addEventListener('click', (event) 
 
 // redraw ordered-items-list
 function redrawList () {
-  $('.ordered-items-list').empty()
+  var list = document.querySelector('.ordered-items-list')
+  while (list.firstChild) {
+    list.removeChild(list.firstChild)
+  }
   count(orders).sort((a, b) => { return a['id'] - b['id'] }).forEach((item) => {
-    addToList('<button class="remove-one" value=' + item['id'] + ' type="button">-</button> ' + item['count'] + ' <button class="add-one" value=' + item['id'] + ' type="button">+</button>' + ' x ' + item['name'] + ' => ' + (item['count'] * item['price']).toFixed(2).toString())
+    addToList('<button class="remove-one" value=' + item['id'] + ' type="button">-</button> ' + item['count'] + ' <button class="add-one" value=' + item['id'] + ' type="button">+</button>' + ' x ' + item['name'] + ' => $' + (item['count'] * item['price']).toFixed(2).toString())
   })
   if (orders.length > 0) {
-    addToList('Total: ' + totalPrice().toFixed(2))
+    addToList('Total: $' + totalPrice().toFixed(2))
     addToList('<button class="submit-orders" type="button">Submit Your Order</button>')
   }
 }
