@@ -5,6 +5,7 @@ class Restaurant < ApplicationRecord
   # has_many :reviews
   # has_many :tables
   # has_many :transactions
+  # has_many :orders
 
   validates :name, presence: true
   validates :address1, presence: true
@@ -14,5 +15,5 @@ class Restaurant < ApplicationRecord
   validates :address_postal, presence: true
   validates :description, presence: true
   validates :cuisine, presence: true
-  validates :email, presence: true
+  # validates :email, presence: true
 end

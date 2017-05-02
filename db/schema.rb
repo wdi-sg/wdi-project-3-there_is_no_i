@@ -38,33 +38,34 @@ ActiveRecord::Schema.define(version: 20170429095825) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer  "table_id"
     t.integer  "user_id"
     t.integer  "restaurant_id"
-    t.integer  "item_id"
+    t.integer  "menu_item_id"
     t.text     "request_description"
     t.integer  "transaction_id"
     t.boolean  "is_take_away"
     t.datetime "time_end"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.index ["menu_item_id"], name: "index_orders_on_menu_item_id", using: :btree
     t.index ["restaurant_id"], name: "index_orders_on_restaurant_id", using: :btree
-    t.index ["table_id"], name: "index_orders_on_table_id", using: :btree
+    t.index ["transaction_id"], name: "index_orders_on_transaction_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
   create_table "reservations", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "user_name"
     t.string   "name"
     t.string   "phone"
     t.string   "email"
     t.integer  "party_size"
     t.integer  "restaurant_id"
     t.string   "special_requests"
-    t.datetime "date_time"
+    t.datetime "start_time"
+    t.integer  "restaurant_id"
     t.boolean  "is_queuing"
     t.integer  "table_id"
+    t.datetime "end_time"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.index ["restaurant_id"], name: "index_reservations_on_restaurant_id", using: :btree
@@ -120,8 +121,10 @@ ActiveRecord::Schema.define(version: 20170429095825) do
     t.integer  "restaurant_id"
     t.datetime "time_end"
     t.datetime "takeaway_time"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "reservation_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["reservation_id"], name: "index_transactions_on_reservation_id", using: :btree
     t.index ["restaurant_id"], name: "index_transactions_on_restaurant_id", using: :btree
     t.index ["table_id"], name: "index_transactions_on_table_id", using: :btree
     t.index ["user_id"], name: "index_transactions_on_user_id", using: :btree
@@ -140,14 +143,16 @@ ActiveRecord::Schema.define(version: 20170429095825) do
   end
 
   add_foreign_key "menu_items", "restaurants"
+  add_foreign_key "orders", "menu_items"
   add_foreign_key "orders", "restaurants"
-  add_foreign_key "orders", "tables"
+  add_foreign_key "orders", "transactions"
   add_foreign_key "orders", "users"
   add_foreign_key "reservations", "restaurants"
   add_foreign_key "reservations", "tables"
   add_foreign_key "reservations", "users"
   add_foreign_key "reviews", "restaurants"
   add_foreign_key "tables", "restaurants"
+  add_foreign_key "transactions", "reservations"
   add_foreign_key "transactions", "restaurants"
   add_foreign_key "transactions", "tables"
   add_foreign_key "transactions", "users"

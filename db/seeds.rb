@@ -7,55 +7,57 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 100.times do
-Restaurant.create(
-name: Faker::Company.name,
-address1: Faker::Address.street_address,
-address_city: Faker::Address.city,
-address_country: Faker::Address.country,
-address_postal: Faker::Address.postcode,
-email: Faker::Internet.email,
-phone: rand(10000000..99999999),
-website: Faker::Internet.url,
-description: Faker::Company.buzzword,
-cuisine: Faker::Demographic.demonym,
-rating: rand(101)
-)
+  Restaurant.create(
+    name: Faker::Company.name,
+    address1: Faker::Address.street_address,
+    address_city: Faker::Address.city,
+    address_country: Faker::Address.country,
+    address_postal: Faker::Address.postcode,
+    email: Faker::Internet.email,
+    phone: rand(10_000_000..99_999_999),
+    website: Faker::Internet.url,
+    description: Faker::Company.buzzword,
+    cuisine: Faker::Demographic.demonym,
+    rating: rand(101)
+  )
 end
 
 100.times do
   User.create(
-                  name: Faker::LordOfTheRings.character,
-                  email: Faker::Internet.email,
-                  password: 'password',
-                  restaurant_id: rand(100) + 1
-                )
-              end
+    name: Faker::LordOfTheRings.character,
+    email: Faker::Internet.email,
+    password: 'password',
+    restaurant_id: rand(100) + 1
+  )
+end
 
-1000.times do
-              MenuItem.create(
-                                  name: Faker::Food.ingredient,
-                                  price: ActionController::Base.helpers.number_with_precision(rand * 100, precision: 2),
-                                  description: Faker::Food.ingredient,
-                                  restaurant_id: rand(100) + 1
-                                )
-                              end
+500.times do
+  MenuItem.create(
+    name: Faker::Food.ingredient,
+    price: ActionController::Base.helpers.number_with_precision(rand * 100, precision: 2),
+    description: Faker::Food.ingredient,
+    restaurant_id: rand(100) + 1
+  )
+end
 
-10000.times do
+5_000.times do
   Reservation.create(
-                         user_id: rand(100) + 1,
-                         restaurant_id: rand(100) + 1,
-                         party_size: rand(10) + 1,
-                         date_time: Faker::Date.forward(rand(365) + 2)
-                       )
-                     end
+    user_id: rand(100) + 1,
+    restaurant_id: rand(100) + 1,
+    party_size: rand(10) + 1,
+    start_time: Faker::Time.between(DateTime.now + 1, DateTime.now + rand(365) + 1)
+    # end_time
+  )
+end
 
-                     1000.times do
-                       Table.create(
-                                        restaurant_id: rand(100) + 1,
-                                        name: rand(10).to_s,
-                                        capacity_total: rand(10) + 1
-                                      )
-                     end
+500.times do
+  Table.create(
+    restaurant_id: rand(100) + 1,
+    name: rand(10).to_s,
+    capacity_total: rand(10) + 1
+  )
+end
+
 # Restaurant.create([
 #                     {
 #                       name: 'Thai Restaurant',
@@ -282,65 +284,65 @@ end
 #                        user_id: 1,
 #                        restaurant_id: 1,
 #                        party_size: 4,
-#                        date_time: Date.new(2017, 5, 9)
+#                        start_time: Date.new(2017, 5, 9)
 #                      },
 #                      {
 #                        restaurant_id: 1,
 #                        party_size: 3,
-#                        date_time: Date.new(2017, 5, 12)
+#                        start_time: Date.new(2017, 5, 12)
 #                      },
 #                      {
 #                        restaurant_id: 1,
 #                        party_size: 5,
-#                        date_time: Date.new(2017, 5, 14)
+#                        start_time: Date.new(2017, 5, 14)
 #                      },
 #                      {
 #                        user_id: 2,
 #                        restaurant_id: 2,
 #                        party_size: 2,
-#                        date_time: Date.new(2017, 5, 16)
+#                        start_time: Date.new(2017, 5, 16)
 #                      },
 #                      {
 #                        restaurant_id: 2,
 #                        party_size: 3,
-#                        date_time: Date.new(2017, 5, 9)
+#                        start_time: Date.new(2017, 5, 9)
 #                      },
 #                      {
 #                        restaurant_id: 2,
 #                        party_size: 8,
-#                        date_time: Date.new(2017, 5, 4)
+#                        start_time: Date.new(2017, 5, 4)
 #                      },
 #                      {
 #                        user_id: 3,
 #                        restaurant_id: 3,
 #                        party_size: 3,
-#                        date_time: Date.new(2017, 5, 19)
+#                        start_time: Date.new(2017, 5, 19)
 #                      },
 #                      {
 #                        restaurant_id: 3,
 #                        party_size: 4,
-#                        date_time: Date.new(2017, 5, 26)
+#                        start_time: Date.new(2017, 5, 26)
 #                      },
 #                      {
 #                        restaurant_id: 3,
 #                        party_size: 5,
-#                        date_time: Date.new(2017, 5, 19)
+#                        start_time: Date.new(2017, 5, 19)
 #                      },
 #                      {
 #                        user_id: 4,
 #                        restaurant_id: 4,
 #                        party_size: 4,
-#                        date_time: Date.new(2017, 5, 19)
+#                        start_time: Date.new(2017, 5, 19)
 #                      },
 #                      {
 #                        restaurant_id: 4,
 #                        party_size: 4,
-#                        date_time: Date.new(2017, 5, 19)
+#                        start_time: Date.new(2017, 5, 19)
 #                      },
 #                      {
 #                        restaurant_id: 4,
 #                        party_size: 4,
-#                        date_time: Date.new(2017, 5, 19)
+#                        start_time: Date.new(2017, 5, 19)
 #                      }
 #                    ])
 
