@@ -6,7 +6,7 @@ class CreateReservations < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :phone
       t.string :email
-      t.string :party_size
+      t.integer :party_size
       t.integer :restaurant_id
       t.string :special_requests
       t.datetime :date_time

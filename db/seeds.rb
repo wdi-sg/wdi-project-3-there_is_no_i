@@ -45,7 +45,7 @@ end
                          user_id: rand(100) + 1,
                          restaurant_id: rand(100) + 1,
                          party_size: rand(10) + 1,
-                         date_time: Faker::Date.forward(rand(365))
+                         date_time: Faker::Date.forward(rand(365) + 2)
                        )
                      end
 
