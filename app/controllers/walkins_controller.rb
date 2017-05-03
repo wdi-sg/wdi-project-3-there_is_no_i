@@ -1,7 +1,7 @@
 class WalkinsController < ApplicationController
   before_action :set_restaurant, only: %i[index new create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
-  helper ReservationsHelper
+  helper WalkinHelper
 
   # Probably need another model for diners?
   # OR
