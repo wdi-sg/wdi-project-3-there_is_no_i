@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   get 'messages/create'
 post 'messages/create'
+
+mount ActionCable.server, at: '/cable'
   # get 'reservations/index'
   # get 'reservations/create'
   # get 'reservations/new'

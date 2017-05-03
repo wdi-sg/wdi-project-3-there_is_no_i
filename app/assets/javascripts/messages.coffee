@@ -7,4 +7,4 @@ message_appender = (content) ->
 
 
 $(document).on 'turbolinks:load', ->
-  message_appender('hello, world from jon!')
+  # message_appender('hello, world from jon!')
