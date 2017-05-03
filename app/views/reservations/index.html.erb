@@ -5,7 +5,7 @@
 
 <div>
   <p>For:
-    <% if reservation.start_time%>
+    <% if reservation.start_time && reservation.end_time%>
       <%= number_with_precision((reservation.end_time - reservation.start_time) / 60, precision: 0) %>
     <% end %>
      minutes</p>
