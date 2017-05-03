@@ -1,4 +1,4 @@
-module WalkinHelper
+module DinerHelper
   def formatDate(date)
     ampm = date.localtime.strftime('%H').to_i < 12 ? 'am' : 'pm'
     x = (date - DateTime.now)/(60*60*24)

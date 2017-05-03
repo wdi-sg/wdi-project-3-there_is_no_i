@@ -58,7 +58,6 @@ class ReservationsController < ApplicationController
   end
 
   def edit
-    # @reservation = Reservation.find(params[:id])
   end
 
   def new

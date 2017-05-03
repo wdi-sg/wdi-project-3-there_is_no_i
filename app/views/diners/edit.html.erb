@@ -1,19 +1,19 @@
-<h1>Edit / Assign Walk-In Diner</h1>
+<h1>Edit Diner</h1>
 
-<%= form_for @walkin, url: restaurant_walkin_path(@restaurant, @walkin), html: {method: :put} do |f| %>
+<%= form_for @diner, url: restaurant_diner_path(@restaurant, @diner), html: {method: :put} do |f| %>
   <p>
     Name:
-    <%= @walkin.name %>
+    <%= @diner.name %>
   </p>
 
   <p>
     Phone:
-    <%= @walkin.phone %>
+    <%= @diner.phone %>
   </p>
 
   <p>
     Email:
-    <%= @walkin.email %>
+    <%= @diner.email %>
   </p>
 
   <p>
@@ -33,22 +33,22 @@
 
   <p>
     Queue Number:
-    <%= @walkin.queue_number %>
+    <%= @diner.queue_number %>
   </p>
 
   <p>
     Table:
-    <%= @walkin.table_id %>
+    <%= @diner.table_id %>
   </p>
 
   <p>
     Start Time:
-    <%= @walkin.start_time %>
+    <%= @diner.start_time %>
   </p>
 
   <p>
     End Time:
-    <%= @walkin.end_time %>
+    <%= @diner.end_time %>
   </p>
 
   <%= f.submit "Submit" %>

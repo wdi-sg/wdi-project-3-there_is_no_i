@@ -1,21 +1,18 @@
 class WalkinsController < ApplicationController
   before_action :set_restaurant, only: %i[index new create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
-  helper ReservationsHelper
-
-  # Probably need another model for diners?
-  # OR
-  # change is_queuing to status: "is_dining / is_queuing / on_reservation"
+  # before_action :find_queue_number, only: %i[create]
+  helper WalkinHelper
 
   def index
-    @walkins = Reservation.where(restaurant_id: params[:restaurant_id], is_queuing: true)
+    @walkins = Reservation.where(restaurant_id: params[:restaurant_id], status: 'queuing')
   end
 
-  # Customer has no phone?
   def create
     @walkin = Reservation.new(walkin_params)
     @walkin.restaurant_id = @restaurant.id
-    @walkin.is_queuing = true
+    @walkin.queue_number = find_queue_number
+    set_restaurant_queue()
     if @walkin.save!
       redirect_to restaurant_walkins_path(@restaurant)
     else
@@ -28,9 +25,11 @@ class WalkinsController < ApplicationController
   end
 
   def public_create
-    @walkin = Reservation.new(walkin_params)
+    @walkin = Reservation.new(public_params)
     @walkin.restaurant_id = @restaurant.id
-    @walkin.is_queuing = true
+    @walkin.status = 'queuing'
+    @walkin.queue_number = find_queue_number
+    set_restaurant_queue
     set_walkin_user(@walkin)
     if @walkin.save!
       redirect_to restaurant_public_path(@restaurant)
@@ -85,11 +84,26 @@ class WalkinsController < ApplicationController
     @restaurant = Restaurant.find(params[:restaurant_id])
   end
 
+  def find_queue_number
+    set_restaurant
+    @restaurant.next_queue_number
+  end
+
+  def set_restaurant_queue
+    set_restaurant
+    @restaurant.next_queue_number += 1
+    @restaurant.save
+  end
+
   def set_walkin
     @walkin = Reservation.find(params[:id])
   end
 
+  def public_params
+    params.require(:reservation).permit(:phone, :party_size)
+  end
+
   def walkin_params
-    params.require(:reservation).permit(:name, :phone, :email, :party_size, :special_requests, :is_queuing)
+    params.require(:reservation).permit(:name, :phone, :email, :party_size, :special_requests, :status)
   end
 end

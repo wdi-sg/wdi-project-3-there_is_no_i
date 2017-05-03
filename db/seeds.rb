@@ -18,7 +18,8 @@
     website: Faker::Internet.url,
     description: Faker::Company.buzzword,
     cuisine: Faker::Demographic.demonym,
-    rating: rand(101)
+    rating: rand(101),
+    next_queue_number: 1
   )
 end
 
@@ -40,6 +41,81 @@ end
   )
 end
 
+# 500.times do
+#   Table.create(
+#     restaurant_id: rand(100) + 1,
+#     name: rand(10).to_s,
+#     capacity_current: 0,
+#     capacity_total: rand(10) + 1
+#   )
+# end
+
+@restaurants = Restaurant.all
+@restaurants.each do |restaurant|
+  Table.create([
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 1,
+                   capacity_current: 2,
+                   capacity_total: 2
+                 },
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 2,
+                   capacity_current: 0,
+                   capacity_total: 2
+                 },
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 3,
+                   capacity_current: 0,
+                   capacity_total: 2
+                 },
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 4,
+                   capacity_current: 4,
+                   capacity_total: 4
+                 },
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 5,
+                   capacity_current: 3,
+                   capacity_total: 4
+                 },
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 6,
+                   capacity_current: 0,
+                   capacity_total: 4
+                 },
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 7,
+                   capacity_current: 6,
+                   capacity_total: 6
+                 },
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 8,
+                   capacity_current: 0,
+                   capacity_total: 6
+                 },
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 9,
+                   capacity_current: 7,
+                   capacity_total: 8
+                 },
+                 {
+                   restaurant_id: restaurant.id,
+                   name: 10,
+                   capacity_current: 0,
+                   capacity_total: 8
+                 }
+               ])
+end
+
 500.times do
   x = Faker::Time.between(DateTime.now + 1, DateTime.now + rand(30) + 1)
   Reservation.create(
@@ -50,15 +126,6 @@ end
     name: Faker::StarWars.character,
     start_time: x,
     end_time: x + 60 * 90
-  )
-end
-
-500.times do
-  Table.create(
-    restaurant_id: rand(100) + 1,
-    name: rand(10).to_s,
-    capacity_current: 0,
-    capacity_total: rand(10) + 1
   )
 end
 
