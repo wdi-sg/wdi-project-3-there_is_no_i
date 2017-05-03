@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get 'messages/index'
   get 'messages/create'
   post 'messages/create'
+
+  # Serve websocket cable requests in-process
   mount ActionCable.server, at: '/cable'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -41,6 +43,7 @@ Rails.application.routes.draw do
     resources :reservations
     resources :menu_items
     resources :tables
+    resources :messages
     get 'walkins' => 'walkins#index'
     post 'walkins' => 'walkins#create'
     get 'walkins/new' => 'walkins#new', as: 'new_walkin'
