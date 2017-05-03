@@ -1,0 +1,60 @@
+<%= form_for restaurant do |f| %>
+  <p>
+    <%= f.label "name" %>
+    <%= f.text_field :name, placeholder: "Name" %>
+  </p>
+  <p>
+    <%= f.label "address 1" %>
+    <%= f.text_field :address1, placeholder: "Address 1" %>
+  </p>
+  <p>
+    <%= f.label "address 2" %>
+    <%= f.text_field :address2, placeholder: "Address 2" %>
+  </p>
+  <p>
+    <%= f.label "city" %>
+    <%= f.text_field :address_city, placeholder: "City" %>
+  </p>
+  <p>
+    <%= f.label "state" %>
+    <%= f.text_field :address_state, placeholder: "State" %>
+  </p>
+  <p>
+    <%= f.label "country" %>
+    <%= f.text_field :address_country, placeholder: "Country" %>
+  </p>
+  <p>
+    <%= f.label "Post Code" %>
+    <%= f.text_field :address_postal, placeholder: "Post Code" %>
+  </p>
+  <p>
+    <%= f.label "email" %>
+    <%= f.email_field :email, placeholder: "Email" %>
+  </p>
+  <p>
+    <%= f.label "phone" %>
+    <%= f.text_field :phone, placeholder: "Phone" %>
+  </p>
+  <p>
+    <%= f.label "website" %>
+    <%= f.text_field :website, placeholder: "Website" %>
+  </p>
+  <p>
+    <%= f.label "description" %>
+    <%= f.text_field :description, placeholder: "Description" %>
+  </p>
+  <p>
+    <%= f.label "cuisine" %>
+    <%= f.text_field :cuisine, placeholder: "Cuisine" %>
+  </p>
+  <p>
+    <%= f.label "picture" %>
+    <%= f.text_field :picture, placeholder: "Picture" %>
+  </p>
+
+  <p>
+      <%= f.submit "Update" %>
+  </p>
+
+
+<% end %>

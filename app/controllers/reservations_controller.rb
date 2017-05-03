@@ -15,53 +15,35 @@ class ReservationsController < ApplicationController
     month = d.strftime('%m')
     year = d.strftime('%Y')
     t = Time.parse(params[:reservation][:time])
-    start_time = t.change(day: day, month: month, year: year, offset: +0o000) - 8.hours
-    puts "START TIME: #{start_time}"
-    end_time = start_time + 2.hours
+    r_start_time = t.change(day: day, month: month, year: year, offset: +0o000) + 8.hours
+    puts "START TIME: #{r_start_time}"
+    r_end_time = r_start_time + 2.hours
     party_size = params[:reservation][:party_size]
 
     # find all reservations from that restaurant on the date chosen by customer on the reservation form
-    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date).to_a
+    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date)
 
-    puts "ALL RESERVATIONS #{all_reservations}"
-    start_times = []
-    all_reservations.each do |item|
-      start_times.push(item.start_time)
-    end
-    puts "START TIMES: #{start_times}"
-    end_times = []
-    all_reservations.each do |item|
-      end_times.push(item.end_time)
-    end
-    puts "END TIMES: #{end_times}"
+    # find all reservations that have tables which can be booked
+    all_avail_reservations = all_reservations.where("start_time >= ?", r_end_time).or(all_reservations.where("end_time <= ?", r_start_time)).to_a
+    puts "ALL RESERVATIONS #{all_avail_reservations}"
 
-    $start_ok = 0
-    $end_ok = 0
-    start_times.each do |time|
-      if time.between?(start_time, end_time) == false
-        $start_ok = 'ok'
-      end
+    # find the tables by table_id in the reservation that have a capacity >= party size
+    table_array = []
+    all_avail_reservations.each do |reservation|
+      table_array.push(Table.where("table_id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
     end
 
-    end_times.each do |time|
-      if time.between?(start_time, end_time) == false
-        $end_ok = 'ok'
-      end
-    end
+    # sort tables in the table array by their capacity_total
+    table_array.sort_by! { |table| table.capacity_total }
 
-    if $start_ok == 'ok' && $end_ok == 'ok'
-      # check availability of appropriate capacity tables and assign
-
-      # find an array of tables in the restaurant that can match the party size
-      avail_tables = Table.where(restaurant_id: params[:restaurant_id]).where("capacity_total >= ?", party_size)
-    end
-
+    # [0] of this array will give the table with the minimally adequate capacity to fit all customers
+    the_chosen_table = table_array[0]
 
     new_res = {}
     new_res[:name] = params[:reservation][:name]
     new_res[:phone] = params[:reservation][:phone]
-    new_res[:start_time] = start_time
-    new_res[:end_time] = start_time + 2.hours
+    new_res[:start_time] = r_start_time
+    new_res[:end_time] = r_start_time + 2.hours
     new_res[:party_size] = params[:reservation][:party_size]
     new_res[:restaurant_id] = params[:restaurant_id]
 
@@ -75,7 +57,6 @@ class ReservationsController < ApplicationController
   end
 
   def edit
-    # @reservation = Reservation.find(params[:id])
   end
 
   def new
