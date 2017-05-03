@@ -1,0 +1,14 @@
+<h1>New Table</h1>
+<%= form_for @table, url: restaurant_tables_path, html: {method: :post} do |f| %>
+<p>
+  <%= f.label "name" %>
+  <%= f.text_field :name, placeholder: "Name" %>
+</p>
+<p>
+  <%= f.label "Total Capacity" %>
+  <%= f.number_field :capacity_total, placeholder: "Total Capacity", min:0 %>
+</p>
+<p>
+  <%= f.submit "Create" %>
+</p>
+<% end %>

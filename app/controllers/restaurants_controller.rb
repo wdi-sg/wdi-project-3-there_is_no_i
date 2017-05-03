@@ -1,13 +1,10 @@
 class RestaurantsController < ApplicationController
-  before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
-  before_action :set_owner, only: [:create, :destroy]
+  before_action :set_restaurant, only: [:edit, :show, :update, :destroy]
+  before_action :set_user, only: [:create, :destroy]
+  helper RestaurantsHelper
 
   def index
     @restaurant = Restaurant.all
-  end
-
-  def new
-    @restaurant = Restaurant.new
   end
 
   def create
@@ -21,11 +18,14 @@ class RestaurantsController < ApplicationController
     end
   end
 
-  def show
-    # @menu_items = MenuItem.where(restaurant_id: params[:id])
+  def new
+    @restaurant = Restaurant.new
   end
 
   def edit
+  end
+
+  def show
   end
 
   def update
@@ -44,12 +44,12 @@ class RestaurantsController < ApplicationController
 
   private
 
-  def set_owner
-    @user = User.find(1) # Change when auth
-  end
-
   def set_restaurant
     @restaurant = Restaurant.find(params[:id])
+  end
+
+  def set_user
+    @user = User.find(1) # Change when auth
   end
 
   def restaurant_params

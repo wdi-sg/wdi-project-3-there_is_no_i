@@ -41,10 +41,20 @@ Rails.application.routes.draw do
   # get 'dashboard/schedule'
   # get 'dashboard/service'
 
-  # Public (Restaurants accessible by /:id)<--?
+  # Restaurants
   resources :restaurants do
     resources :reservations
     resources :menu_items
+    resources :tables
+    get 'walkins' => 'walkins#index'
+    post 'walkins' => 'walkins#create'
+    get 'walkins/new' => 'walkins#new', as: 'new_walkin'
+    post 'public' => 'walkins#public_create'
+    get 'public' => 'walkins#public_new'
+    get 'walkins/:id/edit' => 'walkins#edit', as: 'edit_walkin'
+    get 'walkins/:id' => 'walkins#show', as: 'walkin'
+    put 'walkins/:id' => 'walkins#update'
+    delete 'walkins/:id' => 'walkins#destroy'
   end
 
   # routes for Stripe credit cards charges

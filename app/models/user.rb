@@ -2,6 +2,9 @@ class User < ApplicationRecord
   # has_many :transactions
   # has_many :credit_cards
   # has_many :reviews
+  # has_many :reservations
+  # has_many :orders
+  # belongs_to :restaurant
 
   validates :name, presence: true, length: { minimum: 1 }
 

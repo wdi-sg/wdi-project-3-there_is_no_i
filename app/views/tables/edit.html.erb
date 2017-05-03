@@ -1,0 +1,18 @@
+<h1>Edit Table</h1>
+<%= form_for @table, url: restaurant_table_path(@restaurant, @table), html: {method: :put} do |f| %>
+<p>
+  <%= f.label :name %>
+  <%= f.text_field :name, placeholder: "Name" %>
+</p>
+<p>
+  <%= f.label 'Current Capacity' %>
+  <%= f.number_field :capacity_current, placeholder: "Current Capacity", min: 0 %>
+</p>
+<p>
+  <%= f.label "Total Capacity" %>
+  <%= f.number_field :capacity_total, placeholder: "Total Capacity", min:0 %>
+</p>
+<p>
+  <%= f.submit "Update" %>
+</p>
+<% end %>

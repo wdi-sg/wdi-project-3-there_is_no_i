@@ -2,6 +2,11 @@
 <% @reservations.each do |reservation| %>
 
 <div>
+  <p>Date:
+    <% if reservation.start_time%>
+      <%= formatDate(reservation.start_time) %>
+    <% end %>
+  </p>
   <p>For:
     <% if reservation.start_time%>
       <%= number_with_precision((reservation.end_time - reservation.start_time) / 60, precision: 0) %>
@@ -10,6 +15,7 @@
   <p>Party: <%= reservation.party_size  %> </p>
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
+  <p>Party: <%= reservation.party_size == '1-2' ? reservation.party_size + ' person' : reservation.party_size + ' people'  %> </p>
   <p>
     Date:
     <% if reservation.start_time%>

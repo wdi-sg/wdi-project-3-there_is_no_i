@@ -1,10 +1,13 @@
 <h1>Menu</h1>
-
+<br/>
 <%= link_to 'New Menu Item', new_restaurant_menu_item_path(@restaurant.id) %>
-<br>
-<br>
+<br/>
+<br/>
+
 
 <button id="takeaway-show-hide" type="button" name="button">Order Takeaway</button>
+<br/>
+<br/>
 <div class="all-menu-items">
 <% @menu_items.each do |item| %>
 <p>
@@ -13,7 +16,7 @@
 </p>
 <p>
   Price:
-  <%= item.price %>
+  <%= formatPrice(item.price) %>
 </p>
 <p>
   Description:
@@ -24,11 +27,11 @@
   <%= item.ingredients %>
 </p>
 <p>
-  tags:
+  Tags:
   <%= item.tags %>
 </p>
 
-<button class="add-to-order" style="display:none" type="button" name="button" value='<%=item.id.to_s + '/' + item.name + '/' + item.price.to_s%>'>Add to Order</button>
+<button class="add-to-order" style="display:none" type="button" name="button" value='<%= item.id.to_s + '/' + item.name + '/' + item.price.to_s %>'>Add to Order</button>
 
 <%= link_to 'Show', restaurant_menu_item_path(@restaurant.id, item) %> |
 <%= link_to 'Edit', edit_restaurant_menu_item_path(@restaurant.id, item) %> |
@@ -43,4 +46,4 @@
 </ul>
 </div>
 
-<%= javascript_include_tag('menu_items/show.js') %>
+<%= javascript_include_tag('menu_items/takeaway.js') %>

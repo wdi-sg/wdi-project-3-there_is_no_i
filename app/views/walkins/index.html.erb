@@ -1,0 +1,44 @@
+<h1>Current Queue</h1>
+<%= link_to 'Manually add New Walkin Diner', restaurant_new_walkin_path(@restaurant.id) %>
+<br>
+<br>
+
+<% @walkins.each do |walkin| %>
+  <p>
+    Name:
+    <%= walkin.name %>
+  </p>
+  <p>
+    Phone:
+    <%= walkin.phone %>
+  </p>
+  <p>
+    Email:
+    <%= walkin.email %>
+  </p>
+  <p>
+    Quanity:
+    <%= walkin.party_size %>
+  </p>
+  <p>
+    Special Requests:
+    <%= walkin.special_requests %>
+  </p>
+  <p>
+    Start Time:
+    <%= walkin.start_time %>
+  </p>
+  <p>
+    Queueing?
+    <%= walkin.is_queuing %>
+  </p>
+  <p>
+    End Time:
+    <%= walkin.end_time %>
+  </p>
+  <%= link_to 'Show', restaurant_walkin_path(@restaurant.id, walkin) %> |
+  <%= link_to 'Edit', restaurant_edit_walkin_path(@restaurant.id, walkin) %> |
+  <%= link_to 'Destroy', restaurant_walkin_path(@restaurant.id, walkin), method: :delete, data: { confirm: 'Are you sure?' } %>
+  <br>
+  <br>
+<% end %>
