@@ -2,7 +2,9 @@
   <div id="messages-table" class="messages-table">
     <% if @messages %>
       <% @messages.each do |m| %>
-      <%= m.content %>
+      <div>
+        <%= m.content %>
+      </div>
       <% end %>
     <% end %>
   </div>
