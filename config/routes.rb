@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'messages/index'
+
+  get 'messages/create'
+post 'messages/create'
   # get 'reservations/index'
   # get 'reservations/create'
   # get 'reservations/new'
