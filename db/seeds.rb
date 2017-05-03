@@ -18,7 +18,8 @@
     website: Faker::Internet.url,
     description: Faker::Company.buzzword,
     cuisine: Faker::Demographic.demonym,
-    rating: rand(101)
+    rating: rand(101),
+    next_queue_number: 1
   )
 end
 

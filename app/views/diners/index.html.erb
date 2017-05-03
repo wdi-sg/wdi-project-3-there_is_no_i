@@ -1,0 +1,48 @@
+<h1>Current Diners</h1>
+<% @diners.each do |diner| %>
+  <p>
+    Name:
+    <%= diner.name %>
+  </p>
+  <p>
+    Phone:
+    <%= diner.phone %>
+  </p>
+  <p>
+    Email:
+    <%= diner.email %>
+  </p>
+  <p>
+    Quanity:
+    <%= diner.party_size %>
+  </p>
+  <p>
+    Status:
+    <%= diner.status %>
+  </p>
+  <p>
+    Queue Number:
+    <%= diner.queue_number %>
+  </p>
+  <p>
+    Table:
+    <%= diner.table_id %>
+  </p>
+  <p>
+    Special Requests:
+    <%= diner.special_requests %>
+  </p>
+  <p>
+    Start Time:
+    <%= diner.start_time %>
+  </p>
+  <p>
+    End Time:
+    <%= diner.end_time %>
+  </p>
+  <%= link_to 'Show', restaurant_diner_path(@restaurant.id, diner) %> |
+  <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, diner) %> |
+  <!-- <%= link_to 'Destroy', restaurant_diner_path(@restaurant.id, diner), method: :delete, data: { confirm: 'Are you sure?' } %> -->
+  <br>
+  <br>
+<% end %>
