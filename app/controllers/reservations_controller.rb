@@ -30,7 +30,7 @@ class ReservationsController < ApplicationController
     # find the tables by table_id in the reservation that have a capacity >= party size
     table_array = []
     all_avail_reservations.each do |reservation|
-      table_array.push(Table.where("table_id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
+      table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
     end
 
     # sort tables in the table array by their capacity_total
@@ -44,6 +44,7 @@ class ReservationsController < ApplicationController
     new_res[:phone] = params[:reservation][:phone]
     new_res[:start_time] = r_start_time
     new_res[:end_time] = r_start_time + 2.hours
+    new_res[:table_id] = the_chosen_table.table_id
     new_res[:party_size] = params[:reservation][:party_size]
     new_res[:restaurant_id] = params[:restaurant_id]
 

@@ -48,7 +48,6 @@ end
     party_size: rand(10) + 1,
     phone: rand(10_000_000..99_999_999),
     name: Faker::StarWars.character,
-    table_id: rand(10) + 1,
     start_time: x,
     end_time: x + 60 * 90
   )
