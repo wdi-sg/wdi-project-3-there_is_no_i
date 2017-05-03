@@ -1,0 +1,45 @@
+<h1>Edit / Assign Walk-In Diner</h1>
+
+<%= form_for @walkin, url: restaurant_walkin_path(@restaurant, @walkin), html: {method: :put} do |f| %>
+  <p>
+    Name:
+    <%= @walkin.name %>
+  </p>
+
+  <p>
+    Phone:
+    <%= @walkin.phone %>
+  </p>
+
+  <p>
+    Email:
+    <%= @walkin.email %>
+  </p>
+
+  <p>
+    <%= f.label :party_size, "Number of Diners" %>
+    <%= f.number_field :party_size, placeholder: "0", min: 1, max: 8 %>
+  </p>
+
+  <p>
+    <%= f.label :special_requests, "Special Requests" %>
+    <%= f.text_field :special_requests, placeholder: "Special Requests"%>
+  </p>
+
+  <p>
+    <%= f.label :is_queuing, "is_queuing? Status?" %>
+    <%= f.select :is_queuing, [true, false] %>
+  </p>
+
+  <p>
+    Start Time:
+    <%= @walkin.start_time %>
+  </p>
+
+  <p>
+    End Time:
+    <%= @walkin.end_time %>
+  </p>
+
+  <%= f.submit "Submit" %>
+<% end %>
