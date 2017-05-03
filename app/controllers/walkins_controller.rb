@@ -1,5 +1,5 @@
 class WalkinsController < ApplicationController
-  before_action :set_restaurant, only: %i[index new create public_new public_create edit update destroy]
+  before_action :set_restaurant, only: %i[index new create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
   helper ReservationsHelper
 
@@ -44,6 +44,10 @@ class WalkinsController < ApplicationController
     render 'layouts/public_walkin_new', :layout => false
   end
 
+  def public_show
+    render 'layouts/public_walkin', :layout => false
+  end
+
   def edit; end
 
   def show; end
@@ -73,7 +77,7 @@ class WalkinsController < ApplicationController
     # elsif (user.count > 1 && walkin.phone)
     #   walkin.name = 'Walk in Customer (WARNING! Duplicate User number)'
     else
-      walkin.name = 'Walk in Customer (Mobile Signin)'
+      walkin.name = 'Walk in Customer (Mobile Sign in)'
     end
   end
 
