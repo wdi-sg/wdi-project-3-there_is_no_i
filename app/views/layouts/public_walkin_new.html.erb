@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Locavorus</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+    <h1><%= @restaurant.name%> Walk-in Queue</h1>
+    <%= form_for @walkin, url: restaurant_public_path(@restaurant), html: {method: :post} do |f| %>
+
+      <p>
+        <%= f.label :party_size, "Number of Diners" %>
+        <%= f.number_field :party_size, placeholder: "0", min: 1, max: 8 %>
+      </p>
+
+      <p>
+        <%= f.label :phone, "Mobile" %>
+        <%= f.text_field :phone, minlength: 8, maxlength: 8 %>
+      </p>
+
+      <%= f.submit "Submit" %>
+    <% end %>
+  </body>
+</html>

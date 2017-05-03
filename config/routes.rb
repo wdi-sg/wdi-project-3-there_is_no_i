@@ -1,13 +1,10 @@
 Rails.application.routes.draw do
-  # get 'reservations/index'
-  # get 'reservations/create'
-  # get 'reservations/new'
-  # get 'reservations/edit'
-  # get 'reservations/show'
-  # get 'reservations/update'
-  # get 'reservations/destroy'
-  # get 'testing/hello'
-  # get 'testing/moto'
+  get 'messages/index'
+
+  get 'messages/create'
+  post 'messages/create'
+
+  mount ActionCable.server, at: '/cable'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'main#index'
@@ -49,8 +46,9 @@ Rails.application.routes.draw do
     get 'walkins' => 'walkins#index'
     post 'walkins' => 'walkins#create'
     get 'walkins/new' => 'walkins#new', as: 'new_walkin'
+    get 'public' => 'walkins#public_show'
     post 'public' => 'walkins#public_create'
-    get 'public' => 'walkins#public_new'
+    get 'public/new' => 'walkins#public_new', as: 'new_public'
     get 'walkins/:id/edit' => 'walkins#edit', as: 'edit_walkin'
     get 'walkins/:id' => 'walkins#show', as: 'walkin'
     put 'walkins/:id' => 'walkins#update'
