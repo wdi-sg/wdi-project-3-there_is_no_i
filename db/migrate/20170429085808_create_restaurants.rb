@@ -9,7 +9,7 @@ class CreateRestaurants < ActiveRecord::Migration[5.0]
       t.string :address_country
       t.string :address_postal
       t.string :email
-      t.string :password
+      # t.string :password
       t.string :phone
       t.string :website
       t.string :description

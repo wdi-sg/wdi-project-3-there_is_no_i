@@ -1,14 +1,26 @@
 <h1>New Menu Item</h1>
 <%= form_for @menu_item, url: restaurant_menu_items_path, html: {method: :post} do |f| %>
-  <%= f.label "name" %>
-  <%= f.text_field :name, placeholder: "Name" %>
-  <%= f.label "price" %>
-  <%= f.text_field :price, placeholder: "Price" %>
-  <%= f.label "description" %>
-  <%= f.text_field :description, placeholder: "Description" %>
-  <%= f.label "ingredients" %>
-  <%= f.text_field :ingredients, placeholder: "Ingredients" %>
-  <%= f.label "tags" %>
-  <%= f.text_field :tags, placeholder: "Tags" %>
-  <%= f.submit "Create" %>
+  <p>
+    <%= f.label "name" %>
+    <%= f.text_field :name, placeholder: "Name" %>
+  </p>
+  <p>
+    <%= f.label "price" %>
+    <%= f.text_field :price, placeholder: "Price" %>
+  </p>
+  <p>
+    <%= f.label "description" %>
+    <%= f.text_field :description, placeholder: "Description" %>
+  </p>
+  <p>
+    <%= f.label "ingredients" %>
+    <%= f.text_field :ingredients, placeholder: "Ingredients" %>
+  </p>
+  <p>
+    <%= f.label "tags" %>
+    <%= f.text_field :tags, placeholder: "Tags" %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
 <% end %>

@@ -1,16 +1,31 @@
-<h1>---WALK IN QUEUE---</h1>
+<h1><%= @restaurant.name%></h1>
+<h1>Walk-in Manual Mode</h1>
 
-<%= form_for @reservation, :url => restaurant_walkins_path do |f| %>
+<%= form_for @walkin, url: restaurant_walkins_path(@restaurant), html: {method: :post} do |f| %>
+  <p>
+    <%= f.label :name, "Name" %>
+    <%= f.text_field :name, placeholder: "Walk in Customer", value: "Walk in Customer" %>
+  </p>
 
-  <div>
-    <%= f.label :party_size %>
-    <%= f.select :party_size, ['1-2','3-4','5-8'], :prompt => 'Select One' %>
-  </div>
-
-  <div>
-    <%= f.label :phone %>
+  <p>
+    <%= f.label :phone, "Mobile" %>
     <%= f.text_field :phone, minlength: 8, maxlength: 8 %>
-  </div>
+  </p>
 
-  <%= f.submit %>
+  <p>
+    <%= f.label :party_size, "Number of Diners" %>
+    <%= f.number_field :party_size, placeholder: "1", value: "1", min: 1, max: 8 %>
+  </p>
+
+  <p>
+    <%= f.label :special_requests, "Special Requests" %>
+    <%= f.text_field :special_requests, placeholder: "Special Requests"%>
+  </p>
+
+  <p>
+    <%= f.label :is_queuing, "is_queuing? Status?" %>
+    <%= f.select :is_queuing, [true, false] %>
+  </p>
+
+  <%= f.submit "Submit" %>
 <% end %>

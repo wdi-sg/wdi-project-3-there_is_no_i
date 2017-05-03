@@ -3,8 +3,6 @@ class ReservationsController < ApplicationController
   before_action :set_reservation, only: %i[show edit update destroy]
   helper ReservationsHelper
 
-  def new; end
-
   def index
     @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('start_time ASC')
   end
@@ -69,7 +67,11 @@ class ReservationsController < ApplicationController
     # @reservation = Reservation.find(params[:id])
   end
 
-  def show; end
+  def new
+  end
+
+  def show
+  end
 
   def update
     if @reservation.update(reservation_params)
@@ -86,15 +88,15 @@ class ReservationsController < ApplicationController
 
   private
 
-  def reservation_params
-    params.require(:reservation).permit(:name, :party_size, :start_time)
-  end
-
   def set_restaurant
     @restaurant = Restaurant.find(params[:restaurant_id])
   end
 
   def set_reservation
     @reservation = Reservation.find(params[:id])
+  end
+
+  def reservation_params
+    params.require(:reservation).permit(:name, :party_size, :start_time)
   end
 end
