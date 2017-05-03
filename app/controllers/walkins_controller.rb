@@ -41,7 +41,7 @@ class WalkinsController < ApplicationController
 
   def public_new
     @walkin = Reservation.new
-    render 'layouts/public_walkin', :layout => false
+    render 'layouts/public_walkin_new', :layout => false
   end
 
   def edit; end
