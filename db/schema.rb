@@ -66,12 +66,13 @@ ActiveRecord::Schema.define(version: 20170503010343) do
     t.string   "phone"
     t.string   "email"
     t.integer  "party_size"
-    t.string   "special_requests"
-    t.datetime "start_time"
     t.integer  "restaurant_id"
-    t.boolean  "is_queuing"
     t.integer  "table_id"
+    t.string   "status"
+    t.integer  "queue_number"
+    t.datetime "start_time"
     t.datetime "end_time"
+    t.string   "special_requests"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.index ["restaurant_id"], name: "index_reservations_on_restaurant_id", using: :btree
@@ -88,15 +89,15 @@ ActiveRecord::Schema.define(version: 20170503010343) do
     t.string   "address_country"
     t.string   "address_postal"
     t.string   "email"
-    t.string   "password"
     t.string   "phone"
     t.string   "website"
     t.string   "description"
     t.string   "cuisine"
     t.integer  "rating"
     t.string   "picture"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.integer  "next_queue_number"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "reviews", force: :cascade do |t|

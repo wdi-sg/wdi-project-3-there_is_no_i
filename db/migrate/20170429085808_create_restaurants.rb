@@ -16,6 +16,7 @@ class CreateRestaurants < ActiveRecord::Migration[5.0]
       t.string :cuisine
       t.integer :rating
       t.string :picture
+      t.integer :next_queue_number
 
       t.timestamps
     end

@@ -41,6 +41,15 @@ end
 end
 
 500.times do
+  Table.create(
+    restaurant_id: rand(100) + 1,
+    name: rand(10).to_s,
+    capacity_current: 0,
+    capacity_total: rand(10) + 1
+  )
+end
+
+500.times do
   x = Faker::Time.between(DateTime.now + 1, DateTime.now + rand(30) + 1)
   Reservation.create(
     user_id: rand(100) + 1,
@@ -51,15 +60,6 @@ end
     table_id: rand(10) + 1,
     start_time: x,
     end_time: x + 60 * 90
-  )
-end
-
-500.times do
-  Table.create(
-    restaurant_id: rand(100) + 1,
-    name: rand(10).to_s,
-    capacity_current: 0,
-    capacity_total: rand(10) + 1
   )
 end
 
