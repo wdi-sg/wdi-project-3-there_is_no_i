@@ -8,7 +8,9 @@ class MessagesController < ApplicationController
     message = Message.new(message_params)
     if message.save
       ActionCable.server.broadcast 'room_channel',
-                                   content:  message.content
+                                   message: render_message(message)
+      ActionCable.server.broadcast "room_channel_#{set_restaurant_id}",
+                                   message: "#{set_restaurant_id}"
     else
       render 'index'
     end
@@ -22,7 +24,15 @@ class MessagesController < ApplicationController
     end
 
     def message_params
-      params.require(:message).permit(:content)
+      params.require(:message).permit(:content, :id)
+    end
+
+    def render_message(message)
+      render(partial: 'message', locals: { message: message })
+    end
+
+    def set_restaurant_id
+      Restaurant.first.id
     end
 
 end
