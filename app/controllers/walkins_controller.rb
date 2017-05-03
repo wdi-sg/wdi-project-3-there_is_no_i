@@ -13,6 +13,14 @@ class WalkinsController < ApplicationController
 
   # Customer has no phone?
   def create
+    # @submitted_flight = params[:flight]
+    # #Rails Console Way
+    # @saved_flight = Flight.new
+    # @saved_flight.from = @submitted_flight[:from]
+    # @saved_flight.to = @submitted_flight[:to]
+    # #Mass Assignment Way
+    # @submitted_flight = Flight.new(params[:flight])
+
     @walkin = Reservation.new(walkin_params)
     @walkin.restaurant_id = @restaurant.id
     @walkin.is_queuing = true
