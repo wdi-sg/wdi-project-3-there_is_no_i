@@ -1,0 +1,37 @@
+<%= form_for @reservation, :url => edit_restaurant_reservation_path(@reservation), html: {method: :put} do |f| %>
+
+  <!-- partials but idk how to make it partial yet-->
+  <div>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  </div>
+
+  <div>
+  <%= f.label :phone %>
+  <%= f.text_field :phone %>
+  </div>
+
+  <!-- partials -->
+
+  <div>
+  <%= f.label :party_size %>
+  <%= f.select :party_size, ['1-2','3-4','5-8'], :prompt => 'Select One' %>
+  </div>
+
+  <div>
+  <%= f.label :date %>
+  <%= f.date_field :date %>
+  </div>
+
+  <div>
+  <%= f.label :time %>
+  <!-- must make the timing unselectable if no seats available -->
+  <%= f.select :time, ['11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00'], :prompt => 'Select One' %>
+  </div>
+
+  <div>
+  <%= f.label :special_requests %>
+  <%= f.text_field :special_requests %>
+  </div>
+
+  <%= f.submit %> -->

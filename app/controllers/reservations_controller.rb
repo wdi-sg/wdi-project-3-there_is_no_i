@@ -9,6 +9,28 @@ class ReservationsController < ApplicationController
     @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('start_time ASC')
   end
 
+  def check
+    d = Time.parse(params[:reservation][:date])
+    day = d.strftime('%d')
+    month = d.strftime('%m')
+    year = d.strftime('%Y')
+    t = Time.parse(params[:reservation][:time])
+    party_size = params[:reservation][:party_size]
+    puts party_size
+    r_start_time = t.change(day: day, month: month, year: year, offset: +0o000)
+    r_end_time = r_start_time + (2/24.0) # assume that each reservation is 2hrs long
+
+    # find an array of tables in the restaurant that can match the party size
+    avail_tables = Table.where(restaurant_id: params[:restaurant_id]).where("capacity_total > ?", party_size)
+    puts avail_tables
+    # push the table names into an array for easy reference
+    table_names = []
+
+
+
+
+  end
+
   def create
     d = Time.parse(params[:reservation][:date])
     day = d.strftime('%d')
@@ -16,11 +38,21 @@ class ReservationsController < ApplicationController
     year = d.strftime('%Y')
     t = Time.parse(params[:reservation][:time])
     start_time = t.change(day: day, month: month, year: year, offset: +0o000)
-    puts start_time
+
+    party_size = params[:reservation][:party_size]
+    puts party_size
+
+    # find all reservations from that restaurant
+    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id])
+
+    # find an array of tables in the restaurant that can match the party size
+    avail_tables = Table.where(restaurant_id: params[:restaurant_id]).where("capacity_total >= ?", party_size)
+
     new_res = {}
     new_res[:name] = params[:reservation][:name]
     new_res[:phone] = params[:reservation][:phone]
     new_res[:start_time] = start_time
+    new_res[:end_time] = start_time + 2.hours
     new_res[:party_size] = params[:reservation][:party_size]
     new_res[:restaurant_id] = params[:restaurant_id]
 
