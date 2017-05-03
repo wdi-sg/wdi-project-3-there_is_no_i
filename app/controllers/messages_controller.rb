@@ -8,9 +8,9 @@ class MessagesController < ApplicationController
     message = Message.new(message_params)
     if message.save
       ActionCable.server.broadcast 'room_channel',
-                                   message: render_message(message)
+        message: render_message(message)
       ActionCable.server.broadcast "room_channel_#{set_restaurant_id}",
-                                   message: "#{set_restaurant_id}"
+        message: "#{set_restaurant_id}"
     else
       render 'index'
     end
