@@ -77,9 +77,13 @@ test:
 #
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
-#
+
+# production:
+#   <<: *default
+#   database: wdi-project-3-there_is_no_i_production
+#   username: wdi-project-3-there_is_no_i
+#   password: <%= ENV['WDI-PROJECT-3-THERE_IS_NO_I_DATABASE_PASSWORD'] %>
+
 production:
   <<: *default
-  database: wdi-project-3-there_is_no_i_production
-  username: wdi-project-3-there_is_no_i
-  password: <%= ENV['WDI-PROJECT-3-THERE_IS_NO_I_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
