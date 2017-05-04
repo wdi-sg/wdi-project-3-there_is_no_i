@@ -52,7 +52,7 @@ class OrdersController < ApplicationController
       params.require(:order).permit(:user_id, :restaurant_id, :menu_item_id, :request_description, :is_takeaway, :time_end)
     end
 
-    def :check_user_is_part_of_order
+    def check_user_is_part_of_order
       if current_user[:id] != @order[:user_id]
         flash['alert'] = 'You do not have permission to access that page'
         redirect_to edit_user_registration_path
