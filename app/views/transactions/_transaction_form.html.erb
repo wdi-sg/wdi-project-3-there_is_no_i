@@ -1,0 +1,9 @@
+<div class="transaction-form">
+  <%= form_for transaction, remote: true do |f| %>
+    <div class="input-group">
+      <span class="input-group-addon">topic:</span>
+      <%= f.text_field :restaurant_id, class: "form-control"%>
+    </div>
+    <%= f.submit class: "btn btn-primary", id: "create-transaction" %>
+  <% end %>
+</div>

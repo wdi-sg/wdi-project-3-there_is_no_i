@@ -1,6 +1,6 @@
 class TablesController < ApplicationController
   before_action :set_restaurant, only: [:index, :create, :edit, :update, :destroy]
-  before_action :set_table, only: [:show, :edit, :update, :destroy]
+  before_action :set_table, only: [:edit, :show, :update, :destroy]
 
   def index
     @tables = Table.where(restaurant_id: params[:restaurant_id]).order('name ASC')

@@ -4,7 +4,7 @@ class MenuItemsController < ApplicationController
   helper MenuItemsHelper
 
   def index
-    @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order('name ASC')
+    @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order('LOWER(name) ASC')
   end
 
   def create

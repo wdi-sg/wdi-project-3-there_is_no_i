@@ -7,7 +7,7 @@ App.room = App.cable.subscriptions.create "RoomChannel",
 
   received: (data) ->
     unless data.message.blank?
-      $('#messages-table').append data.message
+      $('#messages-table').append data.message if data.thing is @restaurant.id
       # scroll_bottom()
 
   $(document).on 'turbolinks:load', ->
@@ -17,14 +17,14 @@ App.room = App.cable.subscriptions.create "RoomChannel",
   submit_message = () ->
     $('#message_content').on 'keydown', (event) ->
       if event.keyCode is 13
-        $('input').click()
+        App.messages.send({message: $('#message_content').val, thing: @restaurant.id})
         event.target.value = ""
         event.preventDefault()
 
-    $('input').on 'click', (event) ->
-      $('form').submit()
-      $('#message_content').val('')
-      event.preventDefault()
+    # $('input').on 'click', (event) ->
+    #   $('form').submit()
+    #   $('#message_content').val('')
+    #   event.preventDefault()
 
   # scroll_bottom = () ->
   # $('#messages').scrollTop($('#messages')[0].scrollHeight)

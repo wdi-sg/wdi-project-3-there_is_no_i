@@ -1,4 +1,4 @@
-<%= form_for table, url: url_for(@restaurant) do |f| %>
+<%= form_for table, url: url do |f| %>
 <p>
   <%= f.label :name %>
   <%= f.text_field :name, placeholder: "Name" %>
@@ -12,6 +12,6 @@
   <%= f.number_field :capacity_total, placeholder: "Total Capacity", min:0 %>
 </p>
 <p>
-  <%= f.submit "Update" %>
+  <%= f.submit "Save" %>
 </p>
 <% end %>
