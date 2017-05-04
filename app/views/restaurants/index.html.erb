@@ -5,9 +5,6 @@
 <a class="button is-primary" href="/restaurants?city=sort">City</a>
 <a class="button is-primary" href="/restaurants?rating=sort">Rating</a>
 
-<%= link_to 'Name', restaurant_namesort_path(@restaurant[0].id), class: 'button is-primary' %>
-
-
 <% @restaurant.each do |restaurant| %>
 <p>
   Name:
