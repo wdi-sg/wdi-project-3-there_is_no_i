@@ -1,26 +1,30 @@
-<h1>All Reservations</h1>
+<h1>All Reservations</h1><br>
+<h1>Sort by:</h1>
+<%= link_to 'Name', restaurant_namesort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
+<%= link_to 'No. of pax', restaurant_paxsort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
+<%= link_to 'Date', restaurant_datesort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
+
+<br><br>
 <% @reservations.each do |reservation| %>
 
-<%= reservation.inspect %>
-
 <div>
-  <p>For:
-    <% if reservation.start_time && reservation.end_time%>
-      <%= number_with_precision((reservation.end_time - reservation.start_time) / 60, precision: 0) %>
-    <% end %>
-     minutes</p>
-  <p>Party: <%= reservation.party_size  %> </p>
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
+  <p>Pax: <%= reservation.party_size  %> </p>
   <p>
     Date:
     <% if reservation.start_time%>
       <%= formatDate(reservation.start_time) %>
     <% end %>
   </p>
-  <%= link_to 'Show', restaurant_reservation_path(@restaurant.id, reservation) %> |
+  <p>For:
+    <% if reservation.start_time && reservation.end_time%>
+      <%= number_with_precision((reservation.end_time - reservation.start_time) / 60, precision: 0) %>
+    <% end %>
+     minutes</p>
+  <%= link_to 'View', restaurant_reservation_path(@restaurant.id, reservation) %> |
   <%= link_to 'Edit', edit_restaurant_reservation_path(@restaurant.id, reservation) %> |
-  <%= link_to 'Destroy', restaurant_reservation_path(@restaurant.id, reservation), method: :delete, data: { confirm: 'Are you sure?' } %>
+  <%= link_to 'Delete', restaurant_reservation_path(@restaurant.id, reservation), method: :delete, data: { confirm: 'Are you sure?' } %>
   <br/>
   <br/>
 </div>

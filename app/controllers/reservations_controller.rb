@@ -1,5 +1,5 @@
 class ReservationsController < ApplicationController
-  before_action :set_restaurant, only: %i[new index show create edit update destroy]
+  before_action :set_restaurant, only: %i[new index show create edit update destroy name_sort pax_sort date_sort]
   before_action :set_reservation, only: %i[show edit update destroy]
   # helper ReservationsHelper
 
@@ -87,6 +87,25 @@ class ReservationsController < ApplicationController
 
   def show
   end
+
+  def name_sort
+    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:name)
+    @reservations.each do |res|
+      p res.name
+    end
+    render 'index'
+  end
+
+  def pax_sort
+    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:party_size)
+    render 'index'
+  end
+
+  def date_sort
+    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:start_time)
+    render 'index'
+  end
+
 
   def update
     if @reservation.update(reservation_params)
