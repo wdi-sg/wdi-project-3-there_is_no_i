@@ -1,13 +1,12 @@
 Rails.application.routes.draw do
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root 'main#index'
+
   get 'messages/index'
   get 'messages/create'
   post 'messages/create'
-  
   # Serve websocket cable requests in-process
   mount ActionCable.server, at: '/cable'
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root 'main#index'
 
   # Sessions
   get 'login' => 'sessions#new'
@@ -28,7 +27,6 @@ Rails.application.routes.draw do
   # get 'account/credit_cards'
 
   # Restaurant (Unique - /:id not accessible)
-  # walk in queue
   # get 'queue' => 'queue#index'
   # get 'queue/login'
   # get 'queue/logout'
@@ -43,6 +41,9 @@ Rails.application.routes.draw do
     resources :reservations
     resources :menu_items
     resources :tables
+    resources :transactions do
+      resources :orders
+    end
     get 'walkins' => 'walkins#index'
     post 'walkins' => 'walkins#create'
     get 'walkins/new' => 'walkins#new', as: 'new_walkin'
