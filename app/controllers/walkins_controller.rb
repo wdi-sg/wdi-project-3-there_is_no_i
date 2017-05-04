@@ -161,9 +161,9 @@ class WalkinsController < ApplicationController
 
     affected_tables = []
     affecting_reservations.each do |reservation|
-      affected_tables.push(Table.where("table_id = ?", reservation.table_id))
+      affected_tables.push(Table.where("id = ?", reservation.table_id))
     end
-    
+
     p '===AFFECTED==='
     p affected_tables
 
