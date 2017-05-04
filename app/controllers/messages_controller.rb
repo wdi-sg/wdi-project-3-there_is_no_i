@@ -2,6 +2,8 @@ class MessagesController < ApplicationController
   before_action :get_messages, only: [:index, :create]
 
   def index
+    @message = Message.all
+    @new_message = Message.new
   end
 
   def create

@@ -18,13 +18,13 @@
   </p>
 
   <p>
-    <%= f.label :special_requests, "Special Requests" %>
-    <%= f.text_field :special_requests, placeholder: "Special Requests"%>
+    <%= f.label :status, "Status" %>
+    <%= f.select(:status, [['Queuing','queuing'], ['Dining','dining'], ['Cancelled','cancelled']])%>
   </p>
 
   <p>
-    <%= f.label :is_queuing, "is_queuing? Status?" %>
-    <%= f.select :is_queuing, [true, false] %>
+    <%= f.label :special_requests, "Special Requests" %>
+    <%= f.text_field :special_requests, placeholder: "Special Requests"%>
   </p>
 
   <%= f.submit "Submit" %>

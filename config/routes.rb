@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'messages/index'
   get 'messages/create'
   post 'messages/create'
+
   # Serve websocket cable requests in-process
   mount ActionCable.server, at: '/cable'
 
@@ -54,6 +55,10 @@ Rails.application.routes.draw do
     get 'walkins/:id' => 'walkins#show', as: 'walkin'
     put 'walkins/:id' => 'walkins#update'
     delete 'walkins/:id' => 'walkins#destroy'
+    get 'diners' => 'diners#index'
+    get 'diners/:id/edit' => 'diners#edit', as: 'edit_diner'
+    get 'diners/:id' => 'diners#show', as: 'diner'
+    put 'diners/:id' => 'diners#update'
   end
 
   # routes for Stripe credit cards charges
