@@ -1,8 +1,8 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
   before_action :authenticate_user!, except: [:new, :show]
-  before_action :set_restaurant, only: %i[new index show create edit update destroy]
-  before_action :set_reservation, only: %i[show edit update destroy]
+  before_action :set_restaurant
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:new, :show]
   # helper ReservationsHelper
 

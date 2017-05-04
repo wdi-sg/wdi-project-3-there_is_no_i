@@ -1,12 +1,12 @@
 class TablesController < ApplicationController
   include AuthenticateRestaurantUser
   before_action :authenticate_user!
-  before_action :set_restaurant, only: [:index, :create, :edit, :update, :destroy]
+  before_action :set_restaurant
   before_action :set_table, only: [:edit, :show, :update, :destroy]
   before_action :check_user_is_part_of_restaurant
 
   def index
-    @tables = Table.where(restaurant_id: params[:restaurant_id]).order('name ASC')
+    @tables = Table.where(restaurant_id: params[:restaurant_id]).order('LOWER(name) ASC')
   end
 
   def create

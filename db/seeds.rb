@@ -27,8 +27,8 @@ end
   user = User.new
   user.name = Faker::LordOfTheRings.character
   user.email = Faker::Internet.email
-  user.encrypted_password = Faker::Crypto.sha1
-  user.restaurant_id: rand(100) + 1
+  user.password = 'password'
+  user.restaurant_id = rand(100) + 1
   user.save!
 end
 
