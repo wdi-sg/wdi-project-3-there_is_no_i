@@ -1,2 +1,22 @@
 <h1>Edit Restaurant</h1>
 <%= render "/restaurants/form", restaurant: @restaurant %>
+<p>
+  Users:
+  <% @users.each do |x| %>
+  <p>
+    <%= x.email %>
+  </p>
+  <% end %>
+</p>
+<%= form_for @restaurant do |f| %>
+  <p>
+    <%= f.hidden_field :add, value: true %>
+    Add employee by <%= f.label :email %>
+    <%= f.email_field :email, value: nil %>
+  </p>
+  <p>
+      <%= f.submit "Add" %>
+  </p>
+
+
+<% end %>

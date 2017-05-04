@@ -25,11 +25,11 @@ class WalkinsController < ApplicationController
     main_create(public_params)
     set_walkin_user(@walkin)
     find_aval_tables
-    if @aval_tables.length > 0
+    if !@aval_tables.empty?
       determine_table(@aval_tables, @walkin)
       if @chosen_table
         @walkin.table_id = @chosen_table.id
-        change_table_status(@chosen_table, @walkin.party_size)
+        new_table_count(@chosen_table, @walkin.party_size)
 
         p "SMS: Dear #{@walkin.name}, your reservation at #{@restaurant.name} is ready. Please proceed to table: #{@chosen_table.name}"
 
@@ -59,11 +59,11 @@ class WalkinsController < ApplicationController
 
   def public_new
     @walkin = Reservation.new
-    render 'layouts/public_walkin_new', :layout => false
+    render 'layouts/public_walkin_new', layout: false
   end
 
   def public_show
-    render 'layouts/public_walkin', :layout => false
+    render 'layouts/public_walkin', layout: false
   end
 
   def edit; end
@@ -119,11 +119,12 @@ class WalkinsController < ApplicationController
       walkin.user_id = user.pluck(:id)[0]
       walkin.name = user.pluck(:name)[0]
       walkin.email = user.pluck(:email)[0]
+      walkin.save!
     # NEED TO CHECK IF CUSTOMER SUBMIT MULTIPLE TIMES --> Change!
     # elsif (user.count > 1 && walkin.phone)
     #   walkin.name = 'Walk in Customer (WARNING! Duplicate User number)'
     else
-      walkin.name = 'Walk in Customer (Mobile Sign in)'
+      walkin.name = 'Walk in Customer'
     end
   end
 
@@ -138,9 +139,9 @@ class WalkinsController < ApplicationController
     block = 2.hours
     r_start_time = Time.now
     r_end_time = r_start_time + block
-    date = r_start_time.strftime("%Y-%m-%d")
+    date = r_start_time.strftime('%Y-%m-%d')
 
-    #New Method
+    # New Method
     # 1) @avail tables
     # 2) Find Blocked tables of blocked reservations
     # 3) Filter off tables from blocked
@@ -148,19 +149,19 @@ class WalkinsController < ApplicationController
     # 5) sort
     # 6) Choose
 
-    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date)
+    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where('DATE(start_time) = ?', date)
 
-    affecting_reservations = all_reservations.where("start_time < ?", r_end_time - block).or(all_reservations.where("end_time > ?", r_start_time)).to_a
+    affecting_reservations = all_reservations.where('start_time < ?', r_end_time - block).or(all_reservations.where('end_time > ?', r_start_time)).to_a
 
     affected_tables = []
     affecting_reservations.each do |reservation|
-      affected_tables.push(Table.where("id = ?", reservation.table_id))
+      affected_tables.push(Table.where('id = ?', reservation.table_id))
     end
 
     # p '===Tables AFFECTED by Reservations==='
     # p affected_tables
 
-    if affected_tables.length > 0
+    unless affected_tables.empty?
       affected_tables.map do |table|
         # p '====Table Affected ID==='
         # p table[0].id
@@ -182,7 +183,7 @@ class WalkinsController < ApplicationController
       end
     end
 
-    filtered_aval_tables.sort_by! {|table| table.capacity_total }
+    filtered_aval_tables.sort_by!(&:capacity_total)
 
     # p '====FILTERED TABLES BY CAPACITY====='
     # p filtered_aval_tables
@@ -191,7 +192,7 @@ class WalkinsController < ApplicationController
   end
 
   # Change Table's new capacity once customer is assigned
-  def change_table_status(table, filled)
+  def new_table_count(table, filled)
     table.capacity_current = filled
     table.save!
   end

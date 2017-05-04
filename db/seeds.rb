@@ -59,7 +59,8 @@ index = 0
     Table.create(
       restaurant_id: restaurant.id,
       name: index,
-      capacity_current: cap - rand(cap),
+      # capacity_current: cap - rand(cap),
+      capacity_current: 0,
       capacity_total: cap
     )
   end

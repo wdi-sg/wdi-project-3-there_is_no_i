@@ -1,12 +1,14 @@
 class MenuItemsController < ApplicationController
   include AuthenticateRestaurantUser
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_restaurant
+  before_action :set_restaurant_id
   before_action :set_menu_item, only: [:edit, :show, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:index, :show]
   helper MenuItemsHelper
 
   def index
+    @transaction = Transaction.new
+
     @restaurant_id = params[:restaurant_id]
     if request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?name=sort"
       @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order(:name)
@@ -57,10 +59,6 @@ class MenuItemsController < ApplicationController
   end
 
   private
-
-  def set_restaurant
-    @restaurant = Restaurant.find(params[:restaurant_id])
-  end
 
   def set_menu_item
     @menu_item = MenuItem.find(params[:id])

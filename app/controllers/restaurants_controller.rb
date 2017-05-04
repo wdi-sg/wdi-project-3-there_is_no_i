@@ -37,16 +37,31 @@ class RestaurantsController < ApplicationController
   end
 
   def edit
+    @users = User.where(restaurant_id: @restaurant[:id])
   end
 
   def show
   end
 
   def update
-    if @restaurant.update(restaurant_params)
-      redirect_to restaurant_path
+    if params[:restaurant][:add]
+      if User.where(email: params[:restaurant][:email]).count > 0
+        User.where(email: params[:restaurant][:email]).update(restaurant_id: @restaurant[:id])
+        flash[:notice] = 'User added'
+        redirect_to dashboard_path
+      else
+        flash[:alert] = "There was an error adding the user. Please try again."
+        @users = User.where(restaurant_id: @restaurant[:id])
+        render :edit
+      end
     else
-      render :edit
+      if @restaurant.update(restaurant_params)
+        redirect_to restaurant_path
+      else
+        flash[:alert] = "There was an error editing. Please try again."
+        @users = User.where(restaurant_id: @restaurant[:id])
+        render :edit
+      end
     end
   end
 
@@ -62,10 +77,6 @@ class RestaurantsController < ApplicationController
   end
 
   private
-
-  def set_restaurant
-    @restaurant = Restaurant.find(params[:id])
-  end
 
   def set_user
     @user = current_user

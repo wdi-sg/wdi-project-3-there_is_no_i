@@ -1,7 +1,7 @@
 class TablesController < ApplicationController
   include AuthenticateRestaurantUser
   before_action :authenticate_user!
-  before_action :set_restaurant
+  before_action :set_restaurant_id
   before_action :set_table, only: [:edit, :show, :update, :destroy]
   before_action :check_user_is_part_of_restaurant
 
@@ -44,11 +44,7 @@ class TablesController < ApplicationController
   end
 
   private
-
-  def set_restaurant
-    @restaurant = Restaurant.find(params[:restaurant_id])
-  end
-
+  
   def set_table
     @table = Table.find(params[:id])
   end
