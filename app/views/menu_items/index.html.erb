@@ -9,6 +9,13 @@
 <button id="takeaway-show-hide" type="button" name="button">Order Takeaway</button>
 <br/>
 <br/>
+
+<h1>Sort by:</h1>
+<a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?name=sort">Name</a>
+<a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?price=sort">Price</a>
+<a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?description=sort">Description</a>
+<a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?ingredient=sort">Ingredient</a>
+<a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?tag=sort">Tag</a>
 <div class="all-menu-items">
 <% @menu_items.each do |item| %>
 <p>
