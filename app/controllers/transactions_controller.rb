@@ -1,10 +1,13 @@
 class TransactionsController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
-    before_action :set_restaurant, only: [:index, :create, :edit, :update, :destroy]
-    before_action :set_transaction, only: [:edit, :show, :update, :destroy]
+  include AuthenticateRestaurantUser
+  before_action :authenticate_user!
+  before_action :set_restaurant_id
+  before_action :set_transaction, only: [:edit, :show, :update, :destroy]
+  before_action :check_user_is_part_of_restaurant, only: [:index]
+  before_action :check_user_is_part_of_transaction, only: [:edit, :show, :update, :destroy]
 
     def index
-      @transactions = Transaction.where(restaurant_id: params[:restaurant_id]).order('name ASC')
+      @transactions = Transaction.where(restaurant_id: params[:restaurant_id]).order('created_at ASC')
     end
 
     def create
@@ -41,15 +44,18 @@ class TransactionsController < ApplicationController
 
     private
 
-    def set_restaurant
-      @restaurant = Restaurant.find(params[:restaurant_id])
-    end
-
     def set_transaction
       @transaction = Transaction.find(params[:id])
     end
 
     def transaction_params
-      params.require(:transaction).permit(:name, :capacity_total)
+      params.require(:transaction).permit(:user_id, :name, :table_id, :restaurant_id, :time_end, :takeaway_time, :reservation_id)
+    end
+
+    def :check_user_is_part_of_transaction
+      if current_user[:id] != @transaction[:user_id]
+        flash['alert'] = 'You do not have permission to access that page'
+        redirect_to edit_user_registration_path
+      end
     end
   end
