@@ -31,6 +31,9 @@ gem 'stripe'
 # Add Devise for authentication
 gem 'devise'
 
+# Add Gon for javascript things
+gem 'gon'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks

@@ -93,9 +93,6 @@ class ReservationsController < ApplicationController
 
   def name_sort
     @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:name)
-    @reservations.each do |res|
-      p res.name
-    end
     render 'index'
   end
 

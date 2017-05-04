@@ -1,6 +1,6 @@
 class RestaurantsController < ApplicationController
   include AuthenticateRestaurantUser
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :name_sort]
   before_action :set_restaurant, only: [:show, :update, :destroy]
   before_action :set_user_restaurant, only: [:edit]
   before_action :set_user, only: [:create, :destroy]
@@ -8,7 +8,17 @@ class RestaurantsController < ApplicationController
   helper RestaurantsHelper
 
   def index
-    @restaurant = Restaurant.all.order('id ASC')
+    if request.fullpath == '/restaurants?name=sort'
+      @restaurant = Restaurant.all.order(:name)
+    elsif request.fullpath == '/restaurants?cuisine=sort'
+      @restaurant = Restaurant.all.order(:cuisine)
+    elsif request.fullpath == '/restaurants?city=sort'
+      @restaurant = Restaurant.all.order(:address_city)
+    elsif request.fullpath == '/restaurants?rating=sort'
+      @restaurant = Restaurant.all.order('rating DESC')
+    else
+      @restaurant = Restaurant.all.order('id ASC')
+    end
   end
 
   def create
@@ -38,6 +48,11 @@ class RestaurantsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def name_sort
+    @restaurant = Restaurant.all.order(:name)
+    render 'index'
   end
 
   def destroy

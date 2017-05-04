@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     get 'namesort' => 'reservations#name_sort', as: 'namesort'
     get 'paxsort' => 'reservations#pax_sort', as: 'paxsort'
     get 'datesort' => 'reservations#date_sort', as: 'datesort'
+    get 'resnamesort' => 'restaurants#name_sort', as: 'resnamesort'
 
   end
 
