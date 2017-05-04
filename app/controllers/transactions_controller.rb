@@ -52,7 +52,8 @@ class TransactionsController < ApplicationController
       params.require(:transaction).permit(:user_id, :name, :table_id, :restaurant_id, :time_end, :takeaway_time, :reservation_id)
     end
 
-    def :check_user_is_part_of_transaction
+    # SYNTAX ERROR ON HEROKU when :check_user_is_part_of_transaction was used
+    def check_user_is_part_of_transaction
       if current_user[:id] != @transaction[:user_id]
         flash['alert'] = 'You do not have permission to access that page'
         redirect_to edit_user_registration_path
