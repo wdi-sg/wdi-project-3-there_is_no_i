@@ -33,7 +33,10 @@ class WalkinsController < ApplicationController
         p "SMS: Dear #{@walkin.name}, your reservation at #{@restaurant.name} is ready. Please proceed to table: #{@chosen_table.name}"
 
         # ON HOLD? FOR RESTAURANT TO CONFIRM???
-        @walkin.status = 'dining'
+        # @walkin.status = 'dining'
+        @walkin.status = 'awaiting'
+        @walkin.start_time = Time.now
+        @walkin.end_time = Time.now + 2.hours
         public_save(@walkin)
       else
         @walkin.status = 'queuing'
