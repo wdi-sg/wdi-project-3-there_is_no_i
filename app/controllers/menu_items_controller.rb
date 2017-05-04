@@ -1,8 +1,9 @@
 class MenuItemsController < ApplicationController
+  include AuthenticateRestaurantUser
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_restaurant, only: [:index, :create, :edit, :update, :destroy]
+  before_action :set_restaurant, only: [:index, :edit, :create, :update, :destroy]
   before_action :set_menu_item, only: [:edit, :show, :update, :destroy]
-  before_action :authenticate_restaurant_user!, except: [:index, :show]
+  before_action :check_user_is_part_of_restaurant, except: [:index, :show]
   helper MenuItemsHelper
 
   def index
@@ -54,10 +55,5 @@ class MenuItemsController < ApplicationController
 
   def menu_item_params
     params.require(:menu_item).permit(:name, :price, :description, :ingredients, :tags)
-  end
-
-  def authenticate_restaurant_user
-    flash['alert'] = 'You do not have permission to access that page'
-    redirect_to restaurants_path if current_user[:restaurant_id] != @restaurant[:id]
   end
 end

@@ -1,8 +1,10 @@
 class RestaurantsController < ApplicationController
+  include AuthenticateRestaurantUser
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_restaurant, only: [:edit, :show, :update, :destroy]
+  before_action :set_restaurant, only: [:show, :update, :destroy]
+  before_action :set_user_restaurant, only: [:edit]
   before_action :set_user, only: [:create, :destroy]
-  before_action :authenticate_restaurant_user!, except: [:index, :show]
+  before_action :check_user_is_part_of_restaurant, except: [:index, :show]
   helper RestaurantsHelper
 
   def index
@@ -51,15 +53,14 @@ class RestaurantsController < ApplicationController
   end
 
   def set_user
-    @user = User.find(1) # Change when auth
+    @user = current_user
   end
 
   def restaurant_params
     params.require(:restaurant).permit(:name, :address1, :address2, :address_city, :address_state, :address_country, :address_postal, :email, :phone, :website, :description, :cuisine, :picture)
   end
 
-  def authenticate_restaurant_user
-    flash['alert'] = 'You do not have permission to access that page'
-    redirect_to restaurants_path if current_user[:restaurant_id] != @restaurant[:id]
+  def set_user_restaurant
+    @restaurant = Restaurant.find(current_user[:restaurant_id])
   end
 end
