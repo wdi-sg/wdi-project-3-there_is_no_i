@@ -1,16 +1,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  before_action :configure_devise_user_permitted_parameters, if: :devise_controller?
 
-  def is_authenticated
-    unless current_user
-      # flash[:danger] = 'Invalid Credentials'
-      redirect_to login_path
-    end
+  protected
+
+  def configure_devise_user_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :phone])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :phone])
   end
-
-  def current_user
-    @current_user ||= User.find_by_id(session[:user_id])
-  end
-
-  helper_method :current_user
 end

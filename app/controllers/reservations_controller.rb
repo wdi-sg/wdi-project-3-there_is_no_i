@@ -1,6 +1,8 @@
 class ReservationsController < ApplicationController
+  before_action :authenticate_user!, except: [:new, :show]
   before_action :set_restaurant, only: %i[new index show create edit update destroy]
   before_action :set_reservation, only: %i[show edit update destroy]
+  before_action :authenticate_restaurant_user, except: [:new, :show]
   # helper ReservationsHelper
 
   def index
@@ -110,5 +112,10 @@ class ReservationsController < ApplicationController
 
   def reservation_params
     params.require(:reservation).permit(:name, :party_size, :start_time)
+  end
+
+  def authenticate_restaurant_user
+    flash['alert'] = 'You do not have permission to access that page'
+    redirect_to restaurants_path if current_user[:restaurant_id] != @restaurant[:id]
   end
 end

@@ -1,4 +1,5 @@
 class WalkinsController < ApplicationController
+  before_action :authenticate_user!, except: [:new]
   before_action :set_restaurant, only: %i[index new main_create create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
   # before_action :find_queue_number, only: %i[create]
@@ -163,7 +164,7 @@ class WalkinsController < ApplicationController
     affecting_reservations.each do |reservation|
       affected_tables.push(Table.where("table_id = ?", reservation.table_id))
     end
-    
+
     p '===AFFECTED==='
     p affected_tables
 

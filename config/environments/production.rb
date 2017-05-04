@@ -42,6 +42,9 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
+  # Devise mailer setting
+  config.action_mailer.default_url_options = { host: 'https://locavorusrex.herokuapp.com', port: ENV['PORT'] }
+
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :debug

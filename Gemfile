@@ -28,6 +28,9 @@ gem 'faker'
 # Add Stripe integration for credit cards
 gem 'stripe'
 
+# Add Devise for authentication
+gem 'devise'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
