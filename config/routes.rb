@@ -1,6 +1,17 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root 'main#index'
+  root to: 'main#index'
+
+  # devise_for :users
+  devise_for :users, path: '/', path_names: {
+    sign_up: 'register',
+    sign_in: 'login',
+    sign_out: 'logout',
+    edit: 'account'
+  }
+
+  # dashboard(redirect from /restaurant/:id/edit)
+  get '/dashboard' => 'restaurant#edit'
 
   get 'messages/index'
   get 'messages/create'
@@ -10,13 +21,13 @@ Rails.application.routes.draw do
   mount ActionCable.server, at: '/cable'
 
   # Sessions
-  get 'login' => 'sessions#new'
+  # get 'login' => 'sessions#new'
   # post 'login' => 'sessions#create'
   # delete 'logout' => 'sessions#destroy'
   # get 'logout' => 'sessions#destroy'
 
   # Users (Unique - /:id not accessible)
-  resources :users
+  # resources :users
   # # signup
   # get 'signup' => 'users#new'
   # post 'signup' => 'users#create'
@@ -32,7 +43,7 @@ Rails.application.routes.draw do
   # get 'queue/login'
   # get 'queue/logout'
   # dashboard
-  get 'dashboard' => 'dashboard#index'
+  # get 'dashboard' => 'dashboard#index'
   # get 'dashboard/table'
   # get 'dashboard/schedule'
   # get 'dashboard/service'
@@ -60,6 +71,7 @@ Rails.application.routes.draw do
     get 'diners/:id' => 'diners#show', as: 'diner'
     put 'diners/:id' => 'diners#update'
   end
+
 
   # routes for Stripe credit cards charges
   resources :charges

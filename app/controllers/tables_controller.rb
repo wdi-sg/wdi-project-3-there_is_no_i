@@ -1,6 +1,8 @@
 class TablesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_restaurant, only: [:index, :create, :edit, :update, :destroy]
   before_action :set_table, only: [:edit, :show, :update, :destroy]
+  before_action :authenticate_restaurant_user
 
   def index
     @tables = Table.where(restaurant_id: params[:restaurant_id]).order('name ASC')
@@ -52,5 +54,10 @@ class TablesController < ApplicationController
 
   def table_params
     params.require(:table).permit(:name, :capacity_total)
+  end
+
+  def authenticate_restaurant_user
+    flash['alert'] = 'You do not have permission to access that page'
+    redirect_to restaurants_path if current_user[:restaurant_id] != @restaurant[:id]
   end
 end

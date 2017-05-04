@@ -24,12 +24,12 @@
 end
 
 100.times do
-  User.create(
-    name: Faker::LordOfTheRings.character,
-    email: Faker::Internet.email,
-    password: 'password',
-    restaurant_id: rand(100) + 1
-  )
+  user = User.new
+  user.name = Faker::LordOfTheRings.character
+  user.email = Faker::Internet.email
+  user.password = 'password'
+  user.restaurant_id = rand(100) + 1
+  user.save!
 end
 
 500.times do
@@ -125,6 +125,7 @@ end
     phone: rand(10_000_000..99_999_999),
     name: Faker::StarWars.character,
     start_time: x,
+    table_id: rand(10) + 1,
     end_time: x + 60 * 90
   )
 end

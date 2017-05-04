@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+  before_action :authenticate_user!, except: [:show]
     before_action :set_restaurant, only: [:index, :create, :edit, :update, :destroy]
     before_action :set_transaction, only: [:edit, :show, :update, :destroy]
 

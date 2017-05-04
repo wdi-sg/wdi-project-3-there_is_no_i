@@ -52,6 +52,9 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  # Devise mailer setting
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
   # mailgun settings for sending auto generated email
   # MYDOMAIN is => sandbox59fcccabb3de4bffa08b1c3c7286ce77
   config.action_mailer.delivery_method = :smtp
