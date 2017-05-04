@@ -21,10 +21,10 @@ App.room = App.cable.subscriptions.create "RoomChannel",
         event.target.value = ""
         event.preventDefault()
 
-    $('input').on 'click', (event) ->
-      App.messages.send({message: $('#message_content').val, thing: @restaurant.id})
-      $('#message_content').val('')
-      event.preventDefault()
+    # $('input').on 'click', (event) ->
+    #   $('form').submit()
+    #   $('#message_content').val('')
+    #   event.preventDefault()
 
   # scroll_bottom = () ->
   # $('#messages').scrollTop($('#messages')[0].scrollHeight)
