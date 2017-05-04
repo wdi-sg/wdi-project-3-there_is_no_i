@@ -1,8 +1,8 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
   before_action :authenticate_user!, except: [:new, :show]
-  before_action :set_restaurant
-  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :name_sort, :pax_sort, :date_sort]
+  before_action :set_restaurant_id
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:new, :show]
   helper ReservationsHelper
 
@@ -93,9 +93,6 @@ class ReservationsController < ApplicationController
 
   def name_sort
     @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:name)
-    @reservations.each do |res|
-      p res.name
-    end
     render 'index'
   end
 
@@ -124,10 +121,6 @@ class ReservationsController < ApplicationController
   end
 
   private
-
-  def set_restaurant
-    @restaurant = Restaurant.find(params[:restaurant_id])
-  end
 
   def set_reservation
     @reservation = Reservation.find(params[:id])

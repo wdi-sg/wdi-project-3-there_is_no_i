@@ -1,6 +1,6 @@
 class RestaurantsController < ApplicationController
   include AuthenticateRestaurantUser
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :name_sort]
   before_action :set_restaurant, only: [:show, :update, :destroy]
   before_action :set_user_restaurant, only: [:edit]
   before_action :set_user, only: [:create, :destroy]
@@ -8,7 +8,17 @@ class RestaurantsController < ApplicationController
   helper RestaurantsHelper
 
   def index
-    @restaurant = Restaurant.all.order('id ASC')
+    if request.fullpath == '/restaurants?name=sort'
+      @restaurant = Restaurant.all.order(:name)
+    elsif request.fullpath == '/restaurants?cuisine=sort'
+      @restaurant = Restaurant.all.order(:cuisine)
+    elsif request.fullpath == '/restaurants?city=sort'
+      @restaurant = Restaurant.all.order(:address_city)
+    elsif request.fullpath == '/restaurants?rating=sort'
+      @restaurant = Restaurant.all.order('rating DESC')
+    else
+      @restaurant = Restaurant.all.order('id ASC')
+    end
   end
 
   def create
@@ -27,17 +37,37 @@ class RestaurantsController < ApplicationController
   end
 
   def edit
+    @users = User.where(restaurant_id: @restaurant[:id])
   end
 
   def show
   end
 
   def update
-    if @restaurant.update(restaurant_params)
-      redirect_to restaurant_path
+    if params[:restaurant][:add]
+      if User.where(email: params[:restaurant][:email]).count > 0
+        User.where(email: params[:restaurant][:email]).update(restaurant_id: @restaurant[:id])
+        flash[:notice] = 'User added'
+        redirect_to dashboard_path
+      else
+        flash[:alert] = "There was an error adding the user. Please try again."
+        @users = User.where(restaurant_id: @restaurant[:id])
+        render :edit
+      end
     else
-      render :edit
+      if @restaurant.update(restaurant_params)
+        redirect_to restaurant_path
+      else
+        flash[:alert] = "There was an error editing. Please try again."
+        @users = User.where(restaurant_id: @restaurant[:id])
+        render :edit
+      end
     end
+  end
+
+  def name_sort
+    @restaurant = Restaurant.all.order(:name)
+    render 'index'
   end
 
   def destroy
@@ -47,10 +77,6 @@ class RestaurantsController < ApplicationController
   end
 
   private
-
-  def set_restaurant
-    @restaurant = Restaurant.find(params[:id])
-  end
 
   def set_user
     @user = current_user

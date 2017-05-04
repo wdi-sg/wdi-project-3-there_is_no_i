@@ -5,4 +5,13 @@ module AuthenticateRestaurantUser
       redirect_to restaurants_path
     end
   end
+
+  def set_restaurant
+    @restaurant = Restaurant.find(params[:id])
+  end
+
+  # for nested routes
+  def set_restaurant_id
+    @restaurant = Restaurant.find(params[:restaurant_id])
+  end
 end

@@ -3,50 +3,58 @@
 <br>
 <br>
 
-<% @walkins.each do |walkin| %>
-  <p>
-    Name:
-    <%= walkin.name %>
-  </p>
-  <p>
-    Phone:
-    <%= walkin.phone %>
-  </p>
-  <p>
-    Email:
-    <%= walkin.email %>
-  </p>
-  <p>
-    Quantity:
-    <%= walkin.party_size %>
-  </p>
-  <p>
-    Status:
-    <%= walkin.status %>
-  </p>
-  <p>
-    Queue Number:
-    <%= walkin.queue_number %>
-  </p>
-  <p>
-    Table:
-    <%= walkin.table_id %>
-  </p>
-  <p>
-    Special Requests:
-    <%= walkin.special_requests %>
-  </p>
-  <p>
-    Start Time:
-    <%= walkin.start_time %>
-  </p>
-  <p>
-    End Time:
-    <%= walkin.end_time %>
-  </p>
-  <%= link_to 'Show', restaurant_walkin_path(@restaurant.id, walkin) %> |
-  <%= link_to 'Edit', restaurant_edit_walkin_path(@restaurant.id, walkin) %> |
-  <%= link_to 'Destroy', restaurant_walkin_path(@restaurant.id, walkin), method: :delete, data: { confirm: 'Are you sure?' } %>
-  <br>
-  <br>
-<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th>Quantity</th>
+      <th>Status</th>
+      <th>Queue Number</th>
+      <th>TABLE ID?</th>
+      <th>Requests</th>
+      <th>Start Time</th>
+      <th>Est End Time</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @walkins.each do |walkin| %>
+    <tr>
+      <td><%= walkin.name %></td>
+      <td><%= walkin.phone %></td>
+      <td><%= walkin.email %></td>
+      <td><%= walkin.party_size %></td>
+      <td>
+        <% if walkin.status == 'awaiting' %>
+        <font color="red"><b><%= walkin.status %></b></font>
+        <% else %>
+        <%= walkin.status %>
+        <% end %>
+      </td>
+      <td><%= walkin.queue_number %></td>
+      <td><%= walkin.table_id %></td>
+      <td><%= walkin.special_requests %></td>
+      <td>
+        <% if walkin.start_time %>
+        <%= walkin.start_time.getlocal('+08:00') %>
+        <% end %>
+      </td>
+      <td>
+        <% if walkin.end_time %>
+        <% if Time.now > walkin.end_time %>
+        <font color="red"><b><%= walkin.end_time.getlocal('+08:00') %></b></font>
+        <% else %>
+        <%= walkin.end_time.getlocal('+08:00') %>
+        <% end %>
+        <% end %>
+      </td>
+      <td><%= link_to 'Show', restaurant_walkin_path(@restaurant.id, walkin) %></td>
+      <td><%= link_to 'Edit', restaurant_edit_walkin_path(@restaurant.id, walkin) %></td>
+      <td><%= link_to 'Destroy', restaurant_walkin_path(@restaurant.id, walkin), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
