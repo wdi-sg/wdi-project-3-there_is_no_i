@@ -1,7 +1,7 @@
 class WalkinsController < ApplicationController
-  before_action :authenticate_user!, except: [:new]
   before_action :set_restaurant, only: %i[index new main_create create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
+  # before_action :find_queue_number, only: %i[create]
   helper WalkinHelper
 
   def index
@@ -27,30 +27,40 @@ class WalkinsController < ApplicationController
     find_aval_tables
     if @aval_tables.length > 0
       determine_table(@aval_tables, @walkin)
+# ====================================
+# CHANGE THIS ONCE determine_table IS SETTLED
+      # @walkin.status = 'queuing'
+      # if @walkin.save!
+      #   redirect_to restaurant_public_path(@restaurant)
+      # else
+      #   render :public_new
+      # end
+# ====================================
       if @chosen_table
         @walkin.table_id = @chosen_table.id
+        # CHANGE TABLE CURRENT CAPACITY !!!!
         change_table_status(@chosen_table, @walkin.party_size)
-
-        p "SMS: Dear #{@walkin.name}, your reservation at #{@restaurant.name} is ready. Please proceed to table: #{@chosen_table.name}"
-
-        # ON HOLD? FOR RESTAURANT TO CONFIRM???
         @walkin.status = 'dining'
-        public_save(@walkin)
+        if @walkin.save!
+          redirect_to restaurant_public_path(@restaurant)
+        else
+          render :public_new
+        end
       else
         @walkin.status = 'queuing'
-        public_save(@walkin)
+        if @walkin.save!
+          redirect_to restaurant_public_path(@restaurant)
+        else
+          render :public_new
+        end
       end
     else
       @walkin.status = 'queuing'
-      public_save(@walkin)
-    end
-  end
-
-  def public_save(walkin)
-    if walkin.save!
-      redirect_to restaurant_public_path(@restaurant)
-    else
-      render :public_new
+      if @walkin.save!
+        redirect_to restaurant_public_path(@restaurant)
+      else
+        render :public_new
+      end
     end
   end
 
@@ -82,6 +92,20 @@ class WalkinsController < ApplicationController
 
   private
 
+  def set_walkin_user(walkin)
+    user = User.where(phone: walkin.phone)
+    if user.count == 1
+      walkin.user_id = user.pluck(:id)[0]
+      walkin.name = user.pluck(:name)[0]
+      walkin.email = user.pluck(:email)[0]
+    # NEED TO CHECK IF CUSTOMER SUBMIT MULTIPLE TIMES --> Change!
+    # elsif (user.count > 1 && walkin.phone)
+    #   walkin.name = 'Walk in Customer (WARNING! Duplicate User number)'
+    else
+      walkin.name = 'Walk in Customer (Mobile Sign in)'
+    end
+  end
+
   def set_restaurant
     @restaurant = Restaurant.find(params[:restaurant_id])
   end
@@ -101,7 +125,6 @@ class WalkinsController < ApplicationController
     @walkin = Reservation.find(params[:id])
   end
 
-  # Create Walkin Person's Restaurant & Queue Number
   def main_create(params)
     @walkin = Reservation.new(params)
     @walkin.restaurant_id = @restaurant.id
@@ -109,28 +132,11 @@ class WalkinsController < ApplicationController
     set_restaurant_queue
   end
 
-  # Set Details of Walkin User
-  def set_walkin_user(walkin)
-    user = User.where(phone: walkin.phone)
-    if user.count == 1
-      walkin.user_id = user.pluck(:id)[0]
-      walkin.name = user.pluck(:name)[0]
-      walkin.email = user.pluck(:email)[0]
-    # NEED TO CHECK IF CUSTOMER SUBMIT MULTIPLE TIMES --> Change!
-    # elsif (user.count > 1 && walkin.phone)
-    #   walkin.name = 'Walk in Customer (WARNING! Duplicate User number)'
-    else
-      walkin.name = 'Walk in Customer (Mobile Sign in)'
-    end
-  end
-
-  # Find Available Tables For New Customer
   def find_aval_tables
     set_restaurant
     @aval_tables = Table.where(restaurant_id: @restaurant.id).where('capacity_current = ?', 0)
   end
 
-  # Determin Table for New Customer
   def determine_table(aval_tables, walkin_person)
     block = 2.hours
     r_start_time = Time.now
@@ -155,9 +161,9 @@ class WalkinsController < ApplicationController
 
     affected_tables = []
     affecting_reservations.each do |reservation|
-      affected_tables.push(Table.where("id = ?", reservation.table_id))
+      affected_tables.push(Table.where("table_id = ?", reservation.table_id))
     end
-
+    
     p '===AFFECTED==='
     p affected_tables
 
@@ -189,7 +195,6 @@ class WalkinsController < ApplicationController
     @chosen_table = filtered_aval_tables[0]
   end
 
-  # Change Table's new capacity once customer is assigned
   def change_table_status(table, filled)
     table.capacity_current = filled
     table.save!

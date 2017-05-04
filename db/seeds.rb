@@ -125,6 +125,7 @@ end
     phone: rand(10_000_000..99_999_999),
     name: Faker::StarWars.character,
     start_time: x,
+    table_id: rand(10) + 1,
     end_time: x + 60 * 90
   )
 end
