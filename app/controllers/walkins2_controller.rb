@@ -1,6 +1,7 @@
 class WalkinsController < ApplicationController
   before_action :set_restaurant, only: %i[index new main_create create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
+  # before_action :find_queue_number, only: %i[create]
   helper WalkinHelper
 
   def index
@@ -26,8 +27,18 @@ class WalkinsController < ApplicationController
     find_aval_tables
     if @aval_tables.length > 0
       determine_table(@aval_tables, @walkin)
+# ====================================
+# CHANGE THIS ONCE determine_table IS SETTLED
+      # @walkin.status = 'queuing'
+      # if @walkin.save!
+      #   redirect_to restaurant_public_path(@restaurant)
+      # else
+      #   render :public_new
+      # end
+# ====================================
       if @chosen_table
         @walkin.table_id = @chosen_table.id
+        # CHANGE TABLE CURRENT CAPACITY !!!!
         change_table_status(@chosen_table, @walkin.party_size)
         @walkin.status = 'dining'
         if @walkin.save!
@@ -152,7 +163,7 @@ class WalkinsController < ApplicationController
     affecting_reservations.each do |reservation|
       affected_tables.push(Table.where("table_id = ?", reservation.table_id))
     end
-
+    
     p '===AFFECTED==='
     p affected_tables
 
