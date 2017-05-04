@@ -1,4 +1,5 @@
 class WalkinsController < ApplicationController
+  before_action :authenticate_user!, except: [:new]
   before_action :set_restaurant, only: %i[index new main_create create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
   helper WalkinHelper
@@ -33,7 +34,10 @@ class WalkinsController < ApplicationController
         p "SMS: Dear #{@walkin.name}, your reservation at #{@restaurant.name} is ready. Please proceed to table: #{@chosen_table.name}"
 
         # ON HOLD? FOR RESTAURANT TO CONFIRM???
-        @walkin.status = 'dining'
+        # @walkin.status = 'dining'
+        @walkin.status = 'awaiting'
+        @walkin.start_time = Time.now
+        @walkin.end_time = Time.now + 2.hours
         public_save(@walkin)
       else
         @walkin.status = 'queuing'
@@ -162,7 +166,9 @@ class WalkinsController < ApplicationController
 
     if affected_tables.length > 0
       affected_tables.map do |table|
-        table.id
+        p '====TAble==='
+        p table[0].id
+        table[0].id
       end
     end
 

@@ -1,7 +1,10 @@
 class ReservationsController < ApplicationController
-  before_action :set_restaurant, only: %i[new index show create edit update destroy name_sort pax_sort date_sort]
-  before_action :set_reservation, only: %i[show edit update destroy]
-  # helper ReservationsHelper
+  include AuthenticateRestaurantUser
+  before_action :authenticate_user!, except: [:new, :show]
+  before_action :set_restaurant
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :name_sort, :pax_sort, :date_sort]
+  before_action :check_user_is_part_of_restaurant, except: [:new, :show]
+  helper ReservationsHelper
 
   def index
     @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('start_time ASC')

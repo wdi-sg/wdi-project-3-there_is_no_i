@@ -24,12 +24,12 @@
 end
 
 100.times do
-  User.create(
-    name: Faker::LordOfTheRings.character,
-    email: Faker::Internet.email,
-    password: 'password',
-    restaurant_id: rand(100) + 1
-  )
+  user = User.new
+  user.name = Faker::LordOfTheRings.character
+  user.email = Faker::Internet.email
+  user.password = 'password'
+  user.restaurant_id = rand(100) + 1
+  user.save!
 end
 
 500.times do
@@ -51,69 +51,18 @@ end
 # end
 
 @restaurants = Restaurant.all
+index = 0
 @restaurants.each do |restaurant|
-  Table.create([
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 1,
-                   capacity_current: 2,
-                   capacity_total: 2
-                 },
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 2,
-                   capacity_current: 0,
-                   capacity_total: 2
-                 },
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 3,
-                   capacity_current: 0,
-                   capacity_total: 2
-                 },
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 4,
-                   capacity_current: 4,
-                   capacity_total: 4
-                 },
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 5,
-                   capacity_current: 3,
-                   capacity_total: 4
-                 },
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 6,
-                   capacity_current: 0,
-                   capacity_total: 4
-                 },
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 7,
-                   capacity_current: 6,
-                   capacity_total: 6
-                 },
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 8,
-                   capacity_current: 0,
-                   capacity_total: 6
-                 },
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 9,
-                   capacity_current: 7,
-                   capacity_total: 8
-                 },
-                 {
-                   restaurant_id: restaurant.id,
-                   name: 10,
-                   capacity_current: 0,
-                   capacity_total: 8
-                 }
-               ])
+  10.times do
+    index += 1
+    cap = rand(8)
+    Table.create(
+      restaurant_id: restaurant.id,
+      name: index,
+      capacity_current: cap - rand(cap),
+      capacity_total: cap
+    )
+  end
 end
 
 500.times do
