@@ -140,12 +140,6 @@ class WalkinsController < ApplicationController
     r_end_time = r_start_time + block
     date = r_start_time.strftime("%Y-%m-%d")
 
-    # This only shows reservations (not tables avail)
-    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date)
-
-    # Q: If there are no reservations, there are no tables?
-    # all_avail_reservations = all_reservations.where("start_time >= ?", r_end_time).or(all_reservations.where("end_time <= ?", r_start_time)).to_a
-
     #New Method
     # 1) @avail tables
     # 2) Find Blocked tables of blocked reservations
@@ -154,6 +148,8 @@ class WalkinsController < ApplicationController
     # 5) sort
     # 6) Choose
 
+    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date)
+
     affecting_reservations = all_reservations.where("start_time < ?", r_end_time - block).or(all_reservations.where("end_time > ?", r_start_time)).to_a
 
     affected_tables = []
@@ -161,13 +157,13 @@ class WalkinsController < ApplicationController
       affected_tables.push(Table.where("id = ?", reservation.table_id))
     end
 
-    p '===AFFECTED==='
-    p affected_tables
+    # p '===Tables AFFECTED by Reservations==='
+    # p affected_tables
 
     if affected_tables.length > 0
       affected_tables.map do |table|
-        p '====TAble==='
-        p table[0].id
+        # p '====Table Affected ID==='
+        # p table[0].id
         table[0].id
       end
     end
@@ -176,8 +172,8 @@ class WalkinsController < ApplicationController
       affected_tables.exclude?(table[:id])
     end
 
-    p '====AVAL TABLES====='
-    p aval_tables
+    # p '====REMAINING AVALABLE TABLES====='
+    # p aval_tables
 
     filtered_aval_tables = []
     aval_tables.each do |table|
@@ -188,8 +184,8 @@ class WalkinsController < ApplicationController
 
     filtered_aval_tables.sort_by! {|table| table.capacity_total }
 
-    p '====FILTERED TABLES====='
-    p filtered_aval_tables
+    # p '====FILTERED TABLES BY CAPACITY====='
+    # p filtered_aval_tables
 
     @chosen_table = filtered_aval_tables[0]
   end

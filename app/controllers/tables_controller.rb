@@ -54,6 +54,6 @@ class TablesController < ApplicationController
   end
 
   def table_params
-    params.require(:table).permit(:name, :capacity_total)
+    params.require(:table).permit(:name, :capacity_total, :capacity_current)
   end
 end
