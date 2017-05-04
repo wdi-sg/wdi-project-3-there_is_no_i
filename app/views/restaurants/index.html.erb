@@ -1,6 +1,6 @@
 <h1>Restaurants</h1>
 <h1>Sort by:</h1>
-<%= link_to 'Name', restaurant_namesort_path(@restaurants[0].restaurant_id), class: 'button is-primary' %>
+<%= link_to 'Name', restaurant_namesort_path(@restaurant[0].id), class: 'button is-primary' %>
 
 
 <% @restaurant.each do |restaurant| %>
