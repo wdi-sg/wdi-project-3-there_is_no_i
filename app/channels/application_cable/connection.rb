@@ -8,13 +8,12 @@ module ApplicationCable
 
     protected
       def find_verified_user
-        if current_user = User.find_by(id: cookies.signed[:user_id])
-          current_user
-          p "order assigned to #{current_user.name}"
+        if current_user
+          current_user    
         else
           current_user = User.new(name: 'Temp User')
-          p "order assigned to #{current_user.name}"
         end
+        p "order assigned to #{current_user.name}"
       end
   end
 end

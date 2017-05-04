@@ -1,9 +1,10 @@
 class ReservationsController < ApplicationController
+  include AuthenticateRestaurantUser
   before_action :authenticate_user!, except: [:new, :show]
-  before_action :set_restaurant, only: %i[new index show create edit update destroy]
-  before_action :set_reservation, only: %i[show edit update destroy]
-  before_action :authenticate_restaurant_user, except: [:new, :show]
-  # helper ReservationsHelper
+  before_action :set_restaurant
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :name_sort, :pax_sort, :date_sort]
+  before_action :check_user_is_part_of_restaurant, except: [:new, :show]
+  helper ReservationsHelper
 
   def index
     @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('start_time ASC')
@@ -90,6 +91,25 @@ class ReservationsController < ApplicationController
   def show
   end
 
+  def name_sort
+    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:name)
+    @reservations.each do |res|
+      p res.name
+    end
+    render 'index'
+  end
+
+  def pax_sort
+    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:party_size)
+    render 'index'
+  end
+
+  def date_sort
+    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:start_time)
+    render 'index'
+  end
+
+
   def update
     if @reservation.update(reservation_params)
       redirect_to restaurant_reservations_path(@restaurant)
@@ -115,10 +135,5 @@ class ReservationsController < ApplicationController
 
   def reservation_params
     params.require(:reservation).permit(:name, :party_size, :start_time)
-  end
-
-  def authenticate_restaurant_user
-    flash['alert'] = 'You do not have permission to access that page'
-    redirect_to restaurants_path if current_user[:restaurant_id] != @restaurant[:id]
   end
 end

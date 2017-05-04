@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'main#index'
 
-  # devise_for :users
+  # Users
   devise_for :users, path: '/', path_names: {
     sign_up: 'register',
     sign_in: 'login',
@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   }
 
   # dashboard(redirect from /restaurant/:id/edit)
-  get '/dashboard' => 'restaurant#edit'
+  get '/dashboard' => 'restaurants#edit'
 
   get 'messages/index'
   get 'messages/create'
@@ -19,34 +19,6 @@ Rails.application.routes.draw do
 
   # Serve websocket cable requests in-process
   mount ActionCable.server, at: '/cable'
-
-  # Sessions
-  # get 'login' => 'sessions#new'
-  # post 'login' => 'sessions#create'
-  # delete 'logout' => 'sessions#destroy'
-  # get 'logout' => 'sessions#destroy'
-
-  # Users (Unique - /:id not accessible)
-  # resources :users
-  # # signup
-  # get 'signup' => 'users#new'
-  # post 'signup' => 'users#create'
-  # # account
-  # get 'account' => 'users#show'
-  # get 'account/edit' => 'users#edit'
-  # put 'account/edit' => 'users#update'
-  # credit_cards
-  # get 'account/credit_cards'
-
-  # Restaurant (Unique - /:id not accessible)
-  # get 'queue' => 'queue#index'
-  # get 'queue/login'
-  # get 'queue/logout'
-  # dashboard
-  # get 'dashboard' => 'dashboard#index'
-  # get 'dashboard/table'
-  # get 'dashboard/schedule'
-  # get 'dashboard/service'
 
   # Restaurants
   resources :restaurants do
@@ -70,9 +42,12 @@ Rails.application.routes.draw do
     get 'diners/:id/edit' => 'diners#edit', as: 'edit_diner'
     get 'diners/:id' => 'diners#show', as: 'diner'
     put 'diners/:id' => 'diners#update'
+    get 'namesort' => 'reservations#name_sort', as: 'namesort'
+    get 'paxsort' => 'reservations#pax_sort', as: 'paxsort'
+    get 'datesort' => 'reservations#date_sort', as: 'datesort'
+
   end
 
-
-  # routes for Stripe credit cards charges
+  # routes for Stripe integration
   resources :charges
 end

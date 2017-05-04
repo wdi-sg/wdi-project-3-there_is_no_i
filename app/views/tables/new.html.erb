@@ -1,2 +1,4 @@
 <h1>New Table</h1>
+<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
+</br/>
 <%= render "/tables/form", table: @table, url: restaurant_tables_path %>

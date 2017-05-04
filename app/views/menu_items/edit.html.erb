@@ -1,2 +1,4 @@
 <h1>Edit Menu Item</h1>
+<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
+<br/>
 <%= render "/menu_items/form", menu_item: @menu_item, url: restaurant_menu_item_path %>
