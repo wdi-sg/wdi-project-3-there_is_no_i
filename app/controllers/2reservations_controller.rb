@@ -83,8 +83,6 @@ class ReservationsController < ApplicationController
       @avail_tables.each do |reservation|
         before_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
       end
-      before_table_array.sort_by! { |table| table.capacity_total }
-      @before_chosen_table = table_array[0]
 
       after_unavail_reservations = @all_reservations.where("start_time < ?", r_end_time + 1.hours).or(@all_reservations.where("end_time > ?", r_start_time + 1.hours)).to_a
 
@@ -107,8 +105,16 @@ class ReservationsController < ApplicationController
       @avail_tables.each do |reservation|
         after_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
       end
-      after_table_array.sort_by! { |table| table.capacity_total }
-      @after_chosen_table = table_array[0]
+
+      if after_table_array.length >= 1 || before_table_array >= 1
+        flash[:notice] = "Sorry, there are no available tables at your requested time. May we suggest that you walk in or make a booking at the following available slot(s) instead?"
+        # before_table_array.sort_by! { |table| table.capacity_total }
+        # @before_chosen_table = before_table_array[0]
+        # after_table_array.sort_by! { |table| table.capacity_total }
+        # @after_chosen_table = after_table_array[0]
+      else
+        flash[:notice] = "Sorry, there are no available tables at your requested time but feel free to try to walk in!"
+      end
 
     else
       table_array = []

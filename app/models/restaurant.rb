@@ -1,11 +1,11 @@
 class Restaurant < ApplicationRecord
-  # has_many :reservations
-  # has_many :menu_items
+  has_many :reservations
+  has_many :menu_items
   # has_many :users
   # has_many :reviews
-  # has_many :tables
-  # has_many :transactions
-  # has_many :orders
+  has_many :tables
+  has_many :transactions
+  has_many :orders, through: :transactions
 
   validates :name, presence: true
   validates :address1, presence: true
