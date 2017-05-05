@@ -1,6 +1,6 @@
 class WalkinsController < ApplicationController
   before_action :authenticate_user!, except: [:new]
-  before_action :set_restaurant, only: %i[index new create_walkin create public_new public_create public_show edit update destroy]
+  before_action :set_restaurant, only: %i[index new main_create create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
   helper WalkinHelper
 
@@ -9,7 +9,7 @@ class WalkinsController < ApplicationController
   end
 
   def create
-    create_walkin(walkin_params)
+    main_create(walkin_params)
     if @walkin.save!
       redirect_to restaurant_walkins_path(@restaurant)
     else
@@ -22,8 +22,9 @@ class WalkinsController < ApplicationController
   end
 
   def public_create
-    create_walkin(public_params)
-    @aval_tables = find_aval_tables
+    main_create(public_params)
+    set_walkin_user(@walkin)
+    find_aval_tables
     if !@aval_tables.empty?
       determine_table(@aval_tables, @walkin)
       if @chosen_table
@@ -39,12 +40,10 @@ class WalkinsController < ApplicationController
         @walkin.end_time = Time.now + 2.hours
         public_save(@walkin)
       else
-        sms_queue(@walkin.name, @restaurant.name)
         @walkin.status = 'queuing'
         public_save(@walkin)
       end
     else
-      sms_queue(@walkin.name, @restaurant.name)
       @walkin.status = 'queuing'
       public_save(@walkin)
     end
@@ -95,27 +94,26 @@ class WalkinsController < ApplicationController
     @restaurant.next_queue_number
   end
 
-  def set_walkin
-    @walkin = Reservation.find(params[:id])
-  end
-
-  # Create Walkin Person's Restaurant & Queue Number
-  def create_walkin(params)
-    @walkin = Reservation.new(params)
-    @walkin.restaurant_id = @restaurant.id
-    @walkin.queue_number = find_queue_number
-    find_user(@walkin)
-    set_next_queue_number
-  end
-
-  def set_next_queue_number
+  def set_restaurant_queue
     set_restaurant
     @restaurant.next_queue_number += 1
     @restaurant.save
   end
 
+  def set_walkin
+    @walkin = Reservation.find(params[:id])
+  end
+
+  # Create Walkin Person's Restaurant & Queue Number
+  def main_create(params)
+    @walkin = Reservation.new(params)
+    @walkin.restaurant_id = @restaurant.id
+    @walkin.queue_number = find_queue_number
+    set_restaurant_queue
+  end
+
   # Set Details of Walkin User
-  def find_user(walkin)
+  def set_walkin_user(walkin)
     user = User.where(phone: walkin.phone)
     if user.count == 1
       walkin.user_id = user.pluck(:id)[0]
@@ -197,10 +195,6 @@ class WalkinsController < ApplicationController
   def new_table_count(table, filled)
     table.capacity_current = filled
     table.save!
-  end
-
-  def sms_queue(walkin_name, restaurant_name)
-    p "SMS: Dear #{walkin_name}, your reservation at #{restaurant_name} is noted. There are ___ customers ahead of you."
   end
 
   def public_params

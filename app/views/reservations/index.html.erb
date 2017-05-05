@@ -2,9 +2,9 @@
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 
 <h1>Sort by:</h1>
-<%= link_to 'Name', restaurant_namesort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
-<%= link_to 'No. of pax', restaurant_paxsort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
-<%= link_to 'Date', restaurant_datesort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
+<a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/reservations?name=sort">Name</a>
+<a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/reservations?pax=sort">Party size</a>
+<a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/reservations?date=sort">Date</a>
 
 <br><br>
 <% @reservations.each do |reservation| %>

@@ -40,3 +40,7 @@
   <%= link_to 'Rating', restaurant_datesort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
   <%= link_to 'City', restaurant_datesort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
   <%= link_to 'Country', restaurant_datesort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
+
+  <%= link_to 'Name', restaurant_namesort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
+  <%= link_to 'No. of pax', restaurant_paxsort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>
+  <%= link_to 'Date', restaurant_datesort_path(@reservations[0].restaurant_id), class: 'button is-primary' %>

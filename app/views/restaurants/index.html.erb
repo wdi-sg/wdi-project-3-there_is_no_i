@@ -6,6 +6,7 @@
 <a class="button is-primary" href="/restaurants?rating=sort">Rating</a>
 
 <% @restaurant.each do |restaurant| %>
+
 <p>
   Name:
   <%= link_to restaurant.name, restaurant_path(restaurant) %>
