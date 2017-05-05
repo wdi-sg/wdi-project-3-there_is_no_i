@@ -52,6 +52,7 @@ class DinersController < ApplicationController
     if filtered_queue.count > 1
       sorted_queue = filtered_queue.sort_by { |customer| customer[:queue_number] }
 
+      # allowance 2
       p '====QUEUE sorted by q num===='
       p sorted_queue
       sorted_queue.each do |queue|

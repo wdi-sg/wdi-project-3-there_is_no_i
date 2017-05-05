@@ -1,9 +1,9 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
-  before_action :authenticate_user!, except: [:new, :show, :create]
+  before_action :authenticate_user!, except: [:create, :new, :show]
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-  before_action :check_user_is_part_of_restaurant, except: [:new, :show, :create]
+  before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
   helper ReservationsHelper
 
   def index
@@ -24,7 +24,9 @@ class ReservationsController < ApplicationController
     party_size = params[:reservation][:party_size]
 
     # find all tables (to be refactored into another function)
-    @avail_tables = Table.where(restaurant_id: @restaurant.id).where('capacity_current = ?', 0)
+    # @avail_tables = Table.where(restaurant_id: @restaurant.id).where('capacity_current = ?', 0)
+    # find restaurant's tables
+    @avail_tables = Table.where(restaurant_id: @restaurant.id)
 
     # find all reservations from that restaurant on the date chosen by customer on the reservation form
     all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date)
