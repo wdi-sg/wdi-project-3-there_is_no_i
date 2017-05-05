@@ -10,6 +10,7 @@
   <body>
     <h1><%= @restaurant.name%> Walk-in Queue</h1>
     <p>Response Logged In</p>
+    <p><%= @messages %></p>
     <%= link_to 'OK', restaurant_new_public_path(@restaurant) %>
   </body>
 </html>
