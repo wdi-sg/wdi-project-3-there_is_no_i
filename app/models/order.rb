@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   # belongs_to :menu_items
-  belongs_to :transaction
+  # belongs_to :transaction
   # belongs_to :user
   # belongs_to :restaurant
 
