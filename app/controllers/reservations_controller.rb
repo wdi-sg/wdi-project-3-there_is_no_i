@@ -1,9 +1,9 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
-  before_action :authenticate_user!, except: [:new, :show]
+  before_action :authenticate_user!, except: [:new, :show, :create]
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-  before_action :check_user_is_part_of_restaurant, except: [:new, :show]
+  before_action :check_user_is_part_of_restaurant, except: [:new, :show, :create]
   helper ReservationsHelper
 
   def index
@@ -34,41 +34,41 @@ class ReservationsController < ApplicationController
     puts "ALL RESERVATIONS #{all_avail_reservations}"
 
     # if-else statement to reject reservation in the event that there are no available tables
-    if all_avail_reservations.length == 0
-      before_avail_reservations = all_reservations.where("start_time >= ?", r_end_time - 1.hours).or(all_reservations.where("end_time <= ?", r_start_time - 1.hours)).to_a
-      before_table_array = []
-      before_avail_reservations.each do |reservation|
-        before_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
-      end
-      before_table_array.sort_by! { |table| table.capacity_total }
-      before_chosen_table = before_table_array[0]
-
-      after_avail_reservations = all_reservations.where("start_time >= ?", r_end_time + 1.hours).or(all_reservations.where("end_time <= ?", r_start_time + 1.hours)).to_a
-      after_table_array = []
-      after_avail_reservations.each do |reservation|
-        after_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
-      end
-      after_table_array.sort_by! { |table| table.capacity_total }
-      after_chosen_table = after_table_array[0]
-    else
+    # if all_avail_reservations.length == 0
+    #   before_avail_reservations = all_reservations.where("start_time >= ?", r_end_time - 1.hours).or(all_reservations.where("end_time <= ?", r_start_time - 1.hours)).to_a
+    #   before_table_array = []
+    #   before_avail_reservations.each do |reservation|
+    #     before_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
+    #   end
+    #   before_table_array.sort_by! { |table| table.capacity_total }
+    #   before_chosen_table = before_table_array[0]
+    #
+    #   after_avail_reservations = all_reservations.where("start_time >= ?", r_end_time + 1.hours).or(all_reservations.where("end_time <= ?", r_start_time + 1.hours)).to_a
+    #   after_table_array = []
+    #   after_avail_reservations.each do |reservation|
+    #     after_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
+    #   end
+    #   after_table_array.sort_by! { |table| table.capacity_total }
+    #   after_chosen_table = after_table_array[0]
+    # else
       # find the tables by table_id in the reservation that have a capacity >= party size
-      table_array = []
-      all_avail_reservations.each do |reservation|
-        table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
-      end
-
-      # sort tables in the table array by their capacity_total
-      table_array.sort_by! { |table| table.capacity_total }
-
-      # [0] of this array will give the table with the minimally adequate capacity to fit all customers
-      the_chosen_table = table_array[0]
+      # table_array = []
+      # all_avail_reservations.each do |reservation|
+      #   table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
+      # end
+      #
+      # # sort tables in the table array by their capacity_total
+      # table_array.sort_by! { |table| table.capacity_total }
+      #
+      # # [0] of this array will give the table with the minimally adequate capacity to fit all customers
+      # the_chosen_table = table_array[0]
 
       new_res = {}
       new_res[:name] = params[:reservation][:name]
       new_res[:phone] = params[:reservation][:phone]
       new_res[:start_time] = r_start_time
       new_res[:end_time] = r_start_time + 2.hours
-      new_res[:table_id] = the_chosen_table.table_id
+      # new_res[:table_id] = the_chosen_table.table_id
       new_res[:party_size] = params[:reservation][:party_size]
       new_res[:restaurant_id] = params[:restaurant_id]
 
@@ -79,7 +79,7 @@ class ReservationsController < ApplicationController
       else
         render :new
       end
-    end
+    # end
   end
 
   def edit
