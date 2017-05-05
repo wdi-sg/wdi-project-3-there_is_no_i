@@ -1,6 +1,7 @@
 class WalkinsController < ApplicationController
+  # include module
   before_action :authenticate_user!, except: [:new]
-  before_action :set_restaurant, only: %i[index new main_create create public_new public_create public_show edit update destroy]
+  before_action :set_restaurant, only: %i[index new create_walkin create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
   helper WalkinHelper
 
@@ -9,7 +10,7 @@ class WalkinsController < ApplicationController
   end
 
   def create
-    main_create(walkin_params)
+    create_walkin(walkin_params)
     if @walkin.save!
       redirect_to restaurant_walkins_path(@restaurant)
     else
@@ -22,55 +23,41 @@ class WalkinsController < ApplicationController
   end
 
   def public_create
-    main_create(public_params)
-    set_walkin_user(@walkin)
-    find_aval_tables
-    if !@aval_tables.empty?
-      determine_table(@aval_tables, @walkin)
+    create_walkin(public_params)
+    if !find_aval_tables.empty?
+      determine_table(find_aval_tables, @walkin)
+      # set table
       if @chosen_table
         @walkin.table_id = @chosen_table.id
         new_table_count(@chosen_table, @walkin.party_size)
 
-        p "SMS: Dear #{@walkin.name}, your reservation at #{@restaurant.name} is ready. Please proceed to table: #{@chosen_table.name}"
+        sms_awaiting(@walkin.name, @restaurant.name, @chosen_table.name)
 
         # ON HOLD? FOR RESTAURANT TO CONFIRM???
         # @walkin.status = 'dining'
         @walkin.status = 'awaiting'
         @walkin.start_time = Time.now
         @walkin.end_time = Time.now + 2.hours
-        if @walkin.save!
-          redirect_to restaurant_public_path(@restaurant)
-        else
-          render :public_new
-        end
-        # public_save(@walkin)
+        public_save(@walkin)
       else
+        sms_queue(@walkin.name, @restaurant.name, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
         @walkin.status = 'queuing'
-        if @walkin.save!
-          redirect_to restaurant_public_path(@restaurant)
-        else
-          render :public_new
-        end
-        # public_save(@walkin)
+        public_save(@walkin)
       end
     else
+      sms_queue(@walkin.name, @restaurant.name, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
       @walkin.status = 'queuing'
-      if @walkin.save!
-        redirect_to restaurant_public_path(@restaurant)
-      else
-        render :public_new
-      end
-      # public_save(@walkin)
+      public_save(@walkin)
     end
   end
 
-  # def public_save(walkin)
-  #   if walkin.save!
-  #     redirect_to restaurant_public_path(@restaurant)
-  #   else
-  #     render :public_new
-  #   end
-  # end
+  def public_save(walkin)
+    if walkin.save!
+      redirect_to restaurant_public_path(@restaurant)
+    else
+      render :public_new
+    end
+  end
 
   def public_new
     @walkin = Reservation.new
@@ -109,26 +96,27 @@ class WalkinsController < ApplicationController
     @restaurant.next_queue_number
   end
 
-  def set_restaurant_queue
-    set_restaurant
-    @restaurant.next_queue_number += 1
-    @restaurant.save
-  end
-
   def set_walkin
     @walkin = Reservation.find(params[:id])
   end
 
   # Create Walkin Person's Restaurant & Queue Number
-  def main_create(params)
+  def create_walkin(params)
     @walkin = Reservation.new(params)
     @walkin.restaurant_id = @restaurant.id
     @walkin.queue_number = find_queue_number
-    set_restaurant_queue
+    find_user(@walkin)
+    set_next_queue_number
+  end
+
+  def set_next_queue_number
+    set_restaurant
+    @restaurant.next_queue_number += 1
+    @restaurant.save
   end
 
   # Set Details of Walkin User
-  def set_walkin_user(walkin)
+  def find_user(walkin)
     user = User.where(phone: walkin.phone)
     if user.count == 1
       walkin.user_id = user.pluck(:id)[0]
@@ -210,6 +198,14 @@ class WalkinsController < ApplicationController
   def new_table_count(table, filled)
     table.capacity_current = filled
     table.save!
+  end
+
+  def sms_awaiting(walkin_name, restaurant_name, chosen_table_name)
+    p "SMS: Dear #{walkin_name}, your reservation at #{restaurant_name} is ready. Please proceed to table: #{chosen_table_name}"
+  end
+
+  def sms_queue(walkin_name, restaurant_name, queue_ahead)
+    p "SMS: Dear #{walkin_name}, your reservation at #{restaurant_name} is noted. There are #{queue_ahead} customers ahead of you."
   end
 
   def public_params
