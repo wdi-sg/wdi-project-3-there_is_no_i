@@ -9,7 +9,7 @@ class ReservationsController < ApplicationController
   def index
     @restaurant_id = params[:restaurant_id]
     if request.fullpath == "/restaurants/#{@restaurant_id}/reservationss?name=sort"
-      @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('name ASC')
+      @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:name)
     elsif request.fullpath == "/restaurants/#{@restaurant_id}/reservations?pax=sort"
       @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:party_size)
     elsif request.fullpath == "/restaurants/#{@restaurant_id}/reservations?date=sort"
