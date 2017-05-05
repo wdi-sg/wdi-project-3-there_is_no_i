@@ -41,6 +41,28 @@ end
   )
 end
 
+100.times do
+  Transaction.create(
+    restaurant_id: rand(100) + 1,
+    user_id: rand(100) + 1,
+    user_name: Faker::Name.name,
+    table_id: rand(10) + 1,
+    reservation_id: rand(100) + 1
+  )
+end
+
+100.times do
+  Order.create(
+    user_id: rand(100) + 1,
+    restaurant_id: rand(100) + 1,
+    menu_item_id: rand(100) + 1,
+    transaction_id: rand(100) + 1,
+    is_take_away: [true, false].sample
+  )
+end
+
+
+
 # 500.times do
 #   Table.create(
 #     restaurant_id: rand(100) + 1,
