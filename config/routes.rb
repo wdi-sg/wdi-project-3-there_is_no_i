@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resources :reservations
     resources :menu_items
     resources :tables
-    resources :transactions do
+    resources :invoices do
       resources :orders
     end
     get 'walkins' => 'walkins#index'
@@ -45,7 +45,6 @@ Rails.application.routes.draw do
     # get 'namesort' => 'reservations#name_sort', as: 'namesort'
     # get 'paxsort' => 'reservations#pax_sort', as: 'paxsort'
     # get 'datesort' => 'reservations#date_sort', as: 'datesort'
-
   end
 
   # routes for Stripe integration

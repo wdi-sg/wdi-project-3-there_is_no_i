@@ -6,7 +6,7 @@ one:
   restaurant_id: 1
   item_id: 1
   request_description: MyText
-  transaction_id: 1
+  invoice_id: 1
   is_take_away: false
   time_end: 2017-04-29 17:28:52
 
@@ -16,6 +16,6 @@ two:
   restaurant_id: 1
   item_id: 1
   request_description: MyText
-  transaction_id: 1
+  invoice_id: 1
   is_take_away: false
   time_end: 2017-04-29 17:28:52

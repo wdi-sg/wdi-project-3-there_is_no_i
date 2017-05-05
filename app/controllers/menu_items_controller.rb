@@ -7,7 +7,7 @@ class MenuItemsController < ApplicationController
   helper MenuItemsHelper
 
   def index
-    @transaction = Transaction.new
+    @invoice = Invoice.new
 
     @restaurant_id = params[:restaurant_id]
     if request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?name=sort"
