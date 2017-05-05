@@ -23,14 +23,14 @@ class WalkinsController < ApplicationController
 
   def public_create
     create_walkin(public_params)
-    @aval_tables = find_aval_tables
-    if !@aval_tables.empty?
-      determine_table(@aval_tables, @walkin)
+    if !find_aval_tables.empty?
+      determine_table(find_aval_tables, @walkin)
+      # set table
       if @chosen_table
         @walkin.table_id = @chosen_table.id
         new_table_count(@chosen_table, @walkin.party_size)
 
-        p "SMS: Dear #{@walkin.name}, your reservation at #{@restaurant.name} is ready. Please proceed to table: #{@chosen_table.name}"
+        sms_awaiting(@walkin.name, @restaurant.name, @chosen_table.name)
 
         # ON HOLD? FOR RESTAURANT TO CONFIRM???
         # @walkin.status = 'dining'
@@ -39,12 +39,12 @@ class WalkinsController < ApplicationController
         @walkin.end_time = Time.now + 2.hours
         public_save(@walkin)
       else
-        sms_queue(@walkin.name, @restaurant.name)
+        sms_queue(@walkin.name, @restaurant.name, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
         @walkin.status = 'queuing'
         public_save(@walkin)
       end
     else
-      sms_queue(@walkin.name, @restaurant.name)
+      sms_queue(@walkin.name, @restaurant.name, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
       @walkin.status = 'queuing'
       public_save(@walkin)
     end
@@ -199,8 +199,12 @@ class WalkinsController < ApplicationController
     table.save!
   end
 
-  def sms_queue(walkin_name, restaurant_name)
-    p "SMS: Dear #{walkin_name}, your reservation at #{restaurant_name} is noted. There are ___ customers ahead of you."
+  def sms_awaiting(walkin_name, restaurant_name, chosen_table_name)
+    p "SMS: Dear #{walkin_name}, your reservation at #{restaurant_name} is ready. Please proceed to table: #{chosen_table_name}"
+  end
+
+  def sms_queue(walkin_name, restaurant_name, queue_ahead)
+    p "SMS: Dear #{walkin_name}, your reservation at #{restaurant_name} is noted. There are #{queue_ahead} customers ahead of you."
   end
 
   def public_params
