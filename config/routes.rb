@@ -42,9 +42,6 @@ Rails.application.routes.draw do
     get 'diners/:id/edit' => 'diners#edit', as: 'edit_diner'
     get 'diners/:id' => 'diners#show', as: 'diner'
     put 'diners/:id' => 'diners#update'
-    # get 'namesort' => 'reservations#name_sort', as: 'namesort'
-    # get 'paxsort' => 'reservations#pax_sort', as: 'paxsort'
-    # get 'datesort' => 'reservations#date_sort', as: 'datesort'
 
   end
 
