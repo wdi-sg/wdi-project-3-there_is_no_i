@@ -7,7 +7,16 @@ class ReservationsController < ApplicationController
   helper ReservationsHelper
 
   def index
-    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('start_time ASC')
+    @restaurant_id = params[:restaurant_id]
+    if request.fullpath == "/restaurants/#{@restaurant_id}/reservationss?name=sort"
+      @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:name)
+    elsif request.fullpath == "/restaurants/#{@restaurant_id}/reservations?pax=sort"
+      @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:party_size)
+    elsif request.fullpath == "/restaurants/#{@restaurant_id}/reservations?date=sort"
+      @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:date)
+    else
+      @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('start_time ASC')
+    end
   end
 
   def create
@@ -93,20 +102,20 @@ class ReservationsController < ApplicationController
   def show
   end
 
-  def name_sort
-    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:name)
-    render 'index'
-  end
-
-  def pax_sort
-    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:party_size)
-    render 'index'
-  end
-
-  def date_sort
-    @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:start_time)
-    render 'index'
-  end
+  # def name_sort
+  #   @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:name)
+  #   render 'index'
+  # end
+  #
+  # def pax_sort
+  #   @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:party_size)
+  #   render 'index'
+  # end
+  #
+  # def date_sort
+  #   @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order(:start_time)
+  #   render 'index'
+  # end
 
 
   def update

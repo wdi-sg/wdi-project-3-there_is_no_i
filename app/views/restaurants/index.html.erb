@@ -8,6 +8,11 @@
 <% @restaurant.each do |restaurant| %>
 
 <p>
+  Name:
+  <%= link_to restaurant.name, restaurant_path(restaurant) %>
+</p>
+
+<p>
   Address 1:
   <%= restaurant.address1 %>
 </p>
