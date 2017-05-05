@@ -3,9 +3,9 @@
 <%= render "/restaurants/form", restaurant: @restaurant %>
 <p>
   Users:
-  <% @users.each do |x| %>
+  <% @restaurant.users.each do |user| %>
   <p>
-    <%= x.email %>
+    <%= user.email %>
   </p>
   <% end %>
 </p>
@@ -13,7 +13,7 @@
   <p>
     <%= f.hidden_field :add, value: true %>
     Add employee by <%= f.label :email %>
-    <%= f.email_field :email, value: nil %>
+    <%= f.email_field :email, value: nil, placeholder: 'employee@company.com' %>
   </p>
   <p>
       <%= f.submit "Add" %>

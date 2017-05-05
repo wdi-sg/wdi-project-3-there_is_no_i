@@ -123,11 +123,13 @@ ActiveRecord::Schema.define(version: 20170505110709) do
 
   create_table "reviews", force: :cascade do |t|
     t.integer  "restaurant_id"
+    t.integer  "user_id"
     t.integer  "rating"
     t.text     "comments"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.index ["restaurant_id"], name: "index_reviews_on_restaurant_id", using: :btree
+    t.index ["user_id"], name: "index_reviews_on_user_id", using: :btree
   end
 
   create_table "tables", force: :cascade do |t|
@@ -145,6 +147,7 @@ ActiveRecord::Schema.define(version: 20170505110709) do
   create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "phone"
+    t.integer  "restaurant_id"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "email",                  default: "", null: false
@@ -159,6 +162,7 @@ ActiveRecord::Schema.define(version: 20170505110709) do
     t.inet     "last_sign_in_ip"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["restaurant_id"], name: "index_users_on_restaurant_id", using: :btree
   end
 
   add_foreign_key "invoices", "reservations"
@@ -166,12 +170,13 @@ ActiveRecord::Schema.define(version: 20170505110709) do
   add_foreign_key "invoices", "tables"
   add_foreign_key "invoices", "users"
   add_foreign_key "menu_items", "restaurants"
-  add_foreign_key "orders", "invoices"
   add_foreign_key "orders", "menu_items"
   add_foreign_key "orders", "users"
   add_foreign_key "reservations", "restaurants"
   add_foreign_key "reservations", "tables"
   add_foreign_key "reservations", "users"
   add_foreign_key "reviews", "restaurants"
+  add_foreign_key "reviews", "users"
   add_foreign_key "tables", "restaurants"
+  add_foreign_key "users", "restaurants"
 end

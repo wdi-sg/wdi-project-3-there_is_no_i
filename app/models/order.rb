@@ -1,8 +1,6 @@
 class Order < ApplicationRecord
-  belongs_to :menu_item
   belongs_to :invoice
-  # belongs_to :user
-  # belongs_to :restaurant
+  belongs_to :menu_item
 
   # validates :menu_item_id, presence: true
   # validates :invoice_id, presence: true

@@ -26,6 +26,7 @@ class RestaurantsController < ApplicationController
     if @restaurant.save!
       @user.restaurant_id = @restaurant.id
       @user.save!
+      @user.restaurants << @restaurant
       redirect_to restaurant_path(@restaurant)
     else
       render :new
@@ -37,7 +38,7 @@ class RestaurantsController < ApplicationController
   end
 
   def edit
-    @users = User.where(restaurant_id: @restaurant[:id])
+    # @users = User.where(restaurant_id: @restaurant[:id])
   end
 
   def show
@@ -46,7 +47,7 @@ class RestaurantsController < ApplicationController
   def update
     if params[:restaurant][:add]
       if User.where(email: params[:restaurant][:email]).count > 0
-        User.where(email: params[:restaurant][:email]).update(restaurant_id: @restaurant[:id])
+        User.where(email: params[:restaurant][:email])[0].restaurants << @restaurant
         flash[:notice] = 'User added'
         redirect_to dashboard_path
       else

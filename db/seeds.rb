@@ -10,7 +10,9 @@
   Restaurant.create(
     name: Faker::Company.name,
     address1: Faker::Address.street_address,
+    address2: Faker::Address.street_address,
     address_city: Faker::Address.city,
+    address_state: Faker::Address.state,
     address_country: Faker::Address.country,
     address_postal: Faker::Address.postcode,
     email: Faker::Internet.email,
@@ -19,23 +21,19 @@
     description: Faker::Company.buzzword,
     cuisine: Faker::Demographic.demonym,
     rating: rand(101),
+    picture: Faker::Placeholdit.image,
     next_queue_number: 1
   )
 end
 
 100.times do
-  # User.create(
-  user = User.new
-  user.name = Faker::LordOfTheRings.character
-  user.email = Faker::Internet.email
-  user.password = 'password'
-  # user.restaurant_id = rand(100) + 1
-  user.save!
-  # user.restaurants << @restaurants.sample
-  # name: Faker::LordOfTheRings.character
-  # email: Faker::Internet.email
-  # password: 'password'
-  # )
+  User.create(
+    name: Faker::LordOfTheRings.character,
+    email: Faker::Internet.email,
+    phone: rand(10_000_000..99_999_999),
+    password: 'password',
+    restaurant_id: rand(100) + 1
+  )
 end
 
 @restaurants = Restaurant.all
@@ -53,20 +51,18 @@ end
   )
 end
 
-
-index = 0
 @restaurants.each do |restaurant|
+  index = 0
   10.times do
     index += 1
-    cap = rand(8)
     Table.create(
       restaurant_id: restaurant.id,
       name: index,
-      # capacity_current: cap - rand(cap),
       capacity_current: 0,
-      capacity_total: cap
+      capacity_total: rand(8)
     )
   end
+  index = 0
 end
 
 500.times do
@@ -76,6 +72,7 @@ end
     restaurant_id: rand(100) + 1,
     party_size: rand(10) + 1,
     phone: rand(10_000_000..99_999_999),
+    email: Faker::Internet.email,
     name: Faker::StarWars.character,
     start_time: x,
     table_id: rand(10) + 1,
@@ -93,7 +90,7 @@ end
   )
 end
 
-100.times do
+500.times do
   Order.create(
     user_id: rand(100) + 1,
     menu_item_id: 5,
