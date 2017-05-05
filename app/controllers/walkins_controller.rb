@@ -1,5 +1,5 @@
 class WalkinsController < ApplicationController
-  # include module
+  include FindingTableLogic
   before_action :authenticate_user!, except: [:new]
   before_action :set_restaurant, only: %i[index new create_walkin create public_new public_create public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
@@ -25,16 +25,11 @@ class WalkinsController < ApplicationController
   def public_create
     create_walkin(public_params)
     if !find_aval_tables.empty?
-      determine_table(find_aval_tables, @walkin)
-      # set table
+      determine_table(set_restaurant, find_aval_tables, @walkin, Time.now, 2.hours)
       if @chosen_table
         @walkin.table_id = @chosen_table.id
         new_table_count(@chosen_table, @walkin.party_size)
-
         sms_awaiting(@walkin.name, @restaurant.name, @chosen_table.name)
-
-        # ON HOLD? FOR RESTAURANT TO CONFIRM???
-        # @walkin.status = 'dining'
         @walkin.status = 'awaiting'
         @walkin.start_time = Time.now
         @walkin.end_time = Time.now + 2.hours
@@ -135,63 +130,6 @@ class WalkinsController < ApplicationController
   def find_aval_tables
     set_restaurant
     @aval_tables = Table.where(restaurant_id: @restaurant.id).where('capacity_current = ?', 0)
-  end
-
-  # Determin Table for New Customer
-  def determine_table(aval_tables, walkin_person)
-    block = 2.hours
-    r_start_time = Time.now
-    r_end_time = r_start_time + block
-    date = r_start_time.strftime('%Y-%m-%d')
-
-    # New Method
-    # 1) @avail tables
-    # 2) Find Blocked tables of blocked reservations
-    # 3) Filter off tables from blocked
-    # 4) Filter off tables of capacity_total
-    # 5) sort
-    # 6) Choose
-
-    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where('DATE(start_time) = ?', date)
-
-    affecting_reservations = all_reservations.where('start_time < ?', r_end_time - block).or(all_reservations.where('end_time > ?', r_start_time)).to_a
-
-    affected_tables = []
-    affecting_reservations.each do |reservation|
-      affected_tables.push(Table.where('id = ?', reservation.table_id))
-    end
-
-    # p '===Tables AFFECTED by Reservations==='
-    # p affected_tables
-
-    unless affected_tables.empty?
-      affected_tables.map do |table|
-        # p '====Table Affected ID==='
-        # p table[0].id
-        table[0].id
-      end
-    end
-
-    aval_tables.select do |table|
-      affected_tables.exclude?(table[:id])
-    end
-
-    # p '====REMAINING AVALABLE TABLES====='
-    # p aval_tables
-
-    filtered_aval_tables = []
-    aval_tables.each do |table|
-      if table.capacity_total >= walkin_person.party_size
-        filtered_aval_tables.push(table)
-      end
-    end
-
-    filtered_aval_tables.sort_by!(&:capacity_total)
-
-    # p '====FILTERED TABLES BY CAPACITY====='
-    # p filtered_aval_tables
-
-    @chosen_table = filtered_aval_tables[0]
   end
 
   # Change Table's new capacity once customer is assigned

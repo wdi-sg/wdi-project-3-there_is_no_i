@@ -16,7 +16,8 @@
   <p>
     Date:
     <% if reservation.start_time%>
-      <%= formatDate(reservation.start_time) %>
+      <%= formatDate(reservation.start_time.getlocal('+08:00')) %>
+      <!-- <%= reservation.start_time.getlocal('+08:00') %> -->
     <% end %>
   </p>
   <p>For:
