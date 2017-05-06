@@ -80,21 +80,21 @@ end
   )
 end
 
-# 100.times do
-#   Invoice.create(
-#     restaurant_id: rand(100) + 1,
-#     user_id: rand(100) + 1,
-#     user_name: Faker::Name.name,
-#     table_id: rand(10) + 1,
-#     reservation_id: rand(100) + 1
-#   )
-# end
-#
-# 500.times do
-#   Order.create(
-#     user_id: rand(100) + 1,
-#     menu_item_id: 5,
-#     invoice_id: rand(100) + 1,
-#     is_take_away: [true, false].sample
-#   )
-# end
+100.times do
+  Invoice.create(
+    restaurant_id: rand(100) + 1,
+    user_id: rand(100) + 1,
+    user_name: Faker::Name.name,
+    table_id: rand(10) + 1,
+    reservation_id: rand(100) + 1
+  )
+end
+
+500.times do
+  Order.create(
+    user_id: rand(100) + 1,
+    menu_item_id: 5,
+    invoice_id: rand(100) + 1,
+    is_take_away: [true, false].sample
+  )
+end

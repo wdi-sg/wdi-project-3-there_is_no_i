@@ -61,12 +61,14 @@
 
 <h1>Restaurants linked to you:</h1>
 <% y = resource.restaurants.select {|x| x.id = resource.restaurant_id } %>
+<% if y == nil%>
 Primary restaurant: <%= y[0].name %>
 <% resource.restaurants.each do |x| %>
 <p>
   id: <%= x.id %>
   name: <%= x.name %>
 </p>
+<% end %>
 <% end %>
 THIS NEEDS TO BE WORKED OUT
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
