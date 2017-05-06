@@ -66,6 +66,9 @@ class ReservationsController < ApplicationController
   end
 
   def edit
+    # @table_options = Table.where(restaurant_id: @reservation.restaurant_id).map do |table|
+    #   [table.name, table.id]
+    # end
     @table_options = []
     Table.where(restaurant_id: @reservation.restaurant_id).each do |table|
       @table_options.push([table.name, table.id])
@@ -79,6 +82,7 @@ class ReservationsController < ApplicationController
   end
 
   def update
+    old_start_time = @reservation.start_time
     r_start_time =  Time.zone.local( params[:reservation]["start_time(1i)"].to_i, params[:reservation]["start_time(2i)"].to_i, params[:reservation]["start_time(3i)"].to_i, params[:reservation]["start_time(4i)"].to_i, params[:reservation]["start_time(5i)"].to_i,0)
 
     if r_start_time < Time.now
@@ -88,20 +92,33 @@ class ReservationsController < ApplicationController
       flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
       render :new
     else
-      validate_update = determine_table(@restaurant, [@reservation.table], @reservation, r_start_time, @est_duration)
+      # validate_update
+
+      @reservation.start_time = nil
+      @reservation.save
+
+      validate_update = determine_table(@restaurant, [Table.find(params[:reservation][:table_id])], @reservation, r_start_time, @est_duration)
 
       if validate_update
+        @reservation.start_time = r_start_time
         @reservation.end_time = @reservation.start_time + @est_duration
 
         if @reservation.update(reservation_params)
           redirect_to restaurant_reservations_path(@restaurant)
         else
+          # NEED TO RETURN OLD START TIME INSTEAD
+          @reservation.start_time = old_start_time
+          @reservation.save
           flash['alert'] = 'Error. Please check input parameters.'
           render :edit
         end
       else
-        flash['alert'] = 'There are no tables available at that time. Please try again with a different timeslot.'
-        render :new
+        # NEED TO RETURN OLD START TIME INSTEAD
+        @reservation.start_time = old_start_time
+        @reservation.save
+        flash['alert'] = 'Not Possible to update changes. Please try again with a different parameter.'
+        redirect_to edit_restaurant_reservation_path(@restaurant, @reservation)
+        # render :edit
       end
     end
   end
@@ -122,7 +139,7 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_params
-    params.require(:reservation).permit(:name, :email, :phone, :party_size, :start_time, :status, :special_requests)
+    params.require(:reservation).permit(:name, :email, :phone, :party_size, :start_time, :status, :table_id, :special_requests)
   end
 
   def check_user_is_part_of_reservation

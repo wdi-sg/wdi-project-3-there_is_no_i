@@ -6,6 +6,9 @@ module FindingTableLogic
 
   def determine_table(restaurant, tables_considered, this_customer, start_time_given, block)
 
+    p 'TABLES CONSIDERED'
+    p tables_considered
+
     # Find Tables that cannot be used
     affecting_tables = find_affecting_tables(restaurant, start_time_given, block)
 

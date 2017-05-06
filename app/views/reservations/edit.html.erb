@@ -32,10 +32,12 @@
     <%= f.label :status, "Status" %>
     <%= f.select(:status, [['On Reservation','reservation'], ['Dining','dining'], ['Cancelled','cancelled']])%>
   </p>
+  <% if @reservation.table_id %>
   <p>
     <%= f.label :status, "Table" %>
     <%= f.select(:table_id, @table_options)%>
   </p>
+  <% end %>
   <!--  -->
 
   <p>
