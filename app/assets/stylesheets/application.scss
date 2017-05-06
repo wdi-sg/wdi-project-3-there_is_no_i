@@ -13,6 +13,5 @@
  *= require_tree .
  *= require_self
  */
- h1 {
-   font-size: 40px;
- }
+ 
+ @import "materialize";

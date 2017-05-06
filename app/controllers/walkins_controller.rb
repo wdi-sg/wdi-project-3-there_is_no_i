@@ -23,19 +23,45 @@ class WalkinsController < ApplicationController
   # end
 
   def public_create
+    est_duration = 2.hours
+
     create_walkin(public_params)
-    recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, 2.hours)
+
+    recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, est_duration)
+
     if recommended_table
+
       update_table_count(recommended_table, @walkin.party_size)
-      update_new_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + 2.hours)
+
+      update_new_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + est_duration)
+
+      recommended_table.start_time = Time.now
+      recommended_table.end_time = Time.now + est_duration
+
       sms_awaiting(@walkin.name, @restaurant.name, recommended_table.name)
     else
-      #recommend further action
-      # filter party_size < capacity_total
+      #CHANGE TO BLANK
+
+
+      # Set the EST TIME / Table OR recommend further action
       # sort by end_time
-      # recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, ?, 2.hours)
+      reservations_by_endtime = Reservation.where(restaurant_id: @restaurant.id).where.not(status: 'checked_out').where.not(status: 'cancelled').where.not(end_time: nil).sort_by {|reservation| reservation[:end_time]}
+
+      p 'TABLES BY END TIME'
+      p reservations_by_endtime
+
+      i = 0
+      while recommended_table == nil
+      recommended_table = determine_table(@restaurant, Table.where(restaurant_id: @restaurant.id), @walkin, reservations_by_endtime[i].end_time, est_duration)
+      i += 1
+      end
+
+      # FIX NOT ACCURATE END TIME
+      new_time = Reservation.where(table_id: recommended_table.id).sort_by{|reservation| reservation[:end_time]}[0].end_time
+
       # recommend change table settings? change minimum / split / join
-      update_new_customer(@walkin, nil, 'queuing', nil, nil)
+      update_new_customer(@walkin, recommended_table, 'queuing', new_time, new_time + est_duration)
+
       sms_queue(@walkin, @restaurant, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
     end
   end

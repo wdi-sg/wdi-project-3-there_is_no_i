@@ -16,6 +16,9 @@ module FindingTableLogic
 
     # && this.customer.party_size < recommended_table.capacity_minimum...
 
+    p 'SELECTED'
+    p filtered_aval_tables[0]
+
     # Select smallest size available
     recommended_table = filtered_aval_tables[0]
   end
@@ -27,11 +30,12 @@ module FindingTableLogic
     # Find all reservations
     all_reservations = Reservation.where(restaurant_id: restaurant.id).where('DATE(start_time) = ?', date).where.not(status: 'checked_out').where.not(status: 'cancelled')
 
-    p '---RESERVATIONS---'
-    p all_reservations
+    # p '---RESERVATIONS---'
+    # p all_reservations
 
     # Find Blocked tables of blocked reservations
-    affecting_reservations = all_reservations.where('start_time < ?', end_time_est - block).or(all_reservations.where('end_time > ?', start_time_given)).to_a
+    # affecting_reservations = all_reservations.where('start_time < ?', end_time_est - block).or(all_reservations.where('end_time > ?', start_time_given)).to_a
+    affecting_reservations = all_reservations.where('start_time < ?', end_time_est).where('end_time > ?', start_time_given)
 
     # Find Tables that cannot be used
     affecting_table_ids = []
