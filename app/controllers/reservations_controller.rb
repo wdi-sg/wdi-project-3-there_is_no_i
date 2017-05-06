@@ -32,17 +32,14 @@ class ReservationsController < ApplicationController
     r_end_time = r_start_time + 2.hours
     party_size = params[:reservation][:party_size]
 
-    # find all tables (to be refactored into another function)
-    # @avail_tables = Table.where(restaurant_id: @restaurant.id).where('capacity_current = ?', 0)
-    # find restaurant's tables
     @avail_tables = Table.where(restaurant_id: @restaurant.id)
 
-    # find all reservations from that restaurant on the date chosen by customer on the reservation form
     all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date)
 
-    # find all reservations that have tables which can be booked
     all_avail_reservations = all_reservations.where("start_time >= ?", r_end_time).or(all_reservations.where("end_time <= ?", r_start_time)).to_a
     puts "ALL RESERVATIONS #{all_avail_reservations}"
+
+    
 
     # if-else statement to reject reservation in the event that there are no available tables
     # if all_avail_reservations.length == 0

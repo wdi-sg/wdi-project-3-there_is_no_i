@@ -3,8 +3,10 @@ module FindingTableLogic
   # Determine Table for New Customer
   def determine_table(restaurant, tables_considered, this_customer, start_time_given, block)
 
+    # Find Tables that cannot be used
     affecting_tables = find_affecting_tables(restaurant, start_time_given, block)
 
+    # Filter off Tables that cannot be used
     unless affecting_tables.empty?
       tables_considered = tables_to_consider(tables_considered, affecting_tables)
     end
@@ -13,7 +15,7 @@ module FindingTableLogic
     filtered_aval_tables = filter_by_capacity(tables_considered, this_customer)
 
     # Select smallest size available
-    @chosen_table = filtered_aval_tables[0]
+    recommended_table = filtered_aval_tables[0]
   end
 
   def find_affecting_tables(restaurant, start_time_given, block)
