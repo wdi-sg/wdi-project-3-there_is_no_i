@@ -4,6 +4,7 @@ class ReservationsController < ApplicationController
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
+  before_action :check_user_is_part_of_reservation, only: [:show]
   helper ReservationsHelper
 
   def index
@@ -123,5 +124,12 @@ class ReservationsController < ApplicationController
 
   def reservation_params
     params.require(:reservation).permit(:name, :party_size, :start_time)
+  end
+
+  def check_user_is_part_of_reservation
+    if current_user[:id] != @reservation[:user_id] && !current_user.restaurants.include?(@reservation.restaurant)
+      flash['alert'] = 'You do not have permission to access that page'
+      redirect_to edit_user_registration_path
+    end
   end
 end

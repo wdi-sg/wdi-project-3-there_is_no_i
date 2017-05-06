@@ -1,0 +1,60 @@
+<table>
+  <thead>
+    <tr>
+      <th>
+        Invoice
+      </th>
+      <th>
+        Received
+      </th>
+      <th>
+        Completed
+      </th>
+      <th>
+        Item
+      </th>
+      <th>
+        Table
+      </th>
+      <th>
+        Takeaway?
+      </th>
+      <th>
+        Complete
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.sort{|first, second| first.created_at - second.created_at}.each do |order| %>
+    <tr>
+      <td>
+        <%= order.invoice.id %>
+      </td>
+      <td>
+        <%= formatOrderDate(order.created_at) %>
+      </td>
+      <td>
+        <% if order.time_end %>
+        <%= formatOrderDate(order.time_end) %>
+        <% end %>
+      </td>
+      <td>
+        <%= order.menu_item.name %>
+      </td>
+      <td>
+        <%= order.invoice.table.name %>
+      </td>
+      <td>
+        <%= order.is_take_away ? 'takeaway' : '' %>
+      </td>
+      <td>
+        <% if !order.time_end %>
+        <%= form_for order, url: restaurant_invoice_order_path(@restaurant.id, order.invoice, order), method: :put do |f| %>
+          <%= f.submit 'Complete' %>
+        <% end %>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

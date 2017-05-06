@@ -85,7 +85,7 @@ end
     restaurant_id: rand(100) + 1,
     user_id: rand(100) + 1,
     user_name: Faker::Name.name,
-    table_id: rand(10) + 1,
+    table_id: rand(1000) + 1,
     reservation_id: rand(100) + 1
   )
 end
@@ -93,7 +93,7 @@ end
 500.times do
   Order.create(
     user_id: rand(100) + 1,
-    menu_item_id: 5,
+    menu_item_id: rand(500) + 1,
     invoice_id: rand(100) + 1,
     is_take_away: [true, false].sample
   )

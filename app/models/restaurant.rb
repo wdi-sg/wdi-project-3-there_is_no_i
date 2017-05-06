@@ -7,14 +7,12 @@ class Restaurant < ApplicationRecord
   has_many :tables
   has_many :reviews
   has_and_belongs_to_many :users
-  
+
   validates :name, presence: true
   validates :address1, presence: true
   validates :address_city, presence: true
-  # validates :address_state, presence: true
   validates :address_country, presence: true
   validates :address_postal, presence: true
   validates :description, presence: true
   validates :cuisine, presence: true
-  # validates :email, presence: true
 end

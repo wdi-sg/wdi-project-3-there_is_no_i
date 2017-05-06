@@ -1,0 +1,13 @@
+<%= form_for invoice, url: url do |f| %>
+<p>
+  <%= f.label :user_name %>
+  <%= f.text_field :user_name, placeholder: "Name" %>
+</p>
+<p>
+  <%= f.label :table_id %>
+  <%= f.number_field :table_id, placeholder: "Table" %>
+</p>
+<p>
+  <%= f.submit "Save" %>
+</p>
+<% end %>
