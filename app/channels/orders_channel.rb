@@ -8,6 +8,6 @@ class OrdersChannel < ApplicationCable::Channel
   end
 
   def receive(payload)
-    Order.create(transaction: payload["transaction_id"], content: payload["order"])
+    Order.create(invoice: payload["invoice_id"], content: payload["order"])
   end
 end

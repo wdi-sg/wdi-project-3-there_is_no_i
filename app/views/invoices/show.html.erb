@@ -1,0 +1,17 @@
+<div class="row col-md-8 col-md-offset-2">
+  <h1><%= @invoice.id %></h1>
+
+<div class="panel panel-default">
+  <% if @invoice.orders.any? %>
+    <div class="panel-body" id="messages" data-invoice=<%=@invoice.id%>>
+      <%= render partial: 'messages/message', collection: @invoice.messages%>
+    </div>
+  <%else%>
+    <div class="panel-body hidden" id="messages">
+    </div>
+  <%end%>
+</div>
+
+
+  <%= render partial: 'messages/message_form', locals: {message: @message, invoice: @invoice}%>
+</div>

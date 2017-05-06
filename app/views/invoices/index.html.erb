@@ -1,0 +1,13 @@
+<div class="row col-md-8 col-md-offset-2" id="invoice-title">
+  <h1>invoices</h1>
+</div>
+
+  </div>
+    <ul id="invoice-index">
+  <% if @invoices.any? %>
+      <%= render @invoices%>
+  <%else %>
+    </ul>
+    <p>Be the first one to make a invoice!</p>
+  <% end %>
+</div>
