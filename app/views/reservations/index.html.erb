@@ -13,10 +13,12 @@
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
   <p>Pax: <%= reservation.party_size  %> </p>
+  <p>Table: <%= Table.find(reservation.table_id).name  %> </p>
   <p>
     Date:
     <% if reservation.start_time%>
-      <%= formatDate(reservation.start_time) %>
+      <%= formatDate(reservation.start_time.getlocal('+08:00')) %>
+      <!-- <%= reservation.start_time.getlocal('+08:00') %> -->
     <% end %>
   </p>
   <p>For:

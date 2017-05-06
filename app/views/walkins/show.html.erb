@@ -16,7 +16,7 @@
   <%= @walkin.party_size %>
 </p>
 <p>
-  Status: 
+  Status:
   <%= @walkin.status %>
 </p>
 <p>
@@ -25,7 +25,7 @@
 </p>
 <p>
   Table:
-  <%= @walkin.table_id %>
+  <%= Table.find(@walkin.table_id).name %>
 </p>
 <p>
   Special Requests:

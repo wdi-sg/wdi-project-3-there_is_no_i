@@ -38,13 +38,28 @@ class WalkinsController < ApplicationController
         @walkin.status = 'awaiting'
         @walkin.start_time = Time.now
         @walkin.end_time = Time.now + 2.hours
+        # if @walkin.save!
+        #   redirect_to restaurant_public_path(@restaurant)
+        # else
+        #   render :public_new
+        # end
         public_save(@walkin)
       else
         @walkin.status = 'queuing'
+        # if @walkin.save!
+        #   redirect_to restaurant_public_path(@restaurant)
+        # else
+        #   render :public_new
+        # end
         public_save(@walkin)
       end
     else
       @walkin.status = 'queuing'
+      # if @walkin.save!
+      #   redirect_to restaurant_public_path(@restaurant)
+      # else
+      #   render :public_new
+      # end
       public_save(@walkin)
     end
   end
