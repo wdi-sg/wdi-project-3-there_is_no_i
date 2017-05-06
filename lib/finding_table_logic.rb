@@ -25,7 +25,10 @@ module FindingTableLogic
     date = start_time_given.utc.strftime('%Y-%m-%d')
 
     # Find all reservations
-    all_reservations = Reservation.where(restaurant_id: restaurant.id).where('DATE(start_time) = ?', date)
+    all_reservations = Reservation.where(restaurant_id: restaurant.id).where('DATE(start_time) = ?', date).where.not(status: 'checked_out').where.not(status: 'cancelled')
+
+    p '---RESERVATIONS---'
+    p all_reservations
 
     # Find Blocked tables of blocked reservations
     affecting_reservations = all_reservations.where('start_time < ?', end_time_est - block).or(all_reservations.where('end_time > ?', start_time_given)).to_a
@@ -45,7 +48,7 @@ module FindingTableLogic
 
   def tables_to_consider(tables_considered, affecting_tables)
     tables_filtered = tables_considered - affecting_tables
-    
+
     p 'TABLES TO CONSIDER'
     p tables_filtered
     tables_filtered

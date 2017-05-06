@@ -54,6 +54,7 @@ class ReservationsController < ApplicationController
       new_res[:start_time] = r_start_time
       new_res[:end_time] = r_start_time + 2.hours
       new_res[:table_id] = recommended_table.id
+      new_res[:status] = 'reservation'
       if new_res.save!
         redirect_to restaurant_path(params[:restaurant_id])
       else

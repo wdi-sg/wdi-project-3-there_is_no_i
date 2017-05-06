@@ -7,7 +7,7 @@
 <a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/reservations?date=sort">Date</a>
 
 <br><br>
-<% @reservations.each do |reservation| %>
+<% @reservations.where(status: 'reservation').each do |reservation| %>
 
 <div>
   <p>Name: <%= reservation.name %> </p>
