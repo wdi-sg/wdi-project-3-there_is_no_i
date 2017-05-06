@@ -50,8 +50,16 @@
 </div>
 
 <div class="ordered-items">
+
 <ul class="ordered-items-list">
 </ul>
+<%= form_for :order, remote: true, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
+<!-- <form class="ordered-items-form" action="/restaurants/<%= @restaurant.id %>/invoices" method="post"> -->
+  <!-- <input id="hidden-orders" type="hidden" name="orders" value=""> -->
+  <%= hidden_field_tag :orders %>
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <% end %>
+  <!-- </form> -->
 </div>
 
 <%= javascript_include_tag('menu_items/takeaway.js') %>

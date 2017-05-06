@@ -88,7 +88,10 @@ function redrawList () {
   })
   if (orders.length > 0) {
     addToList('Total: $' + totalPrice().toFixed(2))
-    addToList('<button class="submit-orders" type="button">Submit Your Order</button>')
+    addToList('<button id="submit-orders" type="button">Submit Your Order</button>')
+    document.getElementById('submit-orders').addEventListener('click', (event) => {
+      submitOrders()
+    })
   }
 }
 
@@ -136,4 +139,11 @@ function count (orders) {
 // returns the total price of the orders
 function totalPrice () {
   return orders.reduce((a, b) => { return a + b['price'] }, 0.0)
+}
+
+function submitOrders () {
+  var first = orders.shift().id.toString()
+  var str = orders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
+  document.getElementById('orders').value = str
+  document.querySelector('.ordered-items-form').submit()
 }
