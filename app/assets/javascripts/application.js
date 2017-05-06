@@ -11,6 +11,12 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
+//= require materialize-sprockets
 //= require turbolinks
 //= require_tree .
+$( document ).ready(function() {
+    console.log( "ready!" );
+    $(".dropdown-button").dropdown();
+});

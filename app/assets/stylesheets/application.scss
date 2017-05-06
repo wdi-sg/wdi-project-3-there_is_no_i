@@ -13,5 +13,10 @@
  *= require_tree .
  *= require_self
  */
- 
+
  @import "materialize";
+ @import "https://fonts.googleapis.com/icon?family=Material+Icons";
+
+ #dropdown1 #dropdown2 {
+   width: 200px
+ }

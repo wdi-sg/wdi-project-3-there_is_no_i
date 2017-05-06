@@ -36,9 +36,10 @@ gem 'gon'
 
 # Add Materialize CSS framework
 gem 'materialize-sass'
-
 # Gem for offline Materialize icons
 gem 'material_icons'
+# Gem to use jquery with Materialize
+gem 'jquery-turbolinks'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
