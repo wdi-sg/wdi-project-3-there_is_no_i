@@ -24,7 +24,7 @@ class WalkinsController < ApplicationController
 
   def public_create
     create_walkin(public_params)
-    recommended_table = determine_table(set_restaurant, find_aval_tables(@restaurant), @walkin, Time.now, 2.hours)
+    recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, 2.hours)
     if recommended_table
       update_table_count(recommended_table, @walkin.party_size)
       update_new_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + 2.hours)

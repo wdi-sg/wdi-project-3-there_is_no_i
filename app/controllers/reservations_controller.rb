@@ -1,5 +1,6 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
+  include FindingTableLogic
   before_action :authenticate_user!, except: [:create, :new, :show]
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
@@ -34,12 +35,14 @@ class ReservationsController < ApplicationController
 
     @avail_tables = Table.where(restaurant_id: @restaurant.id)
 
+    # recommended_table = determine_table(@restaurant, @aval_tables, @walkin, Time.now, 2.hours)
+
     all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date)
 
     all_avail_reservations = all_reservations.where("start_time >= ?", r_end_time).or(all_reservations.where("end_time <= ?", r_start_time)).to_a
     puts "ALL RESERVATIONS #{all_avail_reservations}"
 
-    
+
 
     # if-else statement to reject reservation in the event that there are no available tables
     # if all_avail_reservations.length == 0
