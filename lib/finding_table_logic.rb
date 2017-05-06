@@ -1,4 +1,8 @@
 module FindingTableLogic
+  def set_duration
+    @est_duration = 2.hours
+    @reservation_allowance = 6
+  end
 
   def determine_table(restaurant, tables_considered, this_customer, start_time_given, block)
 

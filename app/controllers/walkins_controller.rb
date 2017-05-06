@@ -35,9 +35,6 @@ class WalkinsController < ApplicationController
 
       update_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + est_duration)
 
-      recommended_table.start_time = Time.now
-      recommended_table.end_time = Time.now + est_duration
-
       sms_awaiting(@walkin.name, @restaurant.name, recommended_table.name)
     else
       update_customer(@walkin, nil, 'queuing', nil, nil)

@@ -21,21 +21,17 @@
 
   <div>
   <%= f.label :party_size %>
-  <!-- UNABLE TO SEE DROPDOWN -->
-  <!-- <%= f.select :party_size, [*1..12], :required => true %> -->
-  <%= f.number_field :party_size, value: 1, min:0, max:8, :required => true %>
+  <%= f.select :party_size, [*1..8], :required => true %>
   </div>
 
   <div>
-  <%= f.label :date %>
-  <%= f.date_field :date, placeholder: 'YY/MM/DD', min: Time.now.getlocal('+08:00'), :required => true %>
+    <%= f.label :date, 'Date' %>
+    <%= f.date_select :start_time, :required => true %>
   </div>
 
   <div>
-  <%= f.label :time %>
-  <!-- UNABLE TO SEE DROPDOWN -->
-  <!-- <%= f.select :time, ['11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30'], :prompt => 'Select One' %> -->
-  <%= f.text_field :time, value:Time.now.strftime('%H:%M'), :required => true %>
+    <%= f.label :time, 'Time' %>
+    <%= f.time_select :start_time, {minute_step: 30}, :required => true %>
   </div>
 
   <div>

@@ -2,24 +2,45 @@
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 <%= form_for @reservation, url: restaurant_reservation_path(@restaurant, @reservation), html: {method: :put} do |f| %>
   <p>
-    <%= f.label :name %>
-    <%= f.text_field :name, placeholder: "Name" %>
+    <%= f.label :name, 'Name' %>
+    <%= f.text_field :name, placeholder: @reservation.name, :required => true %>
   </p>
   <div>
-  <%= f.label :email %>
-  <%= f.text_field :email, value: current_user.email %>
+  <%= f.label :email, 'Email' %>
+  <%= f.text_field :email, placeholder: @reservation.email, :required => true  %>
   </div>
   <p>
-    <%= f.label :phone %>
-    <%= f.text_field :phone, placeholder: "Phone" %>
+    <%= f.label :phone, 'Phone' %>
+    <%= f.text_field :phone, placeholder: @reservation.phone %>
   </p>
   <p>
-    <%= f.label :party_size %>
-    <%= f.text_field :party_size, placeholder: "Party Size" %>
+    <%= f.label :party_size, 'Number of People' %>
+    <%= f.text_field :party_size, placeholder: @reservation.party_size, min: 1, max: 8, :required => true %>
   </p>
   <p>
-    <%= f.label :start_time %>
-    <%= f.text_field :start_time, placeholder: "Date", value:@reservation.start_time.getlocal('+08:00'), min: Time.now.getlocal('+08:00') %>
+    <%= f.label :date, 'Date selected' %>
+    <%= f.date_select :start_time, :required => true %>
+  </p>
+  <p>
+    <%= f.label :time, 'Time selected' %>
+    <%= f.time_select :start_time, {minute_step: 30}, :required => true %>
+  </p>
+
+  <!-- HIDE: ONLY FOR RESTAURANT -->
+
+  <p>
+    <%= f.label :status, "Status" %>
+    <%= f.select(:status, [['On Reservation','reservation'], ['Dining','dining'], ['Cancelled','cancelled']])%>
+  </p>
+  <p>
+    <%= f.label :status, "Table" %>
+    <%= f.select(:table_id, @table_options)%>
+  </p>
+  <!--  -->
+
+  <p>
+    <%= f.label :special_requests, 'Special Requests' %>
+    <%= f.text_field :special_requests, placeholder:@reservation.special_requests %>
   </p>
   <p>
     <%= f.submit "Update" %>

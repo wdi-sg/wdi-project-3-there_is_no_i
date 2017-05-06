@@ -6,6 +6,7 @@ class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
   before_action :check_user_is_part_of_reservation, only: [:show]
+  before_action :set_duration, only: [:create, :update]
   helper ReservationsHelper
 
   def index
@@ -22,18 +23,13 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    est_duration = 2.hours
-    reservation_allowance = 6
+    r_start_time =  Time.zone.local( params[:reservation]["start_time(1i)"].to_i, params[:reservation]["start_time(2i)"].to_i, params[:reservation]["start_time(3i)"].to_i, params[:reservation]["start_time(4i)"].to_i, params[:reservation]["start_time(5i)"].to_i,0)
 
-    r_start_time = combine_date_time(params[:reservation][:date],params[:reservation][:time])
-
-    # NEED TO VALIDATE PARTY SIZE, date, time
     if r_start_time < Time.now
       flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'
       render :new
-      # Validete 24hours before
-    elsif r_start_time < Time.now + reservation_allowance.hours
-      flash['alert'] = "Cannot make a reservation within #{reservation_allowance} hours from now."
+    elsif r_start_time < Time.now + @reservation_allowance.hours
+      flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
       render :new
     else
       new_res = Reservation.new()
@@ -45,7 +41,7 @@ class ReservationsController < ApplicationController
 
       avail_tables = Table.where(restaurant_id: @restaurant.id)
 
-      recommended_table = determine_table(@restaurant, avail_tables, new_res, r_start_time, est_duration)
+      recommended_table = determine_table(@restaurant, avail_tables, new_res, r_start_time, @est_duration)
 
       p '===RECOMMENDED TABLE==='
       p recommended_table
@@ -70,6 +66,10 @@ class ReservationsController < ApplicationController
   end
 
   def edit
+    @table_options = []
+    Table.where(restaurant_id: @reservation.restaurant_id).each do |table|
+      @table_options.push([table.name, table.id])
+    end
   end
 
   def new
@@ -79,11 +79,30 @@ class ReservationsController < ApplicationController
   end
 
   def update
+    r_start_time =  Time.zone.local( params[:reservation]["start_time(1i)"].to_i, params[:reservation]["start_time(2i)"].to_i, params[:reservation]["start_time(3i)"].to_i, params[:reservation]["start_time(4i)"].to_i, params[:reservation]["start_time(5i)"].to_i,0)
 
-    if @reservation.update(reservation_params)
-      redirect_to restaurant_reservations_path(@restaurant)
+    if r_start_time < Time.now
+      flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'
+      render :new
+    elsif r_start_time < Time.now + @reservation_allowance.hours
+      flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
+      render :new
     else
-      render :edit
+      validate_update = determine_table(@restaurant, [@reservation.table], @reservation, r_start_time, @est_duration)
+
+      if validate_update
+        @reservation.end_time = @reservation.start_time + @est_duration
+
+        if @reservation.update(reservation_params)
+          redirect_to restaurant_reservations_path(@restaurant)
+        else
+          flash['alert'] = 'Error. Please check input parameters.'
+          render :edit
+        end
+      else
+        flash['alert'] = 'There are no tables available at that time. Please try again with a different timeslot.'
+        render :new
+      end
     end
   end
 
@@ -103,7 +122,7 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_params
-    params.require(:reservation).permit(:name, :party_size, :start_time)
+    params.require(:reservation).permit(:name, :email, :phone, :party_size, :start_time, :status, :special_requests)
   end
 
   def check_user_is_part_of_reservation
