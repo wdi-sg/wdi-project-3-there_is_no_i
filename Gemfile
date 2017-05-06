@@ -34,6 +34,12 @@ gem 'devise'
 # Add Gon for javascript things
 gem 'gon'
 
+# Add Materialize CSS framework
+gem 'materialize-sass'
+
+# Gem for offline Materialize icons
+gem 'material_icons'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
