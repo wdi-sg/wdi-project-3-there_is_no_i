@@ -24,14 +24,14 @@ class ReservationsController < ApplicationController
   def create
     d = Time.parse(params[:reservation][:date])
     date = d.strftime("%Y-%m-%d")
-    puts "DATE #{date}"
+    # puts "DATE #{date}"
     day = d.strftime('%d')
     month = d.strftime('%m')
     year = d.strftime('%Y')
     t = Time.parse(params[:reservation][:time])
 
     r_start_time = t.change(day: day, month: month, year: year, offset: +0o000)
-    puts "START TIME: #{r_start_time}"
+    # puts "START TIME: #{r_start_time}"
     r_end_time = r_start_time + 2.hours
     party_size = params[:reservation][:party_size]
 
@@ -40,6 +40,7 @@ class ReservationsController < ApplicationController
     # NEED TO VALIDATE PARTY SIZE, date, time
     new_res = Reservation.new()
     new_res[:name] = params[:reservation][:name]
+    new_res[:email] = params[:reservation][:email]
     new_res[:phone] = params[:reservation][:phone]
     new_res[:party_size] = params[:reservation][:party_size]
     new_res[:restaurant_id] = params[:restaurant_id]
@@ -56,9 +57,11 @@ class ReservationsController < ApplicationController
       if new_res.save!
         redirect_to restaurant_path(params[:restaurant_id])
       else
+        flash['alert'] = 'Error. Please check input parameters'
         render :new
       end
     else
+      flash['alert'] = 'There are no tables available at that time. Please try again with a different timeslot.'
       render :new
     end
   end
@@ -81,8 +84,12 @@ class ReservationsController < ApplicationController
   end
 
   def destroy
-    @reservation.destroy
-    redirect_to restaurant_reservations_path(@restaurant)
+    # ERROR HERE: INVALID FOREIGN KEY for Invoices
+    if @reservation.destroy!
+      redirect_to restaurant_reservations_path(@restaurant)
+    else
+      render :new
+    end
   end
 
   private
