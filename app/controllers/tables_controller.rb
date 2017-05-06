@@ -11,7 +11,7 @@ class TablesController < ApplicationController
 
   def create
     @table = Table.new(table_params)
-    @table.capacity_current = 0
+    @table.capacity_current = 0 if !@table.capacity_current
     @table.restaurant_id = @restaurant.id
     if @table.save!
       redirect_to restaurant_tables_path(@restaurant)
@@ -44,7 +44,7 @@ class TablesController < ApplicationController
   end
 
   private
-  
+
   def set_table
     @table = Table.find(params[:id])
   end

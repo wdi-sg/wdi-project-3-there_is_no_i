@@ -5,6 +5,10 @@
     <%= f.label :name %>
     <%= f.text_field :name, placeholder: "Name" %>
   </p>
+  <div>
+  <%= f.label :email %>
+  <%= f.text_field :email, value: current_user.email %>
+  </div>
   <p>
     <%= f.label :phone %>
     <%= f.text_field :phone, placeholder: "Phone" %>

@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     resources :invoices do
       resources :orders
     end
+    # display all orders
+    get 'orders' => 'orders#index'
     get 'walkins' => 'walkins#index'
     post 'walkins' => 'walkins#create'
     get 'walkins/new' => 'walkins#new', as: 'new_walkin'

@@ -1,17 +1,73 @@
-<div class="row col-md-8 col-md-offset-2">
-  <h1><%= @invoice.id %></h1>
+<h1>Showing Invoice</h1>
+<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %> <br/>
+<%= link_to 'Back to Invoices', restaurant_invoices_path(@restaurant.id) %>
+<br/>
+<p>
+  Invoice number:
+  <%= @invoice.id %>
+</p>
+<p>
+  User:
+  <%= @invoice.user_name %>
+</p>
+<p>
+  Restaurant:
+  <%= @invoice.restaurant.name %>
+</p>
+<p>
+  Total:
+  <%= formatPrice(showTotalPrice(@invoice.menu_items)) %>
+</p>
+<p>
+  Ordered:
+  <table>
+    <thead>
+      <tr>
+        <th>
+          Item
+        </th>
+        <th>
+          Price
+        </th>
+        <th>
+          Takeaway?
+        </th>
+        <th>
+          User Name
+        </th>
+        <th>
+          Request
+        </th>
+        <th>
+          Destroy?
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invoice.orders.each do |order| %>
+<tr>
+  <td>
+    <%= order.menu_item.name %>
+  </td>
+  <td>
+    <%= formatPrice(order.menu_item.price) %>
+  </td>
+  <td>
+    <%= order.is_take_away %>
+  </td>
+  <td>
+    <%= order.user.name %>
+  </td>
+  <td>
+    <%= order.request_description %>
+  </td>
+  <td>
+<%= link_to 'Destroy', restaurant_invoice_order_path(@restaurant.id, @invoice, order), method: :delete, data: { confirm: 'Are you sure?' } %>
+  </td>
+</tr>
+<% end %>
+    </tbody>
+  </table>
 
-<div class="panel panel-default">
-  <% if @invoice.orders.any? %>
-    <div class="panel-body" id="messages" data-invoice=<%=@invoice.id%>>
-      <%= render partial: 'messages/message', collection: @invoice.messages%>
-    </div>
-  <%else%>
-    <div class="panel-body hidden" id="messages">
-    </div>
-  <%end%>
-</div>
 
-
-  <%= render partial: 'messages/message_form', locals: {message: @message, invoice: @invoice}%>
-</div>
+</p>

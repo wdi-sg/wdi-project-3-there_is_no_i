@@ -1,4 +1,10 @@
-<h1>New Invoice</h1>
+<h1>Edit Invoice</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 </br/>
 <%= render "/invoices/form", invoice: @invoice, url: restaurant_invoices_path %>
+<% @invoice.menu_items.each do |x| %>
+<p>
+  <%= x.name %>
+  <%= x.price %>
+</p>
+<% end %>
