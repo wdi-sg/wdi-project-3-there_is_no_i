@@ -13,6 +13,7 @@
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
   <p>Pax: <%= reservation.party_size  %> </p>
+  <p>Table: <%= Table.find(reservation.table_id).name  %> </p>
   <p>
     Date:
     <% if reservation.start_time%>

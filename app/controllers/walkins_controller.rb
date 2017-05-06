@@ -24,13 +24,14 @@ class WalkinsController < ApplicationController
 
   def public_create
     create_walkin(public_params)
-    recommended_table = determine_table(set_restaurant, find_aval_tables(@restaurant), @walkin, Time.now, 2.hours)
+    recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, 2.hours)
     if recommended_table
       update_table_count(recommended_table, @walkin.party_size)
       update_new_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + 2.hours)
       sms_awaiting(@walkin.name, @restaurant.name, recommended_table.name)
     else
       #recommend further action
+      # recommend change table settings? change minimum / split / join
       update_new_customer(@walkin, nil, 'queuing', nil, nil)
       sms_queue(@walkin, @restaurant, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
     end

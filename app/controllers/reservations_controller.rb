@@ -1,5 +1,6 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
+  include FindingTableLogic
   before_action :authenticate_user!, except: [:create, :new, :show]
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
@@ -27,67 +28,38 @@ class ReservationsController < ApplicationController
     month = d.strftime('%m')
     year = d.strftime('%Y')
     t = Time.parse(params[:reservation][:time])
-    r_start_time = t.change(day: day, month: month, year: year, offset: +0o000) + 8.hours
+
+    r_start_time = t.change(day: day, month: month, year: year, offset: +0o000)
     puts "START TIME: #{r_start_time}"
     r_end_time = r_start_time + 2.hours
     party_size = params[:reservation][:party_size]
 
-    @avail_tables = Table.where(restaurant_id: @restaurant.id)
+    avail_tables = Table.where(restaurant_id: @restaurant.id)
 
-    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date)
+    # NEED TO VALIDATE PARTY SIZE, date, time
+    new_res = Reservation.new()
+    new_res[:name] = params[:reservation][:name]
+    new_res[:phone] = params[:reservation][:phone]
+    new_res[:party_size] = params[:reservation][:party_size]
+    new_res[:restaurant_id] = params[:restaurant_id]
 
-    all_avail_reservations = all_reservations.where("start_time >= ?", r_end_time).or(all_reservations.where("end_time <= ?", r_start_time)).to_a
-    puts "ALL RESERVATIONS #{all_avail_reservations}"
+    recommended_table = determine_table(@restaurant, avail_tables, new_res, r_start_time, 2.hours)
 
-    
+    p '===RECOMMENDED TABLE==='
+    p recommended_table
 
-    # if-else statement to reject reservation in the event that there are no available tables
-    # if all_avail_reservations.length == 0
-    #   before_avail_reservations = all_reservations.where("start_time >= ?", r_end_time - 1.hours).or(all_reservations.where("end_time <= ?", r_start_time - 1.hours)).to_a
-    #   before_table_array = []
-    #   before_avail_reservations.each do |reservation|
-    #     before_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
-    #   end
-    #   before_table_array.sort_by! { |table| table.capacity_total }
-    #   before_chosen_table = before_table_array[0]
-    #
-    #   after_avail_reservations = all_reservations.where("start_time >= ?", r_end_time + 1.hours).or(all_reservations.where("end_time <= ?", r_start_time + 1.hours)).to_a
-    #   after_table_array = []
-    #   after_avail_reservations.each do |reservation|
-    #     after_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
-    #   end
-    #   after_table_array.sort_by! { |table| table.capacity_total }
-    #   after_chosen_table = after_table_array[0]
-    # else
-      # find the tables by table_id in the reservation that have a capacity >= party size
-      # table_array = []
-      # all_avail_reservations.each do |reservation|
-      #   table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
-      # end
-      #
-      # # sort tables in the table array by their capacity_total
-      # table_array.sort_by! { |table| table.capacity_total }
-      #
-      # # [0] of this array will give the table with the minimally adequate capacity to fit all customers
-      # the_chosen_table = table_array[0]
-
-      new_res = {}
-      new_res[:name] = params[:reservation][:name]
-      new_res[:phone] = params[:reservation][:phone]
+    if recommended_table
       new_res[:start_time] = r_start_time
       new_res[:end_time] = r_start_time + 2.hours
-      # new_res[:table_id] = the_chosen_table.table_id
-      new_res[:party_size] = params[:reservation][:party_size]
-      new_res[:restaurant_id] = params[:restaurant_id]
-
-      @reservation = Reservation.new(new_res)
-
-      if @reservation.save
+      new_res[:table_id] = recommended_table.id
+      if new_res.save!
         redirect_to restaurant_path(params[:restaurant_id])
       else
         render :new
       end
-    # end
+    else
+      render :new
+    end
   end
 
   def edit

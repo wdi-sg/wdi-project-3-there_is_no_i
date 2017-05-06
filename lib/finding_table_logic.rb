@@ -14,6 +14,8 @@ module FindingTableLogic
     # Filter off tables by capacity_total (>= party_size)
     filtered_aval_tables = filter_by_capacity(tables_considered, this_customer)
 
+    # && this.customer.party_size < recommended_table.capacity_minimum...
+
     # Select smallest size available
     recommended_table = filtered_aval_tables[0]
   end
@@ -29,19 +31,24 @@ module FindingTableLogic
     affecting_reservations = all_reservations.where('start_time < ?', end_time_est - block).or(all_reservations.where('end_time > ?', start_time_given)).to_a
 
     # Find Tables that cannot be used
-    affecting_tables = []
+    affecting_table_ids = []
     affecting_reservations.each do |reservation|
-      affecting_tables.push(Table.where('id = ?', reservation.table_id))
+      affecting_table_ids.push(reservation.table_id)
     end
 
+    affecting_tables = Table.find(affecting_table_ids)
+
+    p 'AFFECTING TABLES'
+    p affecting_tables
     affecting_tables
   end
 
   def tables_to_consider(tables_considered, affecting_tables)
-    tables_considered.select do |table_considered|
-      affecting_tables.exclude?(table_considered)
-    end
-    tables_considered
+    tables_filtered = tables_considered - affecting_tables
+    
+    p 'TABLES TO CONSIDER'
+    p tables_filtered
+    tables_filtered
   end
 
   def filter_by_capacity(tables_considered, this_customer)
