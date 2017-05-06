@@ -1,6 +1,5 @@
 module FindingTableLogic
 
-  # Determine Table for New Customer
   def determine_table(restaurant, tables_considered, this_customer, start_time_given, block)
 
     # Find Tables that cannot be used
@@ -30,20 +29,13 @@ module FindingTableLogic
     # Find all reservations
     all_reservations = Reservation.where(restaurant_id: restaurant.id).where('DATE(start_time) = ?', date).where.not(status: 'checked_out').where.not(status: 'cancelled')
 
-    # p '---RESERVATIONS---'
-    # p all_reservations
-
-    # Find Blocked tables of blocked reservations
-    # affecting_reservations = all_reservations.where('start_time < ?', end_time_est - block).or(all_reservations.where('end_time > ?', start_time_given)).to_a
     affecting_reservations = all_reservations.where('start_time < ?', end_time_est).where('end_time > ?', start_time_given)
 
     # Find Tables that cannot be used
-    affecting_table_ids = []
+    affecting_tables = []
     affecting_reservations.each do |reservation|
-      affecting_table_ids.push(reservation.table_id)
+      affecting_tables.push(reservation.table)
     end
-
-    affecting_tables = Table.find(affecting_table_ids)
 
     p 'AFFECTING TABLES'
     p affecting_tables

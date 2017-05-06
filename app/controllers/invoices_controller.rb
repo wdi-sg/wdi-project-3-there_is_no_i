@@ -10,14 +10,34 @@ class InvoicesController < ApplicationController
     def index
       @invoices = Invoice.where(restaurant_id: params[:restaurant_id]).order('created_at ASC')
     end
-
+# @index = 0
     def create
-      @invoice = Invoice.new(invoice_params)
-      @invoice.restaurant_id = @restaurant.id
+      # @index += 1
+      # params[:orders]
+      if current_user
+      @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id)
+    #   # @index
+    else
+      @invoice = Invoice.new(restaurant_id: @restaurant.id)
+    #   @index
+    end
+    #   # @invoice.restaurant_id = @restaurant.id
       if @invoice.save!
-        redirect_to restaurant_invoices_path(@restaurant)
-      else
-        render :new
+    x = params[:orders].split('/')
+      if current_user
+    x.each do |x|
+      Order.create(user_id: current_user.id, is_take_away: true, invoice_id: @invoice.id, menu_item_id: x)
+    end
+else
+  x.each do |x|
+    Order.create(is_take_away: true, invoice_id: @invoice.id, menu_item_id: x)
+  end
+end
+  #code
+else
+        # redirect_to restaurant_menu_items_path(@restaurant)
+    #   else
+        render html: @invoice
       end
     end
 
@@ -50,9 +70,9 @@ class InvoicesController < ApplicationController
       @invoice = Invoice.find(params[:id])
     end
 
-    def invoice_params
-      params.require(:invoice).permit(:user_id, :user_name, :table_id, :restaurant_id, :time_end, :takeaway_time, :reservation_id)
-    end
+    # def invoice_params
+    #   params.require(:invoice).permit(:user_id, :user_name, :table_id, :restaurant_id, :time_end, :takeaway_time, :reservation_id)
+    # end
 
     def check_user_is_part_of_invoice
       if current_user[:id] != @invoice[:user_id] && !current_user.restaurants.include?(@invoice.restaurant)

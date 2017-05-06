@@ -19,7 +19,7 @@
   </p>
   <p>
     <%= f.label :start_time %>
-    <%= f.text_field :start_time, placeholder: "Date", value:@reservation.start_time.getlocal('+08:00') %>
+    <%= f.text_field :start_time, placeholder: "Date", value:@reservation.start_time.getlocal('+08:00'), min: Time.now.getlocal('+08:00') %>
   </p>
   <p>
     <%= f.submit "Update" %>

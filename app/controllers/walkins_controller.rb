@@ -33,34 +33,14 @@ class WalkinsController < ApplicationController
 
       update_table_count(recommended_table, @walkin.party_size)
 
-      update_new_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + est_duration)
+      update_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + est_duration)
 
       recommended_table.start_time = Time.now
       recommended_table.end_time = Time.now + est_duration
 
       sms_awaiting(@walkin.name, @restaurant.name, recommended_table.name)
     else
-      #CHANGE TO BLANK
-
-
-      # Set the EST TIME / Table OR recommend further action
-      # sort by end_time
-      reservations_by_endtime = Reservation.where(restaurant_id: @restaurant.id).where.not(status: 'checked_out').where.not(status: 'cancelled').where.not(end_time: nil).sort_by {|reservation| reservation[:end_time]}
-
-      p 'TABLES BY END TIME'
-      p reservations_by_endtime
-
-      i = 0
-      while recommended_table == nil
-      recommended_table = determine_table(@restaurant, Table.where(restaurant_id: @restaurant.id), @walkin, reservations_by_endtime[i].end_time, est_duration)
-      i += 1
-      end
-
-      # FIX NOT ACCURATE END TIME
-      new_time = Reservation.where(table_id: recommended_table.id).sort_by{|reservation| reservation[:end_time]}[0].end_time
-
-      # recommend change table settings? change minimum / split / join
-      update_new_customer(@walkin, recommended_table, 'queuing', new_time, new_time + est_duration)
+      update_customer(@walkin, nil, 'queuing', nil, nil)
 
       sms_queue(@walkin, @restaurant, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
     end
@@ -151,7 +131,7 @@ class WalkinsController < ApplicationController
     table.save!
   end
 
-  def update_new_customer(customer, recommended_table, new_status, new_start_time, new_end_time)
+  def update_customer(customer, recommended_table, new_status, new_start_time, new_end_time)
     customer.status = new_status
     if recommended_table
       customer.table_id = recommended_table.id
