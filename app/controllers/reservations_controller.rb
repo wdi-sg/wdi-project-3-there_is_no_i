@@ -1,9 +1,11 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
+  include FindingTableLogic
   before_action :authenticate_user!, except: [:create, :new, :show]
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
+  before_action :check_user_is_part_of_reservation, only: [:show]
   helper ReservationsHelper
 
   def index
@@ -22,75 +24,46 @@ class ReservationsController < ApplicationController
   def create
     d = Time.parse(params[:reservation][:date])
     date = d.strftime("%Y-%m-%d")
-    puts "DATE #{date}"
+    # puts "DATE #{date}"
     day = d.strftime('%d')
     month = d.strftime('%m')
     year = d.strftime('%Y')
     t = Time.parse(params[:reservation][:time])
-    r_start_time = t.change(day: day, month: month, year: year, offset: +0o000) + 8.hours
-    puts "START TIME: #{r_start_time}"
+
+    r_start_time = t.change(day: day, month: month, year: year, offset: +0o000)
+    # puts "START TIME: #{r_start_time}"
     r_end_time = r_start_time + 2.hours
     party_size = params[:reservation][:party_size]
 
-    # find all tables (to be refactored into another function)
-    # @avail_tables = Table.where(restaurant_id: @restaurant.id).where('capacity_current = ?', 0)
-    # find restaurant's tables
-    @avail_tables = Table.where(restaurant_id: @restaurant.id)
+    avail_tables = Table.where(restaurant_id: @restaurant.id)
 
-    # find all reservations from that restaurant on the date chosen by customer on the reservation form
-    all_reservations = Reservation.where(restaurant_id: params[:restaurant_id]).where("DATE(start_time) = ?", date)
+    # NEED TO VALIDATE PARTY SIZE, date, time
+    new_res = Reservation.new()
+    new_res[:name] = params[:reservation][:name]
+    new_res[:email] = params[:reservation][:email]
+    new_res[:phone] = params[:reservation][:phone]
+    new_res[:party_size] = params[:reservation][:party_size]
+    new_res[:restaurant_id] = params[:restaurant_id]
 
-    # find all reservations that have tables which can be booked
-    all_avail_reservations = all_reservations.where("start_time >= ?", r_end_time).or(all_reservations.where("end_time <= ?", r_start_time)).to_a
-    puts "ALL RESERVATIONS #{all_avail_reservations}"
+    recommended_table = determine_table(@restaurant, avail_tables, new_res, r_start_time, 2.hours)
 
-    # if-else statement to reject reservation in the event that there are no available tables
-    # if all_avail_reservations.length == 0
-    #   before_avail_reservations = all_reservations.where("start_time >= ?", r_end_time - 1.hours).or(all_reservations.where("end_time <= ?", r_start_time - 1.hours)).to_a
-    #   before_table_array = []
-    #   before_avail_reservations.each do |reservation|
-    #     before_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
-    #   end
-    #   before_table_array.sort_by! { |table| table.capacity_total }
-    #   before_chosen_table = before_table_array[0]
-    #
-    #   after_avail_reservations = all_reservations.where("start_time >= ?", r_end_time + 1.hours).or(all_reservations.where("end_time <= ?", r_start_time + 1.hours)).to_a
-    #   after_table_array = []
-    #   after_avail_reservations.each do |reservation|
-    #     after_table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
-    #   end
-    #   after_table_array.sort_by! { |table| table.capacity_total }
-    #   after_chosen_table = after_table_array[0]
-    # else
-      # find the tables by table_id in the reservation that have a capacity >= party size
-      # table_array = []
-      # all_avail_reservations.each do |reservation|
-      #   table_array.push(Table.where("id = ?", reservation.table_id).where("capacity_total >= ?", reservation.party_size))
-      # end
-      #
-      # # sort tables in the table array by their capacity_total
-      # table_array.sort_by! { |table| table.capacity_total }
-      #
-      # # [0] of this array will give the table with the minimally adequate capacity to fit all customers
-      # the_chosen_table = table_array[0]
+    p '===RECOMMENDED TABLE==='
+    p recommended_table
 
-      new_res = {}
-      new_res[:name] = params[:reservation][:name]
-      new_res[:phone] = params[:reservation][:phone]
+    if recommended_table
       new_res[:start_time] = r_start_time
       new_res[:end_time] = r_start_time + 2.hours
-      # new_res[:table_id] = the_chosen_table.table_id
-      new_res[:party_size] = params[:reservation][:party_size]
-      new_res[:restaurant_id] = params[:restaurant_id]
-
-      @reservation = Reservation.new(new_res)
-
-      if @reservation.save
+      new_res[:table_id] = recommended_table.id
+      if new_res.save!
         redirect_to restaurant_path(params[:restaurant_id])
       else
+        flash['alert'] = 'Error. Please check input parameters'
         render :new
       end
-    # end
+    else
+      flash['alert'] = 'There are no tables available at that time. Please try again with a different timeslot.'
+      render :new
+    end
   end
 
   def edit
@@ -111,8 +84,12 @@ class ReservationsController < ApplicationController
   end
 
   def destroy
-    @reservation.destroy
-    redirect_to restaurant_reservations_path(@restaurant)
+    # ERROR HERE: INVALID FOREIGN KEY for Invoices
+    if @reservation.destroy!
+      redirect_to restaurant_reservations_path(@restaurant)
+    else
+      render :new
+    end
   end
 
   private
@@ -123,5 +100,12 @@ class ReservationsController < ApplicationController
 
   def reservation_params
     params.require(:reservation).permit(:name, :party_size, :start_time)
+  end
+
+  def check_user_is_part_of_reservation
+    if current_user[:id] != @reservation[:user_id] && !current_user.restaurants.include?(@reservation.restaurant)
+      flash['alert'] = 'You do not have permission to access that page'
+      redirect_to edit_user_registration_path
+    end
   end
 end

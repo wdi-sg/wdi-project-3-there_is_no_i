@@ -1,0 +1,29 @@
+<h1>Invoices</h1>
+<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
+<br>
+<br>
+<table>
+  <thead>
+    <tr>
+      <th>Date Created</th>
+      <th>User</th>
+      <th>Total</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invoices.each do |invoice| %>
+    <tr>
+      <td><%= formatInvoiceDate(invoice.created_at) %></td>
+      <td><%= invoice.user_name %></td>
+      <td><%= showTotalPrice(invoice.menu_items) %></td>
+
+      <td><%= link_to 'Show', restaurant_invoice_path(@restaurant.id, invoice) %></td>
+      <td><%= link_to 'Edit', edit_restaurant_invoice_path(@restaurant.id, invoice) %></td>
+      <td><%= link_to 'Destroy', restaurant_invoice_path(@restaurant.id, invoice), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

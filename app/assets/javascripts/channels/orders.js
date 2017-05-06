@@ -1,6 +1,6 @@
 App.orders = App.cable.subscriptions.create('OrdersChannel', {
   received: function (data) {
-    return $("[data-transaction='" + data.transaction_id + "']").append(data.order)
+    return $("[data-invoice='" + data.invoice_id + "']").append(data.order)
   }
 })
 
@@ -12,8 +12,8 @@ function submitNewMessage(){
   $('textarea#message_content').keydown(function(event) {
     if (event.keyCode === 13) {
         var msg = event.target.value
-        var transactionId = $("[data-transaction]").data().transaction
-        App.messages.send({message: msg, transaction_id: transactionId})
+        var invoiceId = $("[data-invoice]").data().invoice
+        App.messages.send({message: msg, invoice_id: invoiceId})
         $('[data-textarea="message"]').val(" ")
         return false;
      }

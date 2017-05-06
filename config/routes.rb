@@ -25,9 +25,11 @@ Rails.application.routes.draw do
     resources :reservations
     resources :menu_items
     resources :tables
-    resources :transactions do
+    resources :invoices do
       resources :orders
     end
+    # display all orders
+    get 'orders' => 'orders#index'
     get 'walkins' => 'walkins#index'
     post 'walkins' => 'walkins#create'
     get 'walkins/new' => 'walkins#new', as: 'new_walkin'
@@ -42,7 +44,6 @@ Rails.application.routes.draw do
     get 'diners/:id/edit' => 'diners#edit', as: 'edit_diner'
     get 'diners/:id' => 'diners#show', as: 'diner'
     put 'diners/:id' => 'diners#update'
-
   end
 
   # routes for Stripe integration

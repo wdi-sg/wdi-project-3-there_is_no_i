@@ -13,10 +13,12 @@
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
   <p>Pax: <%= reservation.party_size  %> </p>
+  <p>Table: <%= Table.find(reservation.table_id).name  %> </p>
   <p>
     Date:
     <% if reservation.start_time%>
-      <%= formatDate(reservation.start_time) %>
+      <%= formatDate(reservation.start_time.getlocal('+08:00')) %>
+      <!-- <%= reservation.start_time.getlocal('+08:00') %> -->
     <% end %>
   </p>
   <p>For:
@@ -27,6 +29,7 @@
   <%= link_to 'View', restaurant_reservation_path(@restaurant.id, reservation) %> |
   <%= link_to 'Edit', edit_restaurant_reservation_path(@restaurant.id, reservation) %> |
   <%= link_to 'Delete', restaurant_reservation_path(@restaurant.id, reservation), method: :delete, data: { confirm: 'Are you sure?' } %>
+
   <br/>
   <br/>
 </div>

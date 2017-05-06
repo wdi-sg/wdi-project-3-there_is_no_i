@@ -1,0 +1,4 @@
+<h1>New Invoice</h1>
+<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
+</br/>
+<%= render "/invoices/form", invoice: @invoice, url: restaurant_invoices_path %>

@@ -25,9 +25,7 @@
 
   <div class="nav-right nav-menu">
     <% if user_signed_in? %>
-  <!-- Logged in as <strong><%= current_user.email %></strong>. -->
   <% if current_user[:restaurant_id]  %>
-  <% x = current_user[:restaurant_id] %>
   <li class="nav-item is-tab">
     <%= link_to 'Dashboard', dashboard_path, :class => 'navbar-link' %>
   </li>
