@@ -1,5 +1,69 @@
 <h1>Current Queue</h1>
-<%= link_to 'New Walkin Diner', restaurant_new_walkin_path(@restaurant.id) %>
+<!-- <%= link_to 'New Walkin Diner', restaurant_new_walkin_path(@restaurant.id) %> -->
+
+<h2>Reservations</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th>Quantity</th>
+      <th>Status</th>
+      <th>Queue Number</th>
+      <th>Table Assigned</th>
+      <th>Requests</th>
+      <th>Est Start Time</th>
+      <th>Est End Time</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @walkins.where(status:'reservation').each do |walkin| %>
+    <tr>
+      <!-- <td><%= link_to walkin.name, restaurant_edit_walkin_path(@restaurant.id, walkin) %></td> -->
+      <td><%= walkin.name %></td>
+      <td><%= walkin.phone %></td>
+      <td><%= walkin.email %></td>
+      <td><%= walkin.party_size %></td>
+
+      <td>
+        <% if walkin.status == 'awaiting' %>
+        <font color="red"><b><%= walkin.status %></b></font>
+        <% else %>
+        <%= walkin.status %>
+        <% end %>
+      </td>
+
+      <td><%= walkin.queue_number %></td>
+
+      <% if walkin.table_id %>
+      <td><%= Table.find(walkin.table_id).name %></td>
+      <% end %>
+
+      <td><%= walkin.special_requests %></td>
+      <td>
+        <% if walkin.start_time %>
+        <%= walkin.start_time.getlocal('+08:00') %>
+        <% end %>
+      </td>
+      <td>
+        <% if walkin.end_time %>
+        <% if Time.now > walkin.end_time %>
+        <font color="red"><b><%= walkin.end_time.getlocal('+08:00') %></b></font>
+        <% else %>
+        <%= walkin.end_time.getlocal('+08:00') %>
+        <% end %>
+        <% end %>
+      </td>
+      <!-- <td><%= link_to 'Show', restaurant_walkin_path(@restaurant.id, walkin) %></td>
+      <td><%= link_to 'Edit', restaurant_edit_walkin_path(@restaurant.id, walkin) %></td>
+      <td><%= link_to 'Destroy', restaurant_walkin_path(@restaurant.id, walkin), method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+    </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <h2>Queuing</h2>
 <table>
@@ -17,7 +81,8 @@
   <tbody>
     <% @walkins.where(status:'queuing').each do |walkin| %>
     <tr>
-      <td><%= link_to walkin.name, restaurant_edit_walkin_path(@restaurant.id, walkin) %></td>
+      <!-- <td><%= link_to walkin.name, restaurant_edit_walkin_path(@restaurant.id, walkin) %></td> -->
+      <td><%= walkin.name %></td>
       <td><%= walkin.phone %></td>
       <td><%= walkin.email %></td>
       <td><%= walkin.party_size %></td>
@@ -49,7 +114,7 @@
       <th>Quantity</th>
       <th>Status</th>
       <th>Queue Number</th>
-      <th>Predicted Table</th>
+      <th>Table Assigned</th>
       <th>Requests</th>
       <th>Est Start Time</th>
       <th>Est End Time</th>

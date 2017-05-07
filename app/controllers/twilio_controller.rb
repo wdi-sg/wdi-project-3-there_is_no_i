@@ -2,7 +2,7 @@ class TwilioController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def receive
-    # we can keep message counts in sesssion to check if it's the first message to maintain a conversation
+    # we can keep message counts in session to check if it's the first message to maintain a conversation
     # session[:counter] ||= 0
     # sms_count = session[:counter]
     # if sms_count == 0
@@ -12,9 +12,9 @@ class TwilioController < ApplicationController
     # end
     # session[:counter] += 1
 
-    from = params[:From] # gets the sender's number '+6587427184'
-    body = params[:Body] # gets the sender's message
-    @user = User.find(phone: from) || []
+    from = params[:From] ? params[:From] : '' # gets the sender's number '+6587427184'
+    body = params[:Body] ? params[:Body] : '' # gets the sender's message
+    @user = User.find(phone: from)
     if @user.count > 0
         message = "Hey #{@user[0].name}! Thanks for sending #{body}!"
     else
