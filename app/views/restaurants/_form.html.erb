@@ -49,12 +49,13 @@
   </p>
   <p>
     <%= f.label "picture" %>
-    <%= f.text_field :picture, placeholder: "Picture" %>
+    <%= f.file_field :picture %>
+    <!-- <%= cl_image_upload_tag(:picture, :html => {:class => "image_upload"}) %> -->
   </p>
 
   <p>
       <%= f.submit "Save" %>
   </p>
-
-
 <% end %>
+
+<%= cloudinary_js_config %>
