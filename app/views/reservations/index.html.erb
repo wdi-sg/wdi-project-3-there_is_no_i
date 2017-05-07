@@ -1,14 +1,16 @@
 <h1>All Reservations</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 
-<h1>Sort by:</h1>
+<center>
+<h1>- Sort by -</h1>
 <a class="waves-effect waves-light btn" href="/restaurants/<%= @restaurant_id %>/reservations?name=sort">Name</a>
 <a class="waves-effect waves-light btn" href="/restaurants/<%= @restaurant_id %>/reservations?pax=sort">Party size</a>
 <a class="waves-effect waves-light btn" href="/restaurants/<%= @restaurant_id %>/reservations?date=sort">Date</a>
+</center>
 
 <% @reservations.where(status: 'reservation').each do |reservation| %>
 
-<% if current_user[:id] == reservation[:user_id] %>
+<% if current_user[:id] == reservation[:user_id] or current_user.restaurants.include? @restaurant %>
 <div>
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
