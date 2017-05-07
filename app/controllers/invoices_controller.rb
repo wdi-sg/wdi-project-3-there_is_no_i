@@ -14,7 +14,8 @@ class InvoicesController < ApplicationController
     def create
       @amount = params[:total_price].to_f
       @amount = (@amount * 100).to_i
-begin
+
+      begin
       customer = Stripe::Customer.create(
       :email => params[:stripeEmail],
       :source => params[:stripeToken]
@@ -27,8 +28,6 @@ begin
       :currency => 'SGD'
       )
 
-# redirect_to restaurants_path
-#
       rescue Stripe::CardError => e
         flash[:alert] = e.message
         # redirect_to new_charge_path
@@ -61,7 +60,6 @@ begin
         end
         flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation soon."
         redirect_to restaurant_path(@restaurant)
-        # render html: 'you made a payment'
       else
         flash[:alert] = "There was an error submitting your order. Please try again."
         redirect_to restaurant_menu_items_path(@restaurant)
@@ -97,10 +95,6 @@ begin
       @invoice = Invoice.find(params[:id])
     end
 
-    # def invoice_params
-    #   params.require(:invoice).permit(:user_id, :user_name, :table_id, :restaurant_id, :time_end, :takeaway_time, :reservation_id)
-    # end
-
     def check_user_is_part_of_invoice
       if current_user[:id] != @invoice[:user_id] && !current_user.restaurants.include?(@invoice.restaurant)
         flash['alert'] = 'You do not have permission to access that page'
@@ -108,3 +102,4 @@ begin
       end
     end
   end
+  

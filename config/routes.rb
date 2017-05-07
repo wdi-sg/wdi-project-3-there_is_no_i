@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  # home
   root to: 'main#index'
 
-  # Users
+  # serve websocket cable requests
+  mount ActionCable.server, at: '/cable'
+
+  # route for Twilio SMS
+    get '/messages/receive' => 'twilio#receive'
+
+  # users
   devise_for :users, path: '/', path_names: {
     sign_up: 'register',
     sign_in: 'login',
@@ -14,10 +20,7 @@ Rails.application.routes.draw do
   # get '/dashboard' => 'restaurants#edit'
   get '/dashboard' => 'dashboard#index'
 
-  # Serve websocket cable requests
-  mount ActionCable.server, at: '/cable'
-
-  # Restaurants
+  # restaurants
   resources :restaurants do
     resources :reservations
     resources :menu_items
@@ -42,7 +45,4 @@ Rails.application.routes.draw do
     get 'diners/:id' => 'diners#show', as: 'diner'
     put 'diners/:id' => 'diners#update'
   end
-
-  # route for Twilio
-    get '/messages/receive' => 'twilio#receive'
 end
