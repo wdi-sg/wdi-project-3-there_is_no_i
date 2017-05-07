@@ -146,13 +146,4 @@ class ReservationsController < ApplicationController
       redirect_to edit_user_registration_path
     end
   end
-
-  # def combine_date_time(date, time)
-  #   day = Time.parse(date).strftime('%d')
-  #   month = Time.parse(date).strftime('%m')
-  #   year = Time.parse(date).strftime('%Y')
-  #   t = Time.parse(time)
-  #
-  #   r_start_time = t.change(day: day, month: month, year: year, offset: +0o000)
-  # end
 end

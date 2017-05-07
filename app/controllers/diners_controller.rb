@@ -3,9 +3,10 @@ class DinersController < ApplicationController
   include Sms
   before_action :set_restaurant, only: %i[index show edit update]
   before_action :set_diner, only: %i[show edit update]
-  before_action :set_duration, only: [:update, :assign_table]
+  before_action :set_duration, only: [:update, :reassign_table, :assign_table]
 
   def index
+    # @awaitants...
     @diners = Reservation.where(restaurant_id: params[:restaurant_id], status: 'dining').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting'))
   end
 
@@ -24,38 +25,79 @@ class DinersController < ApplicationController
     # if checked_out - NEXTCUSTOMER, CURENTDINER change status, end time
     # if cancelled - NEXTCUSTOMER, CURENTDINER change status, end time
 
-    if params[:reservation][:status] == 'checked_out'
+    if params[:reservation][:status] == 'awaiting' || params[:reservation][:status] == 'dining'
+      # HAVE TO RESET START TIME?
+      old_start_time = @diner.start_time
+      old_table_id = @diner.table_id
+      old_party_size = @diner.party_size
+
+      @diner.start_time = nil
+      @diner.end_time = nil
+      @diner.table_id = params[:reservation][:table_id]
+      @diner.party_size = params[:reservation][:party_size]
+      @diner.save
+      # NO TABLE SELECTED - WHY?
+      table_if_possible = determine_table(@restaurant, [@diner.table], @diner, Time.now, @est_duration)
+      if table_if_possible
+        @diner.start_time = Time.now
+        @diner.end_time = Time.now + @est_duration
+        save_update(@diner, @restaurant)
+      else
+        @diner.start_time = old_start_time
+        @diner.table_id = old_table_id
+        @diner.party_size = old_party_size
+        @diner.save
+        flash['alert'] = 'Error. New parameters are not permitted.'
+        redirect_to restaurant_edit_diner_path(@restaurant, @diner)
+        # render :edit
+      end
+    elsif params[:reservation][:status] == 'checked_out' || params[:reservation][:status] == 'cancelled'
       reset_table_count(@diner.table)
       @diner.end_time = Time.now
       @diner.save
+      # Assign table to next customer
+      # next_customer = find_next_customer(@diner.table)
+      # if next_customer
+      #   # Check if current table has reservations that will clash
+      #   next_customer_table = determine_table(@restaurant, [@diner.table], next_customer, Time.now, @est_duration)
+      #   if next_customer_table
+      #     assign_table(next_customer, next_customer_table)
+      #     sms_awaiting(next_customer.name, @restaurant.name, next_customer_table.name)
+      #     save_update(@diner, @restaurant)
+      #   else
+      #     save_update(@diner, @restaurant)
+      #   end
+      # else
+      #   save_update(@diner, @restaurant)
+      # end
+      reassign_table(@diner, @restaurant)
+    else
+      flash['alert'] = 'Error 500. Check form status.'
+      render :edit
+    end
+  end
 
-      next_customer = find_next_customer(@diner.table)
+  def reassign_table(diner, restaurant)
+    next_customer = find_next_customer(diner.table)
+    if next_customer
+      # Check if current table has reservations that will clash
+      next_customer_table = determine_table(restaurant, [diner.table], next_customer, Time.now, @est_duration)
+      if next_customer_table
 
-      if next_customer
-        # Check if current table has reservations that will clash
-        next_customer_table = determine_table(@restaurant, [@diner.table], next_customer, Time.now, @est_duration)
+        assign_table(next_customer, next_customer_table)
+        sms_awaiting(next_customer.name, restaurant.name, next_customer_table.name)
 
-        if next_customer_table
-          assign_table(next_customer, next_customer_table)
-
-          sms_awaiting(next_customer.name, @restaurant.name, next_customer_table.name)
-
-          save_update(@diner, @restaurant)
-        else
-          save_update(@diner, @restaurant)
-        end
-
+        save_update(diner, restaurant)
       else
-        save_update(@diner, @restaurant)
+        save_update(diner, restaurant)
       end
     else
-      save_update(@diner, @restaurant)
+      save_update(diner, restaurant)
     end
   end
 
   # Update leaving customer
   def save_update(diner, restaurant)
-    # USE SAVE PARAMS INSTEAD SAVE ONE BY ONE
     diner.status = params[:reservation][:status]
     p 'TROUBLESHOOT'
     p diner
@@ -71,14 +113,8 @@ class DinersController < ApplicationController
   private
 
   def reset_table_count(table)
-    # p '====TABLE that USER LEFT===='
-    # p table
-
     table.capacity_current = 0
     table.save!
-
-    # p '====TABLE Updated===='
-    # p table
   end
 
   def find_next_customer(table)
@@ -99,15 +135,6 @@ class DinersController < ApplicationController
       end
 
       next_customer = sorted_queue[0]
-
-      # # DRAFT: Allow larger party?
-      # sorted_size = sorted_queue.sort_by { |customer| -customer[:party_size] / 2 }
-      # p '====QUEUE sorted by largest party===='
-      # p sorted_size
-      # sorted_size.each do |queue|
-      #   p queue.party_size
-      # end
-      # next_customer = sorted_size[0]
 
     elsif filtered_queue.count == 1
       next_customer = filtered_queue[0]
@@ -139,6 +166,6 @@ class DinersController < ApplicationController
   end
 
   def diner_params
-    params.require(:reservation).permit(:party_size, :special_requests, :status)
+    params.require(:reservation).permit(:party_size, :special_requests, :status, :table_id)
   end
 end

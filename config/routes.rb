@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   }
 
   # dashboard(redirect from /restaurant/:id/edit)
-  get '/dashboard' => 'restaurants#edit'
+  # get '/dashboard' => 'restaurants#edit'
+  get '/dashboard' => 'dashboard#index'
 
   # Serve websocket cable requests
   mount ActionCable.server, at: '/cable'

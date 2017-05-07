@@ -20,10 +20,10 @@
     Queue Number:
     <%= @diner.queue_number %>
   </p>
-  
+
   <p>
     <%= f.label :status, "Status" %>
-    <%= f.select(:status, [['Queuing','queuing'], ['Awaiting','awaiting'], ['Dining','dining'], ['Checked Out','checked_out'], ['Cancelled','cancelled']])%>
+    <%= f.select(:status, [['Awaiting','awaiting'], ['Dining','dining'], ['Checked Out','checked_out'], ['Cancelled','cancelled']])%>
   </p>
 
   <p>
