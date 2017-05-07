@@ -26,6 +26,7 @@ class RestaurantsController < ApplicationController
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
+    @restaurant.next_queue_number = 1
     if @restaurant.save!
       @user.restaurant_id = @restaurant.id
       @user.save!

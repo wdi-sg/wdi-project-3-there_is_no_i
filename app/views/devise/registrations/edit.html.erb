@@ -60,7 +60,9 @@
 <%= link_to "Register a restaurant", new_restaurant_path %>
 
 <h1>Restaurants linked to you:</h1>
+
 Primary restaurant: <%= current_user.restaurant_id ? Restaurant.find(current_user.restaurant_id).name : 'None'%>
+
 <% current_user.restaurants.each do |rest| %>
 <p>
   id: <%= rest.id %>
