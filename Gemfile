@@ -45,6 +45,9 @@ gem 'foreman'
 # Gem to use jquery with Materialize
 gem 'jquery-turbolinks'
 
+# Testing Mailgun
+gem 'rest-client'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
