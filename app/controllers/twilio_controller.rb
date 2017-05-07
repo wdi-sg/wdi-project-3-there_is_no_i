@@ -1,7 +1,7 @@
 class TwilioController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  enable :sessions
+  # enable :sessions
 
 # params[:From] -> gets the sender's number '+6587427184'
 # params[:Body] -> gets the sender's message
