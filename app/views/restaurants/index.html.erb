@@ -1,80 +1,35 @@
+<center>
 <h1>Restaurants</h1>
-<h1>Sort by:</h1>
+
+<h1>- Sort by -</h1>
 <a class="waves-effect waves-light btn" href="/restaurants?name=sort">Name</a>
 <a class="waves-effect waves-light btn" href="/restaurants?cuisine=sort">Cuisine</a>
 <a class="waves-effect waves-light btn" href="/restaurants?city=sort">City</a>
 <a class="waves-effect waves-light btn" href="/restaurants?rating=sort">Rating</a>
+</center>
 
-<% @restaurant.each do |restaurant| %>
 
-<p>
-  Name:
-  <%= link_to restaurant.name, restaurant_path(restaurant) %>
-</p>
+<div class="row" id="restaurant-cards"> <!-- START OF CARD DISPLAY -->
 
-<p>
-  Address 1:
-  <%= restaurant.address1 %>
-</p>
+  <!-- CARD START -->
+  <% @restaurant.each do |restaurant, index| %>
+  <div class="col s4">
+    <div class="card">
+      <div class="card-image">
+        <img src="http://www.ultimatebali.com/wp-content/uploads/2015/11/Best-Fine-Dining-Indonesian-Restaurants-Bali1.jpg">
+        <span class="card-title"><%= link_to restaurant.name, restaurant_path(restaurant) %></span>
+      </div>
+      <div class="card-content">
+        <p><i class="material-icons left">local_offer</i><%= restaurant.cuisine %></p><br>
+        <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_country %></p><br>
+        <p><i class="material-icons left">thumbs_up_down</i><%= restaurant.rating %>%</p>
+      </div>
+      <div class="card-action">
+        <i class="material-icons left">person_add</i><%= link_to 'Book a table here!', new_restaurant_reservation_path(restaurant.id) %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  <!-- CARD END -->
 
-<p>
-  Address 2:
-  <%= restaurant.address2 %>
-</p>
-
-<p>
-  City:
-  <%= restaurant.address_city %>
-</p>
-
-<p>
-  State:
-  <%= restaurant.address_state %>
-</p>
-
-<p>
-  Country:
-  <%= restaurant.address_country %>
-</p>
-
-<p>
-  Post Code:
-  <%= restaurant.address_postal %>
-</p>
-
-<p>
-  Email:
-  <a href="mailto:<%= restaurant.email %>"><%= restaurant.email %></a>
-</p>
-
-<p>
-  Phone:
-  <%= formatPhone(restaurant.phone) %>
-</p>
-
-<p>
-  Website:
-  <a href="<%= restaurant.website %>"><%= restaurant.website %></a>
-</p>
-
-<p>
-  Description:
-  <%= restaurant.description %>
-</p>
-
-<p>
-  Cuisine:
-  <%= restaurant.cuisine %>
-</p>
-
-<p>
-  Picture:
-  <%= restaurant.picture %>
-</p>
-
-<p>
-  Rating:
-  <%= restaurant.rating %>
-</p>
-<br>
-<% end %>
+</div>
