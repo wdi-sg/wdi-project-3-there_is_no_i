@@ -23,7 +23,7 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    r_start_time =  Time.zone.local( params[:reservation]["start_time(1i)"].to_i, params[:reservation]["start_time(2i)"].to_i, params[:reservation]["start_time(3i)"].to_i, params[:reservation]["start_time(4i)"].to_i, params[:reservation]["start_time(5i)"].to_i,0)
+    r_start_time =  Time.zone.local( params[:reservation]["start_time(1i)"].to_i, params[:reservation]["start_time(2i)"].to_i, params[:reservation]["start_time(3i)"].to_i, params[:reservation]["start_time(4i)"].to_i, params[:reservation]["start_time(5i)"].to_i, 0)
 
     if r_start_time < Time.now
       flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'
@@ -31,6 +31,8 @@ class ReservationsController < ApplicationController
     elsif r_start_time < Time.now + @reservation_allowance.hours
       flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
       render :new
+      # VALIDATE: Check for multiple entries
+      # reservation where same email, date
     else
       new_res = Reservation.new()
       new_res[:name] = params[:reservation][:name]
@@ -52,7 +54,7 @@ class ReservationsController < ApplicationController
         new_res[:table_id] = recommended_table.id
         new_res[:status] = 'reservation'
         if new_res.save!
-          # Redirect to success page & send email
+          # Redirect to success page & SEND EMAIL
           redirect_to restaurant_path(params[:restaurant_id])
         else
           flash['alert'] = 'Error. Please check input parameters.'
@@ -83,7 +85,7 @@ class ReservationsController < ApplicationController
 
   def update
     old_start_time = @reservation.start_time
-    r_start_time =  Time.zone.local( params[:reservation]["start_time(1i)"].to_i, params[:reservation]["start_time(2i)"].to_i, params[:reservation]["start_time(3i)"].to_i, params[:reservation]["start_time(4i)"].to_i, params[:reservation]["start_time(5i)"].to_i,0)
+    r_start_time =  Time.zone.local( params[:reservation]["start_time(1i)"].to_i, params[:reservation]["start_time(2i)"].to_i, params[:reservation]["start_time(3i)"].to_i, params[:reservation]["start_time(4i)"].to_i, params[:reservation]["start_time(5i)"].to_i, 0)
 
     if r_start_time < Time.now
       flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'
@@ -92,8 +94,6 @@ class ReservationsController < ApplicationController
       flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
       render :new
     else
-      # validate_update
-
       @reservation.start_time = nil
       @reservation.save
 
@@ -106,19 +106,16 @@ class ReservationsController < ApplicationController
         if @reservation.update(reservation_params)
           redirect_to restaurant_reservations_path(@restaurant)
         else
-          # NEED TO RETURN OLD START TIME INSTEAD
           @reservation.start_time = old_start_time
           @reservation.save
           flash['alert'] = 'Error. Please check input parameters.'
-          render :edit
+          redirect_to edit_restaurant_reservation_path(@restaurant, @reservation)
         end
       else
-        # NEED TO RETURN OLD START TIME INSTEAD
         @reservation.start_time = old_start_time
         @reservation.save
-        flash['alert'] = 'Not Possible to update changes. Please try again with a different parameter.'
+        flash['alert'] = 'Not possible to update changes. Please try again with a different parameter.'
         redirect_to edit_restaurant_reservation_path(@restaurant, @reservation)
-        # render :edit
       end
     end
   end
@@ -149,12 +146,12 @@ class ReservationsController < ApplicationController
     end
   end
 
-  def combine_date_time(date, time)
-    day = Time.parse(date).strftime('%d')
-    month = Time.parse(date).strftime('%m')
-    year = Time.parse(date).strftime('%Y')
-    t = Time.parse(time)
-
-    r_start_time = t.change(day: day, month: month, year: year, offset: +0o000)
-  end
+  # def combine_date_time(date, time)
+  #   day = Time.parse(date).strftime('%d')
+  #   month = Time.parse(date).strftime('%m')
+  #   year = Time.parse(date).strftime('%Y')
+  #   t = Time.parse(time)
+  #
+  #   r_start_time = t.change(day: day, month: month, year: year, offset: +0o000)
+  # end
 end

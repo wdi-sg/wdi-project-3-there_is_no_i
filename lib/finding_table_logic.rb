@@ -30,8 +30,9 @@ module FindingTableLogic
   end
 
   def find_affecting_tables(restaurant, start_time_given, block)
-    end_time_est = start_time_given.utc + block
-    date = start_time_given.utc.strftime('%Y-%m-%d')
+    # end_time_est = start_time_given.utc + block
+    end_time_est = start_time_given + block
+    date = start_time_given.strftime('%Y-%m-%d')
 
     # Find all reservations
     all_reservations = Reservation.where(restaurant_id: restaurant.id).where('DATE(start_time) = ?', date).where.not(status: 'checked_out').where.not(status: 'cancelled')
