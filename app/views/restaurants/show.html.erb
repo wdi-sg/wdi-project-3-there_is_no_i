@@ -54,11 +54,12 @@
   Cuisine:
   <%= @restaurant.cuisine %>
 </p>
-
+<% if @restaurant.picture  %>
 <p>
   Picture:
-  <%= @restaurant.picture %>
+<%= cl_image_tag(@restaurant.picture, width: 200, height: 100, crop: :fill) %>
 </p>
+<% end %>
 
 <p>
   Rating:
