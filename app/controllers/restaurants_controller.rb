@@ -8,21 +8,25 @@ class RestaurantsController < ApplicationController
   helper RestaurantsHelper
 
   def index
+    first = params[:search]? params[:search].downcase : ''
+    second = params[:city]? params[:search].downcase : ''
+    x = Restaurant.where("LOWER(name) LIKE ? AND LOWER(address_city) LIKE ?", "%#{first}%", "%#{second}%")
     if request.fullpath == '/restaurants?name=sort'
-      @restaurant = Restaurant.all.order(:name)
+      @restaurant = x.order(:name)
     elsif request.fullpath == '/restaurants?cuisine=sort'
-      @restaurant = Restaurant.all.order(:cuisine)
+      @restaurant = x.order(:cuisine)
     elsif request.fullpath == '/restaurants?city=sort'
-      @restaurant = Restaurant.all.order(:address_city)
+      @restaurant = x.order(:address_city)
     elsif request.fullpath == '/restaurants?rating=sort'
-      @restaurant = Restaurant.all.order('rating DESC')
+      @restaurant = x.order('rating DESC')
     else
-      @restaurant = Restaurant.all.order('id ASC')
+      @restaurant = x.order('id ASC')
     end
   end
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
+    @restaurant.next_queue_number = 1
     if @restaurant.save!
       @user.restaurant_id = @restaurant.id
       @user.save!

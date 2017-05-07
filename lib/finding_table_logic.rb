@@ -1,7 +1,13 @@
 module FindingTableLogic
+  def set_duration
+    @est_duration = 2.hours
+    @reservation_allowance = 6
+  end
 
-  # Determine Table for New Customer
   def determine_table(restaurant, tables_considered, this_customer, start_time_given, block)
+
+    p 'TABLES CONSIDERED'
+    p tables_considered
 
     # Find Tables that cannot be used
     affecting_tables = find_affecting_tables(restaurant, start_time_given, block)
@@ -16,27 +22,28 @@ module FindingTableLogic
 
     # && this.customer.party_size < recommended_table.capacity_minimum...
 
+    p 'SELECTED'
+    p filtered_aval_tables[0]
+
     # Select smallest size available
     recommended_table = filtered_aval_tables[0]
   end
 
   def find_affecting_tables(restaurant, start_time_given, block)
-    end_time_est = start_time_given.utc + block
-    date = start_time_given.utc.strftime('%Y-%m-%d')
+    # end_time_est = start_time_given.utc + block
+    end_time_est = start_time_given + block
+    date = start_time_given.strftime('%Y-%m-%d')
 
     # Find all reservations
-    all_reservations = Reservation.where(restaurant_id: restaurant.id).where('DATE(start_time) = ?', date)
+    all_reservations = Reservation.where(restaurant_id: restaurant.id).where('DATE(start_time) = ?', date).where.not(status: 'checked_out').where.not(status: 'cancelled')
 
-    # Find Blocked tables of blocked reservations
-    affecting_reservations = all_reservations.where('start_time < ?', end_time_est - block).or(all_reservations.where('end_time > ?', start_time_given)).to_a
+    affecting_reservations = all_reservations.where('start_time < ?', end_time_est).where('end_time > ?', start_time_given)
 
     # Find Tables that cannot be used
-    affecting_table_ids = []
+    affecting_tables = []
     affecting_reservations.each do |reservation|
-      affecting_table_ids.push(reservation.table_id)
+      affecting_tables.push(reservation.table)
     end
-
-    affecting_tables = Table.find(affecting_table_ids)
 
     p 'AFFECTING TABLES'
     p affecting_tables
@@ -45,7 +52,7 @@ module FindingTableLogic
 
   def tables_to_consider(tables_considered, affecting_tables)
     tables_filtered = tables_considered - affecting_tables
-    
+
     p 'TABLES TO CONSIDER'
     p tables_filtered
     tables_filtered

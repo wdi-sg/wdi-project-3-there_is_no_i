@@ -12,9 +12,9 @@
       <th>Quantity</th>
       <th>Status</th>
       <th>Queue Number</th>
-      <th>TABLE ID?</th>
+      <th>Predicted Table</th>
       <th>Requests</th>
-      <th>Start Time</th>
+      <th>Est Start Time</th>
       <th>Est End Time</th>
       <th></th>
       <th></th>
@@ -35,7 +35,9 @@
         <% end %>
       </td>
       <td><%= walkin.queue_number %></td>
-      <td><%= walkin.table_id %></td>
+      <% if walkin.table_id %>
+      <td><%= Table.find(walkin.table_id).name %></td>
+      <% end %>
       <td><%= walkin.special_requests %></td>
       <td>
         <% if walkin.start_time %>

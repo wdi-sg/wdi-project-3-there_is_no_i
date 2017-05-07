@@ -3,6 +3,7 @@ class WalkinsController < ApplicationController
   before_action :authenticate_user!, except: [:new]
   before_action :set_restaurant, only: %i[index new create_walkin create public_new public_create public_save public_show edit update destroy]
   before_action :set_walkin, only: %i[show edit update destroy]
+  before_action :set_duration, only: [:create, :public_create, :update]
   helper WalkinHelper
 
   def index
@@ -24,19 +25,24 @@ class WalkinsController < ApplicationController
 
   def public_create
     create_walkin(public_params)
-    recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, 2.hours)
+
+    recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, @est_duration)
+
     if recommended_table
+
       update_table_count(recommended_table, @walkin.party_size)
-      update_new_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + 2.hours)
+
+      update_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + @est_duration)
+
       sms_awaiting(@walkin.name, @restaurant.name, recommended_table.name)
+
+      public_save(@walkin)
     else
-      #recommend further action
-      # filter party_size < capacity_total
-      # sort by end_time
-      # recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, ?, 2.hours)
-      # recommend change table settings? change minimum / split / join
-      update_new_customer(@walkin, nil, 'queuing', nil, nil)
+      update_customer(@walkin, nil, 'queuing', nil, nil)
+
       sms_queue(@walkin, @restaurant, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
+
+      public_save(@walkin)
     end
   end
 
@@ -125,7 +131,7 @@ class WalkinsController < ApplicationController
     table.save!
   end
 
-  def update_new_customer(customer, recommended_table, new_status, new_start_time, new_end_time)
+  def update_customer(customer, recommended_table, new_status, new_start_time, new_end_time)
     customer.status = new_status
     if recommended_table
       customer.table_id = recommended_table.id
@@ -136,7 +142,6 @@ class WalkinsController < ApplicationController
     if new_end_time
       customer.end_time = new_end_time
     end
-    public_save(customer)
   end
 
   def sms_awaiting(walkin_name, restaurant_name, chosen_table_name)
@@ -144,10 +149,10 @@ class WalkinsController < ApplicationController
   end
 
   def sms_queue(walkin, restaurant, queue_ahead)
-    if queue_ahead == 1
-      p "SMS: Dear #{walkin.name}, your reservation at #{restaurant.name} has been recorded. You are next in line for a party of #{walkin.party_size}. You may start placing your orders at localhost:3000/restaurants/#{restaurant.id}/menu_items"
+    if queue_ahead == 0
+      p "SMS: Dear #{walkin.name}, your reservation at #{restaurant.name} has been recorded. You are next in line for a party of #{walkin.party_size}. You may start placing your orders at https://locavorusrex.herokuapp.com/restaurants/#{restaurant.id}/menu_items"
     else
-      p "SMS: Dear #{walkin.name}, your reservation at #{restaurant.name} has been recorded. There is/are #{queue_ahead - 1} customer(s) ahead of you. You may start placing your orders at localhost:3000/restaurants/#{restaurant.id}/menu_items"
+      p "SMS: Dear #{walkin.name}, your reservation at #{restaurant.name} has been recorded. There is/are #{queue_ahead} customer(s) ahead of you in the queue. You may start placing your orders at https://locavorusrex.herokuapp.com/restaurants/#{restaurant.id}/menu_items"
     end
   end
 

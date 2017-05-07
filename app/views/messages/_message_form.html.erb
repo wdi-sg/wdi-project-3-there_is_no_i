@@ -1,6 +1,0 @@
-<div class="message-input">
-  <%= form_for @new_message, remote: true, url: messages_create_path do |f| %>
-    <%= f.text_area :content %>
-    <%= f.submit "Send" %>
-  <% end %>
-</div>

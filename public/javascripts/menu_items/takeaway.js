@@ -1,5 +1,18 @@
 var hide = true
 var orders = []
+var clicked = false
+// update the Stripe Checkout fields and submit
+// var handler = StripeCheckout.configure({
+//   key: 'pk_test_9yHOz6zrh9nnjNOGLjV2Pvcq',
+//   locale: 'auto',
+//   currency: 'SGD',
+//   name: gon.restaurant,
+//   description: 'Takeaway',
+//   token: function (token) {
+//     $('input#stripeToken').val(token.id)
+//     $('form').submit()
+//   }
+// })
 
 // show and hide takeaway
 document.getElementById('takeaway-show-hide').addEventListener('click', () => {
@@ -21,6 +34,7 @@ document.getElementById('takeaway-show-hide').addEventListener('click', () => {
         document.querySelectorAll('.add-to-order').forEach((button) => {
           button.style.display = 'none'
         })
+        document.querySelector('.ordered-items').style.display = 'none'
         hide = true
       }
     } else {
@@ -28,6 +42,7 @@ document.getElementById('takeaway-show-hide').addEventListener('click', () => {
       document.querySelectorAll('.add-to-order').forEach((button) => {
         button.style.display = 'none'
       })
+      document.querySelector('.ordered-items').style.display = 'none'
       hide = true
     }
   }
@@ -87,8 +102,15 @@ function redrawList () {
     addToList('<button class="remove-one" value=' + item['id'] + ' type="button">-</button> ' + item['count'] + ' <button class="add-one" value=' + item['id'] + ' type="button">+</button>' + ' x ' + item['name'] + ' => $' + (item['count'] * item['price']).toFixed(2).toString())
   })
   if (orders.length > 0) {
+    document.querySelector('.ordered-items').style.display = 'block'
     addToList('Total: $' + totalPrice().toFixed(2))
-    addToList('<button class="submit-orders" type="button">Submit Your Order</button>')
+    var stripeButton = document.querySelector('.stripe-button-el')
+    console.log(orders);
+    stripeButton.addEventListener('click', (event) => {
+      updateOrders()
+    })
+  } else {
+    document.querySelector('.ordered-items').style.display = 'none'
   }
 }
 
@@ -136,4 +158,21 @@ function count (orders) {
 // returns the total price of the orders
 function totalPrice () {
   return orders.reduce((a, b) => { return a + b['price'] }, 0.0)
+}
+
+// convert the orders array into a string of menu-item ids and submits that string
+function updateOrders () {
+  if (!clicked) {
+  var realTP = totalPrice()
+  console.log(orders);
+  var allOrders = orders
+  var first = allOrders.shift().id.toString()
+  var ordersStr = allOrders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
+  document.getElementById('orders').value = ordersStr
+  document.getElementById('total_price').value = realTP.toString()
+  clicked = true
+  }
+  // handler.open({
+  //   amount: realTP * 100
+  // })
 }

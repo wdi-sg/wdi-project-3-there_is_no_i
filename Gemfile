@@ -34,6 +34,9 @@ gem 'devise'
 # Add Gon for javascript things
 gem 'gon'
 
+# Add Twilio for SMS
+gem 'twilio-ruby'
+
 # Add Materialize CSS framework
 gem 'materialize-sass'
 # Gem for offline Materialize icons

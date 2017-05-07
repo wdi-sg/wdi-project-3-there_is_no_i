@@ -1,25 +1,56 @@
-<nav>
-  <div class="nav-wrapper">
-    <a href="#" class="brand-logo">Logo</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li><a href="sass.html">Sass</a></li>
-      <li><a href="badges.html">Components</a></li>
-      <li><a href="collapsible.html">JavaScript</a></li>
-    </ul>
-  </div>
-</nav>
+<!-- ===== OLD BULMA NAV BAR CODE START ===== -->
 
-<nav>
-  <div class="nav-wrapper">
-    <a href="#!" class="brand-logo">Logo</a>
-    <ul class="right hide-on-med-and-down">
-      <li><a href="sass.html">Sass</a></li>
-      <li><a href="badges.html">Components</a></li>
-      <!-- Dropdown Trigger -->
-      <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-    </ul>
+<nav class="nav">
+  <div class="nav-left">
+    <a class="nav-item" href="/">
+      Locavorus
+    </a>
   </div>
-</nav>
+
+  <div class="nav-center">
+    <div class="field is-grouped">
+        <form class="" action="/restaurants" method="get">
+          <!-- <p class="control"> -->
+          <input type="text" name="search" value="" placeholder="Search">
+        <!-- </p> -->
+        <!-- <p class="control"> -->
+          <input type="text" name="city" value="" placeholder="Location">
+        <!-- </p> -->
+        <!-- <p class="control"> -->
+        <button type="submit">Search</button>
+        </form>
+
+      <!-- <span class="nav-item icon">
+      <i class="fa fa-search" aria-hidden="true"></i>
+      </span> -->
+      </p>
+    </div>
+  </div>
+
+  <div class="nav-right nav-menu">
+    <% if user_signed_in? %>
+  <% if current_user[:restaurant_id]  %>
+  <li class="nav-item is-tab">
+    <%= link_to 'Dashboard', dashboard_path, :class => 'navbar-link' %>
+  </li>
+  <% end %>
+  <li class="nav-item is-tab">
+    <%= link_to 'Account', edit_user_registration_path, :class => 'navbar-link' %>
+  </li>
+  <li class="nav-item is-tab">
+    <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+  </li>
+<% else %>
+  <li class="nav-item is-tab">
+    <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %>
+  </li>
+  <li class="nav-item is-tab">
+    <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+  </li>
+<% end %>
+  </div>
+
+<!-- ===== OLD BULMA NAV BAR CODE END ===== -->
 
 <!-- center portion -->
 <div class="center">

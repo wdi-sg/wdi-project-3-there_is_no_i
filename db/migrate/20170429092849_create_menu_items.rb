@@ -7,6 +7,7 @@ class CreateMenuItems < ActiveRecord::Migration[5.0]
       t.text :description
       t.text :ingredients
       t.text :tags
+      # t.text :picture
 
       t.timestamps
     end
