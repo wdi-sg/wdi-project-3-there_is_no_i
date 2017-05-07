@@ -21,10 +21,17 @@
     <%= @diner.queue_number %>
   </p>
 
+  <% if @diner.status == 'awaiting' %>
   <p>
     <%= f.label :status, "Status" %>
-    <%= f.select(:status, [['Awaiting','awaiting'], ['Dining','dining'], ['Checked Out','checked_out'], ['Cancelled','cancelled']])%>
+    <%= f.select(:status, [['Awaiting','awaiting'], ['Dining','dining'], ['Cancelled','cancelled']])%>
   </p>
+  <% elsif @diner.status == 'dining' %>
+  <p>
+    <%= f.label :status, "Status" %>
+    <%= f.select(:status, [['Awaiting','awaiting'], ['Dining','dining'], ['Checked Out','checked_out']])%>
+  </p>
+  <% end %>
 
   <p>
     <%= f.label :party_size, "Number of Diners" %>

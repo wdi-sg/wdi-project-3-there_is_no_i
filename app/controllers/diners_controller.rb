@@ -26,7 +26,6 @@ class DinersController < ApplicationController
     # if cancelled - NEXTCUSTOMER, CURENTDINER change status, end time
 
     if params[:reservation][:status] == 'awaiting' || params[:reservation][:status] == 'dining'
-      # HAVE TO RESET START TIME?
       old_start_time = @diner.start_time
       old_table_id = @diner.table_id
       old_party_size = @diner.party_size
@@ -36,14 +35,16 @@ class DinersController < ApplicationController
       @diner.table_id = params[:reservation][:table_id]
       @diner.party_size = params[:reservation][:party_size]
       @diner.save
-      # NO TABLE SELECTED - WHY?
+
       table_if_possible = determine_table(@restaurant, [@diner.table], @diner, Time.now, @est_duration)
+
       if table_if_possible
         @diner.start_time = Time.now
         @diner.end_time = Time.now + @est_duration
         save_update(@diner, @restaurant)
       else
         @diner.start_time = old_start_time
+        @diner.end_time = old_start_time + @est_duration
         @diner.table_id = old_table_id
         @diner.party_size = old_party_size
         @diner.save
