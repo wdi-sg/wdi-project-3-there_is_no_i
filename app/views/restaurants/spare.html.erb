@@ -1,0 +1,140 @@
+<!-- ===== EXTREMELY IMPORTANT RESERVATION DISPLAY LOGIC ===== -->
+
+<% @restaurant.each do |restaurant| %>
+
+<p>
+  Name:
+  <%= link_to restaurant.name, restaurant_path(restaurant) %>
+</p>
+
+<p>
+  Address 1:
+  <%= restaurant.address1 %>
+</p>
+
+<p>
+  Address 2:
+  <%= restaurant.address2 %>
+</p>
+
+<p>
+  City:
+  <%= restaurant.address_city %>
+</p>
+
+<p>
+  State:
+  <%= restaurant.address_state %>
+</p>
+
+<p>
+  Country:
+  <%= restaurant.address_country %>
+</p>
+
+<p>
+  Post Code:
+  <%= restaurant.address_postal %>
+</p>
+
+<p>
+  Email:
+  <a href="mailto:<%= restaurant.email %>"><%= restaurant.email %></a>
+</p>
+
+<p>
+  Phone:
+  <%= formatPhone(restaurant.phone) %>
+</p>
+
+<p>
+  Website:
+  <a href="<%= restaurant.website %>"><%= restaurant.website %></a>
+</p>
+
+<p>
+  Description:
+  <%= restaurant.description %>
+</p>
+
+<p>
+  Cuisine:
+  <%= restaurant.cuisine %>
+</p>
+
+<p>
+  Picture:
+  <%= restaurant.picture %>
+</p>
+
+<p>
+  Rating:
+  <%= restaurant.rating %>
+</p>
+<br>
+<% end %>
+
+<!-- ===== END ===== -->
+
+
+<div class="row" id="restaurant-cards"> <!-- START OF CARD DISPLAY -->
+
+  <!-- CARD START -->
+  <div class="col s4">
+    <div class="card">
+      <div class="card-image">
+        <img src="https://s-media-cache-ak0.pinimg.com/originals/f0/aa/05/f0aa054bc311e6aaaeb0b0b746437f3e.jpg">
+        <span class="card-title">On Top of Spaghetti</span>
+      </div>
+      <div class="card-content">
+        <p><i class="material-icons left">local_offer</i>Italian</p><br>
+        <p><i class="material-icons left">place</i>One Rochester, Singapore</p><br>
+        <p><i class="material-icons left">star</i><i class="material-icons left">star</i><i class="material-icons left">star</i><i class="material-icons left">star</i></p><br>
+      </div>
+      <div class="card-action">
+        <a href="#"><i class="material-icons left">person_add</i>Click here to make a reservation</a>
+      </div>
+    </div>
+  </div>
+  <!-- CARD END -->
+
+  <!-- CARD START -->
+  <div class="col s4">
+    <div class="card">
+      <div class="card-image">
+        <img src="http://cdn.glocals.com/sites/glocals/_media/forums/213//213159_cf_photo1_9518b.jpg">
+        <span class="card-title">EveryBurger</span>
+      </div>
+      <div class="card-content">
+        <p><i class="material-icons left">local_offer</i>American</p><br>
+        <p><i class="material-icons left">place</i>26 Haji Lane, Singapore</p><br>
+        <p><i class="material-icons left">star</i><i class="material-icons left">star</i><i class="material-icons left">star</i><i class="material-icons left">star</i></p><br>
+      </div>
+      <div class="card-action">
+        <a href="#"><i class="material-icons left">person_add</i>Click here to make a reservation</a>
+      </div>
+    </div>
+  </div>
+  <!-- CARD END -->
+
+  <!-- CARD START -->
+  <div class="col s4">
+    <div class="card">
+      <div class="card-image">
+        <img src="http://catcora.com/wp-content/uploads/2014/08/ocean-restaurant-by-cat-cora.jpg">
+        <span class="card-title">Ocean Restaurant by Cat Cora </span>
+      </div>
+      <div class="card-content">
+        <p><i class="material-icons left">local_offer</i>Seafood</p><br>
+        <p><i class="material-icons left">place</i>Resorts World Sentosa, Singapore</p><br>
+        <p><i class="material-icons left">star</i><i class="material-icons left">star</i><i class="material-icons left">star</i><i class="material-icons left">star</i><i class="material-icons left">star</i></p><br>
+      </div>
+      <div class="card-action">
+        <a href="#"><i class="material-icons left">person_add</i>Click here to make a reservation</a>
+      </div>
+    </div>
+  </div>
+  <!-- CARD END -->
+
+
+</div>

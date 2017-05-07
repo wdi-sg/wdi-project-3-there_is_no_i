@@ -15,17 +15,19 @@
   <h2>Incoming Dine-in Reservations</h2>
   <table class="striped">
         <tbody>
+          <% @reservations.where(status:'reservation').each do |reservation| %>
           <tr>
             <td href="/restaurants/<%= @restaurant_id %>/reservations/<%= @reservation_id %>/edit"><i class="material-icons left">edit</i>Edit</td>
             <td>
-              Hamburglar<br>
-              12345678
+              <%= reservation.name %><br>
+              <%= formatPhone(reservation.phone) %>
             </td>
-            <td><i class="material-icons left">people</i>6 pax</td>
-            <td><i class="material-icons left">access_time</i>2:00pm</td>
+            <td><i class="material-icons left">people</i><%= reservation.party_size  %> pax</td>
+            <td><i class="material-icons left">access_time</i>reservation.start_time</td>
             <td>Not Ordered</td>
             <td><a class="waves-effect waves-light btn">Assign Table</a></td>
           </tr>
+          <% end %>
 
           <tr>
             <td><i class="material-icons left">edit</i>Edit</td>
