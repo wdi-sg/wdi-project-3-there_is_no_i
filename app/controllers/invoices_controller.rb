@@ -10,34 +10,33 @@ class InvoicesController < ApplicationController
     def index
       @invoices = Invoice.where(restaurant_id: params[:restaurant_id]).order('created_at ASC')
     end
-# @index = 0
+
     def create
-      # @index += 1
-      # params[:orders]
       if current_user
-      @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id)
-    #   # @index
-    else
-      @invoice = Invoice.new(restaurant_id: @restaurant.id)
-    #   @index
-    end
-    #   # @invoice.restaurant_id = @restaurant.id
+        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id)
+      else
+        @invoice = Invoice.new(restaurant_id: @restaurant.id)
+      end
+
       if @invoice.save!
-    x = params[:orders].split('/')
-      if current_user
-    x.each do |x|
-      Order.create(user_id: current_user.id, is_take_away: true, invoice_id: @invoice.id, menu_item_id: x)
-    end
-else
-  x.each do |x|
-    Order.create(is_take_away: true, invoice_id: @invoice.id, menu_item_id: x)
-  end
-end
-  #code
-else
-        # redirect_to restaurant_menu_items_path(@restaurant)
-    #   else
-        render html: @invoice
+        orders = params[:orders].split('/')
+
+        if current_user
+          orders.each do |menu_item|
+            @order = Order.create(user_id: current_user.id, is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item)
+            ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id})
+          end
+        else
+          orders.each do |menu_item|
+            @order = Order.create(is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item)
+            ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id})
+          end
+        end
+        flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation soon."
+        redirect_to restaurant_path(@restaurant)
+      else
+        flash[:alert] = "There was an error submitting your order. Please try again."
+        redirect_to restaurant_menu_items_path(@restaurant)
       end
     end
 

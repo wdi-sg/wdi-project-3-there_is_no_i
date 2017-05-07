@@ -24,7 +24,7 @@
       </th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="orders-for-<%=@restaurant.id%>">
     <% @orders.sort{|first, second| first.created_at - second.created_at}.each do |order| %>
     <tr>
       <td>
@@ -42,7 +42,7 @@
         <%= order.menu_item.name %>
       </td>
       <td>
-        <%= order.invoice.table.name %>
+        <%= order.invoice.table.name if order.invoice.table%>
       </td>
       <td>
         <%= order.is_take_away ? 'takeaway' : '' %>

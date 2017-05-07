@@ -8,7 +8,9 @@ class RestaurantsController < ApplicationController
   helper RestaurantsHelper
 
   def index
-    x = Restaurant.where("LOWER(name) LIKE ? AND LOWER(address_city) LIKE ?", "%#{params[:search]}%", "%#{params[:city]}%")
+    first = params[:search]? params[:search].downcase : ''
+    second = params[:city]? params[:search].downcase : ''
+    x = Restaurant.where("LOWER(name) LIKE ? AND LOWER(address_city) LIKE ?", "%#{first}%", "%#{second}%")
     if request.fullpath == '/restaurants?name=sort'
       @restaurant = x.order(:name)
     elsif request.fullpath == '/restaurants?cuisine=sort'
