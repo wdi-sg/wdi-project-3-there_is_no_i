@@ -35,7 +35,7 @@ begin
         redirect_to restaurant_menu_items_path(@restaurant)
       end
 
-@x = User.where(email: params[:stripeEmail])
+      @x = User.where(email: params[:stripeEmail])
 
       if current_user
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id)
