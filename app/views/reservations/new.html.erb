@@ -2,40 +2,40 @@
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 <%= form_for :reservation, :url => restaurant_reservations_path do |f|%>
   <!-- partials but idk how to make it partial yet-->
-  <div>
+  <div class="row">
   <%= f.label :name %>
   <%= f.text_field :name, value: current_user.name, :required => true %>
   </div>
 
-  <div>
+  <div class="row">
   <%= f.label :email %>
   <%= f.text_field :email, value: current_user.email, :required => true %>
   </div>
 
-  <div>
+  <div class="row">
   <%= f.label :phone %>
   <%= f.text_field :phone, value: current_user.phone %>
   </div>
 
   <!-- partials -->
 
-  <div>
+  <div class="row">
   <%= f.label :party_size %>
 
-  <%= f.select :party_size, [*1..8], :required => true %>
+  <%= f.select :party_size, [*1..8], :required => true, class: "browser-default" %>
   </div>
 
-  <div>
+  <div class="row">
     <%= f.label :date, 'Date' %>
     <%= f.date_select :date, :required => true %>
   </div>
 
-  <div>
+  <div class="row">
     <%= f.label :time, 'Time' %>
     <%= f.time_select :time, {minute_step: 30}, :required => true %>
   </div>
 
-  <div>
+  <div class="row">
   <%= f.label :special_requests %>
   <%= f.text_field :special_requests %>
   </div>
