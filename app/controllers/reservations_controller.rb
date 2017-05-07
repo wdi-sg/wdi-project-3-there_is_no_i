@@ -23,7 +23,7 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    r_start_time =  Time.zone.local( params[:reservation]["start_time(1i)"].to_i, params[:reservation]["start_time(2i)"].to_i, params[:reservation]["start_time(3i)"].to_i, params[:reservation]["start_time(4i)"].to_i, params[:reservation]["start_time(5i)"].to_i, 0)
+    r_start_time =  Time.zone.local( params[:reservation]["date(1i)"].to_i, params[:reservation]["date(2i)"].to_i, params[:reservation]["date(3i)"].to_i, params[:reservation]["time(4i)"].to_i, params[:reservation]["time(5i)"].to_i, 0)
 
     if r_start_time < Time.now
       flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'
@@ -85,7 +85,16 @@ class ReservationsController < ApplicationController
 
   def update
     old_start_time = @reservation.start_time
-    r_start_time =  Time.zone.local( params[:reservation]["start_time(1i)"].to_i, params[:reservation]["start_time(2i)"].to_i, params[:reservation]["start_time(3i)"].to_i, params[:reservation]["start_time(4i)"].to_i, params[:reservation]["start_time(5i)"].to_i, 0)
+    p 'TROUBLESHOOT'
+    p @reservation.start_time.year
+    p params
+    p params[:datetime]["date(1i)"].to_i
+    p params[:datetime]["date(2i)"].to_i
+    p params[:datetime]["date(3i)"].to_i
+    p params[:datetime]["time(4i)"].to_i
+    p params[:datetime]["time(5i)"].to_i
+
+    r_start_time =  Time.zone.local( params[:datetime]["date(1i)"].to_i, params[:datetime]["date(2i)"].to_i, params[:datetime]["date(3i)"].to_i, params[:datetime]["time(4i)"].to_i, params[:datetime]["time(5i)"].to_i, 0)
 
     if r_start_time < Time.now
       flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'

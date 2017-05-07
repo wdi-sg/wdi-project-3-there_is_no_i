@@ -17,13 +17,15 @@
     <%= f.label :party_size, 'Number of People' %>
     <%= f.text_field :party_size, placeholder: @reservation.party_size, min: 1, max: 8, :required => true %>
   </p>
+
   <p>
-    <%= f.label :date, 'Date selected' %>
-    <%= f.date_select :start_time, :required => true %>
+    <%= label :date, 'Date selected' %>
+    <%= date_select :datetime, :date, default: @reservation.start_time, :required => true %>
   </p>
+
   <p>
-    <%= f.label :time, 'Time selected' %>
-    <%= f.time_select :start_time, {minute_step: 30}, :required => true %>
+    <%= label :time, 'Time selected' %>
+    <%= time_select :datetime, :time, {minute_step: 30}, default: @reservation.start_time, :required => true %>
   </p>
 
   <!-- HIDE: ONLY FOR RESTAURANT -->
