@@ -68,13 +68,13 @@ class ReservationsController < ApplicationController
   end
 
   def edit
-    # @table_options = Table.where(restaurant_id: @reservation.restaurant_id).map do |table|
-    #   [table.name, table.id]
-    # end
-    @table_options = []
-    Table.where(restaurant_id: @reservation.restaurant_id).each do |table|
-      @table_options.push([table.name, table.id])
+    @table_options = @restaurant.tables.map do |table|
+      [table.name, table.id]
     end
+    # @table_options = []
+    # @restaurant.tables.each do |table|
+    #   @table_options.push([table.name, table.id])
+    # end
   end
 
   def new
