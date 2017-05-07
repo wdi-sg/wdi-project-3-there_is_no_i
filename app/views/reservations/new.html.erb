@@ -1,7 +1,8 @@
 <h1>Add a new reservation</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 <%= form_for :reservation, :url => restaurant_reservations_path do |f|%>
-  <!-- partials but idk how to make it partial yet-->
+
+  <% if !current_user or current_user.restaurants.include? @restaurant %>
   <div class="row">
   <%= f.label :name %>
   <%= f.text_field :name, value: current_user.name, :required => true %>
@@ -16,8 +17,7 @@
   <%= f.label :phone %>
   <%= f.text_field :phone, value: current_user.phone %>
   </div>
-
-  <!-- partials -->
+  <% end %>
 
   <div class="row">
   <%= f.label :party_size %>

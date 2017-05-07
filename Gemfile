@@ -27,20 +27,19 @@ gem 'faker'
 
 # Add Stripe integration for credit cards
 gem 'stripe'
-
 # Add Devise for authentication
 gem 'devise'
-
 # Add Gon for javascript things
 gem 'gon'
-
 # Add Twilio for SMS
 gem 'twilio-ruby'
-
 # Add Materialize CSS framework
 gem 'materialize-sass'
 # Gem for offline Materialize icons
 gem 'material_icons'
+# Add Cloudinary for image storage
+gem 'cloudinary'
+
 # Gem to use jquery with Materialize
 gem 'jquery-turbolinks'
 

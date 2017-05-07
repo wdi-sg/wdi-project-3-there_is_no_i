@@ -15,6 +15,7 @@
 //= require jquery_ujs
 //= require materialize-sprockets
 //= require turbolinks
+//= require cloudinary 
 //= require_tree .
 $( document ).ready(function() {
     console.log( "ready!" );

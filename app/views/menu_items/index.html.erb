@@ -1,14 +1,13 @@
 <h1>Menu</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
-<br/>
-<%= link_to 'New Menu Item', new_restaurant_menu_item_path(@restaurant.id) %>
-<br/>
-<br/>
 
+<% if !current_user or current_user.restaurants.include? @restaurant %>
+<%= link_to 'New Menu Item', new_restaurant_menu_item_path(@restaurant.id) %>
+<% end %>
+
+<br>
 
 <button id="takeaway-show-hide" type="button" name="button">Order Takeaway</button>
-<br/>
-<br/>
 
 <h1>Sort by:</h1>
 <a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?name=sort">Name</a>
@@ -41,11 +40,16 @@
 
 <button class="add-to-order" style="display:none" type="button" name="button" value='<%= item.id.to_s + '/' + item.name + '/' + item.price.to_s %>'>Add to Order</button>
 
-<%= link_to 'Show', restaurant_menu_item_path(@restaurant.id, item) %> |
+<%= link_to 'Show', restaurant_menu_item_path(@restaurant.id, item) %>
+<% if !current_user or current_user.restaurants.include? @restaurant %>
+ |
 <%= link_to 'Edit', edit_restaurant_menu_item_path(@restaurant.id, item) %> |
 <%= link_to 'Destroy', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>
+
 <br>
 <br>
+
 <% end %>
 </div>
 

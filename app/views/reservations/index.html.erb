@@ -1,4 +1,4 @@
-<h1>All Reservations</h1><br>
+<h1>All Reservations</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 
 <h1>Sort by:</h1>
@@ -6,9 +6,9 @@
 <a class="waves-effect waves-light btn" href="/restaurants/<%= @restaurant_id %>/reservations?pax=sort">Party size</a>
 <a class="waves-effect waves-light btn" href="/restaurants/<%= @restaurant_id %>/reservations?date=sort">Date</a>
 
-<br><br>
 <% @reservations.where(status: 'reservation').each do |reservation| %>
 
+<% if current_user[:id] == reservation[:user_id] %>
 <div>
   <p>Name: <%= reservation.name %> </p>
   <p>Phone: <%= formatPhone(reservation.phone) %></p>
@@ -29,7 +29,7 @@
   <%= link_to 'View', restaurant_reservation_path(@restaurant.id, reservation) %> |
   <%= link_to 'Edit', edit_restaurant_reservation_path(@restaurant.id, reservation) %> |
   <%= link_to 'Delete', restaurant_reservation_path(@restaurant.id, reservation), method: :delete, data: { confirm: 'Are you sure?' } %>
-
+<% end %>
   <br/>
   <br/>
 </div>
