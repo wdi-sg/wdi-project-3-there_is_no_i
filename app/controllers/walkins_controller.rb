@@ -26,13 +26,6 @@ class WalkinsController < ApplicationController
   def public_create
     create_walkin(public_params)
 
-    p 'TROUBLESHOOT'
-    p @restaurant
-    p find_aval_tables(@restaurant)
-    p @walkin
-    p Time.now
-    p @est_duration
-
     recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, @est_duration)
 
     if recommended_table
