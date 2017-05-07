@@ -1,4 +1,4 @@
-<h1>Showing Invoice</h1>
+<h1>Show Invoice</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %> <br/>
 <%= link_to 'Back to Invoices', restaurant_invoices_path(@restaurant.id) %>
 <br/>
@@ -11,8 +11,8 @@
   <%= @invoice.user_name %>
 </p>
 <p>
-  Restaurant:
-  <%= @invoice.restaurant.name %>
+  Table:
+  <%= @invoice.table.name if @invoice.table %>
 </p>
 <p>
   Total:
@@ -23,6 +23,9 @@
   <table>
     <thead>
       <tr>
+        <th>
+          No.
+        </th>
         <th>
           Item
         </th>
@@ -38,14 +41,15 @@
         <th>
           Request
         </th>
-        <th>
-          Destroy?
-        </th>
       </tr>
     </thead>
     <tbody>
+      <% @index = 1 %>
       <% @invoice.orders.each do |order| %>
 <tr>
+  <td>
+    <%= @index %>
+  </td>
   <td>
     <%= order.menu_item.name %>
   </td>
@@ -61,13 +65,9 @@
   <td>
     <%= order.request_description %>
   </td>
-  <td>
-<%= link_to 'Destroy', restaurant_invoice_order_path(@restaurant.id, @invoice, order), method: :delete, data: { confirm: 'Are you sure?' } %>
-  </td>
 </tr>
+<% @index += 1 %>
 <% end %>
     </tbody>
   </table>
-
-
 </p>

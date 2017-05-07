@@ -141,9 +141,10 @@ function totalPrice () {
   return orders.reduce((a, b) => { return a + b['price'] }, 0.0)
 }
 
+// convert the orders array into a string of menu-item ids and submits that string
 function submitOrders () {
   var first = orders.shift().id.toString()
-  var str = orders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
-  document.getElementById('orders').value = str
+  var ordersStr = orders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
+  document.getElementById('orders').value = ordersStr
   document.querySelector('.ordered-items-form').submit()
 }
