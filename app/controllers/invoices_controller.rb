@@ -1,6 +1,6 @@
 class InvoicesController < ApplicationController
   include AuthenticateRestaurantUser
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:create]
   before_action :set_restaurant_id
   before_action :set_invoice, only: [:edit, :show, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
@@ -12,8 +12,35 @@ class InvoicesController < ApplicationController
     end
 
     def create
+      @amount = params[:total_price].to_f
+      @amount = (@amount * 100).to_i
+begin
+      customer = Stripe::Customer.create(
+      :email => params[:stripeEmail],
+      :source => params[:stripeToken]
+      )
+
+      charge = Stripe::Charge.create(
+      :customer => customer.id,
+      :amount => @amount,
+      :description => 'Takeaway',
+      :currency => 'SGD'
+      )
+
+# redirect_to restaurants_path
+#
+      rescue Stripe::CardError => e
+        flash[:alert] = e.message
+        # redirect_to new_charge_path
+        redirect_to restaurant_menu_items_path(@restaurant)
+      end
+
+@x = User.where(email: params[:stripeEmail])
+
       if current_user
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id)
+      elsif @x.count > 0
+        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: @x[0].id)
       else
         @invoice = Invoice.new(restaurant_id: @restaurant.id)
       end
@@ -34,6 +61,7 @@ class InvoicesController < ApplicationController
         end
         flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation soon."
         redirect_to restaurant_path(@restaurant)
+        # render html: 'you made a payment'
       else
         flash[:alert] = "There was an error submitting your order. Please try again."
         redirect_to restaurant_menu_items_path(@restaurant)
