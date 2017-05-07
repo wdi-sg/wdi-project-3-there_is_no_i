@@ -11,13 +11,10 @@ Rails.application.routes.draw do
   }
 
   # dashboard(redirect from /restaurant/:id/edit)
-  get '/dashboard' => 'restaurants#edit'
+  # get '/dashboard' => 'restaurants#edit'
+  get '/dashboard' => 'dashboard#index'
 
-  get 'messages/index'
-  get 'messages/create'
-  post 'messages/create'
-
-  # Serve websocket cable requests in-process
+  # Serve websocket cable requests
   mount ActionCable.server, at: '/cable'
 
   # Restaurants
@@ -46,6 +43,6 @@ Rails.application.routes.draw do
     put 'diners/:id' => 'diners#update'
   end
 
-  # routes for Stripe integration
-  resources :charges
+  # route for Twilio
+    get '/messages/receive' => 'twilio#receive'
 end

@@ -70,7 +70,7 @@ Primary restaurant: <%= current_user.restaurant_id ? Restaurant.find(current_use
 </p>
 <% end %>
 
-THIS NEEDS TO BE WORKED OUT
+THIS NEEDS TO BE WORKED OUT I DON'T KNOW WHY THE IDS ARE WRONG ON THIS PAGE
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   Change primary restaurant by id
   <%= f.text_field :restaurant_id, value: '' %>
