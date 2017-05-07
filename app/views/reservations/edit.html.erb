@@ -5,14 +5,17 @@
     <%= f.label :name, 'Name' %>
     <%= f.text_field :name, placeholder: @reservation.name, :required => true %>
   </p>
+
   <div>
   <%= f.label :email, 'Email' %>
   <%= f.text_field :email, placeholder: @reservation.email, :required => true  %>
   </div>
+
   <p>
     <%= f.label :phone, 'Phone' %>
     <%= f.text_field :phone, placeholder: @reservation.phone %>
   </p>
+
   <p>
     <%= f.label :party_size, 'Number of People' %>
     <%= f.text_field :party_size, placeholder: @reservation.party_size, min: 1, max: 8, :required => true %>
@@ -25,7 +28,7 @@
 
   <p>
     <%= label :time, 'Time selected' %>
-    <%= time_select :datetime, :time, {minute_step: 30}, default: @reservation.start_time, :required => true %>
+    <%= time_select :datetime, :time, minute_step: 30, default: {hour: @hour, minute: @minute}%>
   </p>
 
   <!-- HIDE: ONLY FOR RESTAURANT -->
@@ -34,6 +37,7 @@
     <%= f.label :status, "Status" %>
     <%= f.select(:status, [['On Reservation','reservation'], ['Dining','dining'], ['Cancelled','cancelled']])%>
   </p>
+
   <% if @reservation.table_id %>
   <p>
     <%= f.label :status, "Table" %>
@@ -46,6 +50,7 @@
     <%= f.label :special_requests, 'Special Requests' %>
     <%= f.text_field :special_requests, placeholder:@reservation.special_requests %>
   </p>
+  
   <p>
     <%= f.submit "Update" %>
   </p>

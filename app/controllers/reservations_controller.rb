@@ -71,10 +71,8 @@ class ReservationsController < ApplicationController
     @table_options = @restaurant.tables.map do |table|
       [table.name, table.id]
     end
-    # @table_options = []
-    # @restaurant.tables.each do |table|
-    #   @table_options.push([table.name, table.id])
-    # end
+    @hour = @reservation.start_time.hour
+    @minute = @reservation.start_time.min
   end
 
   def new
@@ -86,13 +84,7 @@ class ReservationsController < ApplicationController
   def update
     old_start_time = @reservation.start_time
     p 'TROUBLESHOOT'
-    p @reservation.start_time.year
-    p params
-    p params[:datetime]["date(1i)"].to_i
-    p params[:datetime]["date(2i)"].to_i
-    p params[:datetime]["date(3i)"].to_i
-    p params[:datetime]["time(4i)"].to_i
-    p params[:datetime]["time(5i)"].to_i
+    p @reservation.start_time.hour
 
     r_start_time =  Time.zone.local( params[:datetime]["date(1i)"].to_i, params[:datetime]["date(2i)"].to_i, params[:datetime]["date(3i)"].to_i, params[:datetime]["time(4i)"].to_i, params[:datetime]["time(5i)"].to_i, 0)
 
