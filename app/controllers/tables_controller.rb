@@ -12,6 +12,7 @@ class TablesController < ApplicationController
   def create
     @table = Table.new(table_params)
     @table.capacity_current = 0 if !@table.capacity_current
+    @table.capacity_total = 0 if !@table.capacity_total
     @table.restaurant_id = @restaurant.id
     if @table.save!
       redirect_to restaurant_tables_path(@restaurant)
@@ -39,7 +40,9 @@ class TablesController < ApplicationController
   end
 
   def destroy
-    @table.destroy
+    # fake destroy; just set restaurant_id to null
+    @table.restaurant_id = nil
+    @table.save
     redirect_to restaurant_tables_path(@restaurant)
   end
 

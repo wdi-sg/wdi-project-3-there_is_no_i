@@ -62,7 +62,7 @@ class MenuItemsController < ApplicationController
   end
 
   def destroy
-    @menu_item.destroy
+    @menu_item.update(restaurant_id: nil)
     redirect_to restaurant_menu_items_path(@restaurant)
   end
 

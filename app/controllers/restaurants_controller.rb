@@ -49,11 +49,10 @@ class RestaurantsController < ApplicationController
   end
 
   def update
-    uploaded_file = params[:restaurant][:picture].path
-    cloudinary_file = Cloudinary::Uploader.upload(uploaded_file)
-    puts "START"
-    puts cloudinary_file["secure_url"]
-    puts "END"
+    if params[:restaurant][:picture] && params[:restaurant][:picture].path
+      uploaded_file = params[:restaurant][:picture].path
+      @cloudinary_file = Cloudinary::Uploader.upload(uploaded_file)
+    end
 
     if params[:restaurant][:add]
       if User.where(email: params[:restaurant][:email]).count > 0
@@ -66,14 +65,10 @@ class RestaurantsController < ApplicationController
         render :edit
       end
     else
-      # my_params = restaurant_params
-      # puts "START"
-      # puts my_params
-      # puts "END"
-      # my_params[:restaurant][:picture] =
-
       if @restaurant.update(restaurant_params)
-        @restaurant.update(picture: cloudinary_file["secure_url"])
+        if params[:restaurant][:picture] && params[:restaurant][:picture].path
+          @restaurant.update(picture: @cloudinary_file["secure_url"])
+        end
         redirect_to restaurant_path
       else
         flash[:alert] = "There was an error editing. Please try again."

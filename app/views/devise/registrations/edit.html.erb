@@ -1,4 +1,4 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<h2>My Profile</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
@@ -10,17 +10,12 @@
 
   <div class="field">
     <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.text_field :name, required: true %>
   </div>
 
   <div class="field">
     <%= f.label :phone %><br />
-    <%= f.text_field :phone %>
-  </div>
-
-  <div class="field">
-    <%= f.label :restaurant_id %><br />
-    <%= resource[:restaurant_id] %>
+    <%= f.text_field :phone, required: true %>
   </div>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -28,12 +23,8 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
+    <%= f.label 'New password' %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.password_field :password, autocomplete: "off", placeholder: @minimum_password_length.to_s + ' characters minimum' %>
   </div>
 
   <div class="field">
@@ -43,7 +34,7 @@
 
   <div class="field">
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "off" %>
+    <%= f.password_field :current_password, autocomplete: "off", required: true %>
   </div>
 
   <div class="actions">
@@ -51,28 +42,59 @@
   </div>
 <% end %>
 
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %><br />
-
-<%= link_to "Register a restaurant", new_restaurant_path %>
-
-<h1>Restaurants linked to you:</h1>
-
-Primary restaurant: <%= current_user.restaurant_id ? Restaurant.find(current_user.restaurant_id).name : 'None'%>
-
-<% current_user.restaurants.each do |rest| %>
-<p>
-  id: <%= rest.id %>
-  name: <%= rest.name %>
-</p>
-<% end %>
-
-THIS NEEDS TO BE WORKED OUT I DON'T KNOW WHY THE IDS ARE WRONG ON THIS PAGE
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  Change primary restaurant by id
-  <%= f.text_field :restaurant_id, value: '' %>
-  <%= f.submit "Update Primary Restaurant" %>
+<br/>
+<% if current_user.restaurants.count > 0 %>
+  <h2>My restaurants</h2>
+<table>
+  <thead>
+    <tr>
+      <th>
+        ID
+      </th>
+      <th>
+        Restaurant
+      </th>
+      <th>
+        Primary
+      </th>
+      <th>
+        Password
+      </th>
+      <th>
+      </th>
+      <th>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% current_user.restaurants.each do |restaurant| %>
+    <tr>
+      <td>
+        <%= restaurant.id %>
+      </td>
+      <td>
+        <%= restaurant.name %>
+      </td>
+      <td>
+        <%= current_user.restaurant_id == restaurant.id ? 'Primary' : '' %>
+      </td>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <td>
+        <% if current_user.restaurant_id != restaurant.id %>
+            <%= f.hidden_field :restaurant_id, value: restaurant.id %>
+            <%= f.password_field :current_password, autocomplete: "off", required: true, placeholder: 'Your current password' %>
+          <% end %>
+      </td>
+      <td>
+        <% if current_user.restaurant_id != restaurant.id %>
+        <%= f.submit "Make Primary" %>
+        <% end %>
+      </td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+  <h5><%= link_to "Register a restaurant", new_restaurant_path %></h5>
 <% end %>
