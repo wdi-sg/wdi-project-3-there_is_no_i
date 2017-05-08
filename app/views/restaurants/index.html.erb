@@ -16,8 +16,9 @@
   <div class="col s4">
     <div class="card">
       <div class="card-image">
-        <img src="http://www.ultimatebali.com/wp-content/uploads/2015/11/Best-Fine-Dining-Indonesian-Restaurants-Bali1.jpg">
-        <span class="card-title"><%= link_to restaurant.name, restaurant_path(restaurant) %></span>
+        <a href="/restaurants/<%= restaurant.id %>">
+        <img src="http://www.ultimatebali.com/wp-content/uploads/2015/11/Best-Fine-Dining-Indonesian-Restaurants-Bali1.jpg"></a>
+        <span class="card-title" id="restaurant-title"><%= link_to restaurant.name, restaurant_path(restaurant), class: 'white-text' %></span>
       </div>
       <div class="card-content">
         <p><i class="material-icons left">local_offer</i><%= restaurant.cuisine %></p><br>
@@ -25,7 +26,7 @@
         <p><i class="material-icons left">thumbs_up_down</i><%= restaurant.rating %>%</p>
       </div>
       <div class="card-action">
-        <i class="material-icons left">person_add</i><%= link_to 'Book a table here!', new_restaurant_reservation_path(restaurant.id) %>
+        <i class="material-icons left">person_add</i><%= link_to 'Book a table here!', new_restaurant_reservation_path(restaurant.id), class: 'valign-wrapper' %>
       </div>
     </div>
   </div>
