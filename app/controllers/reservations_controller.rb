@@ -1,7 +1,6 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
   include FindingTableLogic
-  # before_action :authenticate_user!, except: [:create, :new, :show]
   before_action :authenticate_user!, except: [:create, :new]
 
   before_action :set_restaurant_id
@@ -9,7 +8,6 @@ class ReservationsController < ApplicationController
 
   # before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
 
-  # before_action :check_user_is_part_of_reservation, only: [:show]
   before_action :check_user_is_part_of_reservation, only: [:show, :edit, :update, :delete]
 
   before_action :set_duration, only: [:create, :update]
@@ -37,8 +35,9 @@ class ReservationsController < ApplicationController
     elsif r_start_time < Time.now + @reservation_allowance.hours
       flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
       render :new
-      # VALIDATE: Check for multiple entries
-      # reservation where same email, date
+    elsif Reservation.where(email: params[:reservation][:email]).where('start_time < ?', r_start_time + @est_duration).where('end_time > ?', r_start_time).count > 0
+      flash['alert'] = "Duplicated Entry Detected. Cannot create another entry within the #{@est_duration / 3600} hours block of the previous entry."
+      render :new
     else
       new_res = Reservation.new()
       if params[:reservation][:name]

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   # dashboard(redirect from /restaurant/:id/edit)
   # get '/dashboard' => 'restaurants#edit'
   get '/dashboard' => 'dashboard#index'
+  put '/dashboard/reset_queue' => 'restaurant#reset_queue'
 
   # restaurants
   resources :restaurants do

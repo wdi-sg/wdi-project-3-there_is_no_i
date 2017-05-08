@@ -5,24 +5,27 @@
 <% if !current_user or current_user.restaurants.include? @restaurant %>
   <p>
     <%= f.label :name, 'Name' %>
-    <%= f.text_field :name, placeholder: @reservation.name, :required => true %>
+    <br>
+    <%= @reservation.name%>
   </p>
 
   <div>
-  <%= f.label :email, 'Email' %>
-  <%= f.text_field :email, placeholder: @reservation.email, :required => true  %>
+    <%= f.label :email, 'Email' %>
+    <br>
+    <%= @reservation.email%>
   </div>
 
   <p>
     <%= f.label :phone, 'Phone' %>
-    <%= f.text_field :phone, placeholder: @reservation.phone %>
+    <br>
+    <%= @reservation.phone %>
   </p>
 
   <% end %>
 
   <p>
     <%= f.label :party_size, 'Number of People' %>
-    <%= f.text_field :party_size, placeholder: @reservation.party_size, min: 1, max: 8, :required => true %>
+    <%= f.select :party_size,[*1..@restaurant.tables.max_by{|x| x[:capacity_total]}.capacity_total], :required => true%>
   </p>
 
   <p>

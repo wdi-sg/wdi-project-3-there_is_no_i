@@ -1,57 +1,34 @@
-<h1>Restaurant</h1>
-
-<p>
-  Name:
+<div class="container">
+  <<img src=">
+<h1>
   <%= @restaurant.name %>
+</h1>
+
+<p>
+  <i class="material-icons left">place</i>
+  <%= @restaurant.address1 + ', ' + @restaurant.address2.to_s %><br>
+  <%= @restaurant.address_city %><br>
+  <span style="margin-left:40px"><%= @restaurant.address_country %> (<%= @restaurant.address_postal %>)<br></span>
 </p>
 
 <p>
-  Address:
-  <%= @restaurant.address1 + ', ' + @restaurant.address2.to_s %>
+<i class="material-icons left">perm_phone_msg</i>
+  <a href="mailto:<%= @restaurant.email %>"><%= @restaurant.email %></a><br>
+  <%= formatPhone(@restaurant.phone) %><br>
 </p>
 
 <p>
-  City:
-  <%= @restaurant.address_city %>
-</p>
-
-<p>
-  State:
-  <%= @restaurant.address_state %>
-</p>
-
-<p>
-  Country:
-  <%= @restaurant.address_country %>
-</p>
-
-<p>
-  Post Code:
-  <%= @restaurant.address_postal %>
-</p>
-
-<p>
-  Email:
-  <a href="mailto:<%= @restaurant.email %>"><%= @restaurant.email %></a>
-</p>
-
-<p>
-  Phone:
-  <%= formatPhone(@restaurant.phone) %>
-</p>
-
-<p>
-  Website:
+  <i class="material-icons left">personal_video</i>
   <a href="<%= @restaurant.website %>"><%= @restaurant.website %></a>
 </p>
 
 <p>
-  Description:
+  <i class="material-icons left">insert_comment</i>
   <%= @restaurant.description %>
 </p>
 
 <p>
-  Cuisine:
+  <i class="material-icons left">local_offer</i>
   <%= @restaurant.cuisine %>
 </p>
 
@@ -63,14 +40,20 @@
 <% end %>
 
 <p>
-  Rating:
-  <%= @restaurant.rating %>
+  <i class="material-icons left">thumbs_up_down</i>
+  <%= @restaurant.rating %>%
 </p>
 
+<% if current_user and current_user.restaurants.include? @restaurant %>
 <p>
   Next Queue Number:
   <%= @restaurant.next_queue_number %>
 </p>
+<!-- <%= link_to 'Reset Queue Number', dashboard_reset_queue_path, method: :put %> -->
+<% end %>
+
+<br>
+<br>
 
 <%= link_to 'Make a Reservation', new_restaurant_reservation_path(@restaurant) %>|
 <%= link_to 'View Reservations', restaurant_reservations_path(@restaurant) %> |
@@ -90,5 +73,6 @@
 
 <%= link_to 'Public Walkin Link', restaurant_new_public_path(@restaurant) %>
 <% end %>
+</div>
 
 <!-- <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> -->
