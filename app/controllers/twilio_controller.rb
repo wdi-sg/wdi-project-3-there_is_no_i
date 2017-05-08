@@ -14,11 +14,10 @@ class TwilioController < ApplicationController
     # session[:counter] += 1
 
     from = params["From"] # gets the sender's number '+6587427184'
-    body = params["Body"] # gets the sender's message
+    body = params["Body"].downcase # gets the sender's message
     begin
       # TAKE OUT +65
-      # from.splice
-      @user = User.find(phone: from)
+      @user = User.find(phone: from.at(3..10))
     rescue ActiveRecord::RecordNotFound => e
       @user = []
     end
@@ -27,6 +26,6 @@ class TwilioController < ApplicationController
     else
         @message = "Hmm... Thanks for the message, but you're a complete stranger to us!"
     end
-    send_message(from, 'TEST Controller')
+    send_message(from, @message)
   end
 end
