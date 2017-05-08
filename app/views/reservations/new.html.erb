@@ -4,24 +4,24 @@
 
   <% if !current_user or current_user.restaurants.include? @restaurant %>
   <div class="row">
-  <%= f.label :name %>
+  <%= f.label :name, 'Name' %>
   <%= f.text_field :name, value: current_user.name, :required => true %>
   </div>
 
   <div class="row">
-  <%= f.label :email %>
+  <%= f.label :email, 'Email' %>
   <%= f.text_field :email, value: current_user.email, :required => true %>
   </div>
 
   <div class="row">
-  <%= f.label :phone %>
+  <%= f.label :phone, 'Phone' %>
   <%= f.text_field :phone, value: current_user.phone %>
   </div>
   <% end %>
 
   <div class="row">
-  <%= f.label :party_size %>
-  <%= f.select :party_size, [*1..8], :required => true, class: "browser-default" %>
+  <%= f.label :party_size, 'Number of People' %>
+  <%= f.select :party_size,[*1..@restaurant.tables.max_by{|x| x[:capacity_total]}.capacity_total], :required => true%>
   </div>
 
   <div class="row">
@@ -35,10 +35,10 @@
   </div>
 
   <div class="row">
-  <%= f.label :special_requests %>
-  <%= f.text_field :special_requests %>
+  <%= f.label :special_requests, 'Special Requests' %>
+  <%= f.text_field :special_requests%>
   </div>
 
-  <%= f.submit %>
+  <%= f.submit "Submit" %>
 <% end %>
 <!-- <p><%= flash[:alert] %></p> -->

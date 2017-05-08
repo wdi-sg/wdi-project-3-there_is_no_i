@@ -1,4 +1,5 @@
 class TwilioController < ApplicationController
+  include SendTwilio
   skip_before_action :verify_authenticity_token
 
   def receive
@@ -15,7 +16,7 @@ class TwilioController < ApplicationController
     from = params["From"] # gets the sender's number '+6587427184'
     body = params["Body"].downcase # gets the sender's message
     begin
-      @user = User.find(phone: from)
+      @user = User.find(phone: from[3..10]) # TAKE OUT +65
     rescue ActiveRecord::RecordNotFound => e
       @user = []
     end
@@ -24,9 +25,6 @@ class TwilioController < ApplicationController
     else
         @message = "Hmm... Thanks for the message, but you're a complete stranger to us!"
     end
-    twiml = Twilio::TwiML::Response.new do |r|
-      r.Message @message
-    end
-    twiml.text
+    send_message(from, @message)
   end
 end

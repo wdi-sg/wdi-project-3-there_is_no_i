@@ -20,3 +20,14 @@
  #dropdown1 #dropdown2 {
    width: 200px
  }
+
+#search-field {
+  margin-left: 700px;
+   width: 500px;
+   border: none
+ }
+
+ .input-field input[type=search]:focus {
+   width: 500px;
+   border-bottom: 1px
+ }

@@ -35,8 +35,7 @@
     <%= time_select :datetime, :time, minute_step: 30, default: {hour: @hour, minute: @minute}%>
   </p>
 
-  <!-- HIDE: ONLY FOR RESTAURANT -->
-
+  <% if current_user.restaurants.include? @restaurant %>
   <p>
     <%= f.label :status, "Status" %>
     <%= f.select(:status, [['On Reservation','reservation'], ['Dining','dining'], ['Cancelled','cancelled']])%>
@@ -48,15 +47,12 @@
     <%= f.select(:table_id, @table_options)%>
   </p>
   <% end %>
-  <!--  -->
+  <% end %>
 
   <p>
     <%= f.label :special_requests, 'Special Requests' %>
     <%= f.text_field :special_requests, placeholder:@reservation.special_requests %>
   </p>
 
-  <p>
-    <%= f.submit "Update" %>
-  </p>
-
+    <%= f.submit "Submit" %>
 <% end %>
