@@ -31,16 +31,10 @@
   <%= @restaurant.cuisine %>
 </p>
 
-<% if @restaurant.picture  %>
 <p>
-  Picture:
-<%= cl_image_tag(@restaurant.picture, width: 200, height: 100, crop: :fill) %>
-</p>
-<% end %>
-
-<p>
-  <i class="material-icons left">thumbs_up_down</i>
-  <%= @restaurant.rating %>%
+  <% if @restaurant.picture  %>
+    <%= cl_image_tag(@restaurant.picture, width: 200, height: 100, crop: :fill) %>
+  <% end %>
 </p>
 
 <p>

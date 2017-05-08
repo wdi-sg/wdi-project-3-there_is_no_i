@@ -64,6 +64,10 @@ class RestaurantsController < ApplicationController
         @users = User.where(restaurant_id: @restaurant[:id])
         render :edit
       end
+    elsif params[:restaurant][:remove]
+      @restaurant.users.delete(User.where(email: params[:restaurant][:email])[0])
+      flash[:notice] = 'User removed'
+      redirect_to dashboard_path
     else
       if @restaurant.update(restaurant_params)
         if params[:restaurant][:picture] && params[:restaurant][:picture].path

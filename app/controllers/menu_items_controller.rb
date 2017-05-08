@@ -54,7 +54,15 @@ class MenuItemsController < ApplicationController
   end
 
   def update
+    if params[:menu_item][:picture] && params[:menu_item][:picture].path
+      uploaded_file = params[:restaurant][:picture].path
+      @cloudinary_file = Cloudinary::Uploader.upload(uploaded_file)
+    end
+
     if @menu_item.update(menu_item_params)
+      if params[:menu_item][:picture] && params[:menu_item][:picture].path
+        @menu_item.update(picture: @cloudinary_file["secure_url"])
+      end
       redirect_to restaurant_menu_items_path(@restaurant)
     else
       render :edit

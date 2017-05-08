@@ -22,6 +22,11 @@ Takeaway
 <div class="all-menu-items">
 <% @menu_items.each do |item| %>
 <p>
+  <% if item.picture  %>
+    <%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %>
+  <% end %>
+</p>
+<p>
   Name:
   <%= item.name %>
 </p>

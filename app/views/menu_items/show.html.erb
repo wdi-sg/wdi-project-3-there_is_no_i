@@ -21,3 +21,9 @@
   Tags:
   <%= @menu_item.tags %>
 </p>
+<p>
+  <%= f.label :picture %>
+  <% if menu_item.picture  %>
+    <%= cl_image_tag(menu_item.picture, width: 200, height: 100, crop: :fill) %>
+  <% end %>
+</p>
