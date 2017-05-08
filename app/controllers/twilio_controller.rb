@@ -1,4 +1,5 @@
 class TwilioController < ApplicationController
+  include SendTwilio
   skip_before_action :verify_authenticity_token
 
   def receive
@@ -24,10 +25,11 @@ class TwilioController < ApplicationController
     # else
     #     @message = "Hmm... Thanks for the message, but you're a complete stranger to us!"
     # end
-    twiml = Twilio::TwiML::Response.new do |r|
+    # twiml = Twilio::TwiML::Response.new do |r|
       # r.Message @message
-      r.Message "TROUBLESHOOT TEST"
-    end
-    twiml.text
+      # r.Message "TROUBLESHOOT TEST"
+    # end
+    # twiml.text
+    send_message('+6587427184', 'TEST Controller')
   end
 end
