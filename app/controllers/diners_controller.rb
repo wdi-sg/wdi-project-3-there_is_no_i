@@ -1,6 +1,6 @@
 class DinersController < ApplicationController
   include FindingTableLogic
-  include Sms
+  include SendTwilio
   before_action :set_restaurant, only: %i[index show edit update]
   before_action :set_diner, only: %i[show edit update]
   before_action :set_duration, only: [:update, :reassign_table, :assign_table]
@@ -70,7 +70,7 @@ class DinersController < ApplicationController
       if next_customer_table
 
         assign_table(next_customer, next_customer_table)
-        sms_awaiting(next_customer.name, restaurant.name, next_customer_table.name)
+        sms_awaiting(next_customer)
 
         save_update(diner, restaurant)
       else

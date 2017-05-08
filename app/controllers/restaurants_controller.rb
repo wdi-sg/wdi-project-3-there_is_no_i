@@ -102,8 +102,6 @@ class RestaurantsController < ApplicationController
     else
       the_restaurant.next_queue_number = 1
       if the_restaurant.save!
-        p 'TROUBLESHOOT'
-        p the_restaurant
         redirect_to restaurant_path(the_restaurant)
       else
         flash[:alert] = "Error 500. Unable to update restaurant queue number"

@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
   include FindingTableLogic
+  include SendEmail
   before_action :authenticate_user!, except: [:create, :new]
 
   before_action :set_restaurant_id
@@ -66,9 +67,22 @@ class ReservationsController < ApplicationController
         new_res[:table_id] = recommended_table.id
         new_res[:status] = 'reservation'
         if new_res.save!
-          # Redirect to success page & SEND EMAIL
-          flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
-          redirect_to restaurant_path(params[:restaurant_id])
+
+          if new_res.email == nil or new_res.email.length < 2
+            flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
+            redirect_to restaurant_path(params[:restaurant_id])
+
+          else
+            subject = "Reservation at #{new_res.restaurant.name} on #{new_res.start_time} for #{new_res.party_size}"
+
+            body = "Dear #{new_res.name}, \n Your reservation at #{new_res.restaurant.name} on #{new_res.start_time} for a table of #{new_res.party_size} has been recorded. Thank you and see you soon! \n Best regards, \n #{new_res.restaurant.name} \n \n \n Powered by Locavorus"
+
+            send_email(new_res.name, new_res.email, subject, body)
+
+            flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
+            redirect_to restaurant_path(params[:restaurant_id])
+          end
+
         else
           flash['alert'] = 'Error. Please check input parameters.'
           render :new
