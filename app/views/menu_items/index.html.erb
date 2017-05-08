@@ -7,41 +7,50 @@
 
 <br>
 
-<% if !current_user || !current_user.restaurants.include?(@restaurant) %>
-Takeaway
-<% end %>
-
-<button id="takeaway-show-hide" type="button" name="button">Order</button>
-
 <h1>Sort by:</h1>
 <a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?name=sort">Name</a>
 <a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?price=sort">Price</a>
 <a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?description=sort">Description</a>
 <a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?ingredient=sort">Ingredient</a>
 <a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?tag=sort">Tag</a>
+
+<div>
+
+  <p>
+    <% if !current_user || !current_user.restaurants.include?(@restaurant) %>
+      Takeaway
+    <% end %>
+  </p>
+
+  <button id="takeaway-show-hide" type="button" name="button">Order</button>
+</div>
+
+
+
 <div class="all-menu-items">
 <% @menu_items.each do |item| %>
-<p>
-  <% if item.picture  %>
-    <%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %>
-  <% end %>
-</p>
-<p>
-  Name:
-  <%= item.name %>
-</p>
-<p>
-  Description:
-  <%= item.description %>
-</p>
-<p>
-  Price:
-  <%= formatPrice(item.price) %>
-</p>
+<div>
+  <p>
+    <% if item.picture  %>
+      <a href='<%= restaurant_menu_item_path(@restaurant.id, item) %>'><%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %></a>
+    <% end %>
+  </p>
+  <p>
+    Name:
+    <%= item.name %>
+  </p>
+  <p>
+    Description:
+    <%= item.description %>
+  </p>
+  <p>
+    Price:
+    <%= formatPrice(item.price) %>
+  </p>
+</div>
 
 <button class="add-to-order" style="display:none" type="button" name="button" value='<%= item.id.to_s + '/' + item.name + '/' + item.price.to_s %>'>Add to Order</button>
 
-<%= link_to 'Show', restaurant_menu_item_path(@restaurant.id, item) %>
 <% if current_user && current_user.restaurants.include?(@restaurant) %> |
 <%= link_to 'Edit', edit_restaurant_menu_item_path(@restaurant.id, item) %> |
 <%= link_to 'Destroy', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %>
@@ -62,7 +71,7 @@ Takeaway
   <%= hidden_field_tag :total_price %>
   <%= hidden_field_tag :is_take_away, @is_take_away %>
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <% if !current_user.restaurants.include?(@restaurant) %>
+  <% if !current_user || !current_user.restaurants.include?(@restaurant) %>
     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
     data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
     data-name="<%= @restaurant.name %>"

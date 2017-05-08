@@ -64,7 +64,8 @@ class InvoicesController < ApplicationController
             ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id})
           end
         end
-        if !params[:is_take_away]
+
+        if params[:is_take_away]
           flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation soon."
           redirect_to restaurant_path(@restaurant)
         else

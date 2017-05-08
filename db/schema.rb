@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20170505110709) do
     t.text     "description"
     t.text     "ingredients"
     t.text     "tags"
+    t.text     "picture"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.index ["restaurant_id"], name: "index_menu_items_on_restaurant_id", using: :btree
