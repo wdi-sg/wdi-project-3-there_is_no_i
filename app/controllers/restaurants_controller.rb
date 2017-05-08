@@ -95,16 +95,22 @@ class RestaurantsController < ApplicationController
   end
 
   def reset_queue
-    p 'RTEASDFSADFASDFASFASDFASDF'
-    p params
-    # VAlidete - cannot change when there are existing users in the queue
-    # @my_restaurant = current_user.restaurant
-    @my_restaurant = Restaurant.find(params[:restaurant_id])
-    @my_restaurant.next_queue_number = 1
-    @my_restaurant.save!
-    p 'TROUBLESHOOT'
-    p @my_restaurant
-    redirect_to restaurant_path(@my_restaurant)
+    the_restaurant = Restaurant.find(params[:restaurant_id])
+    # Cannot change when there are existing users in the queue
+    if Reservation.where(restaurant_id: the_restaurant.id).where(status: 'queuing').count > 0
+      flash[:alert] = "Unable to reset queue number. Please ensure that there are no customers in the queue"
+      redirect_to restaurant_path(the_restaurant)
+    else
+      the_restaurant.next_queue_number = 1
+      if the_restaurant.save!
+        p 'TROUBLESHOOT'
+        p the_restaurant
+        redirect_to restaurant_path(the_restaurant)
+      else
+        flash[:alert] = "Error 500. Unable to update restaurant queue number"
+        redirect_to restaurant_path(the_restaurant)
+      end
+    end
   end
 
   private
