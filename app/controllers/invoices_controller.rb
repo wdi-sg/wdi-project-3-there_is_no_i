@@ -3,7 +3,7 @@ class InvoicesController < ApplicationController
   before_action :authenticate_user!, except: [:create]
   before_action :set_restaurant_id
   before_action :set_invoice, only: [:edit, :show, :update, :destroy]
-  before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
+  before_action :check_user_is_part_of_restaurant, except: [:create, :show]
   before_action :check_user_is_part_of_invoice, only: [:show]
   helper InvoicesHelper
 
@@ -40,12 +40,12 @@ class InvoicesController < ApplicationController
         @x = []
       end
 
-      if current_user
+      if params[:invoice_id]
+        @invoice = Invoice.find(params[:invoice_id])
+      elsif current_user
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id)
       elsif @x.count > 0
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: @x[0].id)
-      elsif params[:invoice_id]
-        @invoice = Invoice.find(params[:invoice_id])
       else
         @invoice = Invoice.new(restaurant_id: @restaurant.id, table_id: params[:table_id])
       end
@@ -65,7 +65,7 @@ class InvoicesController < ApplicationController
           end
         end
 
-        if params[:is_take_away]
+        if params[:is_take_away] == "true"
           flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation soon."
           redirect_to restaurant_path(@restaurant)
         else
@@ -78,10 +78,6 @@ class InvoicesController < ApplicationController
       end
     end
 
-    def new
-      @invoice = Invoice.new
-    end
-
     def edit
     end
 
@@ -89,10 +85,21 @@ class InvoicesController < ApplicationController
     end
 
     def update
-      if @invoice.update(invoice_params)
+      if params[:time_end] == ''
+        if @invoice.update(time_end: DateTime.now)
+          flash[:notice] = 'Invoice successfully updated'
+        else
+          flash[:alert] = 'There was a problem updating the invoice. Please try again.'
+        end
         redirect_to restaurant_invoices_path(@restaurant)
       else
-        render :edit
+        if @invoice.update(invoice_params)
+          flash[:notice] = 'Invoice successfully updated'
+          redirect_to restaurant_invoices_path(@restaurant)
+        else
+          flash[:alert] = 'There was a problem updating the invoice. Please try again.'
+          render :edit
+        end
       end
     end
 
@@ -105,6 +112,10 @@ class InvoicesController < ApplicationController
 
     def set_invoice
       @invoice = Invoice.find(params[:id])
+    end
+
+    def invoice_params
+      params.require(:invoice).permit(:user_name, :table_id, :time_end, :takeaway_time)
     end
 
     def check_user_is_part_of_invoice
