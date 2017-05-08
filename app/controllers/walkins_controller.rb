@@ -27,23 +27,35 @@ class WalkinsController < ApplicationController
   def public_create
     create_walkin(public_params)
 
-    recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, @est_duration)
+    user_reservations = Reservation.where(phone: @walkin.phone)
+    # Check for multiple entries
+    if user_reservations.where(status: 'reservation').or(user_reservations.where(status: 'queuing')).or(user_reservations.where(status: 'awaiting')).or(user_reservations.where(status: 'dining')).count > 0
 
-    if recommended_table
+      @walkin.destroy
+      flash['alert'] = 'Error. This is a duplicate entry. Please contact us if otherwise.'
+      redirect_to restaurant_new_public_path(@restaurant)
 
-      update_table_count(recommended_table, @walkin.party_size)
-
-      update_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + @est_duration)
-
-      sms_awaiting(@walkin.name, @restaurant.name, recommended_table.name)
-
-      public_save(@walkin)
     else
-      update_customer(@walkin, nil, 'queuing', nil, nil)
+      recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, @est_duration)
 
-      sms_queue(@walkin, @restaurant, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
+      if recommended_table
+        # Give customer a table if there is one
+        update_table_count(recommended_table, @walkin.party_size)
 
-      public_save(@walkin)
+        update_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + @est_duration)
+
+        # SEND SMS? OR LET RESTAURANT PREPARE AND NOTIFY?
+        sms_awaiting(@walkin.name, @restaurant.name, recommended_table.name)
+
+        public_save(@walkin)
+      else
+        # Queue customer if there is no table
+        update_customer(@walkin, nil, 'queuing', nil, nil)
+
+        sms_queue(@walkin, @restaurant, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
+
+        public_save(@walkin)
+      end
     end
   end
 
@@ -108,9 +120,6 @@ class WalkinsController < ApplicationController
   # Set Details of Walkin User
   def find_user(walkin)
     user = User.where(phone: walkin.phone)
-    # NEED TO CHECK IF CUSTOMER SUBMIT MULTIPLE TIMES --> Change!
-    # elsif (user.count > 1 && walkin.phone)
-    #   walkin.name = 'Walk in Customer (WARNING! Duplicate User number)'
     if user.count == 1
       walkin.user_id = user.pluck(:id)[0]
       walkin.name = user.pluck(:name)[0]

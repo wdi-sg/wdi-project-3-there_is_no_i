@@ -15,8 +15,6 @@
       <th>Requests</th>
       <th>Est Start Time</th>
       <th>Est End Time</th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -38,16 +36,20 @@
 
       <td><%= walkin.queue_number %></td>
 
+      <td>
       <% if walkin.table_id %>
-      <td><%= Table.find(walkin.table_id).name %></td>
+      <%= Table.find(walkin.table_id).name %>
       <% end %>
+      </td>
 
       <td><%= walkin.special_requests %></td>
+
       <td>
         <% if walkin.start_time %>
         <%= walkin.start_time.getlocal('+08:00') %>
         <% end %>
       </td>
+
       <td>
         <% if walkin.end_time %>
         <% if Time.now > walkin.end_time %>
@@ -75,7 +77,11 @@
       <th>Quantity</th>
       <th>Status</th>
       <th>Queue Number</th>
+      <th>Table Assigned</th>
       <th>Requests</th>
+      <!-- <th>Est Start Time</th>
+      <th>Est End Time</th> -->
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -94,8 +100,31 @@
         <% end %>
       </td>
       <td><%= walkin.queue_number %></td>
-      <td><%= walkin.special_requests %></td>
 
+      <td>
+      <% if walkin.table_id %>
+      <%= Table.find(walkin.table_id).name %>
+      <% end %>
+      </td>
+
+      <td><%= walkin.special_requests %></td>
+      <!-- <td>
+        <% if walkin.start_time %>
+        <%= walkin.start_time.getlocal('+08:00') %>
+        <% end %>
+      </td>
+      <td>
+        <% if walkin.end_time %>
+        <% if Time.now > walkin.end_time %>
+        <font color="red"><b><%= walkin.end_time.getlocal('+08:00') %></b></font>
+        <% else %>
+        <%= walkin.end_time.getlocal('+08:00') %>
+        <% end %>
+        <% end %>
+      </td> -->
+      <td>
+        Notify
+      </td>
       <!-- <td><%= link_to 'Show', restaurant_walkin_path(@restaurant.id, walkin) %></td>
       <td><%= link_to 'Edit', restaurant_edit_walkin_path(@restaurant.id, walkin) %></td>
       <td><%= link_to 'Destroy', restaurant_walkin_path(@restaurant.id, walkin), method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
@@ -119,7 +148,6 @@
       <th>Est Start Time</th>
       <th>Est End Time</th>
       <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -141,9 +169,11 @@
 
       <td><%= walkin.queue_number %></td>
 
+      <td>
       <% if walkin.table_id %>
-      <td><%= Table.find(walkin.table_id).name %></td>
+      <%= Table.find(walkin.table_id).name %>
       <% end %>
+      </td>
 
       <td><%= walkin.special_requests %></td>
       <td>
@@ -159,6 +189,9 @@
         <%= walkin.end_time.getlocal('+08:00') %>
         <% end %>
         <% end %>
+      </td>
+      <td>
+        Seated
       </td>
       <!-- <td><%= link_to 'Show', restaurant_walkin_path(@restaurant.id, walkin) %></td>
       <td><%= link_to 'Edit', restaurant_edit_walkin_path(@restaurant.id, walkin) %></td>

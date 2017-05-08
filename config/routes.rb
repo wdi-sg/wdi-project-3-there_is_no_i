@@ -44,5 +44,6 @@ Rails.application.routes.draw do
     get 'diners/:id/edit' => 'diners#edit', as: 'edit_diner'
     get 'diners/:id' => 'diners#show', as: 'diner'
     put 'diners/:id' => 'diners#update'
+    put '/reset_queue' => 'restaurant#reset_queue'
   end
 end

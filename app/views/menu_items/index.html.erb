@@ -1,13 +1,17 @@
 <h1>Menu</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 
-<% if !current_user or current_user.restaurants.include? @restaurant %>
+<% if current_user && current_user.restaurants.include?(@restaurant) %>
 <%= link_to 'New Menu Item', new_restaurant_menu_item_path(@restaurant.id) %>
 <% end %>
 
 <br>
 
-<button id="takeaway-show-hide" type="button" name="button">Order Takeaway</button>
+<% if !current_user || !current_user.restaurants.include?(@restaurant) %>
+Takeaway
+<% end %>
+
+<button id="takeaway-show-hide" type="button" name="button">Order</button>
 
 <h1>Sort by:</h1>
 <a class="button is-primary" href="/restaurants/<%= @restaurant_id %>/menu_items?name=sort">Name</a>
@@ -57,19 +61,29 @@
 
 <ul class="ordered-items-list">
 </ul>
+
 <%= form_for :order, remote: true, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
   <%= hidden_field_tag :orders %>
   <%= hidden_field_tag :total_price %>
-  <%= hidden_field_tag :is_take_away, true %>
+  <%= hidden_field_tag :is_take_away, @is_take_away %>
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-  data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-  data-name="<%= @restaurant.name %>"
-  data-amount=""
-  data-description='Takeaway'
-  data-locale="auto"
-  data-currency="SGD"></script>
+  <% if !current_user || !current_user.restaurants.include?(@restaurant) %>
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+    data-name="<%= @restaurant.name %>"
+    data-amount=""
+    data-description='Order'
+    data-locale="auto"
+    data-currency="SGD"></script>
+  <% else %>
+    Table: <%= label_tag :table_id, @table %>
+    <% if @existing_invoice.length > 0 %>
+      Invoice: <%= label_tag :invoice, @existing_invoice %>
+      <%= hidden_field_tag :invoice_id, @existing_invoice %>
+    <% end %>
   <% end %>
+  <%= f.submit 'Create Orders', id: 'create-orders-button'%>
+<% end %>
 </div>
 
 <%= javascript_include_tag('menu_items/takeaway.js') %>
