@@ -61,7 +61,7 @@ module FindingTableLogic
   def filter_by_capacity(tables_considered, this_customer)
     filtered_aval_tables = []
     tables_considered.each do |table|
-      if table.capacity_total >= this_customer.party_size
+      if table.capacity_total && table.capacity_total >= this_customer.party_size
         filtered_aval_tables.push(table)
       end
     end

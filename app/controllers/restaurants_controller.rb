@@ -4,7 +4,7 @@ class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: [:show, :update, :destroy]
   before_action :set_user_restaurant, only: [:edit]
   before_action :set_user, only: [:create, :destroy]
-  before_action :check_user_is_part_of_restaurant, except: [:index, :new, :create, :show]
+  before_action :check_user_is_part_of_restaurant, except: [:index, :new, :create, :show, :reset_queue]
   helper RestaurantsHelper
 
   def index
@@ -90,11 +90,22 @@ class RestaurantsController < ApplicationController
   end
 
   def reset_queue
-    # VAlidete - cannot change when there are existing users in the queue
-    @my_restaurant = current_user.restaurant
-    p 'TROUBLESHOOT'
-    p @my_restaurant
-    # restaurant_reset_queue_path(@restaurant)
+    the_restaurant = Restaurant.find(params[:restaurant_id])
+    # Cannot change when there are existing users in the queue
+    if Reservation.where(restaurant_id: the_restaurant.id).where(status: 'queuing').count > 0
+      flash[:alert] = "Unable to reset queue number. Please ensure that there are no customers in the queue"
+      redirect_to restaurant_path(the_restaurant)
+    else
+      the_restaurant.next_queue_number = 1
+      if the_restaurant.save!
+        p 'TROUBLESHOOT'
+        p the_restaurant
+        redirect_to restaurant_path(the_restaurant)
+      else
+        flash[:alert] = "Error 500. Unable to update restaurant queue number"
+        redirect_to restaurant_path(the_restaurant)
+      end
+    end
   end
 
   private

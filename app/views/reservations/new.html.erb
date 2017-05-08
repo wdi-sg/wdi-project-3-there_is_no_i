@@ -15,7 +15,7 @@
 
   <div class="row">
   <%= f.label :phone, 'Phone' %>
-  <%= f.text_field :phone, value: current_user.phone %>
+  <%= f.text_field :phone, value: current_user.phone, :required => true %>
   </div>
   <% end %>
 
