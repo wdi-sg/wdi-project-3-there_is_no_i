@@ -17,7 +17,7 @@ class TwilioController < ApplicationController
     body = params["Body"].downcase # gets the sender's message
     begin
       # TAKE OUT +65
-      @user = User.find(phone: from.at(3..10))
+      @user = User.find(phone: from[3..10])
     rescue ActiveRecord::RecordNotFound => e
       @user = []
     end
