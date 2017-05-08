@@ -1,69 +1,51 @@
 <!-- dropdown menu -->
-<ul id="dropdown1" class="dropdown-content">
-    <li style="text-align:center; font-size:20px;">
-      <div>
-        <b><span style="display:block; vertical-align: bottom;">Kitchen</span></b>
-
-      </div>
-    </li>
-  <li><a href="#!">See All Orders</a></li>
-  <li><a href="#!">Tickets Management</a></li>
-  <li class="divider"></li>
-  <li style="text-align:center; font-size:20px;"><b>Front of House</b></li>
-  <li><a href="#!">See All Orders</a></li>
-  <li><a href="#!">Table Management</a></li>
-  <li><a href="#!">Ordering Menu</a></li>
-  <li><a href="#!">Print Receipt</a></li>
-  <li><a href="#!">Pay</a></li>
-</ul>
-
 <ul id="dropdown2" class="dropdown-content">
-<% if current_user && current_user.restaurant_id %>
-  <li><%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
-  <li><%= link_to 'Invoices', restaurant_invoices_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
-  <li><a href="/restaurants/<%= current_user.restaurant_id %>/menu_items">Menu</a></li>
-  <%end%>
-
-  <li><a href="/account">Edit User & Restaurant Profile</a></li>
-  <li class="divider"></li>
-  <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
+    <% if current_user && current_user.restaurant_id %>
+    <li><%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
+    <li><%= link_to 'Invoices', restaurant_invoices_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
+    <li><a href="/restaurants/<%= current_user.restaurant_id %>/menu_items">Menu</a></li>
+    <%end%>
+    <li><a href="/account">User & Restaurant Profile</a></li>
+    <li class="divider"></li>
+    <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
 </ul>
 
 <!-- nav bar itself -->
 <nav>
-  <div class="nav-wrapper light-blue accent-2">
-    <!-- left side (logo and dropdown) -->
-    <ul id="nav-mobile" class="left hide-on-med-and-down">
-      <li><img src="<%= asset_path 'rex.png' %>" height="45" width="45" style="vertical-align:middle; margin-left:15px"></li>
-      <li><a class ="dropdown-button" data-beloworigin="true" data-constrainWidth="false" href="#!" data-activates="dropdown1" style="border-right:thick;">Menu<i class="material-icons right">arrow_drop_down</i></a></li>
-    </ul>
+    <div class="nav-wrapper light-blue lighten-3">
+        <!-- left side (logo and dropdown) -->
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li>
+                <a href="/"><img src="<%= asset_path 'rex.png' %>" height="45" width="45" style="vertical-align:middle;"><span style="font-size: 20px; margin-left: 8px">Locavorus</span></a>
+            </li>
+        </ul>
 
-    <!-- right side of nav -->
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <!-- right side of nav -->
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
 
-      <% if user_signed_in? %>
-    <% if current_user[:restaurant_id]  %>
-    <li>
-      <%= link_to 'Dashboard', dashboard_path, :class => 'navbar-link' %>
-    </li>
-    <% end %>
-    <% else %>
-      <li>
-        <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %>
-      </li>
-      <li>
-        <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
-      </li>
+            <% if user_signed_in? %>
+            <li>
+                <%= link_to 'Dashboard', dashboard_path, :class => 'navbar-link' %>
+            </li>
+            <li>
+                <a class="dropdown-button" data-beloworigin="true" href="#!" data-constrainWidth="false" data-activates="dropdown2">Account<i class="material-icons right">arrow_drop_down</i>
+                </a>
+            </li>
+        <% else %>
+            <li>
+                <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %>
+            </li>
+            <li>
+                <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+            </li>
+            <% end %>
 
-    <% end %>
-      <li><a class ="dropdown-button" data-beloworigin="true" href="#!" data-constrainWidth="false" data-activates="dropdown2">Account<i class="material-icons right">arrow_drop_down</i></a></li>
-    </ul>
-  </div>
+        </ul>
+    </div>
 </nav>
 
-<!-- BREAD CRUMBS -->
 <nav>
-  <div class="nav-wrapper light-blue accent-2">
+  <div class="nav-wrapper">
     <div class="col s12">
       <a href="#!" class="breadcrumb">First</a>
       <a href="#!" class="breadcrumb">Second</a>

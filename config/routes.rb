@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resources :reservations
     resources :menu_items
     resources :tables
-    resources :invoices do
+    resources :invoices, except: [:new] do
       resources :orders
     end
     # display all orders

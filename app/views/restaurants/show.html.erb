@@ -1,7 +1,60 @@
 <div class="container">
+  <% if @restaurant.picture  %>
+  <p>
+  <%= cl_image_tag(@restaurant.picture, width: 800, height: 600, crop: :fill) %>
+  </p>
+  <% end %>
+
 <h1>
   <%= @restaurant.name %>
 </h1>
+
+<div class="row">
+  <!-- ==== LEFT SIDE OF THE PAGE ==== -->
+  <div class="col s5">
+  <p id="description-box">
+    <%= @restaurant.description %><br>
+    Les Amis is a group built on values of excellence, humility, inclusiveness, integrity and teamwork. Whether they are in fine-dining, Asian cuisine or casual dining, all our people uphold the same values and fulfil a one-company approach to all that we do. This extends to the relationships we build with our business partners and to the experience our guests and customers have at every touch-point across the Les Amis Group.
+  </p>
+
+  <br>
+
+  <%= link_to 'Make a Reservation', new_restaurant_reservation_path(@restaurant) %> |
+  <%= link_to 'View Reservations', restaurant_reservations_path(@restaurant) %> |
+  <%= link_to 'Menu', restaurant_menu_items_path(@restaurant) %>
+
+  <br>
+
+  <% if current_user and current_user.restaurants.include? @restaurant %>
+  <%= link_to 'Edit Restaurant', edit_restaurant_path(@restaurant) %> |
+  <%= link_to 'View Tables', restaurant_tables_path(@restaurant) %> |
+  <%= link_to 'View Current Queue', restaurant_walkins_path(@restaurant) %> |
+  <%= link_to 'View Current Diners', restaurant_diners_path(@restaurant) %> |
+  <%= link_to 'View Invoices', restaurant_invoices_path(@restaurant) %> |
+  <%= link_to 'View Orders', restaurant_orders_path(@restaurant) %>
+
+  <br>
+
+  <%= link_to 'Public Walkin Link', restaurant_new_public_path(@restaurant) %>
+  <% end %>
+  <p>
+    Current Queue Ahead:
+    <%= Reservation.where(restaurant_id: @restaurant.id).where(status: 'queueing').or(Reservation.where(restaurant_id: @restaurant.id).where(status: 'awaiting')).count %>
+  </p>
+</div>
+
+  <!-- ==== RIGHT SIDE OF THE PAGE ==== -->
+
+  <div class="col s6">
+    <p>
+      <i class="material-icons left">local_offer</i>
+      <%= @restaurant.cuisine %>
+    </p>
+
+    <p>
+      <i class="material-icons left">thumbs_up_down</i>
+      <%= @restaurant.rating %>%
+    </p>
 
 <p>
   <i class="material-icons left">place</i>
@@ -21,60 +74,18 @@
   <a href="<%= @restaurant.website %>"><%= @restaurant.website %></a>
 </p>
 
-<p>
-  <i class="material-icons left">insert_comment</i>
-  <%= @restaurant.description %>
-</p>
-
-<p>
-  <i class="material-icons left">local_offer</i>
-  <%= @restaurant.cuisine %>
-</p>
-
-<p>
-  <% if @restaurant.picture  %>
-    <%= cl_image_tag(@restaurant.picture, width: 200, height: 100, crop: :fill) %>
-  <% end %>
-</p>
-
-<p>
-  Current Queue Ahead:
-  <%= Reservation.where(restaurant_id: @restaurant.id).where(status: 'queueing').or(Reservation.where(restaurant_id: @restaurant.id).where(status: 'awaiting')).count %>
-</p>
-
-<br>
 <br>
 
-<%= link_to 'Make a Reservation', new_restaurant_reservation_path(@restaurant) %>|
-<%= link_to 'Menu', restaurant_menu_items_path(@restaurant) %>
-
-<br>
-
-<% if current_user and current_user.restaurants.include? @restaurant %>
-<%= link_to 'Restaurant Settings', edit_restaurant_path(@restaurant) %> |
-<%= link_to 'Table Settings', restaurant_tables_path(@restaurant) %> |
-<%= link_to 'View Reservations', restaurant_reservations_path(@restaurant) %> |
-
-<%= link_to 'View Current Queue', restaurant_walkins_path(@restaurant) %> |
-<%= link_to 'View Current Diners', restaurant_diners_path(@restaurant) %> |
-<%= link_to 'View Invoices', restaurant_invoices_path(@restaurant) %> |
-<%= link_to 'View Orders', restaurant_orders_path(@restaurant) %>
-
-<br>
-
-<%= link_to 'Public Walkin Link', restaurant_new_public_path(@restaurant) %>
-<% end %>
-
-<br>
-<br>
-
-<% if current_user and current_user.restaurants.include? @restaurant %>
+<!-- <% if current_user and current_user.restaurants.include? @restaurant %>
 <h4>NEED TO PUT THIS SOMEWHERE ELSE</h4>
 <p>
   Next Queue Number:
   <%= @restaurant.next_queue_number %>
 </p>
 <%= link_to 'Reset Queue Number', restaurant_reset_queue_path(@restaurant), method: :put, data: { confirm: 'This will reset the queue. OK to procced?'}%>
-<% end %>
+<% end %> -->
 
+</div>
+</div>
+</div>
 </div>

@@ -138,3 +138,16 @@
 
 
 </div>
+
+<!-- ============ -->
+
+<h4>NEED TO PUT THIS SOMEWHERE ELSE</h4>
+<% if current_user and current_user.restaurants.include? @restaurant %>
+<p>
+  Next Queue Number:
+  <%= @restaurant.next_queue_number %>
+</p>
+<%= link_to 'Reset Queue Number', restaurant_reset_queue_path(@restaurant), method: :put, data: { confirm: 'This will reset the queue. OK to procced?'}%>
+<% end %>
+
+</div>

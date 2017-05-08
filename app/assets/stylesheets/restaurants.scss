@@ -14,18 +14,25 @@ h2 {
   margin-left: 40px;
 }
 #restaurant-cards {
-  margin-left: 70px;
-  margin-right: 40px
+  width:1600px;
+  margin:0 auto;
+
 }
 .card {
-  height: 500px;
-  width: 500px;
+  height: 96%;
+  max-width: 500px;
   margin-top: 60px;
   border-radius: 5px;
-  vertical-align: middle
+  vertical-align: middle;
+  position: relative;
 }
 #restaurant-title {
   color: white;
   font-family: "Squada One";
   font-size: 30px;
+}
+#description-box {
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 7px;
 }
