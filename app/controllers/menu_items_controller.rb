@@ -7,6 +7,15 @@ class MenuItemsController < ApplicationController
   helper MenuItemsHelper
 
   def index
+    if current_user
+      if current_user.restaurants.include? @restaurant
+        @is_take_away = false
+      else
+        @is_take_away = true
+      end
+    else
+      @is_take_away = true
+    end
       @restaurant_id = params[:restaurant_id]
     if request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?name=sort"
       @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order(:name)

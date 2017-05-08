@@ -106,10 +106,17 @@ function redrawList () {
     document.querySelector('.ordered-items').style.display = 'block'
     addToList('Total: $' + totalPrice().toFixed(2))
     var stripeButton = document.querySelector('.stripe-button-el')
-    console.log(orders)
-    stripeButton.addEventListener('click', (event) => {
-      updateOrders()
+    var createOrdersButton = document.getElementById('create-orders-button')
+    if (stripeButton) {
+      stripeButton.addEventListener('click', (event) => {
+        updateOrders()
     })
+    } else {
+      createOrdersButton.addEventListener('click', (event) => {
+        updateOrders()
+      })
+    }
+
   } else {
     document.querySelector('.ordered-items').style.display = 'none'
   }

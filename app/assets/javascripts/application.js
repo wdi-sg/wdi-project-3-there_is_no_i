@@ -18,7 +18,7 @@
 //= require cloudinary
 //= require_tree .
 $( document ).ready(function() {
-    console.log( "ready!" );
+    console.log( "Welcome to Locavorus Rex!" );
     $('select').material_select();
     $(".dropdown-button").dropdown();
 });

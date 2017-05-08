@@ -57,19 +57,24 @@
 
 <ul class="ordered-items-list">
 </ul>
+
 <%= form_for :order, remote: true, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
   <%= hidden_field_tag :orders %>
   <%= hidden_field_tag :total_price %>
-  <%= hidden_field_tag :is_take_away, true %>
+  <%= hidden_field_tag :is_take_away, @is_take_away %>
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-  data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-  data-name="<%= @restaurant.name %>"
-  data-amount=""
-  data-description='Takeaway'
-  data-locale="auto"
-  data-currency="SGD"></script>
+  <% if !current_user || !current_user.restaurants.include?(@restaurant) %>
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+    data-name="<%= @restaurant.name %>"
+    data-amount=""
+    data-description='Order'
+    data-locale="auto"
+    data-currency="SGD"></script>
+  <% else %>
+    <%= f.submit 'Create Orders', id: 'create-orders-button'%>
   <% end %>
+<% end %>
 </div>
 
 <%= javascript_include_tag('menu_items/takeaway.js') %>
