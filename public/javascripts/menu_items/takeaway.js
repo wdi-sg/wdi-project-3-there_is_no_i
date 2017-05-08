@@ -14,6 +14,7 @@ var clicked = false
 //   }
 // })
 
+// $(document).on('ready page:load', function () {
 // show and hide takeaway
 document.getElementById('takeaway-show-hide').addEventListener('click', () => {
   if (hide) {
@@ -176,3 +177,4 @@ function updateOrders () {
   //   amount: realTP * 100
   // })
 }
+// })
