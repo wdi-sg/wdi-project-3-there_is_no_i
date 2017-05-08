@@ -17,8 +17,3 @@
 //= require turbolinks
 //= require cloudinary
 //= require_tree .
-$( document ).ready(function() {
-    console.log( "Welcome to Locavorus Rex!" );
-    $('select').material_select();
-    $(".dropdown-button").dropdown();
-});
