@@ -1,5 +1,4 @@
 <h1>Current Queue</h1>
-<!-- <%= link_to 'New Walkin Diner', restaurant_new_walkin_path(@restaurant.id) %> -->
 
 <h2>Reservations</h2>
 <table>
@@ -22,7 +21,6 @@
   <tbody>
     <% @walkins.where(status:'reservation').each do |walkin| %>
     <tr>
-      <!-- <td><%= link_to walkin.name, restaurant_edit_walkin_path(@restaurant.id, walkin) %></td> -->
       <td><%= walkin.name %></td>
       <td><%= walkin.phone %></td>
       <td><%= walkin.email %></td>
@@ -57,9 +55,7 @@
         <% end %>
         <% end %>
       </td>
-      <!-- <td><%= link_to 'Show', restaurant_walkin_path(@restaurant.id, walkin) %></td>
-      <td><%= link_to 'Edit', restaurant_edit_walkin_path(@restaurant.id, walkin) %></td>
-      <td><%= link_to 'Destroy', restaurant_walkin_path(@restaurant.id, walkin), method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+
     </tr>
     <% end %>
   </tbody>
@@ -160,9 +156,6 @@
         <% end %>
         <% end %>
       </td>
-      <!-- <td><%= link_to 'Show', restaurant_walkin_path(@restaurant.id, walkin) %></td>
-      <td><%= link_to 'Edit', restaurant_edit_walkin_path(@restaurant.id, walkin) %></td>
-      <td><%= link_to 'Destroy', restaurant_walkin_path(@restaurant.id, walkin), method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
     </tr>
     <% end %>
   </tbody>
