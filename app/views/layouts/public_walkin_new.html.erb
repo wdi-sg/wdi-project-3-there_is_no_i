@@ -9,12 +9,16 @@
     <%= form_for @walkin, url: restaurant_public_path(@restaurant), html: {method: :post} do |f| %>
       <p>
         <%= f.label :party_size, "Number of Diners" %>
-        <%= f.select :party_size,[*1..@restaurant.tables.reject { |y| y[:capacity_total] == nil }.max_by{|x| x[:capacity_total]}.capacity_total], :required => true%>
+        <% if @restaurant.tables.count > 0 %>
+          <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
+        <% else %>
+          <%= f.select :party_size,[0]%>
+        <% end %>
       </p>
 
       <p>
         <%= f.label :phone, "Mobile" %>
-        <%= f.text_field :phone, minlength: 8, maxlength: 8,  :required => true%>
+        <%= f.number_field :phone, placeholder: '98765432', min:10000000, max:99999999%>
       </p>
 
       <%= f.submit "Submit" %>
