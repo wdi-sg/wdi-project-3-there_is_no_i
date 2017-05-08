@@ -89,6 +89,10 @@ class ReservationsController < ApplicationController
   end
 
   def new
+    if !current_user
+      flash['alert'] = 'Please login or register before making a reservation'
+      redirect_to new_user_session_path
+    end
   end
 
   def show

@@ -83,7 +83,7 @@
   <tbody>
     <% @walkins.where(status:'queuing').each do |walkin| %>
     <tr>
-      <!-- <td><%= link_to walkin.name, restaurant_edit_walkin_path(@restaurant.id, walkin) %></td> -->
+      <!-- <td><%= link_to walkin.name, edit_restaurant_walkin_path(@restaurant.id, walkin) %></td> -->
       <td><%= walkin.name %></td>
       <td><%= walkin.phone %></td>
       <td><%= walkin.email %></td>
@@ -121,7 +121,7 @@
       <td>
         Notify
       </td>
-    
+
     <% end %>
   </tbody>
 </table>

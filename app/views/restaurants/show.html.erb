@@ -43,26 +43,23 @@
   <%= @restaurant.rating %>%
 </p>
 
-<% if current_user and current_user.restaurants.include? @restaurant %>
 <p>
-  Next Queue Number:
-  <%= @restaurant.next_queue_number %>
+  Current Queue Ahead:
+  <%= Reservation.where(restaurant_id: @restaurant.id).where(status: 'queueing').or(Reservation.where(restaurant_id: @restaurant.id).where(status: 'awaiting')).count %>
 </p>
-<%= link_to 'Reset Queue Number', restaurant_reset_queue_path(@restaurant), method: :put, data: { confirm: 'This will reset the queue. OK to procced?'}%>
-<% end %>
 
 <br>
 <br>
 
 <%= link_to 'Make a Reservation', new_restaurant_reservation_path(@restaurant) %>|
-<%= link_to 'View Reservations', restaurant_reservations_path(@restaurant) %> |
 <%= link_to 'Menu', restaurant_menu_items_path(@restaurant) %>
 
 <br>
 
 <% if current_user and current_user.restaurants.include? @restaurant %>
-<%= link_to 'Edit Restaurant', edit_restaurant_path(@restaurant) %> |
-<%= link_to 'View Tables', restaurant_tables_path(@restaurant) %> |
+<%= link_to 'Restaurant Settings', edit_restaurant_path(@restaurant) %> |
+<%= link_to 'Table Settings', restaurant_tables_path(@restaurant) %> |
+<%= link_to 'View Reservations', restaurant_reservations_path(@restaurant) %> |
 <%= link_to 'View Current Queue', restaurant_walkins_path(@restaurant) %> |
 <%= link_to 'View Current Diners', restaurant_diners_path(@restaurant) %> |
 <%= link_to 'View Invoices', restaurant_invoices_path(@restaurant) %> |
@@ -72,6 +69,19 @@
 
 <%= link_to 'Public Walkin Link', restaurant_new_public_path(@restaurant) %>
 <% end %>
+
+<br>
+<br>
+
+<h4>NEED TO PUT THIS SOMEWHERE ELSE</h4>
+<% if current_user and current_user.restaurants.include? @restaurant %>
+<p>
+  Next Queue Number:
+  <%= @restaurant.next_queue_number %>
+</p>
+<%= link_to 'Reset Queue Number', restaurant_reset_queue_path(@restaurant), method: :put, data: { confirm: 'This will reset the queue. OK to procced?'}%>
+<% end %>
+
 </div>
 
 <!-- <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> -->
