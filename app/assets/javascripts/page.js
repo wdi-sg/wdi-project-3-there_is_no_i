@@ -1,3 +1,4 @@
-$(document).on('turbolinks:load', function(){
-  $(".dropdown-button").dropdown();
+$(document).on('turbolinks:load', function () {
+  $('select').material_select();
+  $('.dropdown-button').dropdown()
 })

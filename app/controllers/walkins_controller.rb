@@ -8,7 +8,7 @@ class WalkinsController < ApplicationController
   helper WalkinHelper
 
   def index
-    @walkins = Reservation.where(restaurant_id: params[:restaurant_id], status: 'queuing')
+    @walkins = Reservation.where(restaurant_id: params[:restaurant_id], status: 'queuing').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting')).or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'reservation'))
   end
 
   # def create
@@ -64,17 +64,17 @@ class WalkinsController < ApplicationController
     render 'layouts/public_walkin', layout: false
   end
 
-  def edit; end
+  # def edit; end
 
   def show; end
 
-  def update
-    if @walkin.update(walkin_params)
-      redirect_to restaurant_walkins_path(@restaurant)
-    else
-      render :edit
-    end
-  end
+  # def update
+  #   if @walkin.update(walkin_params)
+  #     redirect_to restaurant_walkins_path(@restaurant)
+  #   else
+  #     render :edit
+  #   end
+  # end
 
   def destroy
     @walkin.destroy

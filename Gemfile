@@ -39,9 +39,14 @@ gem 'materialize-sass'
 gem 'material_icons'
 # Add Cloudinary for image storage
 gem 'cloudinary'
+# Add Foreman to save environment variables
+gem 'foreman'
 
 # Gem to use jquery with Materialize
 gem 'jquery-turbolinks'
+
+# Testing Mailgun
+gem 'rest-client'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

@@ -47,8 +47,4 @@ class OrdersController < ApplicationController
       @invoice = @order.invoice
     end
 
-    # def order_params
-    #   params.require(:order).permit(:user_id, :restaurant_id, :menu_item_id, :request_description, :is_takeaway, :time_end)
-    # end
-
   end

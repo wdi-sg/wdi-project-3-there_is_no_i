@@ -14,6 +14,7 @@ var clicked = false
 //   }
 // })
 
+// $(document).on('ready page:load', function () {
 // show and hide takeaway
 document.getElementById('takeaway-show-hide').addEventListener('click', () => {
   if (hide) {
@@ -105,7 +106,7 @@ function redrawList () {
     document.querySelector('.ordered-items').style.display = 'block'
     addToList('Total: $' + totalPrice().toFixed(2))
     var stripeButton = document.querySelector('.stripe-button-el')
-    console.log(orders);
+    console.log(orders)
     stripeButton.addEventListener('click', (event) => {
       updateOrders()
     })
@@ -163,16 +164,17 @@ function totalPrice () {
 // convert the orders array into a string of menu-item ids and submits that string
 function updateOrders () {
   if (!clicked) {
-  var realTP = totalPrice()
-  console.log(orders);
-  var allOrders = orders
-  var first = allOrders.shift().id.toString()
-  var ordersStr = allOrders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
-  document.getElementById('orders').value = ordersStr
-  document.getElementById('total_price').value = realTP.toString()
-  clicked = true
+    var realTP = totalPrice()
+    console.log(orders)
+    var allOrders = orders
+    var first = allOrders.shift().id.toString()
+    var ordersStr = allOrders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
+    document.getElementById('orders').value = ordersStr
+    document.getElementById('total_price').value = realTP.toString()
+    clicked = true
   }
   // handler.open({
   //   amount: realTP * 100
   // })
 }
+// })

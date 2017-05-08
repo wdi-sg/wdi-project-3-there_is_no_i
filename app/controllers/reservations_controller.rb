@@ -1,11 +1,17 @@
 class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
   include FindingTableLogic
-  before_action :authenticate_user!, except: [:create, :new, :show]
+  # before_action :authenticate_user!, except: [:create, :new, :show]
+  before_action :authenticate_user!, except: [:create, :new]
+
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-  before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
-  before_action :check_user_is_part_of_reservation, only: [:show]
+
+  # before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
+
+  # before_action :check_user_is_part_of_reservation, only: [:show]
+  before_action :check_user_is_part_of_reservation, only: [:show, :edit, :update, :delete]
+
   before_action :set_duration, only: [:create, :update]
   helper ReservationsHelper
 
@@ -35,9 +41,16 @@ class ReservationsController < ApplicationController
       # reservation where same email, date
     else
       new_res = Reservation.new()
-      new_res[:name] = params[:reservation][:name]
-      new_res[:email] = params[:reservation][:email]
-      new_res[:phone] = params[:reservation][:phone]
+      if params[:reservation][:name]
+        new_res[:name] = params[:reservation][:name]
+        new_res[:email] = params[:reservation][:email]
+        new_res[:phone] = params[:reservation][:phone]
+      else
+        new_res[:user_id] = current_user.id
+        new_res[:name] = current_user.name
+        new_res[:email] = current_user.email
+        new_res[:phone] = current_user.phone
+      end
       new_res[:party_size] = params[:reservation][:party_size]
       new_res[:restaurant_id] = params[:restaurant_id]
 
@@ -55,6 +68,7 @@ class ReservationsController < ApplicationController
         new_res[:status] = 'reservation'
         if new_res.save!
           # Redirect to success page & SEND EMAIL
+          flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
           redirect_to restaurant_path(params[:restaurant_id])
         else
           flash['alert'] = 'Error. Please check input parameters.'

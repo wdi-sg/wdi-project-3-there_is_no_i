@@ -6,7 +6,6 @@ class DinersController < ApplicationController
   before_action :set_duration, only: [:update, :reassign_table, :assign_table]
 
   def index
-    # @awaitants...
     @diners = Reservation.where(restaurant_id: params[:restaurant_id], status: 'dining').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting'))
   end
 
@@ -26,7 +25,6 @@ class DinersController < ApplicationController
     # if cancelled - NEXTCUSTOMER, CURENTDINER change status, end time
 
     if params[:reservation][:status] == 'awaiting' || params[:reservation][:status] == 'dining'
-      # HAVE TO RESET START TIME?
       old_start_time = @diner.start_time
       old_table_id = @diner.table_id
       old_party_size = @diner.party_size
@@ -36,14 +34,16 @@ class DinersController < ApplicationController
       @diner.table_id = params[:reservation][:table_id]
       @diner.party_size = params[:reservation][:party_size]
       @diner.save
-      # NO TABLE SELECTED - WHY?
+
       table_if_possible = determine_table(@restaurant, [@diner.table], @diner, Time.now, @est_duration)
+
       if table_if_possible
         @diner.start_time = Time.now
         @diner.end_time = Time.now + @est_duration
         save_update(@diner, @restaurant)
       else
         @diner.start_time = old_start_time
+        @diner.end_time = old_start_time + @est_duration
         @diner.table_id = old_table_id
         @diner.party_size = old_party_size
         @diner.save
@@ -55,21 +55,6 @@ class DinersController < ApplicationController
       reset_table_count(@diner.table)
       @diner.end_time = Time.now
       @diner.save
-      # Assign table to next customer
-      # next_customer = find_next_customer(@diner.table)
-      # if next_customer
-      #   # Check if current table has reservations that will clash
-      #   next_customer_table = determine_table(@restaurant, [@diner.table], next_customer, Time.now, @est_duration)
-      #   if next_customer_table
-      #     assign_table(next_customer, next_customer_table)
-      #     sms_awaiting(next_customer.name, @restaurant.name, next_customer_table.name)
-      #     save_update(@diner, @restaurant)
-      #   else
-      #     save_update(@diner, @restaurant)
-      #   end
-      # else
-      #   save_update(@diner, @restaurant)
-      # end
       reassign_table(@diner, @restaurant)
     else
       flash['alert'] = 'Error 500. Check form status.'

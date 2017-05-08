@@ -7,7 +7,6 @@ class MenuItemsController < ApplicationController
   helper MenuItemsHelper
 
   def index
-    gon.restaurant = @restaurant.name
       @restaurant_id = params[:restaurant_id]
     if request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?name=sort"
       @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order(:name)
