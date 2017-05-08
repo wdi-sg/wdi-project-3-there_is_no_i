@@ -12,8 +12,8 @@ class TwilioController < ApplicationController
     # end
     # session[:counter] += 1
 
-    # from = params[:From] ? params[:From] : '' # gets the sender's number '+6587427184'
-    # body = params[:Body] ? params[:Body] : '' # gets the sender's message
+    # from = params["From"] # gets the sender's number '+6587427184'
+    # body = params["Body"] # gets the sender's message
     # begin
     #   @user = User.find(phone: from)
     # rescue ActiveRecord::RecordNotFound => e
@@ -26,7 +26,7 @@ class TwilioController < ApplicationController
     # end
     twiml = Twilio::TwiML::Response.new do |r|
       # r.Message @message
-      r.Message 'TROUBLESHOOT TEST'
+      r.Message "TROUBLESHOOT TEST"
     end
     twiml.text
   end

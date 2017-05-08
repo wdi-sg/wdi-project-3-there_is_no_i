@@ -20,8 +20,8 @@
   <% end %>
 
   <div class="row">
-  <%= f.label :party_size %>
-  <%= f.select :party_size, [*1..8], :required => true, class: "browser-default" %>
+  <%= f.label :party_size, 'Number of People' %>
+  <%= f.select :party_size,[*1..@restaurant.tables.max_by{|x| x[:capacity_total]}.capacity_total], :required => true, class: "browser-default" %>
   </div>
 
   <div class="row">
@@ -36,7 +36,7 @@
 
   <div class="row">
   <%= f.label :special_requests, 'Special Requests' %>
-  <%= f.text_field :special_requests %>
+  <%= f.text_field :special_requests, placeholder:@reservation.special_requests %>
   </div>
 
   <%= f.submit %>
