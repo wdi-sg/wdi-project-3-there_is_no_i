@@ -5,17 +5,17 @@
   <% if !current_user or current_user.restaurants.include? @restaurant %>
   <div class="row">
   <%= f.label :name, 'Name' %>
-  <%= f.text_field :name, value: current_user.name, :required => true %>
+  <%= f.text_field :name, placeholder: 'Locavorusrex' , :required => true %>
   </div>
 
   <div class="row">
   <%= f.label :email, 'Email' %>
-  <%= f.text_field :email, value: current_user.email, :required => true %>
+  <%= f.text_field :email, placeholder: 'Locavorus@rex.com'%>
   </div>
 
   <div class="row">
   <%= f.label :phone, 'Phone' %>
-  <%= f.text_field :phone, value: current_user.phone, :required => true %>
+  <%= f.text_field :phone, placeholder: '98765432'%>
   </div>
   <% end %>
 

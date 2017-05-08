@@ -130,7 +130,7 @@ class DinersController < ApplicationController
 
   def assign_table(next_customer, table)
     next_customer.table_id = table.id
-    next_customer.status = 'awaiting'
+    next_customer.status = 'queuing'
     next_customer.start_time = Time.now
     next_customer.end_time = Time.now + @est_duration
     next_customer.save!

@@ -1,5 +1,70 @@
 <h1>Current Queue</h1>
 
+<h2>Queuing</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th>Quantity</th>
+      <th>Status</th>
+      <th>Queue Number</th>
+      <th>Table Assigned</th>
+      <th>Requests</th>
+      <th>Est Start Time</th>
+      <th>Est End Time</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @walkins.where(status:'queuing').each do |walkin| %>
+    <tr>
+      <!-- <td><%= link_to walkin.name, edit_restaurant_walkin_path(@restaurant.id, walkin) %></td> -->
+      <td><%= walkin.name %></td>
+      <td><%= walkin.phone %></td>
+      <td><%= walkin.email %></td>
+      <td><%= walkin.party_size %></td>
+      <td>
+        <% if walkin.status == 'awaiting' %>
+        <font color="red"><b><%= walkin.status %></b></font>
+        <% else %>
+        <%= walkin.status %>
+        <% end %>
+      </td>
+      <td><%= walkin.queue_number %></td>
+
+      <td>
+      <% if walkin.table_id %>
+      <%= Table.find(walkin.table_id).name %>
+      <% end %>
+      </td>
+
+      <td><%= walkin.special_requests %></td>
+      <td>
+        <% if walkin.start_time %>
+        <%= walkin.start_time.getlocal('+08:00') %>
+        <% end %>
+      </td>
+      <td>
+        <% if walkin.end_time %>
+        <% if Time.now > walkin.end_time %>
+        <font color="red"><b><%= walkin.end_time.getlocal('+08:00') %></b></font>
+        <% else %>
+        <%= walkin.end_time.getlocal('+08:00') %>
+        <% end %>
+        <% end %>
+      </td>
+      <td>
+        <% if walkin.table %>
+        <%= link_to 'Notify', restaurant_notify_path(@restaurant, walkin), method: :put, data: { confirm: 'This will notify the customer via SMS. OK to procced?'} %>
+        <% end %>
+      </td>
+
+    <% end %>
+  </tbody>
+</table>
+
 <h2>Reservations</h2>
 <table>
   <thead>
@@ -14,6 +79,7 @@
       <th>Requests</th>
       <th>Est Start Time</th>
       <th>Est End Time</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -58,70 +124,9 @@
         <% end %>
       </td>
 
+      <td>Seated Link</td>
+
     </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<h2>Queuing</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Phone</th>
-      <th>Email</th>
-      <th>Quantity</th>
-      <th>Status</th>
-      <th>Queue Number</th>
-      <th>Table Assigned</th>
-      <th>Requests</th>
-      <!-- <th>Est Start Time</th>
-      <th>Est End Time</th> -->
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @walkins.where(status:'queuing').each do |walkin| %>
-    <tr>
-      <!-- <td><%= link_to walkin.name, edit_restaurant_walkin_path(@restaurant.id, walkin) %></td> -->
-      <td><%= walkin.name %></td>
-      <td><%= walkin.phone %></td>
-      <td><%= walkin.email %></td>
-      <td><%= walkin.party_size %></td>
-      <td>
-        <% if walkin.status == 'awaiting' %>
-        <font color="red"><b><%= walkin.status %></b></font>
-        <% else %>
-        <%= walkin.status %>
-        <% end %>
-      </td>
-      <td><%= walkin.queue_number %></td>
-
-      <td>
-      <% if walkin.table_id %>
-      <%= Table.find(walkin.table_id).name %>
-      <% end %>
-      </td>
-
-      <td><%= walkin.special_requests %></td>
-      <!-- <td>
-        <% if walkin.start_time %>
-        <%= walkin.start_time.getlocal('+08:00') %>
-        <% end %>
-      </td>
-      <td>
-        <% if walkin.end_time %>
-        <% if Time.now > walkin.end_time %>
-        <font color="red"><b><%= walkin.end_time.getlocal('+08:00') %></b></font>
-        <% else %>
-        <%= walkin.end_time.getlocal('+08:00') %>
-        <% end %>
-        <% end %>
-      </td> -->
-      <td>
-        Notify
-      </td>
-
     <% end %>
   </tbody>
 </table>
@@ -185,7 +190,7 @@
       </td>
 
       <td>
-        Seated
+        Seated Link
       </td>
     </tr>
     <% end %>
