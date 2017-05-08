@@ -2,6 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+h1 {
+  font-size: 70px;
+  font-family: "Unica One"
+}
+h2 {
+  font-size: 30px;
+  font-family: "Unica One"
+}
+.container {
+  margin-left: 40px;
+}
 #restaurant-cards {
   margin-left: 70px;
   margin-right: 40px
@@ -15,9 +26,6 @@
 }
 #restaurant-title {
   color: white;
-  font-weight: bold;
-}
-#restaurant-title:hover {
-  color: white;
-  font-weight: bold;
+  font-family: "Squada One";
+  font-size: 30px;
 }

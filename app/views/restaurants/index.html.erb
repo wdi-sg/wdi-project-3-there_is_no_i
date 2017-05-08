@@ -1,11 +1,20 @@
 <center>
 <h1>Restaurants</h1>
 
-<h1>- Sort by -</h1>
-<a class="waves-effect waves-light btn" href="/restaurants?name=sort">Name</a>
-<a class="waves-effect waves-light btn" href="/restaurants?cuisine=sort">Cuisine</a>
-<a class="waves-effect waves-light btn" href="/restaurants?city=sort">City</a>
-<a class="waves-effect waves-light btn" href="/restaurants?rating=sort">Rating</a>
+<!-- ===== SEARCH BAR ===== -->
+    <form id="search-field">
+      <div class="input-field">
+        <input id="search" type="search" required placeholder="Search for a restaurant">
+        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+        <i class="material-icons">close</i>
+      </div>
+    </form>
+  <!-- end of search bar -->
+
+<h2>- Sort by -</h2>
+<a class="waves-effect waves-light btn blue lighten-3" href="/restaurants?name=sort">Name</a>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?cuisine=sort">Cuisine</a>
+<a class="waves-effect waves-light btn cyan lighten-3" href="/restaurants?rating=sort">Rating</a>
 </center>
 
 
@@ -26,7 +35,7 @@
         <p><i class="material-icons left">thumbs_up_down</i><%= restaurant.rating %>%</p>
       </div>
       <div class="card-action">
-        <i class="material-icons left">person_add</i><%= link_to 'Book a table here!', new_restaurant_reservation_path(restaurant.id), class: 'valign-wrapper' %>
+        <i class="material-icons left">person_add</i><%= link_to 'Book a table here!', new_restaurant_reservation_path(restaurant.id), class: 'valign-wrapper blue-text' %>
       </div>
     </div>
   </div>
