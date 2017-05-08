@@ -1,5 +1,6 @@
 <h1>Invoices</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
+<%= link_to 'New', restaurant_menu_items_path(@restaurant) %>
 <br>
 <br>
 <table>
@@ -9,6 +10,7 @@
       <th>User</th>
       <th>Table</th>
       <th>Total</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -22,9 +24,15 @@
       <td><%= invoice.table ? invoice.table.name : '-' %></td>
       <td><%= formatPrice(showTotalPrice(invoice.menu_items)) %></td>
 
-      <td><%= link_to 'Show', restaurant_invoice_path(@restaurant.id, invoice) %></td>
-      <td><%= link_to 'Edit', edit_restaurant_invoice_path(@restaurant.id, invoice) %></td>
-      <td><%= link_to 'Destroy', restaurant_invoice_path(@restaurant.id, invoice), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+      <td><%= form_tag restaurant_menu_items_path(@restaurant), method: :get do %>
+        <%= hidden_field_tag :invoice_id, invoice.id %>
+        <%= hidden_field_tag :table_id, 5 %>
+        <%= submit_tag 'Add' %>
+      <% end %></td>
+      <td><%= link_to 'Show', restaurant_invoice_path(@restaurant, invoice) %></td>
+      <td><%= link_to 'Edit', edit_restaurant_invoice_path(@restaurant, invoice) %></td>
+      <td><%= link_to 'Destroy', restaurant_invoice_path(@restaurant, invoice), method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
     <% end %>
   </tbody>

@@ -12,37 +12,42 @@ class InvoicesController < ApplicationController
     end
 
     def create
-      # convert amount in dollars to amount in cents
-      @amount = params[:total_price].to_f
-      @amount = (@amount * 100).to_i
+      if !params[:is_take_away]
+        # convert amount in dollars to amount in cents
+        @amount = params[:total_price].to_f
+        @amount = (@amount * 100).to_i
 
-      begin
-      customer = Stripe::Customer.create(
-      :email => params[:stripeEmail],
-      :source => params[:stripeToken]
-      )
+        begin
+        customer = Stripe::Customer.create(
+        :email => params[:stripeEmail],
+        :source => params[:stripeToken]
+        )
 
-      charge = Stripe::Charge.create(
-      :customer => customer.id,
-      :amount => @amount,
-      :description => 'Takeaway',
-      :currency => 'SGD'
-      )
+        charge = Stripe::Charge.create(
+        :customer => customer.id,
+        :amount => @amount,
+        :description => 'Takeaway',
+        :currency => 'SGD'
+        )
 
-      rescue Stripe::CardError => e
-        flash[:alert] = e.message
-        # redirect_to new_charge_path
-        redirect_to restaurant_menu_items_path(@restaurant)
+        rescue Stripe::CardError => e
+          flash[:alert] = e.message
+          redirect_to restaurant_menu_items_path(@restaurant)
+        end
+
+        @x = User.where(email: params[:stripeEmail])
+      else
+        @x = []
       end
-
-      @x = User.where(email: params[:stripeEmail])
 
       if current_user
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id)
       elsif @x.count > 0
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: @x[0].id)
+      elsif params[:invoice_id]
+        @invoice = Invoice.find(params[:invoice_id])
       else
-        @invoice = Invoice.new(restaurant_id: @restaurant.id)
+        @invoice = Invoice.new(restaurant_id: @restaurant.id, table_id: params[:table_id])
       end
 
       if @invoice.save!
@@ -59,8 +64,13 @@ class InvoicesController < ApplicationController
             ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id})
           end
         end
-        flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation soon."
-        redirect_to restaurant_path(@restaurant)
+        if !params[:is_take_away]
+          flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation soon."
+          redirect_to restaurant_path(@restaurant)
+        else
+          flash[:notice] = "Local order created."
+          redirect_to dashboard_path
+        end
       else
         flash[:alert] = "There was an error submitting your order. Please try again."
         redirect_to restaurant_menu_items_path(@restaurant)
