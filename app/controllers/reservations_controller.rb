@@ -77,7 +77,7 @@ class ReservationsController < ApplicationController
 
             body = "Dear #{new_res.name}, \n Your reservation at #{new_res.restaurant.name} on #{new_res.start_time} for a table of #{new_res.party_size} has been recorded. Thank you and see you soon! \n Best regards, \n #{new_res.restaurant.name} \n \n \n Powered by Locavorus"
 
-            send_email(new_res.name, new_res.email, subject, body)
+            # send_email(new_res.name, new_res.email, subject, body)
 
             flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
             redirect_to restaurant_path(params[:restaurant_id])
