@@ -37,6 +37,10 @@
 
   <%= link_to 'Public Walkin Link', restaurant_new_public_path(@restaurant) %>
   <% end %>
+  <p>
+    Current Queue Ahead:
+    <%= Reservation.where(restaurant_id: @restaurant.id).where(status: 'queueing').or(Reservation.where(restaurant_id: @restaurant.id).where(status: 'awaiting')).count %>
+  </p>
 </div>
 
   <!-- ==== RIGHT SIDE OF THE PAGE ==== -->
@@ -70,13 +74,7 @@
   <a href="<%= @restaurant.website %>"><%= @restaurant.website %></a>
 </p>
 
-<% if current_user and current_user.restaurants.include? @restaurant %>
-<p>
-  Next Queue Number:
-  <%= @restaurant.next_queue_number %>
-</p>
-<%= link_to 'Reset Queue Number', restaurant_reset_queue_path(@restaurant.id), id: @restaurant.id, method: :put, data: { confirm: 'This will reset the queue. OK to procced?'}%>
-<% end %>
+
 
 <br>
 
@@ -84,5 +82,3 @@
 </div>
 </div>
 </div>
-
-<!-- <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> -->

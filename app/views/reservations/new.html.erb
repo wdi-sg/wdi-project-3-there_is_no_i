@@ -15,13 +15,13 @@
 
   <div class="row">
   <%= f.label :phone, 'Phone' %>
-  <%= f.text_field :phone, value: current_user.phone %>
+  <%= f.text_field :phone, value: current_user.phone, :required => true %>
   </div>
   <% end %>
 
   <div class="row">
-  <%= f.label :party_size, 'Number of People' %>
-  <%= f.select :party_size,[*1..@restaurant.tables.max_by{|x| x[:capacity_total]}.capacity_total], :required => true%>
+    <%= f.label :party_size, "Number of Diners" %>
+    <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
   </div>
 
   <div class="row">

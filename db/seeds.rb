@@ -39,7 +39,9 @@ end
     name: Faker::Food.ingredient,
     price: ActionController::Base.helpers.number_with_precision(rand * 100, precision: 2),
     description: Faker::Food.ingredient,
-    restaurant_id: rand(100) + 1
+    restaurant_id: rand(100) + 1,
+    picture: Faker::Placeholdit.image,
+    is_active: [true, false].sample
   )
 end
 
@@ -68,7 +70,8 @@ end
     name: Faker::StarWars.character,
     start_time: x,
     table_id: rand(10) + 1,
-    end_time: x + 60 * 90
+    end_time: x + 60 * 90,
+    status: 'reservation'
   )
 end
 

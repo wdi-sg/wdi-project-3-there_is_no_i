@@ -10,4 +10,7 @@ class User < ApplicationRecord
   has_many :reservations
   has_many :orders, through: :invoices
 
+  validates :name, presence: true
+  validates :email, presence: true
+  validates :phone, presence: true
 end
