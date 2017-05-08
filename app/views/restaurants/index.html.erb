@@ -12,9 +12,8 @@
   <!-- end of search bar -->
 
 <h2>- Sort by -</h2>
-<a class="waves-effect waves-light btn blue lighten-3" href="/restaurants?name=sort">Name</a>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?name=sort">Name</a>
 <a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?cuisine=sort">Cuisine</a>
-<a class="waves-effect waves-light btn cyan lighten-3" href="/restaurants?rating=sort">Rating</a>
 </center>
 
 
@@ -32,7 +31,6 @@
       <div class="card-content">
         <p><i class="material-icons left">local_offer</i><%= restaurant.cuisine %></p><br>
         <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_country %></p><br>
-        <p><i class="material-icons left">thumbs_up_down</i><%= restaurant.rating %>%</p>
       </div>
       <div class="card-action">
         <i class="material-icons left">person_add</i><%= link_to 'Book a table here!', new_restaurant_reservation_path(restaurant.id), class: 'valign-wrapper blue-text' %>

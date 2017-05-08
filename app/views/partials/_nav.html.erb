@@ -18,14 +18,15 @@
 </ul>
 
 <ul id="dropdown2" class="dropdown-content">
-  <li><a href="#!">Account Settings</a></li>
-  <li><a href="#!">Restaurant Settings</a></li>
-  <li><a href="#!">Payment Settings</a></li>
-  <li><a href="#!">Notification Settings</a></li>
-  <li><a href="#!">Menu Settings</a></li>
-  <li><a href="#!">Reviews and Feedback</a></li>
+  <% if current_user%>
+  <li><a href="/restaurants/<%= current_user.restaurant_id %>/orders">Orders</a></li>
+  <li><a href="/restaurants/<%= current_user.restaurant_id %>/invoices">Invoices</a></li>
+  <li><a href="/restaurants/<%= current_user.restaurant_id %>/menu_items">Menu</a></li>
+  <li><a href="/account">Edit User & Restaurant Profile</a></li>
   <li class="divider"></li>
-  <li><a href="#!">Logout</a></li>
+  <!-- <li><a href="#!">Logout</a></li> -->
+  <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
+  <%end%>
 </ul>
 
 <!-- nav bar itself -->
