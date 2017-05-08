@@ -18,7 +18,7 @@ h2 {
   margin-right: 40px
 }
 .card {
-  height: 500px;
+  height: 480px;
   width: 500px;
   margin-top: 60px;
   border-radius: 5px;
@@ -28,4 +28,9 @@ h2 {
   color: white;
   font-family: "Squada One";
   font-size: 30px;
+}
+#description-box {
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 7px;
 }
