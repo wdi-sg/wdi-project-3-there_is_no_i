@@ -18,7 +18,7 @@
 
       <p>
         <%= f.label :phone, "Mobile" %>
-        <%= f.text_field :phone, minlength: 8, maxlength: 8,  :required => true%>
+        <%= f.number_field :phone, placeholder: '98765432', min:10000000, max:99999999%>
       </p>
 
       <%= f.submit "Submit" %>
