@@ -40,14 +40,14 @@ class InvoicesController < ApplicationController
         @x = []
       end
 
-
-
       if current_user
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id)
       elsif @x.count > 0
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: @x[0].id)
+      elsif params[:invoice_id]
+        @invoice = Invoice.find(params[:invoice_id])
       else
-        @invoice = Invoice.new(restaurant_id: @restaurant.id)
+        @invoice = Invoice.new(restaurant_id: @restaurant.id, table_id: params[:table_id])
       end
 
       if @invoice.save!
