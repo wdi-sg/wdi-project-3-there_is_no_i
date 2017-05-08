@@ -14,7 +14,7 @@
 
   <p>
     <%= f.label :party_size, "Number of Diners" %>
-    <%= f.number_field :party_size, placeholder: "1", value: "1", min: 1, max: 8 %>
+    <%= f.select :party_size,[*1..@restaurant.tables.max_by{|x| x[:capacity_total]}.capacity_total], :required => true%>
   </p>
 
   <p>
