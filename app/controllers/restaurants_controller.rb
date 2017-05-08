@@ -96,6 +96,9 @@ class RestaurantsController < ApplicationController
 
   def reset_queue
     # VAlidete - cannot change when there are existing users in the queue
+    @my_restaurant = current_user.restaurant
+    p 'TROUBLESHOOT'
+    p @my_restaurant
     # restaurant_reset_queue_path(@restaurant)
   end
 

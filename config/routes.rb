@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   # dashboard(redirect from /restaurant/:id/edit)
   # get '/dashboard' => 'restaurants#edit'
   get '/dashboard' => 'dashboard#index'
+  put '/dashboard/reset_queue' => 'restaurant#reset_queue'
 
   # restaurants
   resources :restaurants do
@@ -44,6 +45,5 @@ Rails.application.routes.draw do
     get 'diners/:id/edit' => 'diners#edit', as: 'edit_diner'
     get 'diners/:id' => 'diners#show', as: 'diner'
     put 'diners/:id' => 'diners#update'
-    put '/reset_queue' => 'restaurant#reset_queue'
   end
 end
