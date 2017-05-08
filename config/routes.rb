@@ -19,7 +19,6 @@ Rails.application.routes.draw do
   # dashboard(redirect from /restaurant/:id/edit)
   # get '/dashboard' => 'restaurants#edit'
   get '/dashboard' => 'dashboard#index'
-  put '/dashboard/reset_queue' => 'restaurant#reset_queue'
 
   # restaurants
   resources :restaurants do
@@ -31,19 +30,21 @@ Rails.application.routes.draw do
     end
     # display all orders
     get 'orders' => 'orders#index'
-    get 'walkins' => 'walkins#index'
-    post 'walkins' => 'walkins#create'
-    get 'walkins/new' => 'walkins#new', as: 'new_walkin'
+    resources :walkins
+    # get 'walkins' => 'walkins#index'
+    # post 'walkins' => 'walkins#create'
+    # get 'walkins/new' => 'walkins#new', as: 'new_walkin'
+    # get 'walkins/:id/edit' => 'walkins#edit', as: 'edit_walkin'
+    # get 'walkins/:id' => 'walkins#show', as: 'walkin'
+    # put 'walkins/:id' => 'walkins#update'
+    # delete 'walkins/:id' => 'walkins#destroy'
     get 'public' => 'walkins#public_show'
     post 'public' => 'walkins#public_create'
     get 'public/new' => 'walkins#public_new', as: 'new_public'
-    get 'walkins/:id/edit' => 'walkins#edit', as: 'edit_walkin'
-    get 'walkins/:id' => 'walkins#show', as: 'walkin'
-    put 'walkins/:id' => 'walkins#update'
-    delete 'walkins/:id' => 'walkins#destroy'
     get 'diners' => 'diners#index'
     get 'diners/:id/edit' => 'diners#edit', as: 'edit_diner'
     get 'diners/:id' => 'diners#show', as: 'diner'
     put 'diners/:id' => 'diners#update'
+    put 'reset_queue' => 'restaurants#reset_queue'
   end
 end
