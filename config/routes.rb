@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   mount ActionCable.server, at: '/cable'
 
   # route for Twilio SMS
-  get '/messages/receive' => 'twilio#receive'
+  post '/messages/receive' => 'twilio#receive'
 
   # users
   devise_for :users, path: '/', path_names: {
