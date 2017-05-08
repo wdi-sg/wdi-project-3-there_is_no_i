@@ -18,12 +18,14 @@
 </ul>
 
 <ul id="dropdown2" class="dropdown-content">
+<% if current_user%>
   <li><%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
   <li><%= link_to 'Invoices', restaurant_invoices_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
   <li><a href="/restaurants/<%= current_user.restaurant_id %>/menu_items">Menu</a></li>
   <li><a href="/account">Edit User & Restaurant Profile</a></li>
   <li class="divider"></li>
   <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
+  <%end%>
 </ul>
 
 <!-- nav bar itself -->

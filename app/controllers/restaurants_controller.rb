@@ -4,7 +4,7 @@ class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: [:show, :update, :destroy]
   before_action :set_user_restaurant, only: [:edit]
   before_action :set_user, only: [:create, :destroy]
-  before_action :check_user_is_part_of_restaurant, except: [:index, :new, :create, :show]
+  before_action :check_user_is_part_of_restaurant, except: [:index, :new, :create, :show, :reset_queue]
   helper RestaurantsHelper
 
   def index
@@ -95,11 +95,16 @@ class RestaurantsController < ApplicationController
   end
 
   def reset_queue
+    p 'RTEASDFSADFASDFASFASDFASDF'
+    p params
     # VAlidete - cannot change when there are existing users in the queue
-    @my_restaurant = current_user.restaurant
+    # @my_restaurant = current_user.restaurant
+    @my_restaurant = Restaurant.find(params[:restaurant_id])
+    @my_restaurant.next_queue_number = 1
+    @my_restaurant.save!
     p 'TROUBLESHOOT'
     p @my_restaurant
-    # restaurant_reset_queue_path(@restaurant)
+    redirect_to restaurant_path(@my_restaurant)
   end
 
   private

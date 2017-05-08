@@ -48,7 +48,7 @@
   Next Queue Number:
   <%= @restaurant.next_queue_number %>
 </p>
-<!-- <%= link_to 'Reset Queue Number', dashboard_reset_queue_path, method: :put %> -->
+<%= link_to 'Reset Queue Number', restaurant_reset_queue_path(@restaurant.id), id: @restaurant.id, method: :put, data: { confirm: 'This will reset the queue. OK to procced?'}%>
 <% end %>
 
 <br>
