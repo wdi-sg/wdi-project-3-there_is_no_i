@@ -20,12 +20,12 @@ class TwilioController < ApplicationController
       @user = []
     end
     if @user.count > 0
-        message = "Hey #{@user[0].name}! Thanks for sending #{body}!"
+        @message = "Hey #{@user[0].name}! Thanks for sending #{body}!"
     else
-        message = "Hmm... Thanks for the message, but you're a complete stranger to us!"
+        @message = "Hmm... Thanks for the message, but you're a complete stranger to us!"
     end
     twiml = Twilio::TwiML::Response.new do |r|
-      r.Message message
+      r.Message @message
     end
     twiml.text
   end
