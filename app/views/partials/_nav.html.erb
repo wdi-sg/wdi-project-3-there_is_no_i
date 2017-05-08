@@ -1,6 +1,11 @@
 <!-- dropdown menu -->
 <ul id="dropdown1" class="dropdown-content">
-  <li style="text-align:center; font-size:20px;"><b><span style="vertical-align: bottom;">Kitchen</span></b></li>
+    <li style="text-align:center; font-size:20px;">
+      <div>
+        <b><span style="display:block; vertical-align: bottom;">Kitchen</span></b>
+
+      </div>
+    </li>
   <li><a href="#!">See All Orders</a></li>
   <li><a href="#!">Tickets Management</a></li>
   <li class="divider"></li>
@@ -25,7 +30,7 @@
 
 <!-- nav bar itself -->
 <nav>
-  <div class="nav-wrapper">
+  <div class="nav-wrapper light-blue accent-2">
     <!-- left side (logo and dropdown) -->
     <ul id="nav-mobile" class="left hide-on-med-and-down">
       <li><img src="<%= asset_path 'rex.png' %>" height="45" width="45" style="vertical-align:middle; margin-left:15px"></li>
@@ -34,6 +39,7 @@
 
     <!-- right side of nav -->
     <ul id="nav-mobile" class="right hide-on-med-and-down">
+
       <% if user_signed_in? %>
     <% if current_user[:restaurant_id]  %>
     <li>
@@ -46,11 +52,13 @@
   </div>
 </nav>
 
-<!-- SEARCH BAR -->
-    <form id="search-field">
-      <div class="input-field">
-        <input id="search" type="search" required placeholder="Search for a restaurant">
-        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-        <i class="material-icons">close</i>
-      </div>
-    </form>
+<!-- BREAD CRUMBS -->
+<nav>
+  <div class="nav-wrapper light-blue accent-2">
+    <div class="col s12">
+      <a href="#!" class="breadcrumb">First</a>
+      <a href="#!" class="breadcrumb">Second</a>
+      <a href="#!" class="breadcrumb">Third</a>
+    </div>
+  </div>
+</nav>

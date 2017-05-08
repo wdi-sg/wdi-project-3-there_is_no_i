@@ -17,12 +17,20 @@
  @import "materialize";
  @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 
+ @import url('https://fonts.googleapis.com/css?family=Unica+One');
+ @import url('https://fonts.googleapis.com/css?family=Squada+One');
+
+ h1 {
+   font-family: "Unica One";
+   font-size: 70px;
+ }
+
  #dropdown1 #dropdown2 {
    width: 200px
  }
 
 #search-field {
-  margin-left: 700px;
+  // margin-left: 700px;
    width: 500px;
    border: none
  }
