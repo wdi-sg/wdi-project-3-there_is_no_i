@@ -21,7 +21,11 @@
 
   <div class="row">
     <%= f.label :party_size, "Number of Diners" %>
-    <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
+    <% if @restaurant.tables.count > 0 %>
+      <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
+    <% else %>
+      <%= f.select :party_size,[0]%>
+    <% end %>
   </div>
 
   <div class="row">
