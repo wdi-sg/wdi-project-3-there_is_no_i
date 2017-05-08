@@ -14,7 +14,11 @@ class TwilioController < ApplicationController
 
     from = params[:From] ? params[:From] : '' # gets the sender's number '+6587427184'
     body = params[:Body] ? params[:Body] : '' # gets the sender's message
-    @user = User.find(phone: from)
+    begin
+      @user = User.find(phone: from)
+    rescue ActiveRecord::RecordNotFound => e
+      @user = []
+    end
     if @user.count > 0
         message = "Hey #{@user[0].name}! Thanks for sending #{body}!"
     else

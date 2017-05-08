@@ -12,6 +12,7 @@ class InvoicesController < ApplicationController
     end
 
     def create
+      # convert amount in dollars to amount in cents
       @amount = params[:total_price].to_f
       @amount = (@amount * 100).to_i
 
@@ -102,4 +103,3 @@ class InvoicesController < ApplicationController
       end
     end
   end
-  
