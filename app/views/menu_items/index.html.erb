@@ -66,7 +66,7 @@
 <ul class="ordered-items-list">
 </ul>
 
-<%= form_for :order, remote: true, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
+<%= form_for :order, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
   <%= hidden_field_tag :orders %>
   <%= hidden_field_tag :total_price %>
   <%= hidden_field_tag :is_take_away, @is_take_away %>

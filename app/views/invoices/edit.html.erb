@@ -1,13 +1,29 @@
 <h1>Edit Invoice</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %> <br/>
-<%= link_to 'Back to Invoices', restaurant_invoices_path(@restaurant.id) %>
+<%= link_to 'Back to Invoices', restaurant_invoice_path(@restaurant) %>
 <br/>
 <p>
   Invoice number:
   <%= @invoice.id %>
-</p>
-<%= render "/invoices/form", invoice: @invoice, url: restaurant_invoices_path %>
-</p>
+  <%= form_for @invoice, url: restaurant_invoice_path(@restaurant, @invoice) do |f| %>
+  <p>
+    <% if @invoice.user %>
+      <%= f.label :user %>
+      <%= @invoice.user.name %>
+    <% else %>
+      <%= f.label "Customer Name" %>
+      <%= f.text_field :user_name, placeholder: "Name" %>
+    <% end %>
+  </p>
+  <p>
+    <%= f.label :table_id %>
+    <%= f.number_field :table_id, placeholder: "Table" %>
+  </p>
+  <p>
+    <%= f.submit "Save" %>
+  </p>
+  <% end %>
+
 <p>
   Total:
   <%= formatPrice(showTotalPrice(@invoice.menu_items)) %>
@@ -36,7 +52,7 @@
           Request
         </th>
         <th>
-        
+
         </th>
       </tr>
     </thead>
@@ -57,7 +73,11 @@
     <%= order.is_take_away %>
   </td>
   <td>
-    <%= order.user.name %>
+    <% if order.user %>
+      <%= order.user.name %>
+    <% else %>
+      <%= '' %>
+    <% end %>
   </td>
   <td>
     <%= order.request_description %>

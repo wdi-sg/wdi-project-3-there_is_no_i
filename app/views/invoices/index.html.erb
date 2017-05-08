@@ -10,6 +10,8 @@
       <th>User</th>
       <th>Table</th>
       <th>Total</th>
+      <th>End</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -23,13 +25,21 @@
       <td><%= invoice.user_name %></td>
       <td><%= invoice.table ? invoice.table.name : '-' %></td>
       <td><%= formatPrice(showTotalPrice(invoice.menu_items)) %></td>
-
-
+      <td><%= invoice.time_end %></td>
+      <% @table_id = invoice.table ? invoice.table.id : '' %>
       <td><%= form_tag restaurant_menu_items_path(@restaurant), method: :get do %>
         <%= hidden_field_tag :invoice_id, invoice.id %>
-        <%= hidden_field_tag :table_id, 5 %>
+        <%= hidden_field_tag :table_id, @table_id %>
         <%= submit_tag 'Add' %>
       <% end %></td>
+      <td>
+      <% if !invoice.time_end %>
+        <%= form_tag restaurant_invoice_path(@restaurant, invoice), method: :put do %>
+          <%= hidden_field_tag :time_end %>
+          <%= submit_tag 'Complete' %>
+        <% end %>
+      <% end %>
+      </td>
       <td><%= link_to 'Show', restaurant_invoice_path(@restaurant, invoice) %></td>
       <td><%= link_to 'Edit', edit_restaurant_invoice_path(@restaurant, invoice) %></td>
       <td><%= link_to 'Destroy', restaurant_invoice_path(@restaurant, invoice), method: :delete, data: { confirm: 'Are you sure?' } %></td>
