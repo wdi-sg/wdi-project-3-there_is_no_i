@@ -1,23 +1,54 @@
-<h1>Edit Restaurant</h1>
+<h2>Restaurant Profile</h2>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 <%= render "/restaurants/form", restaurant: @restaurant %>
-<p>
-  Users:
-  <% @restaurant.users.each do |user| %>
-  <p>
-    <%= user.email %>
-  </p>
-  <% end %>
-</p>
+<br/>
+<h2>Employees</h2>
+<table>
+  <thead>
+    <tr>
+      <th>
+        No.
+      </th>
+      <th>
+        Employee
+      </th>
+      <th>
+        Email
+      </th>
+      <th>
+
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @index = 1 %>
+    <% @restaurant.users.each do |user| %>
+    <tr>
+      <td>
+        <%= @index %>
+      </td>
+      <td>
+        <%= user.name %>
+      </td>
+      <td>
+        <%= user.email %>
+      </td>
+      <td>
+        <%= form_for @restaurant do |f| %>
+          <%= f.hidden_field :remove, value: true %>
+          <%= f.hidden_field :email, value: user.email %>
+          <%= f.submit "Remove" %>
+        <% end %>
+      </td>
+    </tr>
+    <% @index += 1 %>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+<h6>Add employee by email</h6>
 <%= form_for @restaurant do |f| %>
-  <p>
-    <%= f.hidden_field :add, value: true %>
-    Add employee by <%= f.label :email %>
-    <%= f.email_field :email, value: nil, placeholder: 'employee@company.com' %>
-  </p>
-  <p>
-      <%= f.submit "Add" %>
-  </p>
-
-
+  <%= f.hidden_field :add, value: true %>
+  <%= f.email_field :email, value: nil, placeholder: 'employee@company.com' %>
+  <%= f.submit "Add" %>
 <% end %>

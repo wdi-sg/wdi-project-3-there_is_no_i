@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     get 'public' => 'walkins#public_show'
     post 'public' => 'walkins#public_create'
     get 'public/new' => 'walkins#public_new', as: 'new_public'
+    put 'notify/:id' => 'walkins#notify', as: 'notify'
     get 'diners' => 'diners#index'
     get 'diners/:id/edit' => 'diners#edit', as: 'edit_diner'
     get 'diners/:id' => 'diners#show', as: 'diner'

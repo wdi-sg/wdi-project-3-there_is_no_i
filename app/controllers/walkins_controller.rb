@@ -2,7 +2,7 @@ class WalkinsController < ApplicationController
   include FindingTableLogic
   include Sms
   before_action :authenticate_user!, except: [:new]
-  before_action :set_restaurant, only: %i[index new create_walkin create public_new public_create public_save public_show edit update destroy]
+  before_action :set_restaurant, only: %i[index new create_walkin create public_new public_create public_save public_show edit update destroy notify]
   before_action :set_walkin, only: %i[show edit update destroy]
   before_action :set_duration, only: [:create, :public_create, :update]
   helper WalkinHelper
@@ -42,10 +42,12 @@ class WalkinsController < ApplicationController
         # Give customer a table if there is one
         update_table_count(recommended_table, @walkin.party_size)
 
-        update_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + @est_duration)
-
         # SEND SMS? OR LET RESTAURANT PREPARE AND NOTIFY?
-        sms_awaiting(@walkin.name, @restaurant.name, recommended_table.name)
+        # update_customer(@walkin, recommended_table, 'awaiting', Time.now, Time.now + @est_duration)
+        #
+        # sms_awaiting(@walkin.name, @restaurant.name, recommended_table.name)
+
+        update_customer(@walkin, recommended_table, 'queuing', Time.now, Time.now + @est_duration)
 
         public_save(@walkin)
       else
@@ -78,7 +80,9 @@ class WalkinsController < ApplicationController
 
   # def edit; end
 
-  def show; end
+  # def show; end
+
+  # WHEN UPDATE TO AWATING, ASK IF OK TO SEND SMS, THEN NOTIFY
 
   # def update
   #   if @walkin.update(walkin_params)
@@ -88,9 +92,29 @@ class WalkinsController < ApplicationController
   #   end
   # end
 
-  def destroy
-    @walkin.destroy
-    redirect_to restaurant_walkins_path(@restaurant)
+  # def destroy
+  #   @walkin.destroy
+  #   redirect_to restaurant_walkins_path(@restaurant)
+  # end
+
+  def notify
+    p 'TROUBLESHOOT'
+    p params
+    if Reservation.find(params[:id]) && Restaurant.find(params[:restaurant_id])
+      walkin = Reservation.find(params[:id])
+      restaurant = Restaurant.find(params[:restaurant_id])
+      walkin.status = 'awaiting'
+      if walkin.save!
+        sms_awaiting(walkin.name, restaurant.name, walkin.table.name)
+        redirect_to restaurant_walkins_path(params[:restaurant_id])
+      else
+        flash['alert'] = 'Error 500. Unable to update status'
+        redirect_to restaurant_walkins_path(params[:restaurant_id])
+      end
+    else
+      flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
+      redirect_to restaurant_walkins_path(params[:restaurant_id])
+    end
   end
 
   private

@@ -33,7 +33,7 @@
         <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_country %></p><br>
       </div>
       <div class="card-action">
-        <i class="material-icons left">person_add</i><%= link_to 'Book a table here!', new_restaurant_reservation_path(restaurant.id), class: 'valign-wrapper blue-text' %>
+        <i class="material-icons left">person_add</i><%= link_to 'Book a table', new_restaurant_reservation_path(restaurant.id), class: 'valign-wrapper blue-text' %>
       </div>
     </div>
   </div>
