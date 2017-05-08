@@ -14,15 +14,17 @@ h2 {
   margin-left: 40px;
 }
 #restaurant-cards {
-  margin-left: 70px;
-  margin-right: 40px
+  width:1600px;
+  margin:0 auto;
+
 }
 .card {
-  height: 480px;
-  width: 500px;
+  height: 96%;
+  max-width: 500px;
   margin-top: 60px;
   border-radius: 5px;
-  vertical-align: middle
+  vertical-align: middle;
+  position: relative;
 }
 #restaurant-title {
   color: white;
