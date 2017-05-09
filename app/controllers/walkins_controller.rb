@@ -84,7 +84,7 @@ class WalkinsController < ApplicationController
   def update
     if params[:reservation][:status] == 'cancelled'
       @walkin.status = 'cancelled'
-      @walkin.table.capacity_total = 0
+      @walkin.table.capacity_current = 0
       @walkin.table.save
       update_save
     elsif params[:reservation][:status] == 'reservation'

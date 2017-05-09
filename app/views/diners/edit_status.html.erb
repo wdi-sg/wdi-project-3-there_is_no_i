@@ -50,12 +50,6 @@
   </p>
   <% end %>
 
-  <% if @diner.status == 'reservation' %>
-  <p>
-    Party Size:
-    <%= @diner.party_size %>
-  </p>
-  <% else %>
   <p>
     <%= f.label :party_size, "Number of Diners" %>
     <% if @restaurant.tables.count > 0 %>
@@ -64,22 +58,13 @@
       <%= f.select :party_size,[0]%>
     <% end %>
   </p>
-  <% end %>
 
-  <% if @diner.status == 'reservation' or @diner.status == 'queuing'%>
-  <p>
-    Table:
-    <%= @diner.table_id %>
-  </p>
-  <% else %>
   <% if @diner.table_id %>
   <p>
     <%= f.label :status, "Table" %>
     <%= f.select(:table_id, @table_options)%>
   </p>
   <% end %>
-  <% end %>
-
 
   <p>
     <%= f.label :special_requests, "Special Requests" %>

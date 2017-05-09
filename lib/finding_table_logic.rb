@@ -60,10 +60,12 @@ module FindingTableLogic
 
   def filter_by_capacity(tables_considered, this_customer)
     filtered_aval_tables = []
+    if tables_considered.count > 0
     tables_considered.each do |table|
       if table.capacity_total && table.capacity_total >= this_customer.party_size
         filtered_aval_tables.push(table)
       end
+    end
     end
 
     # Sort by smallest table size
@@ -71,12 +73,14 @@ module FindingTableLogic
   end
 
   def find_next_customer(table)
-    # Next Customer must be able to fit into current table
-    filtered_queue = Reservation.where('restaurant_id = ?', @restaurant.id).where('status = ?', 'queuing').where('party_size <= ?', table.capacity_total)
-    p '====QUEUE where size <= Table===='
-    p filtered_queue
-
-    # Next customer must fulfill business criteria (party_size big enough for table's minimum capacity) # allowance 2?
+    # Next Customer must be able to fit into current table if there is a table
+    if table
+      filtered_queue = Reservation.where('restaurant_id = ?', @restaurant.id).where('status = ?', 'queuing').where('party_size <= ?', table.capacity_total)
+      p '====QUEUE where size <= Table===='
+      p filtered_queue
+    else
+      filtered_queue = []
+    end
 
     # If Potential Next Customers can fit, sort by queue_number
     if filtered_queue.count > 1
