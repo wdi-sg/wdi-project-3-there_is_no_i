@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :name_sort]
   before_action :set_user
+  helper UsersHelper
 
   def history
     @user = current_user
