@@ -1,65 +1,96 @@
 <%= form_for restaurant do |f| %>
-  <p>
+  <div class="field">
+
     <%= f.label :name %>
     <%= f.text_field :name, placeholder: "Name", required: true %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label "Address" %>
     <%= f.text_field :address1, placeholder: "Address Line 1", required: true %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label "Address" %>
     <%= f.text_field :address2, placeholder: "Address Line 2" %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label "City" %>
     <%= f.text_field :address_city, placeholder: "Neighbourhood", required: true %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label "State" %>
     <%= f.text_field :address_state, placeholder: "State" %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label "Country" %>
     <%= f.text_field :address_country, placeholder: "Country", required: true %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label "Post Code" %>
     <%= f.text_field :address_postal, placeholder: "Post Code", required: true %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label :email %>
     <%= f.email_field :email, placeholder: "Email" %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label :phone %>
     <%= f.text_field :phone, placeholder: "Phone" %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label :website %>
     <%= f.text_field :website, placeholder: "Website" %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label :description %>
     <%= f.text_field :description, placeholder: "Description", required: true %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label :cuisine %>
     <%= f.text_field :cuisine, placeholder: "Cuisine", required: true %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label :picture %>
   <% if restaurant.picture  %>
   <%= cl_image_tag(restaurant.picture, width: 200, height: 100, crop: :fill) %>
   <% end %>
-  </p>
-  <p>
-    <%= f.file_field :picture %>
-  </p>
+  </div>
 
-  <p>
-      <%= f.submit "Save" %>
-  </p>
+  <div class="field">
+
+    <%= f.file_field :picture %>
+  </div>
+
+
+  <div class="field">
+
+      <%= f.submit "Save", class: 'waves-effect waves-light btn light-blue lighten-3' %>
+  </div>
+
 <% end %>
+<br><br>
 
 <%= cloudinary_js_config %>

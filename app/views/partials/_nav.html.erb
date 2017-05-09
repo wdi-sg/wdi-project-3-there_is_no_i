@@ -3,9 +3,10 @@
     <% if current_user && current_user.restaurant_id %>
     <li><%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <li><%= link_to 'Invoices', restaurant_invoices_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
-    <li><a href="/restaurants/<%= current_user.restaurant_id %>/menu_items">Menu</a></li>
+    <li><%= link_to 'Menu Items', restaurant_menu_items_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
+    <li><%= link_to 'Restaurant Profile', edit_restaurant_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <%end%>
-    <li><a href="/account">User & Restaurant Profile</a></li>
+    <li><a href="/account">User Profile</a></li>
     <li class="divider"></li>
     <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
 </ul>
@@ -14,9 +15,9 @@
 <nav>
     <div class="nav-wrapper light-blue lighten-3">
         <!-- left side (logo and dropdown) -->
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <ul id="nav-mobile" class="left hide-on-med-and-down valign-wrapper">
             <li>
-                <a href="/"><img src="<%= asset_path 'rex.png' %>" height="45" width="45" style="vertical-align:middle;"><span style="font-size: 20px; margin-left: 8px">Locavorus</span></a>
+                <a href="/"><img src="<%= asset_path 'logo.png' %>" height="60" width="180"></a>
             </li>
         </ul>
 
@@ -42,14 +43,4 @@
 
         </ul>
     </div>
-</nav>
-
-<nav>
-  <div class="nav-wrapper">
-    <div class="col s12">
-      <a href="#!" class="breadcrumb">First</a>
-      <a href="#!" class="breadcrumb">Second</a>
-      <a href="#!" class="breadcrumb">Third</a>
-    </div>
-  </div>
 </nav>
