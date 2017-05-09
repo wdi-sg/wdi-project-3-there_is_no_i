@@ -43,9 +43,12 @@ class RestaurantsController < ApplicationController
 
   def edit
     # @users = User.where(restaurant_id: @restaurant[:id])
+    add_breadcrumb "All Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
   end
 
   def show
+    add_breadcrumb "All Restaurants", :restaurants_path
   end
 
   def update

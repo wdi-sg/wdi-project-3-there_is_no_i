@@ -4,7 +4,7 @@
 
   <!-- ===== LEFT COLUMN: Add order, add menu item, sort by ===== -->
   <div class="col s2">
-
+<center>
   <% if !current_user %>
   <a href='<%= new_user_session_path %>'><button id="takeaway-login" type="button" name="button" class="waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:5px; margin-top:20px;">Login To Order Takeaway</button></a>
   <% else %>
@@ -21,7 +21,7 @@
 <a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?name=sort">Name</a><br>
 <a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?price=sort" style="margin-top:5px">Price</a><br>
 <a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?description=sort" style="margin-top:5px">Description</a>
-
+</center>
 </div> <!-- div for left column -->
 
 <!-- ===== MIDDLE COLUMN: display menu items ===== -->

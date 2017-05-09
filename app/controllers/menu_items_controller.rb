@@ -8,6 +8,8 @@ class MenuItemsController < ApplicationController
   helper MenuItemsHelper
 
   def index
+    add_breadcrumb "All Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
     gon.restaurant = @restaurant.name
     gon.description = @existing_invoice == '' && @reservation == '' ? 'Takeaway' : 'Order'
     if current_user
@@ -36,6 +38,8 @@ class MenuItemsController < ApplicationController
   end
 
   def create
+    add_breadcrumb "All Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
     @menu_item = MenuItem.new(menu_item_params)
     @menu_item.restaurant_id = @restaurant.id
     if @menu_item.save!
@@ -46,6 +50,9 @@ class MenuItemsController < ApplicationController
   end
 
   def new
+    add_breadcrumb "All Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+    add_breadcrumb "Back to menu", restaurant_menu_items_path(@restaurant)
     @menu_item = MenuItem.new
   end
 

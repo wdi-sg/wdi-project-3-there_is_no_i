@@ -6,6 +6,8 @@ class TablesController < ApplicationController
   before_action :check_user_is_part_of_restaurant
 
   def index
+    add_breadcrumb "All Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
     @tables = Table.where(restaurant_id: params[:restaurant_id]).order('LOWER(name) ASC')
   end
 
@@ -22,6 +24,9 @@ class TablesController < ApplicationController
   end
 
   def new
+    add_breadcrumb "All Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+    add_breadcrumb "Back to all tables", restaurant_tables_path(@restaurant)
     @table = Table.new
   end
 

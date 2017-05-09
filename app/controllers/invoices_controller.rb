@@ -9,6 +9,8 @@ class InvoicesController < ApplicationController
   helper InvoicesHelper
 
     def index
+      add_breadcrumb "All Restaurants", :restaurants_path
+      add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
       @invoices = Invoice.where(restaurant_id: params[:restaurant_id]).order('created_at ASC')
     end
 

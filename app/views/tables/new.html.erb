@@ -1,16 +1,17 @@
+<div class="container">
 <h1>New Table</h1>
-<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 </br/>
 <%= form_for @table, url: restaurant_tables_path do |f| %>
-<p>
+<div class="field">
   <%= f.label :name %>
   <%= f.text_field :name, placeholder: "Name" %>
-</p>
-<p>
+</div>
+<div class="field">
   <%= f.label "Total Capacity" %>
   <%= f.number_field :capacity_total, placeholder: "Total Capacity", min: 0 %>
-</p>
+</div>
 <p>
-  <%= f.submit "Save" %>
+  <%= f.submit "Save", class: 'waves-effect waves-light btn light-blue lighten-3' %>
 </p>
 <% end %>
+</div>

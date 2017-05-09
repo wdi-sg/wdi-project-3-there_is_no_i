@@ -42,6 +42,9 @@ gem 'cloudinary'
 # Add Foreman to save environment variables
 gem 'foreman'
 
+# Add the stupid breadcrumb things
+gem "breadcrumbs_on_rails"
+
 # Gem to use jquery with Materialize
 gem 'jquery-turbolinks'
 
