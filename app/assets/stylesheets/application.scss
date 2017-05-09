@@ -19,6 +19,7 @@
 
  @import url('https://fonts.googleapis.com/css?family=Unica+One');
  @import url('https://fonts.googleapis.com/css?family=Squada+One');
+ @import url('https://fonts.googleapis.com/css?family=Raleway');
 
  h1 {
    font-family: "Unica One";
@@ -31,11 +32,22 @@
 
 #search-field {
   // margin-left: 700px;
-   width: 500px;
+   width: 400px;
    border: none
  }
 
+ .input-field input[type=search] {
+   width: 400px;
+   border: none;
+ }
+
  .input-field input[type=search]:focus {
-   width: 500px;
-   border-bottom: 1px
+   width: 400px;
+ }
+
+ #logo {
+   font-family:"Raleway";
+   font-size: 30px;
+   font-weight: bold;
+   margin-left: 8px
  }
