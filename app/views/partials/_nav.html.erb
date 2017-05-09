@@ -54,13 +54,23 @@
 <p style="margin-left:15px; font-size:18px;"> <%= render_breadcrumbs :separator => ' / ' %> </p>
 
 <div id="search-bar">
-    <form id="search-field" class="" action="/restaurants" method="get"  style="display:inline-block;">
+  <form class="" action="/restaurants" method="get">
+    <input type="text" name="search" value="" placeholder="Search for Restaurants">
+    <input type="text" name="city" value="" placeholder="In City">
+  <button type="submit">Search</button>
+  </form>
+    <!-- <form id="search-field" class="" action="/restaurants" method="get">
       <div class="input-field">
-        <input id="search" type="search" name="search" value="" required placeholder="Search for a location">
+        <input id="search" type="search" name="search" value="" required placeholder="Search for a restaurant">
         <label class="label-icon" for="search"><i class="material-icons">search</i></label>
         <i class="material-icons">close</i>
       </div>
-    </form>
+      <div class="input-field">
+        <input id="search" type="search" name="city" value="" required placeholder="Search for a location">
+        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+        <i class="material-icons">close</i>
+      </div>
+    </form> -->
   </div>
   <br><br>
   <!-- end of search bar -->

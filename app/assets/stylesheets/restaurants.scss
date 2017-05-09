@@ -17,7 +17,6 @@ h2 {
 #restaurant-cards {
   width:1600px;
   margin:0 auto;
-
 }
 .card {
   height: 490px;
@@ -37,15 +36,6 @@ h2 {
   border-radius: 5px;
   padding: 7px;
 }
-#search-bar {
-  position:absolute;
-  overflow: hidden;
-  top: 60px;
-  right:0;
-}
-#res-pic {
-  z-index: 1;
-}
-#res-description {
-  z-index: 1;
+.show-container {
+  width: 1840px;
 }

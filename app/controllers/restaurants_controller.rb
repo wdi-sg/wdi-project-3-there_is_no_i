@@ -9,7 +9,7 @@ class RestaurantsController < ApplicationController
 
   def index
     first = params[:search]? params[:search].downcase : ''
-    second = params[:city]? params[:search].downcase : ''
+    second = params[:city]? params[:city].downcase : ''
     x = Restaurant.where("LOWER(name) LIKE ? AND LOWER(address_city) LIKE ?", "%#{first}%", "%#{second}%")
     if request.fullpath == '/restaurants?name=sort'
       @restaurant = x.order(:name)
