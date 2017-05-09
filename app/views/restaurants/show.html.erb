@@ -1,26 +1,33 @@
-<div class="container">
+
+  <!-- ====== PICTURE AND DESCRIPTION ===== -->
   <% if @restaurant.picture  %>
+  <div class="row">
+    <div class="col s6" style="margin-left:25px">
   <p>
-  <%= cl_image_tag(@restaurant.picture, width: 800, height: 600, crop: :fill) %>
+  <%= cl_image_tag(@restaurant.picture, width: 900, height: 600, crop: :fill) %>
   </p>
-  <% end %>
+</div>
+<% else %>
+<div class="container">
+<% end %>
 
-<h1>
-  <%= @restaurant.name %>
-</h1>
 
-<div class="row">
+<!-- ==== WHOLE CHUNK OF RESTAURANT DESCRIPTION ====  -->
+<div class="col s5" style="margin-right:20px;">
+
   <!-- ==== LEFT SIDE OF THE PAGE ==== -->
-  <div class="col s5">
+
+    <h1>
+      <%= @restaurant.name %>
+    </h1>
   <p id="description-box">
      All the food you eat, whether it’s a snack or a meal, should be very tasty and gratifying. If you choose delicious foods every time you eat, rather than trying to choke down foods you don’t like but you think are good for you, you’ll be much more satisfied.
   </p>
 
 </div>
-
   <!-- ==== RIGHT SIDE OF THE PAGE ==== -->
 
-  <div class="col s6">
+<div class="col s3">
     <p>
       <i class="material-icons left">local_offer</i>
       <%= @restaurant.cuisine %>
@@ -67,10 +74,15 @@
 </p>
 <%= link_to 'Reset Queue Number', restaurant_reset_queue_path(@restaurant), method: :put, data: { confirm: 'This will reset the queue. OK to procced?'}%>
 <% end %> -->
+</div>
+</div>
+</div>
+</div>
 
-</div>
-</div>
+<!-- ==== WHOLE CHUNK OF RESTAURANT DESCRIPTION ====  -->
+
 <!-- ==== ROW OF LINKS AT BOTTOM OF PAGE ==== -->
+<div class="container">
     <%= link_to 'Make a Reservation', new_restaurant_reservation_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3', i_class: 'material-icons' %>
     <%= link_to 'View Reservations', restaurant_reservations_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3' %>
     <%= link_to 'Menu', restaurant_menu_items_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3' %>
@@ -78,13 +90,13 @@
     <br><br>
 
     <% if current_user and current_user.restaurants.include? @restaurant %>
-    <%= link_to 'View Tables', restaurant_tables_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <%= link_to 'Current Queue', restaurant_walkins_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <%= link_to 'Current Diners', restaurant_diners_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
-    <%= link_to 'Invoices', restaurant_invoices_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
-    <%= link_to 'Orders', restaurant_orders_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
+    <%= link_to 'View Tables', restaurant_tables_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
+    <!-- <%= link_to 'Invoices', restaurant_invoices_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %> -->
     <%= link_to 'Walk-in Queue', restaurant_new_public_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <% end %>
     <br><br>
-</div>
-</div>
+  </div>
+
+  </div>
