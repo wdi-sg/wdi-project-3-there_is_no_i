@@ -16,8 +16,8 @@
     <% end %>
   </p>
   <p>
-    <%= f.label :table_id %>
-    <%= f.number_field :table_id, placeholder: "Table" %>
+    <%= f.label :status, "Table" %>
+    <%= f.select(:table_id, @table_options)%>
   </p>
   <p>
     <%= f.submit "Save" %>

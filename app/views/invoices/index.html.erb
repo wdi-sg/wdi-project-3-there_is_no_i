@@ -36,6 +36,7 @@
       <% if !invoice.time_end %>
         <%= form_tag restaurant_invoice_path(@restaurant, invoice), method: :put do %>
           <%= hidden_field_tag :time_end %>
+          <%= hidden_field_tag :complete, value: true %>
           <%= submit_tag 'Complete' %>
         <% end %>
       <% end %>

@@ -1,5 +1,7 @@
+<div class="container">
 <h1>All Reservations</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
+</div>
 
 <center>
 <h1>- Sort by -</h1>
@@ -8,6 +10,7 @@
 <a class="waves-effect waves-light btn" href="/restaurants/<%= @restaurant_id %>/reservations?date=sort">Date</a>
 </center>
 
+<div class="container">
 <% @reservations.where(status: 'reservation').each do |reservation| %>
 
 <% if current_user[:id] == reservation[:user_id] or current_user.restaurants.include? @restaurant %>
@@ -36,3 +39,4 @@
   <br/>
 </div>
 <% end %>
+</div>
