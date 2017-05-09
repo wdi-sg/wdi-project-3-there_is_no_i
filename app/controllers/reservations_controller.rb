@@ -3,12 +3,9 @@ class ReservationsController < ApplicationController
   include FindingTableLogic
   include SendEmail
   before_action :authenticate_user!, except: [:create, :new]
-
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-
-  # before_action :check_user_is_part_of_restaurant, except: [:create, :new, :show]
-
+  before_action :check_user_is_part_of_restaurant, except: [:create, :new]
   before_action :check_user_is_part_of_reservation, only: [:show, :edit, :update, :delete]
 
   before_action :set_duration, only: [:create, :update]
@@ -16,7 +13,7 @@ class ReservationsController < ApplicationController
 
   def index
     add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
     @restaurant_id = params[:restaurant_id]
     if request.fullpath == "/restaurants/#{@restaurant_id}/reservationss?name=sort"
       @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('name ASC')
@@ -98,7 +95,8 @@ class ReservationsController < ApplicationController
 
   def edit
     add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_breadcrumb "Reservations", restaurant_reservations_path(@restaurant)
     @table_options = @restaurant.tables.map do |table|
       [table.name, table.id]
     end
@@ -108,14 +106,18 @@ class ReservationsController < ApplicationController
 
   def new
     if !current_user
-      flash['alert'] = 'Please login or register before making a reservation'
+      flash['alert'] = 'Please login or register before making a reservation.'
       redirect_to new_user_session_path
     end
     add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_breadcrumb "Reservations", restaurant_reservations_path(@restaurant)
   end
 
   def show
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_breadcrumb "Reservations", restaurant_reservations_path(@restaurant)
   end
 
   def update

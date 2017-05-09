@@ -20,6 +20,9 @@
   <th>
     Add Order
   </th>
+  <th>
+    Cancel
+  </th>
 </tr>
   </thead>
   <tbody>
@@ -48,6 +51,9 @@
           <%= submit_tag 'Add' %>
           <% end %>
         <% end %>
+      </td>
+      <td>
+        <%= link_to 'X', restaurant_reservation_path(reservation.restaurant, reservation), method: :delete, data: { confirm: 'Are you sure?' } %>
       </td>
     </tr>
     <% @index += 1 %>

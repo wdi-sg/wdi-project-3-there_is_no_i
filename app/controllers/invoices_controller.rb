@@ -10,7 +10,7 @@ class InvoicesController < ApplicationController
 
   def index
     add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
     gon.restaurant = @restaurant
     @invoices = Invoice.where(restaurant_id: params[:restaurant_id])
   end
@@ -74,12 +74,16 @@ class InvoicesController < ApplicationController
   end
 
   def edit
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
     @table_options = @restaurant.tables.map do |table|
       [table.name, table.id]
     end
   end
 
   def show
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
   end
 
   def update

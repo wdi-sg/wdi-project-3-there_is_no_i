@@ -30,6 +30,10 @@
       <%= cl_image_tag(menu_item.picture, width: 200, height: 100, crop: :fill) %>
     <% end %>
   </div>
+  
+  <div class="field">
+    <%= f.file_field :picture %>
+  </div>
 
   <div class="field">
     <%= f.submit "Save", class: 'waves-effect waves-light btn light-blue lighten-3'%>

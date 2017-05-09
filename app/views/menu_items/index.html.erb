@@ -98,17 +98,14 @@
 <% end %>
 </div>
 
-<<<<<<< HEAD
 </center>
-<% if @is_take_away %>
-<%= javascript_include_tag('menu_items/takeaway.js') %>
-<% else %>
-<%= javascript_include_tag('menu_items/notTakeaway.js') %>
-<% end %>
+  <% if @is_take_away %>
+    <%= javascript_include_tag('menu_items/takeaway.js') %>
+  <% else %>
+    <%= javascript_include_tag('menu_items/notTakeaway.js') %>
+  <% end %>
 </div>
-=======
-<%= javascript_include_tag('menu_items/takeaway.js') %>
+
 </div> <!-- div for right column -->
 
 </div> <!-- div for row class DO NOT TOUCH!! -->
->>>>>>> 6fb4402067eb04d1ee7611662979f9fffb600d06
