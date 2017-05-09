@@ -4,17 +4,17 @@
 <%= form_for :reservation, :url => restaurant_reservations_path do |f|%>
 
   <% if !current_user or current_user.restaurants.include? @restaurant %>
-  <div class="res-field">
+  <div class="field">
   <%= f.label :name, 'Name' %>
   <%= f.text_field :name, placeholder: 'Locavorusrex', :required => true %>
   </div>
 
-  <div class="res-field">
+  <div class="field">
   <%= f.label :email, 'Email' %>
   <%= f.email_field :email, placeholder: 'Locavorus@rex.com'%>
   </div>
 
-  <div class="res-field">
+  <div class="field">
   <%= f.label :phone, 'Phone' %>
   <%= f.number_field :phone, placeholder: '98765432', min:10000000, max:99999999%>
   </div>

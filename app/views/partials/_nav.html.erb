@@ -2,10 +2,13 @@
 <ul id="dropdown2" class="dropdown-content">
     <% if current_user && current_user.restaurant_id %>
     <li><%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
-    <li><%= link_to 'Invoices', restaurant_invoices_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
+    <li><%= link_to 'Restaurant Invoices', restaurant_invoices_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <li><%= link_to 'Menu Items', restaurant_menu_items_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <li><%= link_to 'Restaurant Profile', edit_restaurant_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <%end%>
+    <li class="divider"></li>
+    <li><a href="/history">Personal Invoices</a></li>
+    <li><a href="/reservations">Reservations</a></li>
     <li><a href="/account">User Profile</a></li>
     <li class="divider"></li>
     <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
@@ -25,9 +28,11 @@
         <ul id="nav-mobile" class="right hide-on-med-and-down">
 
             <% if user_signed_in? %>
+            <% if current_user && current_user.restaurant_id %>
             <li>
                 <%= link_to 'Dashboard', dashboard_path, :class => 'navbar-link' %>
             </li>
+            <% end %>
             <li>
                 <a class="dropdown-button" data-beloworigin="true" href="#!" data-constrainWidth="false" data-activates="dropdown2">Account<i class="material-icons right">arrow_drop_down</i>
                 </a>
