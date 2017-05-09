@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :set_user
   helper UsersHelper
 
-  def history
+  def invoices
     @user = current_user
   end
 

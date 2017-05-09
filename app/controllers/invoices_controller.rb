@@ -1,5 +1,6 @@
 class InvoicesController < ApplicationController
   include AuthenticateRestaurantUser
+  include SendEmail
   before_action :authenticate_user!, except: [:create]
   before_action :set_restaurant_id
   before_action :set_invoice, only: [:edit, :show, :update, :destroy]
@@ -18,36 +19,36 @@ class InvoicesController < ApplicationController
         @amount = (@amount * 100).to_i
 
         begin
-        customer = Stripe::Customer.create(
-        :email => params[:stripeEmail],
-        :source => params[:stripeToken]
-        )
+          customer = Stripe::Customer.create(
+          :email => params[:stripeEmail],
+          :source => params[:stripeToken]
+          )
 
-        charge = Stripe::Charge.create(
-        :customer => customer.id,
-        :amount => @amount,
-        :description => 'Takeaway',
-        :currency => 'SGD'
-        )
-
+          charge = Stripe::Charge.create(
+          :customer => customer.id,
+          :amount => @amount,
+          :description => 'Order',
+          :currency => 'SGD'
+          )
         rescue Stripe::CardError => e
           flash[:alert] = e.message
           redirect_to restaurant_menu_items_path(@restaurant)
         end
-
         @x = User.where(email: params[:stripeEmail])
       else
         @x = []
       end
 
-      takeaway_time = Time.zone.local( params[:order]["time(1i)"].to_i, params[:order]["time(2i)"].to_i, params[:order]["time(3i)"].to_i, params[:order]["time(4i)"].to_i, params[:order]["time(5i)"].to_i, 0)
+      if params[:order] && params[:order]["time(1i)"]
+        @takeaway_time = Time.zone.local( params[:order]["time(1i)"].to_i, params[:order]["time(2i)"].to_i, params[:order]["time(3i)"].to_i, params[:order]["time(4i)"].to_i, params[:order]["time(5i)"].to_i, 0)
+      end
 
       if params[:invoice_id]
         @invoice = Invoice.find(params[:invoice_id])
-      elsif params[:order][:time]
-        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, takeaway_time: takeaway_time)
-      # elsif Reservations.where(user_id: current_user.id).where(status: 'reservation').count > 0
-      #   @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, takeaway_time: takeaway_time)
+      elsif params[:order] && params[:order]["time(1i)"]
+        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, takeaway_time: @takeaway_time)
+      elsif params[:reservation_id]
+        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, reservation_id: params[:reservation_id])
       elsif @x.count > 0
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: @x[0].id)
       else
@@ -57,23 +58,24 @@ class InvoicesController < ApplicationController
       if @invoice.save!
         orders = params[:orders].split('/')
 
-        if current_user
-          orders.each do |menu_item|
-            @order = Order.create(user_id: current_user.id, is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item, request_description: params[:request])
-            ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id, request_description: params[:request]})
-          end
-        else
-          orders.each do |menu_item|
-            @order = Order.create(is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item, request_description: params[:request])
-            ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id, request_description: params[:request]})
-          end
+        orders.each do |menu_item|
+          @order = Order.create(user_id: current_user.id, is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item, request_description: params[:request])
+          ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id, request_description: params[:request]})
         end
 
         if params[:is_take_away] == "true"
-          flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation soon."
-          redirect_to restaurant_path(@restaurant)
+          body = "Dear #{current_user.name},\nYour takeaway order ID:#{@invoice.id} at #{@restaurant.name} for #{@takeaway_time} has been received.\nThank you and see you soon! \n \n \nPowered by Locavorus"
+          send_email(current_user.name, current_user.email, @restaurant.name, body)
+          flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation of your order soon."
+          redirect_to invoices_path
+        elsif params[:reservation_id]
+          flash[:notice] = "Your order has been added to your reservation."
+          redirect_to reservations_path
+        elsif params[:invoice_id]
+          flash[:notice] = "Added to order."
+          redirect_to dashboard_path
         else
-          flash[:notice] = "Local order created."
+          flash[:notice] = "Order created."
           redirect_to dashboard_path
         end
       else
