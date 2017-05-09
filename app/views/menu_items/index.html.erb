@@ -6,12 +6,7 @@
 <%= link_to 'Add Menu Item', new_restaurant_menu_item_path(@restaurant.id), class: "waves-effect waves-light btn light-blue accent-4"%>
 <% end %>
 
-    <% if !current_user || !current_user.restaurants.include?(@restaurant) %>
-      Takeaway
-    <% end %>
-
-  </p>
-<% if !current_user %>
+  <% if !current_user %>
   <a href='<%= new_user_session_path %>'><button id="takeaway-login" type="button" name="button" class="waves-effect waves-light btn light-blue lighten-3">Login To Order Takeaway</button></a>
   <% else %>
   <button id="takeaway-show-hide" type="button" name="button" class="waves-effect waves-light btn light-blue lighten-3">Order</button>
