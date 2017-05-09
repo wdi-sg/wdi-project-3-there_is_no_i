@@ -32,13 +32,17 @@
 
 #search-field {
   // margin-left: 700px;
-   width: 500px;
+   width: 400px;
    border: none
  }
 
+ .input-field input[type=search] {
+   width: 400px;
+   border: none;
+ }
+
  .input-field input[type=search]:focus {
-   width: 500px;
-   border-bottom: 1px
+   width: 400px;
  }
 
  #logo {
