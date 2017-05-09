@@ -27,7 +27,7 @@ class WalkinsController < ApplicationController
   def public_create
     create_walkin(public_params)
 
-    user_reservations = Reservation.where(phone: @walkin.phone)
+    user_reservations = Reservation.where(restaurant_id: @restaurant.id).where(phone: @walkin.phone)
     # Check for multiple entries
     if user_reservations.where(status: 'reservation').or(user_reservations.where(status: 'queuing')).or(user_reservations.where(status: 'awaiting')).or(user_reservations.where(status: 'dining')).count > 0
 
@@ -46,6 +46,7 @@ class WalkinsController < ApplicationController
         update_customer(@walkin, recommended_table, 'queuing', Time.now, Time.now + @est_duration)
 
         # WHEN UPDATE TO AWATING, ASK IF OK TO SEND SMS, THEN NOTIFY?
+        sms_queue(@walkin, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
 
         public_save(@walkin)
       else
@@ -117,6 +118,7 @@ class WalkinsController < ApplicationController
       walkin.queue_number = walkin.restaurant.next_queue_number
       set_next_queue_number(walkin.restaurant)
       if walkin.save!
+        # SEND SMS
         redirect_to restaurant_walkins_path(params[:restaurant_id])
       else
         flash['alert'] = 'Error 500. Unable to update'
