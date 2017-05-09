@@ -3,8 +3,8 @@
 <div class="row"> <!-- DO NOT TOUCH!! -->
 
   <!-- ===== LEFT COLUMN: Add order, add menu item, sort by ===== -->
-  <div class="col s2">
-<center>
+  <div class="col s2" id="menu-left">
+
   <% if !current_user %>
   <a href='<%= new_user_session_path %>'><button id="takeaway-login" type="button" name="button" class="waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:5px; margin-top:20px;">Login To Order Takeaway</button></a>
   <% else %>
@@ -21,17 +21,20 @@
 <a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?name=sort">Name</a><br>
 <a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?price=sort" style="margin-top:5px">Price</a><br>
 <a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?description=sort" style="margin-top:5px">Description</a>
-</center>
+
 </div> <!-- div for left column -->
 
 <!-- ===== MIDDLE COLUMN: display menu items ===== -->
-<div class="col s7" id="menu-middle">
+<div class="col s7" id="menu-left">
   <center><h1>Menu Items</h1></center>
+
 <div class="all-menu-items">
+
   <div class="row">
+
     <% @menu_items.each do |item| %>
-      <div class="col s3">
-        <p>
+    <div>
+      <p>
         <% if item.picture  %>
           <a href='<%= restaurant_menu_item_path(@restaurant.id, item) %>'><%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %></a>
         <% end %>
@@ -48,47 +51,43 @@
         Price:
         <%= formatPrice(item.price) %>
       </p>
+    </div>
 
     <button class="add-to-order" style="display:none" type="button" name="button" value='<%= item.id.to_s + '/' + item.name + '/' + item.price.to_s %>'>Add to Order</button>
 
     <% if current_user && current_user.restaurants.include?(@restaurant) %>
     <%= link_to 'Edit', edit_restaurant_menu_item_path(@restaurant.id, item) %> |
-    <%= link_to 'Delete', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %>
+    <%= link_to 'Destroy', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %>
     <% end %>
 
       </div>
       <% end %>
+</div>
 
-</div>
-</div>
 </div> <!-- div for middle column -->
 
 <!-- ===== RIGHT COLUMN: display submitted orders ===== -->
 <div class="col s3">
 <div style="display:none" class="ordered-items">
 <ul class="ordered-items-list">
-</ul>
+
 <%= form_for :order, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
   <%= label_tag 'Special Requests' %>
   <%= text_field_tag :request, nil, placeholder: 'Special requests' %>
   <%= hidden_field_tag :orders %>
   <%= hidden_field_tag :total_price %>
-  <%= hidden_field_tag :is_take_away, @is_take_away, id: "takeaway-tag" %>
+  <%= hidden_field_tag :is_take_away, @is_take_away %>
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <% if @is_take_away %>
-    <%= label_tag 'Takeaway Time' %><i> (Please allow at least 30 minutes for preparation)</i>
-    <%= f.time_select :time, start_hour: (Time.now + 30.minutes).hour, end_hour: 22, ampm: true, minute_step: 15, :required => true %>
-      <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-      data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-      data-name="<%= @restaurant.name %>"
-      data-amount=""
-      data-description='Order'
-      data-locale="auto"
-      data-currency="SGD"></script>
-  <% elsif @reservation.length > 0 %>
-    reservation is <%= @reservation %>
-    <%= hidden_field_tag :reservation_id, @reservation %>
-    <%= f.submit 'Create Orders', id: 'create-orders-button'%>
+  <% if !current_user || !current_user.restaurants.include?(@restaurant) %>
+  <%= label_tag 'Takeaway Time' %><i> (Please allow at least 30 minutes for preparation)</i>
+  <%= f.time_select :time, start_hour: (Time.now + 30.minutes).hour, end_hour: 22, ampm: true, minute_step: 15, :required => true %>
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+    data-name="<%= @restaurant.name %>"
+    data-amount=""
+    data-description='Order'
+    data-locale="auto"
+    data-currency="SGD"></script>
   <% else %>
     Table: <%= label_tag :table_id, @table %>
     <% if @existing_invoice.length > 0 %>
@@ -100,17 +99,7 @@
 <% end %>
 </div>
 
-<<<<<<< HEAD
-</center>
-<% if @is_take_away %>
-<%= javascript_include_tag('menu_items/takeaway.js') %>
-<% else %>
-<%= javascript_include_tag('menu_items/notTakeaway.js') %>
-<% end %>
-</div>
-=======
-<%= javascript_include_tag('menu_items/takeaway.js') %>
 </div> <!-- div for right column -->
+<%= javascript_include_tag('menu_items/takeaway.js') %>
 
 </div> <!-- div for row class DO NOT TOUCH!! -->
->>>>>>> 6fb4402067eb04d1ee7611662979f9fffb600d06

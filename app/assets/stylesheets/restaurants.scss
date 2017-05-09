@@ -39,6 +39,13 @@ h2 {
 }
 #search-bar {
   position:absolute;
+  overflow: hidden;
   top: 60px;
   right:0;
+}
+#res-pic {
+  z-index: 1;
+}
+#res-description {
+  z-index: 1;
 }

@@ -1,4 +1,4 @@
-<h1>Edit / Assign Walk-In Diner</h1>
+<h1>Edit Queuing Diner</h1>
 
 <%= form_for @walkin, url: restaurant_walkin_path(@restaurant, @walkin), html: {method: :put} do |f| %>
   <p>
@@ -17,32 +17,54 @@
   </p>
 
   <p>
-    <%= f.label :party_size, "Number of Diners" %>
-    <% if @restaurant.tables.count > 0 %>
-      <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
-    <% else %>
-      <%= f.select :party_size,[0]%>
-    <% end %>
+    Queue Number:
+    <%= @walkin.queue_number %>
   </p>
 
+  <% if @walkin.status == 'queuing' %>
+  <% if @walkin.table %>
+    <p>
+      <%= f.label :status, "Status" %>
+      <%= f.select(:status, [['Cancelled','cancelled'],['Queuing','queuing'], ['Awaiting','awaiting']])%>
+    </p>
+  <% else %>
+    <p>
+      <%= f.label :status, "Status" %>
+      <%= f.select(:status, [['Cancelled','cancelled'],['Queuing','queuing']])%>
+    </p>
+  <% end %>
+
+  <% elsif @walkin.status == 'reservation' %>
   <p>
     <%= f.label :status, "Status" %>
-    <%= f.select(:status, [['Queuing','queuing'], ['Dining','dining'], ['Cancelled','cancelled'], ['Checked Out','checked_out']])%>
+    <%= f.select(:status, [['Cancelled','cancelled'],['Reservation','reservation'], ['Dining','dining']])%>
+  </p>
+  <% end %>
+
+  <% if @walkin.status == 'queuing' %>
+    <p>
+      <%= f.label :party_size, "Number of Diners" %>
+      <% if @restaurant.tables.count > 0 %>
+        <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
+      <% else %>
+        <%= f.select :party_size,[0]%>
+      <% end %>
+    </p>
+  <% else %>
+    <p>
+      Party Size:
+      <%= @walkin.party_size %>
+    </p>
+  <% end %>
+
+  <p>
+    Table:
+    <%= @walkin.table_id %>
   </p>
 
   <p>
     <%= f.label :special_requests, "Special Requests" %>
     <%= f.text_field :special_requests, placeholder: "Special Requests"%>
-  </p>
-
-  <p>
-    Queue Number:
-    <%= @walkin.queue_number %>
-  </p>
-
-  <p>
-    Table:
-    <%= @walkin.table_id %>
   </p>
 
   <p>

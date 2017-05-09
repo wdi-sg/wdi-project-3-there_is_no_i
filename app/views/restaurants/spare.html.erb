@@ -151,3 +151,74 @@
 <% end %>
 
 </div>
+
+
+
+<!-- FOR MENU ITEMS -->
+<% @menu_items.each do |item| %>
+<div>
+  <p>
+    <% if item.picture  %>
+      <a href='<%= restaurant_menu_item_path(@restaurant.id, item) %>'><%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %></a>
+    <% end %>
+  </p>
+  <p>
+    Name:
+    <%= item.name %>
+  </p>
+  <p>
+    Description:
+    <%= item.description %>
+  </p>
+  <p>
+    Price:
+    <%= formatPrice(item.price) %>
+  </p>
+</div>
+
+<button class="add-to-order" style="display:none" type="button" name="button" value='<%= item.id.to_s + '/' + item.name + '/' + item.price.to_s %>'>Add to Order</button>
+
+<% if current_user && current_user.restaurants.include?(@restaurant) %>
+<%= link_to 'Edit', edit_restaurant_menu_item_path(@restaurant.id, item) %> |
+<%= link_to 'Destroy', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>
+
+
+
+
+
+
+<!-- CARD START -->
+<% @menu_items.each do |item| %>
+    <div class="col s3">
+      <div class="card" id="menu-card">
+
+        <div class="card-image">
+          <% if item.picture  %>
+          <img src="<%= restaurant_menu_item_path(@restaurant.id, item) %>"><%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %>
+          <span class="card-title"><%= item.name %></span>
+          <% else %>
+        </div>
+
+        <div class="card-content">
+          <span class="card-title"><%= item.name %></span>
+          <% end %>
+          <p><%= item.description %></p>
+          <p><i class="material-icons left">local_atm</i><%= formatPrice(item.price) %></p>
+        </div>
+
+        <div class="card-action">
+
+          <% if current_user && current_user.restaurants.include?(@restaurant) %>
+            <%= link_to 'Edit', edit_restaurant_menu_item_path(@restaurant.id, item) %>
+            <%= link_to 'Delete', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </div>
+
+      </div>
+            <button class="add-to-order" style="display:none" type="button" name="button" value='<%= item.id.to_s + '/' + item.name + '/' + item.price.to_s %>'>Add to Order</button>
+
+    </div>
+    <% end %>
+
+    <!-- CARD END -->

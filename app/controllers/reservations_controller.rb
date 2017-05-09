@@ -15,6 +15,8 @@ class ReservationsController < ApplicationController
   helper ReservationsHelper
 
   def index
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
     @restaurant_id = params[:restaurant_id]
     if request.fullpath == "/restaurants/#{@restaurant_id}/reservationss?name=sort"
       @reservations = Reservation.where(restaurant_id: params[:restaurant_id]).order('name ASC')
@@ -95,6 +97,8 @@ class ReservationsController < ApplicationController
   end
 
   def edit
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
     @table_options = @restaurant.tables.map do |table|
       [table.name, table.id]
     end
@@ -107,6 +111,8 @@ class ReservationsController < ApplicationController
       flash['alert'] = 'Please login or register before making a reservation'
       redirect_to new_user_session_path
     end
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
   end
 
   def show

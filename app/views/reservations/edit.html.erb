@@ -1,6 +1,5 @@
 <div class="container">
 <h1>Edit Reservation</h1>
-<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 <%= form_for @reservation, url: restaurant_reservation_path(@restaurant, @reservation), html: {method: :put} do |f| %>
 
 <% if !current_user or current_user.restaurants.include? @restaurant %>
@@ -25,8 +24,12 @@
   <% end %>
 
   <p>
-    <%= f.label :party_size, 'Number of People' %>
-    <%= f.select :party_size,[*1..@restaurant.tables.max_by{|x| x[:capacity_total]}.capacity_total], :required => true%>
+    <%= f.label :party_size, "Number of Diners" %>
+    <% if @restaurant.tables.count > 0 %>
+      <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
+    <% else %>
+      <%= f.select :party_size,[0]%>
+    <% end %>
   </p>
 
   <p>

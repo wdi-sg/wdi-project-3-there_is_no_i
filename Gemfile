@@ -44,6 +44,9 @@ gem 'foreman'
 # Add RestClient for Mailgun
 gem 'rest-client'
 
+# Add the stupid breadcrumb things
+gem "breadcrumbs_on_rails"
+
 # Gem to use jquery with Materialize
 gem 'jquery-turbolinks'
 

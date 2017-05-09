@@ -1,8 +1,8 @@
 
   <!-- ====== PICTURE AND DESCRIPTION ===== -->
   <% if @restaurant.picture  %>
-  <div class="row">
-    <div class="col s6" style="margin-left:25px">
+  <div class="row" id="res-whole">
+    <div class="col s6" style="margin-left:25px" id="res-pic">
   <p>
   <%= cl_image_tag(@restaurant.picture, width: 900, height: 600, crop: :fill) %>
   </p>
@@ -13,7 +13,7 @@
 
 
 <!-- ==== WHOLE CHUNK OF RESTAURANT DESCRIPTION ====  -->
-<div class="col s5" style="margin-right:20px;">
+<div class="col s5" style="margin-right:20px;" id="res-description">
 
   <!-- ==== LEFT SIDE OF THE PAGE ==== -->
 

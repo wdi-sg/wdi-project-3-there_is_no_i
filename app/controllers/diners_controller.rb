@@ -6,10 +6,14 @@ class DinersController < ApplicationController
   before_action :set_duration, only: [:update, :reassign_table, :assign_table]
 
   def index
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
     @diners = Reservation.where(restaurant_id: params[:restaurant_id], status: 'dining').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting'))
   end
 
   def edit
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
     @table_options = @restaurant.tables.map do |table|
       [table.name, table.id]
     end
@@ -37,6 +41,12 @@ class DinersController < ApplicationController
         next_customer_table = determine_table(@restaurant, [@diner.table], next_customer, Time.now, @est_duration)
 
         @diner.table_id = nil
+
+        # Send diner to the back of queue
+        @diner.queue_number = @diner.restaurant.next_queue_number
+        @diner.restaurant.next_queue_number += 1
+        @diner.restaurant.save
+
         sms_send_back_queue(@diner)
 
         if next_customer_table
@@ -121,7 +131,7 @@ class DinersController < ApplicationController
     p diner
 
     if diner.save!
-      if diner.status = 'queuing'
+      if diner.status == 'queuing'
         redirect_to restaurant_walkins_path(restaurant)
       else
         redirect_to restaurant_diners_path(restaurant)

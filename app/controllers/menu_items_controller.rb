@@ -8,6 +8,8 @@ class MenuItemsController < ApplicationController
   helper MenuItemsHelper
 
   def index
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
     gon.restaurant = @restaurant.name
     gon.description = @existing_invoice == '' && @reservation == '' ? 'Takeaway' : 'Order'
       @restaurant_id = params[:restaurant_id]
@@ -37,13 +39,20 @@ class MenuItemsController < ApplicationController
   end
 
   def new
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+    add_breadcrumb "Back to menu", restaurant_menu_items_path(@restaurant)
     @menu_item = MenuItem.new
   end
 
   def edit
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
   end
 
   def show
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
   end
 
   def update

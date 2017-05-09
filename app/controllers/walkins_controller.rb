@@ -8,6 +8,8 @@ class WalkinsController < ApplicationController
   helper WalkinHelper
 
   def index
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
     @walkins = Reservation.where(restaurant_id: params[:restaurant_id], status: 'queuing').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting')).or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'reservation'))
   end
 
@@ -32,7 +34,7 @@ class WalkinsController < ApplicationController
     if user_reservations.where(status: 'reservation').or(user_reservations.where(status: 'queuing')).or(user_reservations.where(status: 'awaiting')).or(user_reservations.where(status: 'dining')).count > 0
 
       @walkin.destroy
-      flash['alert'] = 'Error. This is a duplicate entry. Please contact us if otherwise.'
+      flash['alert'] = 'Error. This is a duplicated entry. Please contact us if otherwise.'
       redirect_to restaurant_new_public_path(@restaurant)
 
     else
@@ -77,17 +79,70 @@ class WalkinsController < ApplicationController
     render 'layouts/public_walkin', layout: false
   end
 
-  # def edit; end
+  def edit; end
 
   # def show; end
 
-  # def update
-  #   if @walkin.update(walkin_params)
-  #     redirect_to restaurant_walkins_path(@restaurant)
-  #   else
-  #     render :edit
-  #   end
-  # end
+  def update
+    if params[:reservation][:status] == 'cancelled'
+      @walkin.status = 'cancelled'
+      @walkin.table.capacity_total = 0
+      @walkin.table.save
+      update_save
+    elsif params[:reservation][:status] == 'reservation'
+      redirect_to restaurant_walkins_path(@restaurant)
+    elsif params[:reservation][:status] == 'queuing'
+      @walkin.party_size = params[:reservation][:party_size]
+      update_save
+    elsif params[:reservation][:status] == 'awaiting'
+      old_start_time = @walkin.start_time
+      old_table_id = @walkin.table_id
+      old_party_size = @walkin.party_size
+
+      @walkin.start_time = nil
+      @walkin.end_time = nil
+      # @walkin.table_id = params[:reservation][:table_id]
+      @walkin.party_size = params[:reservation][:party_size]
+      @walkin.save
+
+      table_if_possible = determine_table(@restaurant, [@walkin.table], @walkin, Time.now, @est_duration)
+
+      if table_if_possible
+        @walkin.start_time = Time.now
+        @walkin.end_time = Time.now + @est_duration
+        @walkin.status = params[:reservation][:status]
+        sms_awaiting(@walkin)
+        update_save
+      else
+        @walkin.start_time = old_start_time
+        @walkin.end_time = old_start_time + @est_duration
+        @walkin.table_id = old_table_id
+        @walkin.party_size = old_party_size
+        @walkin.save
+        flash['alert'] = 'Error. New parameters are not permitted.'
+        redirect_to restaurant_edit_walkin_path(@restaurant, @walkin)
+      end
+
+    elsif params[:reservation][:status] == 'dining'
+      # Check if table is empty
+      if @walkin.table.capacity_total > 0
+        flash['alert'] = 'Unable to commit. There are currently customers at the table.'
+        render :edit
+      else
+        @walkin.status = 'dining'
+        update_save
+      end
+    end
+  end
+
+  def update_save
+    if @walkin.save!
+      redirect_to restaurant_walkins_path(@restaurant)
+    else
+      flash['alert'] = 'Error. Unable to save update.'
+      render :edit
+    end
+  end
 
   # def destroy
   #   @walkin.destroy
@@ -118,7 +173,7 @@ class WalkinsController < ApplicationController
       walkin.queue_number = walkin.restaurant.next_queue_number
       set_next_queue_number(walkin.restaurant)
       if walkin.save!
-        # SEND SMS
+        sms_requeue(walkin)
         redirect_to restaurant_walkins_path(params[:restaurant_id])
       else
         flash['alert'] = 'Error 500. Unable to update'

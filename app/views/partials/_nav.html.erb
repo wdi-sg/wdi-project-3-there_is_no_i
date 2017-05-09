@@ -51,10 +51,12 @@
 </nav>
 
 <!-- ===== SEARCH BAR ===== -->
+<p style="margin-left:15px; font-size:18px;"> <%= render_breadcrumbs :separator => ' / ' %> </p>
+
 <div id="search-bar">
-    <form id="search-field">
+    <form id="search-field" class="" action="/restaurants" method="get"  style="display:inline-block;">
       <div class="input-field">
-        <input id="search" type="search" required placeholder="Search for a restaurant or dining location">
+        <input id="search" type="search" name="search" value="" required placeholder="Search for a location">
         <label class="label-icon" for="search"><i class="material-icons">search</i></label>
         <i class="material-icons">close</i>
       </div>

@@ -32,9 +32,17 @@
         <% end %>
       </td>
       <td><%= diner.queue_number %></td>
-      <td><%= Table.find(diner.table_id).name %></td>
+      <td>
+        <% if diner.table_id != nil %>
+        <%= Table.find(diner.table_id).name %>
+        <% end %>
+      </td>
       <td><%= diner.special_requests %></td>
-      <td><%= diner.start_time.getlocal('+08:00') %></td>
+      <td>
+        <% if diner.start_time != nil %>
+        <%= diner.start_time.getlocal('+08:00') %>
+        <% end %>
+      </td>
       <td>
         <% if diner.end_time %>
         <% if Time.now > diner.end_time %>
@@ -83,9 +91,17 @@
         <% end %>
       </td>
       <td><%= diner.queue_number %></td>
-      <td><%= Table.find(diner.table_id).name %></td>
+      <td>
+        <% if diner.table_id != nil %>
+        <%= Table.find(diner.table_id).name %>
+        <% end %>
+      </td>
       <td><%= diner.special_requests %></td>
-      <td><%= diner.start_time.getlocal('+08:00') %></td>
+      <td>
+        <% if diner.start_time != nil %>
+        <%= diner.start_time.getlocal('+08:00') %>
+        <% end %>
+      </td>
       <td>
         <% if diner.end_time %>
         <% if Time.now > diner.end_time %>
