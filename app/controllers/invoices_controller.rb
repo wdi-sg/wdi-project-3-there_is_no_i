@@ -40,10 +40,12 @@ class InvoicesController < ApplicationController
         @x = []
       end
 
+      takeaway_time = Time.zone.local( params[:order]["time(1i)"].to_i, params[:order]["time(2i)"].to_i, params[:order]["time(3i)"].to_i, params[:order]["time(4i)"].to_i, params[:order]["time(5i)"].to_i, 0)
+
       if params[:invoice_id]
         @invoice = Invoice.find(params[:invoice_id])
       elsif current_user
-        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id)
+        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, takeaway_time: takeaway_time)
       elsif @x.count > 0
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: @x[0].id)
       else
@@ -55,13 +57,13 @@ class InvoicesController < ApplicationController
 
         if current_user
           orders.each do |menu_item|
-            @order = Order.create(user_id: current_user.id, is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item)
-            ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id})
+            @order = Order.create(user_id: current_user.id, is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item, request_description: params[:request])
+            ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id, request_description: params[:request]})
           end
         else
           orders.each do |menu_item|
-            @order = Order.create(is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item)
-            ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id})
+            @order = Order.create(is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item, request_description: params[:request])
+            ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order.created_at, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id, request_description: params[:request]})
           end
         end
 
@@ -79,6 +81,9 @@ class InvoicesController < ApplicationController
     end
 
     def edit
+      @table_options = @restaurant.tables.map do |table|
+        [table.name, table.id]
+      end
     end
 
     def show

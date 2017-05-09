@@ -1,0 +1,8 @@
+CURRENT RESERVATIONS
+<% @user.invoices.each do |invoice| %>
+Invoice ID <%= invoice.id %>
+<% invoice.orders.each do |order|  %>
+ORDER ID <%= order.id %>
+ITEM <%= order.menu_item.name %>
+<% end %>
+<% end %>
