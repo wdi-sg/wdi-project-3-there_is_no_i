@@ -1,31 +1,45 @@
 <%= form_for menu_item, url: url do |f| %>
-  <p>
+  <div class="field">
+
     <%= f.label :name %>
-    <%= f.text_field :name, placeholder: "Name" %>
-  </p>
-  <p>
+    <%= f.text_field :name, placeholder: "Name (Required)" %>
+  </div>
+
+  <div class="field">
+
     <%= f.label :price %>
-    <%= f.text_field :price, placeholder: "Price" %>
-  </p>
-  <p>
+    <%= f.text_field :price, placeholder: "Price (Required)" %>
+  </div>
+
+  <div class="field">
+
     <%= f.label :description %>
-    <%= f.text_field :description, placeholder: "Description" %>
-  </p>
-  <p>
+    <%= f.text_field :description, placeholder: "Description (Required)" %>
+  </div>
+
+  <div class="field">
+
     <%= f.label :ingredients %>
     <%= f.text_field :ingredients, placeholder: "Ingredients" %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label :tags %>
     <%= f.text_field :tags, placeholder: "Tags" %>
-  </p>
-  <p>
+  </div>
+
+  <div class="field">
+
     <%= f.label :picture %>
     <% if menu_item.picture  %>
       <%= cl_image_tag(menu_item.picture, width: 200, height: 100, crop: :fill) %>
     <% end %>
-  </p>
-  <p>
-    <%= f.submit "Save" %>
-  </p>
+  </div>
+
+  <div class="field">
+
+    <%= f.submit "Save", class: 'waves-effect waves-light btn light-blue lighten-3'%>
+  </div>
+
 <% end %>

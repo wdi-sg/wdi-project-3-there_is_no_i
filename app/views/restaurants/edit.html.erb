@@ -1,4 +1,5 @@
-<h2>Restaurant Profile</h2>
+<div class="container">
+<h1>Restaurant Profile</h1>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 <%= render "/restaurants/form", restaurant: @restaurant %>
 <br/>
@@ -37,7 +38,7 @@
         <%= form_for @restaurant do |f| %>
           <%= f.hidden_field :remove, value: true %>
           <%= f.hidden_field :email, value: user.email %>
-          <%= f.submit "Remove" %>
+          <%= f.submit "Remove", class: 'waves-effect waves-light btn red darken-1' %>
         <% end %>
       </td>
     </tr>
@@ -47,8 +48,12 @@
 </table>
 <br/>
 <h6>Add employee by email</h6>
+<div class="field">
 <%= form_for @restaurant do |f| %>
   <%= f.hidden_field :add, value: true %>
   <%= f.email_field :email, value: nil, placeholder: 'employee@company.com' %>
-  <%= f.submit "Add" %>
+  <%= f.submit "Add", class: 'waves-effect waves-light btn light-blue lighten-3' %>
 <% end %>
+</div>
+<br><br>
+</div>

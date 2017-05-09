@@ -1,4 +1,5 @@
-<h2>My Profile</h2>
+<div class="container">
+<h1>My Profile</h1>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
@@ -23,6 +24,11 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= f.password_field :current_password, autocomplete: "off", required: true %>
+  </div>
+
+  <div class="field">
     <%= f.label 'New password' %> <i>(leave blank if you don't want to change it)</i><br />
     <%= f.password_field :password, autocomplete: "off", placeholder: @minimum_password_length.to_s + ' characters minimum' %>
   </div>
@@ -32,19 +38,14 @@
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "off", required: true %>
-  </div>
-
-  <div class="actions">
+  <div class="actions waves-effect waves-light btn light-blue lighten-3">
     <%= f.submit "Update" %>
   </div>
 <% end %>
 
 <br/>
 <% if current_user.restaurants.count > 0 %>
-  <h2>My restaurants</h2>
+  <h2><i class="material-icons">restaurant_menu</i> My restaurants</h2>
 <table>
   <thead>
     <tr>
@@ -96,5 +97,6 @@
   </tbody>
 </table>
 <% else %>
-  <h5><%= link_to "Register a restaurant", new_restaurant_path %></h5>
+  <%= link_to "Register a restaurant", new_restaurant_path, class: 'waves-effect waves-light btn indigo accent-1' %>
 <% end %>
+</div>

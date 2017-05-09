@@ -56,7 +56,11 @@
         <% end %>
       </td>
       <td>
+        <% if walkin.queue_number + 1 != walkin.restaurant.next_queue_number%>
+        <%= link_to 'Requeue', restaurant_requeue_path(@restaurant, walkin), method: :put, data: { confirm: 'This will send the customer to the back of the queue. OK to procced?'} %>
+        <% end %>
         <% if walkin.table %>
+         |
         <%= link_to 'Notify', restaurant_notify_path(@restaurant, walkin), method: :put, data: { confirm: 'This will notify the customer via SMS. OK to procced?'} %>
         <% end %>
       </td>
