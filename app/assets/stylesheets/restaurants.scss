@@ -7,11 +7,12 @@ h1 {
   font-family: "Unica One"
 }
 h2 {
-  font-size: 30px;
+  font-size: 40px;
   font-family: "Unica One"
 }
 .container {
   margin-left: 40px;
+  width: 1600px;
 }
 #restaurant-cards {
   width:1600px;
@@ -19,7 +20,7 @@ h2 {
 
 }
 .card {
-  height: 96%;
+  height: 490px;
   max-width: 500px;
   margin-top: 60px;
   border-radius: 5px;

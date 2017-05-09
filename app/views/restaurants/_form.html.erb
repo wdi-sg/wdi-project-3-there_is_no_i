@@ -2,13 +2,13 @@
   <div class="field">
 
     <%= f.label :name %>
-    <%= f.text_field :name, placeholder: "Name", required: true %>
+    <%= f.text_field :name, placeholder: "Name (Required)", required: true %>
   </div>
 
   <div class="field">
 
     <%= f.label "Address" %>
-    <%= f.text_field :address1, placeholder: "Address Line 1", required: true %>
+    <%= f.text_field :address1, placeholder: "Address Line 1 (Required)", required: true %>
   </div>
 
   <div class="field">
@@ -20,7 +20,7 @@
   <div class="field">
 
     <%= f.label "City" %>
-    <%= f.text_field :address_city, placeholder: "Neighbourhood", required: true %>
+    <%= f.text_field :address_city, placeholder: "Neighbourhood (Required)", required: true %>
   </div>
 
   <div class="field">
@@ -32,13 +32,13 @@
   <div class="field">
 
     <%= f.label "Country" %>
-    <%= f.text_field :address_country, placeholder: "Country", required: true %>
+    <%= f.text_field :address_country, placeholder: "Country (Required)", required: true %>
   </div>
 
   <div class="field">
 
     <%= f.label "Post Code" %>
-    <%= f.text_field :address_postal, placeholder: "Post Code", required: true %>
+    <%= f.text_field :address_postal, placeholder: "Post Code (Required)", required: true %>
   </div>
 
   <div class="field">
@@ -62,13 +62,13 @@
   <div class="field">
 
     <%= f.label :description %>
-    <%= f.text_field :description, placeholder: "Description", required: true %>
+    <%= f.text_field :description, placeholder: "Description (Required)", required: true %>
   </div>
 
   <div class="field">
 
     <%= f.label :cuisine %>
-    <%= f.text_field :cuisine, placeholder: "Cuisine", required: true %>
+    <%= f.text_field :cuisine, placeholder: "Cuisine (Required)", required: true %>
   </div>
 
   <div class="field">
@@ -83,11 +83,11 @@
 
     <%= f.file_field :picture %>
   </div>
-
+<br>
 
   <div class="field">
 
-      <%= f.submit "Save", class: 'waves-effect waves-light btn light-blue lighten-3' %>
+      <%= f.submit 'Save', class: 'waves-effect waves-light btn light-blue lighten-3' %>
   </div>
 
 <% end %>
