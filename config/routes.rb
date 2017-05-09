@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   get '/history' => 'users#history'
   get '/invoices' => 'users#invoices'
+  get '/reservations' => 'users#reservations'
 
   # restaurant management
   get '/dashboard' => 'dashboard#index'
