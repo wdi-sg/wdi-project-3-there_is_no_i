@@ -8,17 +8,10 @@ class MenuItemsController < ApplicationController
   helper MenuItemsHelper
 
   def index
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
     gon.restaurant = @restaurant.name
     gon.description = @existing_invoice == '' && @reservation == '' ? 'Takeaway' : 'Order'
-    if current_user
-      if current_user.restaurants.include? @restaurant
-        @is_take_away = false
-      else
-        @is_take_away = true
-      end
-    else
-      @is_take_away = true
-    end
       @restaurant_id = params[:restaurant_id]
     if request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?name=sort"
       @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order(:name)
@@ -36,8 +29,14 @@ class MenuItemsController < ApplicationController
   end
 
   def create
+    if params[:menu_item][:picture] && params[:menu_item][:picture].path
+      uploaded_file = params[:menu_item][:picture].path
+      @cloudinary_file = Cloudinary::Uploader.upload(uploaded_file)
+    end
+
     @menu_item = MenuItem.new(menu_item_params)
     @menu_item.restaurant_id = @restaurant.id
+    @menu_item.picture = @cloudinary_file["secure_url"]
     if @menu_item.save!
       redirect_to restaurant_menu_items_path(@restaurant)
     else
@@ -46,18 +45,27 @@ class MenuItemsController < ApplicationController
   end
 
   def new
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_breadcrumb "Menu", restaurant_menu_items_path(@restaurant)
     @menu_item = MenuItem.new
   end
 
   def edit
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_breadcrumb "Menu", restaurant_menu_items_path(@restaurant)
   end
 
   def show
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_breadcrumb "Menu", restaurant_menu_items_path(@restaurant)
   end
 
   def update
     if params[:menu_item][:picture] && params[:menu_item][:picture].path
-      uploaded_file = params[:restaurant][:picture].path
+      uploaded_file = params[:menu_item][:picture].path
       @cloudinary_file = Cloudinary::Uploader.upload(uploaded_file)
     end
 
@@ -83,7 +91,7 @@ class MenuItemsController < ApplicationController
   end
 
   def menu_item_params
-    params.require(:menu_item).permit(:name, :price, :description, :ingredients, :tags)
+    params.require(:menu_item).permit(:name, :price, :description, :ingredients, :tags, :restaurant_id)
   end
 
   def check_if_invoice_or_reservation_exists
@@ -91,7 +99,15 @@ class MenuItemsController < ApplicationController
     @reservation = params[:reservation_id] ? params[:reservation_id] : ''
     if params[:invoice_id]
       @table = Invoice.find(params[:invoice_id]).table ? Invoice.find(params[:invoice_id]).table.name : '-'
+      @is_take_away = false
+    elsif params[:reservation_id]
+      @is_take_away = false
+      @table = ''
+    elsif current_user.restaurants.include? @restaurant
+      @is_take_away = false
+      @table = ''
     else
+      @is_take_away = true
       @table = ''
     end
   end

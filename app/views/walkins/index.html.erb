@@ -25,7 +25,6 @@
       <td><%= walkin.phone %></td>
       <td><%= walkin.email %></td>
       <td><%= walkin.party_size %></td>
-
       <td>
         <% if walkin.status == 'awaiting' %>
         <font color="red"><b><%= walkin.status %></b></font>
@@ -33,12 +32,6 @@
         <%= walkin.status %>
         <% end %>
       </td>
-
-      <!-- <td>
-        <%= form_for walkin, url: restaurant_diner_path(@restaurant, walkin), html: {method: :put} do |f| %>
-        <%= f.select(:status, [['Cancelled','cancelled'],['Queuing','queuing']])%>
-      </td> -->
-
       <td><%= walkin.queue_number %></td>
 
       <td>
@@ -62,12 +55,6 @@
         <% end %>
         <% end %>
       </td>
-
-      <!-- <td>
-        <%= f.submit "Update" %>
-      </td> -->
-      <!-- <% end %> -->
-
       <td>
         <% if walkin.table %>
         <%= link_to 'Notify', restaurant_notify_path(@restaurant, walkin), method: :put%>

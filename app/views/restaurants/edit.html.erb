@@ -1,6 +1,5 @@
 <div class="container">
 <h1>Restaurant Profile</h1>
-<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 <%= render "/restaurants/form", restaurant: @restaurant %>
 <br/>
 <h2>Employees</h2>
@@ -38,7 +37,7 @@
         <%= form_for @restaurant do |f| %>
           <%= f.hidden_field :remove, value: true %>
           <%= f.hidden_field :email, value: user.email %>
-          <%= f.submit "Remove", class: 'waves-effect waves-light btn red darken-1' %>
+          <%= f.submit "Remove", class: 'waves-effect waves-light btn red darken-1', data: { confirm: 'Are you sure?' } %>
         <% end %>
       </td>
     </tr>

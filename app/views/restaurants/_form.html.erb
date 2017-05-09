@@ -1,48 +1,40 @@
 <%= form_for restaurant do |f| %>
   <div class="field">
-
     <%= f.label :name %>
     <%= f.text_field :name, placeholder: "Name (Required)", required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label "Address" %>
     <%= f.text_field :address1, placeholder: "Address Line 1 (Required)", required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label "Address" %>
     <%= f.text_field :address2, placeholder: "Address Line 2" %>
   </div>
 
   <div class="field">
-
     <%= f.label "City" %>
     <%= f.text_field :address_city, placeholder: "Neighbourhood (Required)", required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label "State" %>
     <%= f.text_field :address_state, placeholder: "State" %>
   </div>
 
   <div class="field">
-
     <%= f.label "Country" %>
     <%= f.text_field :address_country, placeholder: "Country (Required)", required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label "Post Code" %>
     <%= f.text_field :address_postal, placeholder: "Post Code (Required)", required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label :email %>
     <%= f.email_field :email, placeholder: "Email" %>
   </div>
@@ -54,25 +46,21 @@
   </div>
 
   <div class="field">
-
     <%= f.label :website %>
     <%= f.text_field :website, placeholder: "Website" %>
   </div>
 
   <div class="field">
-
     <%= f.label :description %>
     <%= f.text_field :description, placeholder: "Description (Required)", required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label :cuisine %>
     <%= f.text_field :cuisine, placeholder: "Cuisine (Required)", required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label :picture %>
   <% if restaurant.picture  %>
   <%= cl_image_tag(restaurant.picture, width: 200, height: 100, crop: :fill) %>
@@ -80,7 +68,6 @@
   </div>
 
   <div class="field">
-
     <%= f.file_field :picture %>
   </div>
 <br>

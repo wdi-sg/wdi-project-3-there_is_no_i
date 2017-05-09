@@ -1,31 +1,46 @@
-<h1>Show Invoice</h1>
+<h1>Invoice</h1>
+<% if current_user.restaurants.include?(@restaurant) %>
 <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %> <br/>
 <%= link_to 'Back to Invoices', restaurant_invoices_path(@restaurant.id) %>
+<% else %>
+<%= link_to 'Back to your reservations', reservations_path %>
+<% end %>
 <br/>
 <p>
-  Invoice number:
+  Invoice no.:
   <%= @invoice.id %>
-</p>
-<p>
-  User:
-  <% if @invoice.user_id %>
-  <%= @invoice.user.name %>
-  <% elsif @invoice.user_name %>
-  <%= @invoice.user_name %>
-  <% else %>
-  <%= '' %>
-  <% end %>
-</p>
-<p>
-  Table:
-  <%= @invoice.table.name if @invoice.table %>
 </p>
 <p>
   Total:
   <%= formatPrice(showTotalPrice(@invoice.menu_items)) %>
 </p>
 <p>
-  Ordered:
+<% if !current_user.restaurants.include?(@restaurant) %>
+  <%= form_tag restaurant_menu_items_path(@restaurant), method: :get do %>
+    <%= hidden_field_tag :invoice_id, @invoice.id %>
+    <%= hidden_field_tag :reservation_id, @invoice.reservation_id %>
+    <%= submit_tag 'Add to order' %>
+  <% end %>
+<% end %>
+
+<% if current_user.restaurants.include?(@restaurant) %>
+  User:
+  <% if @invoice.user_id %>
+    <%= @invoice.user.name %>
+  <% elsif @invoice.user_name %>
+    <%= @invoice.user_name %>
+  <% else %>
+    <%= '' %>
+  <% end %>
+<% end %>
+</p>
+<% if current_user.restaurants.include?(@restaurant) %>
+<p>
+  Table:
+  <%= @invoice.table ? @invoice.table.name : '-' %>
+</p>
+<% end %>
+<p>
   <table>
     <thead>
       <tr>
@@ -38,14 +53,19 @@
         <th>
           Price
         </th>
+        <% if current_user.restaurants.include?(@restaurant) %>
         <th>
           Takeaway?
         </th>
         <th>
           User Name
         </th>
+        <% end %>
         <th>
           Request
+        </th>
+        <th>
+
         </th>
       </tr>
     </thead>
@@ -62,6 +82,7 @@
   <td>
     <%= formatPrice(order.menu_item.price) %>
   </td>
+  <% if current_user.restaurants.include?(@restaurant) %>
   <td>
     <%= order.is_take_away %>
   </td>
@@ -72,9 +93,11 @@
       <%= '' %>
     <% end %>
   </td>
+  <% end %>
   <td>
     <%= order.request_description %>
   </td>
+  <td><%= link_to 'Remove', restaurant_invoice_order_path(@restaurant, @invoice, order), method: :delete, data: { confirm: 'Are you sure?' } %></td>
 </tr>
 <% @index += 1 %>
 <% end %>

@@ -1,6 +1,6 @@
+<div class="container">
 <h1>Tables</h1>
-<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
-<%= link_to 'New Table', new_restaurant_table_path(@restaurant.id) %>
+<%= link_to 'New Table', new_restaurant_table_path(@restaurant.id), class: 'waves-effect waves-light btn light-blue lighten-3' %>
 <br>
 <br>
 <table>
@@ -27,3 +27,4 @@
     <% end %>
   </tbody>
 </table>
+</div>

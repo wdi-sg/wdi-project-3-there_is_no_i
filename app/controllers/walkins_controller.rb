@@ -8,6 +8,8 @@ class WalkinsController < ApplicationController
   helper WalkinHelper
 
   def index
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
     @walkins = Reservation.where(restaurant_id: params[:restaurant_id], status: 'queuing').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting')).or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'reservation'))
   end
 

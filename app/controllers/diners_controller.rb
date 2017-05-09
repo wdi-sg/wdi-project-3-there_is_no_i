@@ -6,18 +6,26 @@ class DinersController < ApplicationController
   before_action :set_duration, only: [:update, :reassign_table, :assign_table]
 
   def index
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
     @diners = Reservation.where(restaurant_id: params[:restaurant_id], status: 'dining').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting'))
   end
 
   def edit
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
     @table_options = @restaurant.tables.map do |table|
       [table.name, table.id]
     end
   end
 
-  def show; end
+  def show
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+  end
 
   def update
+
     old_party_size = @diner.party_size
     old_table_id = @diner.table_id
     old_start_time = @diner.start_time

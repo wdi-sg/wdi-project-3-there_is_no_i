@@ -1,13 +1,11 @@
-<div class="container">
-<h1>All Reservations</h1>
-<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
-</div>
+<center><h1>All Reservations</h1></center>
+
 
 <center>
-<h1>- Sort by -</h1>
-<a class="waves-effect waves-light btn" href="/restaurants/<%= @restaurant_id %>/reservations?name=sort">Name</a>
-<a class="waves-effect waves-light btn" href="/restaurants/<%= @restaurant_id %>/reservations?pax=sort">Party size</a>
-<a class="waves-effect waves-light btn" href="/restaurants/<%= @restaurant_id %>/reservations?date=sort">Date</a>
+<h2>- Sort by -</h2>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/reservations?name=sort">Name</a>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/reservations?pax=sort">Party size</a>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/reservations?date=sort">Date</a>
 </center>
 
 <div class="container">
