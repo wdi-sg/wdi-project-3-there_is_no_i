@@ -37,7 +37,7 @@ class DinersController < ApplicationController
         next_customer_table = determine_table(@restaurant, [@diner.table], next_customer, Time.now, @est_duration)
 
         @diner.table_id = nil
-        sms_requeue(@diner)
+        sms_send_back_queue(@diner)
 
         if next_customer_table
           assign_table(next_customer, next_customer_table)
