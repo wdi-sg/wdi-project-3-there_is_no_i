@@ -75,7 +75,7 @@
   <%= hidden_field_tag :total_price %>
   <%= hidden_field_tag :is_take_away, @is_take_away %>
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <% if !current_user || !current_user.restaurants.include?(@restaurant) %>
+  <% if !current_user.restaurants.include?(@restaurant) %>
   <%= label_tag 'Takeaway Time' %><i> (Please allow at least 30 minutes for preparation)</i>
   <%= f.time_select :time, start_hour: (Time.now + 30.minutes).hour, end_hour: 22, ampm: true, minute_step: 15, :required => true %>
     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -85,6 +85,8 @@
     data-description='Order'
     data-locale="auto"
     data-currency="SGD"></script>
+    <% elsif @reservation.length > 0 %>
+    <%= hidden_field_tag :reservation_id, @reservation %>
   <% else %>
     Table: <%= label_tag :table_id, @table %>
     <% if @existing_invoice.length > 0 %>

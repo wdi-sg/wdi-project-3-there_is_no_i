@@ -1,0 +1,110 @@
+<h2>My Takeaway Orders</h2>
+<br/>
+<table>
+  <thead>
+    <tr>
+      <th>
+        No.
+      </th>
+      <th>
+        ID
+      </th>
+      <th>
+        Date
+      </th>
+      <th>
+        Restaurant
+      </th>
+      <th>
+        Orders
+      </th>
+      <th>
+        Total
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @index = 1 %>
+    <% @user.invoices.select{ |invoice| !invoice.time_end }.select{ |invoice| invoice.takeaway_time }.sort{ |a, b| a.takeaway_time <=> b.takeaway_time }.each do |invoice| %>
+    <tr>
+      <td>
+        <%= @index %>
+      </td>
+      <td>
+        <%= invoice.id %>
+      </td>
+      <td>
+        <%= formatDate(invoice.takeaway_time) %>
+      </td>
+      <td>
+        <%= invoice.restaurant.name %>
+      </td>
+      <td>
+        <% invoice.orders.each do |order| %>
+        <p>
+          <%= order.menu_item.name %>
+        </p>
+        <% end %>
+      </td>
+      <td><%= formatPrice(showTotalPrice(invoice.menu_items)) %></td>
+    </tr>
+    <% @index += 1 %>
+    <% end %>
+  </tbody>
+</table>
+
+<br/>
+
+<h2>My Invoices</h2>
+<table>
+  <thead>
+<tr>
+  <th>
+    No.
+  </th>
+  <th>
+    ID
+  </th>
+  <th>
+    Date
+  </th>
+  <th>
+    Restaurant
+  </th>
+  <th>
+    Ordered
+  </th>
+  <th>
+    Total
+  </th>
+</tr>
+  </thead>
+  <tbody>
+    <% @index = 1 %>
+    <% @user.invoices.select{ |invoice| invoice.time_end }.sort{ |a, b| b.time_end <=> a.time_end }.each do |invoice| %>
+    <tr>
+      <td>
+        <%= @index %>
+      </td>
+      <td>
+        <%= invoice.id %>
+      </td>
+      <td>
+        <%= formatInvoiceDate(invoice.time_end) %>
+      </td>
+      <td>
+        <%= invoice.restaurant.name %>
+      </td>
+      <td>
+        <% invoice.orders.each do |order| %>
+        <p>
+          <%= order.menu_item.name %>
+        </p>
+        <% end %>
+      </td>
+      <td><%= formatPrice(showTotalPrice(invoice.menu_items)) %></td>
+    </tr>
+    <% @index += 1 %>
+    <% end %>
+  </tbody>
+</table>
