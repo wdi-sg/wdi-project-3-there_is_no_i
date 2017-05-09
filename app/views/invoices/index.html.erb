@@ -6,6 +6,9 @@
 <table>
   <thead>
     <tr>
+      <th>
+        ID
+      </th>
       <th>Date Created</th>
       <th>User</th>
       <th>Table</th>
@@ -15,14 +18,18 @@
       <th></th>
       <th></th>
       <th></th>
+      <th>
+
+      </th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <% @invoices.each do |invoice| %>
     <tr>
+      <td><%= invoice.id %></td>
       <td><%= formatInvoiceDate(invoice.created_at) %></td>
-      <td><%= invoice.user_name %></td>
+      <td><%= invoice.user ? invoice.user.name : invoice.user_name %></td>
       <td><%= invoice.table ? invoice.table.name : '-' %></td>
       <td><%= formatPrice(showTotalPrice(invoice.menu_items)) %></td>
       <td><%= invoice.time_end %></td>
@@ -40,6 +47,37 @@
           <%= submit_tag 'Complete' %>
         <% end %>
       <% end %>
+      </td>
+      <td>
+        <% if invoice.time_end %>
+          <div style="display:none">
+            <%= form_tag restaurant_invoice_path(@restaurant, invoice), method: :put do %>
+            <%= hidden_field_tag :total_price, showTotalPrice(invoice.menu_items) %>
+            <%= hidden_field_tag :invoice_id, invoice.id %>
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+            data-name="<%= @restaurant.name %>"
+            data-amount=""
+            data-description='Order'
+            data-locale="auto"
+            data-currency="SGD"></script>
+            <% end %>
+          </div>
+        <% else %>
+          <div style="display:block">
+            <%= form_tag restaurant_invoice_path(@restaurant, invoice), method: :put do %>
+            <%= hidden_field_tag :total_price, showTotalPrice(invoice.menu_items) %>
+            <%= hidden_field_tag :invoice_id, invoice.id %>
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+            data-name="<%= @restaurant.name %>"
+            data-amount=""
+            data-description='Order'
+            data-locale="auto"
+            data-currency="SGD"></script>
+            <% end %>
+          </div>
+        <% end %>
       </td>
       <td><%= link_to 'Show', restaurant_invoice_path(@restaurant, invoice) %></td>
       <td><%= link_to 'Edit', edit_restaurant_invoice_path(@restaurant, invoice) %></td>

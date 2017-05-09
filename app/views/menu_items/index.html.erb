@@ -71,20 +71,22 @@
   <%= text_field_tag :request, nil, placeholder: 'Special requests' %>
   <%= hidden_field_tag :orders %>
   <%= hidden_field_tag :total_price %>
-  <%= hidden_field_tag :is_take_away, @is_take_away %>
+  <%= hidden_field_tag :is_take_away, @is_take_away, id: "takeaway-tag" %>
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <% if !current_user.restaurants.include?(@restaurant) %>
-  <%= label_tag 'Takeaway Time' %><i> (Please allow at least 30 minutes for preparation)</i>
-  <%= f.time_select :time, start_hour: (Time.now + 30.minutes).hour, end_hour: 22, ampm: true, minute_step: 15, :required => true %>
-    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-    data-name="<%= @restaurant.name %>"
-    data-amount=""
-    data-description='Order'
-    data-locale="auto"
-    data-currency="SGD"></script>
-    <% elsif @reservation.length > 0 %>
+  <% if @is_take_away %>
+    <%= label_tag 'Takeaway Time' %><i> (Please allow at least 30 minutes for preparation)</i>
+    <%= f.time_select :time, start_hour: (Time.now + 30.minutes).hour, end_hour: 22, ampm: true, minute_step: 15, :required => true %>
+      <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+      data-name="<%= @restaurant.name %>"
+      data-amount=""
+      data-description='Order'
+      data-locale="auto"
+      data-currency="SGD"></script>
+  <% elsif @reservation.length > 0 %>
+    reservation is <%= @reservation %>
     <%= hidden_field_tag :reservation_id, @reservation %>
+    <%= f.submit 'Create Orders', id: 'create-orders-button'%>
   <% else %>
     Table: <%= label_tag :table_id, @table %>
     <% if @existing_invoice.length > 0 %>
@@ -96,7 +98,17 @@
 <% end %>
 </div>
 
+<<<<<<< HEAD
+</center>
+<% if @is_take_away %>
+<%= javascript_include_tag('menu_items/takeaway.js') %>
+<% else %>
+<%= javascript_include_tag('menu_items/notTakeaway.js') %>
+<% end %>
+</div>
+=======
 <%= javascript_include_tag('menu_items/takeaway.js') %>
 </div> <!-- div for right column -->
 
 </div> <!-- div for row class DO NOT TOUCH!! -->
+>>>>>>> 6fb4402067eb04d1ee7611662979f9fffb600d06
