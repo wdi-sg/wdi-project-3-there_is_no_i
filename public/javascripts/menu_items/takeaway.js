@@ -2,17 +2,17 @@ var hide = true
 var orders = []
 var clicked = false
 // update the Stripe Checkout fields and submit
-// var handler = StripeCheckout.configure({
-//   key: 'pk_test_9yHOz6zrh9nnjNOGLjV2Pvcq',
-//   locale: 'auto',
-//   currency: 'SGD',
-//   name: gon.restaurant,
-//   description: 'Takeaway',
-//   token: function (token) {
-//     $('input#stripeToken').val(token.id)
-//     $('form').submit()
-//   }
-// })
+var handler = StripeCheckout.configure({
+  key: 'pk_test_9yHOz6zrh9nnjNOGLjV2Pvcq',
+  locale: 'auto',
+  currency: 'SGD',
+  name: gon.restaurant,
+  description: gon.description,
+  token: function (token) {
+    $('input#stripeToken').val(token.id)
+    $('form').submit()
+  }
+})
 
 // $(document).on('ready page:load', function () {
 // show and hide takeaway
@@ -179,8 +179,8 @@ function updateOrders () {
     document.getElementById('total_price').value = realTP.toString()
     clicked = true
   }
-  // handler.open({
-  //   amount: realTP * 100
-  // })
+  handler.open({
+    amount: parseFloat(document.getElementById('total_price').value) * 100
+  })
 }
 // })

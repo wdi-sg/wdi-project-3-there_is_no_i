@@ -1,36 +1,30 @@
 <%= form_for menu_item, url: url do |f| %>
   <div class="field">
-
     <%= f.label :name %>
-    <%= f.text_field :name, placeholder: "Name (Required)" %>
+    <%= f.text_field :name, placeholder: "Name (required)", required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label :price %>
-    <%= f.text_field :price, placeholder: "Price (Required)" %>
+    <%= f.number_field :price, placeholder: "Price (required)", min: 0, step: 0.01, required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label :description %>
-    <%= f.text_field :description, placeholder: "Description (Required)" %>
+    <%= f.text_field :description, placeholder: "Description (required)", required: true %>
   </div>
 
   <div class="field">
-
     <%= f.label :ingredients %>
     <%= f.text_field :ingredients, placeholder: "Ingredients" %>
   </div>
 
   <div class="field">
-
     <%= f.label :tags %>
     <%= f.text_field :tags, placeholder: "Tags" %>
   </div>
 
   <div class="field">
-
     <%= f.label :picture %>
     <% if menu_item.picture  %>
       <%= cl_image_tag(menu_item.picture, width: 200, height: 100, crop: :fill) %>
@@ -38,8 +32,6 @@
   </div>
 
   <div class="field">
-
     <%= f.submit "Save", class: 'waves-effect waves-light btn light-blue lighten-3'%>
   </div>
-
 <% end %>

@@ -17,10 +17,9 @@ Rails.application.routes.draw do
   }
 
   get '/history' => 'users#history'
-  get '/reservations' => 'users#reservations'
+  get '/invoices' => 'users#invoices'
 
-  # dashboard(redirect from /restaurant/:id/edit)
-  # get '/dashboard' => 'restaurants#edit'
+  # restaurant management
   get '/dashboard' => 'dashboard#index'
 
   # restaurants

@@ -8,6 +8,8 @@ class MenuItemsController < ApplicationController
   helper MenuItemsHelper
 
   def index
+    gon.restaurant = @restaurant.name
+    gon.description = @existing_invoice == '' && @reservation == '' ? 'Takeaway' : 'Order'
     if current_user
       if current_user.restaurants.include? @restaurant
         @is_take_away = false

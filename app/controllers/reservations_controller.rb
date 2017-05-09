@@ -75,7 +75,7 @@ class ReservationsController < ApplicationController
           else
             subject = "Reservation at #{new_res.restaurant.name} on #{new_res.start_time} for #{new_res.party_size}"
 
-            body = "Dear #{new_res.name}, \n Your reservation at #{new_res.restaurant.name} on #{new_res.start_time} for a table of #{new_res.party_size} has been recorded. Thank you and see you soon! \n Best regards, \n #{new_res.restaurant.name} \n \n \n Powered by Locavorus"
+            body = "Dear #{new_res.name}, \nYour reservation at #{new_res.restaurant.name} on #{new_res.start_time} for a table of #{new_res.party_size} has been recorded. Thank you and see you soon! \nBest regards, \n#{new_res.restaurant.name} \n \n \nPowered by Locavorus"
 
             send_email(new_res.name, new_res.email, subject, body)
 
