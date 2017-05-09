@@ -24,7 +24,34 @@ class DinersController < ApplicationController
     # if checked_out - NEXTCUSTOMER, CURENTDINER change status, end time
     # if cancelled - NEXTCUSTOMER, CURENTDINER change status, end time
 
-    if params[:reservation][:status] == 'awaiting' || params[:reservation][:status] == 'dining'
+    if params[:reservation][:status] == 'queuing'
+      # Send Customer back to the queue
+      @diner.start_time = nil
+      @diner.end_time = nil
+      @diner.party_size = params[:reservation][:party_size]
+      @diner.save
+
+      next_customer = find_next_customer(@diner.table)
+      if next_customer
+        # Check if current table has reservations that will clash
+        next_customer_table = determine_table(@restaurant, [@diner.table], next_customer, Time.now, @est_duration)
+
+        @diner.table_id = nil
+        sms_requeue(@diner)
+
+        if next_customer_table
+          assign_table(next_customer, next_customer_table)
+          save_update(@diner, @restaurant)
+        else
+          save_update(@diner, @restaurant)
+        end
+      else
+        @diner.table_id = nil
+        sms_requeue(@diner)
+        save_update(@diner, @restaurant)
+      end
+
+    elsif params[:reservation][:status] == 'awaiting' || params[:reservation][:status] == 'dining'
       old_start_time = @diner.start_time
       old_table_id = @diner.table_id
       old_party_size = @diner.party_size
@@ -55,6 +82,11 @@ class DinersController < ApplicationController
       reset_table_count(@diner.table)
       @diner.end_time = Time.now
       @diner.save
+
+      if params[:reservation][:status] == 'cancelled'
+        sms_cancelled(@diner)
+      end
+
       reassign_table(@diner, @restaurant)
     else
       flash['alert'] = 'Error 500. Check form status.'
@@ -70,7 +102,8 @@ class DinersController < ApplicationController
       if next_customer_table
 
         assign_table(next_customer, next_customer_table)
-        sms_awaiting(next_customer)
+
+        # sms_awaiting(next_customer)
 
         save_update(diner, restaurant)
       else
@@ -88,9 +121,13 @@ class DinersController < ApplicationController
     p diner
 
     if diner.save!
-      redirect_to restaurant_diners_path(restaurant)
+      if diner.status = 'queuing'
+        redirect_to restaurant_walkins_path(restaurant)
+      else
+        redirect_to restaurant_diners_path(restaurant)
+      end
     else
-      flash['alert'] = 'Error. Please check input parameters.'
+      flash['alert'] = 'Error 500. Unable to save lastest changes.'
       render :edit
     end
   end

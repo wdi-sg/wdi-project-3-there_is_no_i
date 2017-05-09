@@ -154,6 +154,12 @@ class ReservationsController < ApplicationController
 
   def destroy
     # ERROR HERE: INVALID FOREIGN KEY for Invoices
+    all_invoices = Invoice.where(reservation_id: @reservation.id)
+    if all_invoices
+      all_invoices.each do |invoice|
+        invoice.update(reservation_id: nil)
+      end
+    end
     if @reservation.destroy!
       redirect_to restaurant_reservations_path(@restaurant)
     else

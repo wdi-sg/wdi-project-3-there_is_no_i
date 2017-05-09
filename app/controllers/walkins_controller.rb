@@ -96,13 +96,30 @@ class WalkinsController < ApplicationController
   def notify
     if Reservation.find(params[:id]) && Restaurant.find(params[:restaurant_id])
       walkin = Reservation.find(params[:id])
-      restaurant = Restaurant.find(params[:restaurant_id])
+      # restaurant = Restaurant.find(params[:restaurant_id])
       walkin.status = 'awaiting'
       if walkin.save!
         sms_awaiting(walkin)
         redirect_to restaurant_walkins_path(params[:restaurant_id])
       else
         flash['alert'] = 'Error 500. Unable to update status'
+        redirect_to restaurant_walkins_path(params[:restaurant_id])
+      end
+    else
+      flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
+      redirect_to restaurant_walkins_path(params[:restaurant_id])
+    end
+  end
+
+  def requeue
+    if Reservation.find(params[:id]) && Restaurant.find(params[:restaurant_id])
+      walkin = Reservation.find(params[:id])
+      walkin.queue_number = walkin.restaurant.next_queue_number
+      set_next_queue_number(walkin.restaurant)
+      if walkin.save!
+        redirect_to restaurant_walkins_path(params[:restaurant_id])
+      else
+        flash['alert'] = 'Error 500. Unable to update'
         redirect_to restaurant_walkins_path(params[:restaurant_id])
       end
     else
