@@ -29,7 +29,7 @@
     <tr>
       <td><%= invoice.id %></td>
       <td><%= formatInvoiceDate(invoice.created_at) %></td>
-      <td><%= invoice.user_name %></td>
+      <td><%= invoice.user ? invoice.user.name : invoice.user_name %></td>
       <td><%= invoice.table ? invoice.table.name : '-' %></td>
       <td><%= formatPrice(showTotalPrice(invoice.menu_items)) %></td>
       <td><%= invoice.time_end %></td>
@@ -86,5 +86,3 @@
     <% end %>
   </tbody>
 </table>
-
-<% javascript_include_tag('invoices/pay.js') %>

@@ -10,9 +10,11 @@ var handler = StripeCheckout.configure({
   }
 })
 
-var stripeButton = document.querySelector('.stripe-button-el')
-stripeButton.addEventListener('click', (event) => {
-  handler.open({
-    amount: parseFloat(document.getElementById('total_price').value) * 100
+var stripeButtons = document.querySelectorAll('.stripe-button-el')
+stripeButtons.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    handler.open({
+      amount: parseFloat(event.target.parentNode.parentNode.childNodes[4].value) * 100
+    })
   })
 })
