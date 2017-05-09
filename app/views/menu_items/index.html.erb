@@ -3,7 +3,7 @@
 <div class="row"> <!-- DO NOT TOUCH!! -->
 
   <!-- ===== LEFT COLUMN: Add order, add menu item, sort by ===== -->
-  <div class="col s2" id="menu-left">
+  <div class="col s2">
 
   <% if !current_user %>
   <a href='<%= new_user_session_path %>'><button id="takeaway-login" type="button" name="button" class="waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:5px; margin-top:20px;">Login To Order Takeaway</button></a>
@@ -25,7 +25,7 @@
 </div> <!-- div for left column -->
 
 <!-- ===== MIDDLE COLUMN: display menu items ===== -->
-<div class="col s7" id="menu-left">
+<div class="col s7" id="menu-middle">
   <center><h1>Menu Items</h1></center>
 <div class="all-menu-items">
   <div class="row">
