@@ -25,22 +25,24 @@
    font-family: "Unica One";
    font-size: 70px;
  }
-
  #dropdown1 #dropdown2 {
    width: 200px
  }
-
+ #search-bar {
+   position:absolute;
+   overflow: hidden;
+   top: 60px;
+   right:0;
+ }
 #search-field {
   // margin-left: 700px;
    width: 400px;
    border: none
  }
-
  .input-field input[type=search] {
    width: 400px;
    border: none;
  }
-
  .input-field input[type=search]:focus {
    width: 400px;
  }
