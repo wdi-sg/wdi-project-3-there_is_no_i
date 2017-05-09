@@ -1,0 +1,48 @@
+<h2>My Reservations</h2>
+<br/>
+
+<table>
+  <thead>
+<tr>
+  <th>
+    No.
+  </th>
+  <th>
+    Date
+  </th>
+  <th>
+    Restaurant
+  </th>
+  <th>
+    Party
+  </th>
+  <th>
+    Add Order
+  </th>
+</tr>
+  </thead>
+  <tbody>
+    <% @index = 1 %>
+    <% @user.reservations.select{ |reservation| reservation.status == 'reservation' }.sort{ |a, b| a.start_time <=> b.start_time }.each do |reservation| %>
+    <tr>
+      <td>
+        <%= @index %>
+      </td>
+      <td>
+        <%= formatDate(reservation.start_time) %>
+      </td>
+      <td>
+        <%= reservation.restaurant.name %>
+      </td>
+      <td>
+        <%= reservation.party_size %>
+      </td>
+      <td><%= form_tag restaurant_menu_items_path(reservation.restaurant.id), method: :get do %>
+        <%= hidden_field_tag :reservation_id, reservation.id %>
+        <%= submit_tag 'Add' %>
+      <% end %></td>
+    </tr>
+    <% @index += 1 %>
+    <% end %>
+  </tbody>
+</table>

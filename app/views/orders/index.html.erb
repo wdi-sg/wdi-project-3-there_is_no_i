@@ -17,6 +17,9 @@
         Table
       </th>
       <th>
+        Request
+      </th>
+      <th>
         Takeaway?
       </th>
       <th>
@@ -45,7 +48,10 @@
         <%= order.invoice.table.name if order.invoice.table%>
       </td>
       <td>
-        <%= order.is_take_away ? 'takeaway' : '' %>
+        <%= order.request_description %>
+      </td>
+      <td>
+        <%= order.is_take_away ? order.invoice.takeaway_time : '' %>
       </td>
       <td>
         <% if !order.time_end %>

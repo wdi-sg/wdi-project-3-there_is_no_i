@@ -12,20 +12,46 @@ module SendTwilio
 
   # SMS Templates
   def sms_awaiting(walkin)
-    message = "SMS: Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} is ready. Please proceed to table: #{walkin.table.name}"
-    
-    send_message('+65' + walkin.phone, message)
+    if walkin.phone != nil and walkin.phone != ''
+      message = "SMS: Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} is ready. Please proceed to table: #{walkin.table.name}"
+
+      # send_message('+65' + walkin.phone, message)
+    end
   end
 
   def sms_queue(walkin, queue_ahead)
-    if queue_ahead == 0
-      message = "Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} has been recorded. You are next in line for a cover of #{walkin.party_size}. We will notify you again when your table is ready. In the meantime, you may start placing your orders at https://locavorusrex.herokuapp.com/restaurants/#{walkin.restaurant.id}/menu_items"
+    if walkin.phone != nil and walkin.phone != ''
+      if queue_ahead == 0
+        message = "Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} has been recorded. You are next in line for a cover of #{walkin.party_size}. We will notify you again when your table is ready. In the meantime, you may start placing your orders at https://locavorusrex.herokuapp.com/restaurants/#{walkin.restaurant.id}/menu_items"
 
-      send_message('+65' + walkin.phone, message)
-    else
-      message = "Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} has been recorded. There is/are #{queue_ahead} customer(s) ahead of you in the queue. We will notify you again when your table is ready. In the meantime, you may start placing your orders at https://locavorusrex.herokuapp.com/restaurants/#{walkin.restaurant.id}/menu_items"
+        # send_message('+65' + walkin.phone, message)
 
-      send_message('+65' + walkin.phone, message)
+      elsif queue_ahead == 1
+        message = "Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} has been recorded. There is #{queue_ahead} customer ahead of you in the queue. We will notify you again when your table is ready. In the meantime, you may start placing your orders at https://locavorusrex.herokuapp.com/restaurants/#{walkin.restaurant.id}/menu_items"
+
+        # send_message('+65' + walkin.phone, message)
+      else
+        message = "Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} has been recorded. There are #{queue_ahead} customers ahead of you in the queue. We will notify you again when your table is ready. In the meantime, you may start placing your orders at https://locavorusrex.herokuapp.com/restaurants/#{walkin.restaurant.id}/menu_items"
+
+        # send_message('+65' + walkin.phone, message)
+      end
     end
   end
+
+  def sms_requeue(walkin)
+    if walkin.phone != nil and walkin.phone != ''
+      message = "Dear #{walkin.name}, you have been re-queued at #{walkin.restaurant.name}. We will notify you again when your table is ready. In the meantime, you may start placing your orders at https://locavorusrex.herokuapp.com/restaurants/#{walkin.restaurant.id}/menu_items"
+
+      # send_message('+65' + walkin.phone, message)
+    end
+  end
+
+  def sms_cancelled(walkin)
+    if walkin.phone != nil and walkin.phone != ''
+      message = "Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} has been cancelled."
+
+      # send_message('+65' + walkin.phone, message)
+    end
+  end
+
 end

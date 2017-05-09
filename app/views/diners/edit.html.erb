@@ -24,7 +24,7 @@
   <% if @diner.status == 'awaiting' %>
   <p>
     <%= f.label :status, "Status" %>
-    <%= f.select(:status, [['Awaiting','awaiting'], ['Dining','dining'], ['Cancelled','cancelled']])%>
+    <%= f.select(:status, [['Queuing','queuing'], ['Awaiting','awaiting'], ['Dining','dining'], ['Cancelled','cancelled']])%>
   </p>
   <% elsif @diner.status == 'dining' %>
   <p>

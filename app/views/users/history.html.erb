@@ -1,0 +1,51 @@
+<h2>My History</h2>
+<br/>
+
+<table>
+  <thead>
+<tr>
+  <th>
+    No.
+  </th>
+  <th>
+    ID
+  </th>
+  <th>
+    Date
+  </th>
+  <th>
+    Restaurant
+  </th>
+  <th>
+    Orders
+  </th>
+</tr>
+  </thead>
+  <tbody>
+    <% @index = 1 %>
+    <% @user.invoices.select{ |invoice| invoice.time_end }.sort{ |a, b| b.time_end <=> a.time_end }.each do |invoice| %>
+    <tr>
+      <td>
+        <%= @index %>
+      </td>
+      <td>
+        <%= invoice.id %>
+      </td>
+      <td>
+        <%= formatInvoiceDate(invoice.time_end) %>
+      </td>
+      <td>
+        <%= invoice.restaurant.name %>
+      </td>
+      <td>
+        <% invoice.orders.each do |order| %>
+        <p>
+          <%= order.menu_item.name %>
+        </p>
+        <% end %>
+      </td>
+    </tr>
+    <% @index += 1 %>
+    <% end %>
+  </tbody>
+</table>

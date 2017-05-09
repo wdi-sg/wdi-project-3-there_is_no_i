@@ -10,7 +10,13 @@
       Takeaway
     <% end %>
 
-  <button class="waves-effect waves-light btn light-blue lighten-3" id="takeaway-show-hide" type="button" name="button">Make an Order</button>
+  </p>
+<% if !current_user %>
+  <a href='<%= new_user_session_path %>'><button id="takeaway-login" type="button" name="button" class="waves-effect waves-light btn light-blue lighten-3">Login To Order Takeaway</button></a>
+  <% else %>
+  <button id="takeaway-show-hide" type="button" name="button" class="waves-effect waves-light btn light-blue lighten-3">Order</button>
+<% end %>
+
 </div>
 <br>
 
@@ -68,11 +74,15 @@
 </ul>
 
 <%= form_for :order, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
+  <%= label_tag 'Special Requests' %>
+  <%= text_field_tag :request, nil, placeholder: 'Special requests' %>
   <%= hidden_field_tag :orders %>
   <%= hidden_field_tag :total_price %>
   <%= hidden_field_tag :is_take_away, @is_take_away %>
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   <% if !current_user || !current_user.restaurants.include?(@restaurant) %>
+  <%= label_tag 'Takeaway Time' %><i> (Please allow at least 30 minutes for preparation)</i>
+  <%= f.time_select :time, start_hour: (Time.now + 30.minutes).hour, end_hour: 22, ampm: true, minute_step: 15, :required => true %>
     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
     data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
     data-name="<%= @restaurant.name %>"
