@@ -27,11 +27,14 @@
 <!-- ===== MIDDLE COLUMN: display menu items ===== -->
 <div class="col s7" id="menu-left">
   <center><h1>Menu Items</h1></center>
+
 <div class="all-menu-items">
+
   <div class="row">
+
     <% @menu_items.each do |item| %>
-      <div class="col s3">
-        <p>
+    <div>
+      <p>
         <% if item.picture  %>
           <a href='<%= restaurant_menu_item_path(@restaurant.id, item) %>'><%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %></a>
         <% end %>
@@ -48,26 +51,26 @@
         Price:
         <%= formatPrice(item.price) %>
       </p>
+    </div>
 
     <button class="add-to-order" style="display:none" type="button" name="button" value='<%= item.id.to_s + '/' + item.name + '/' + item.price.to_s %>'>Add to Order</button>
 
     <% if current_user && current_user.restaurants.include?(@restaurant) %>
     <%= link_to 'Edit', edit_restaurant_menu_item_path(@restaurant.id, item) %> |
-    <%= link_to 'Delete', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %>
+    <%= link_to 'Destroy', restaurant_menu_item_path(@restaurant.id, item), method: :delete, data: { confirm: 'Are you sure?' } %>
     <% end %>
 
       </div>
       <% end %>
+</div>
 
-</div>
-</div>
 </div> <!-- div for middle column -->
 
 <!-- ===== RIGHT COLUMN: display submitted orders ===== -->
 <div class="col s3">
 <div style="display:none" class="ordered-items">
 <ul class="ordered-items-list">
-</ul>
+
 <%= form_for :order, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
   <%= label_tag 'Special Requests' %>
   <%= text_field_tag :request, nil, placeholder: 'Special requests' %>
@@ -96,7 +99,7 @@
 <% end %>
 </div>
 
-<%= javascript_include_tag('menu_items/takeaway.js') %>
 </div> <!-- div for right column -->
+<%= javascript_include_tag('menu_items/takeaway.js') %>
 
 </div> <!-- div for row class DO NOT TOUCH!! -->
