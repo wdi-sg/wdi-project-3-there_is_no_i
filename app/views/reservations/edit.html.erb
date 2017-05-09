@@ -1,5 +1,5 @@
 <div class="container">
-<h1>Edit Reservation</h1>
+<h1>Edit Reservation ID:<%= @reservation.id %></h1>
 <%= form_for @reservation, url: restaurant_reservation_path(@restaurant, @reservation), html: {method: :put} do |f| %>
 
 <% if !current_user or current_user.restaurants.include? @restaurant %>

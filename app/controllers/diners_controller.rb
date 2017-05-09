@@ -7,26 +7,29 @@ class DinersController < ApplicationController
 
   def index
     add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
     @diners = Reservation.where(restaurant_id: params[:restaurant_id], status: 'dining').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting'))
   end
 
   def edit
     add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
     @table_options = @restaurant.tables.map do |table|
       [table.name, table.id]
     end
   end
 
-  def show; end
+  def show
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+  end
 
   def update
-    # if queuing - NEXTCUSTOMER, CURENTDINER change party_size/ table nil
-    # if awaiting - CURENTDINER Check change in table / party_size
-    # if dining - CURENTDINER Check change in table / party_size
-    # if checked_out - NEXTCUSTOMER, CURENTDINER change status, end time
-    # if cancelled - NEXTCUSTOMER, CURENTDINER change status, end time
+    # if queuing - NEXTCUSTOMER, CURRENTDINER change party_size/ table nil
+    # if awaiting - CURRENTDINER Check change in table / party_size
+    # if dining - CURRENTDINER Check change in table / party_size
+    # if checked_out - NEXTCUSTOMER, CURRENTDINER change status, end time
+    # if cancelled - NEXTCUSTOMER, CURRENTDINER change status, end time
 
     if params[:reservation][:status] == 'queuing'
       # Send Customer back to the queue

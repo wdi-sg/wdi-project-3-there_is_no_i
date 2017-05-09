@@ -1,5 +1,5 @@
 <div class="container">
-<h1>Add a new reservation</h1>
+<h1>New reservation</h1>
 <%= form_for :reservation, :url => restaurant_reservations_path do |f|%>
 
   <% if !current_user or current_user.restaurants.include? @restaurant %>
