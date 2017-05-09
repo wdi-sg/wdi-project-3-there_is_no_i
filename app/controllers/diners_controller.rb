@@ -37,7 +37,7 @@ class DinersController < ApplicationController
         next_customer_table = determine_table(@restaurant, [@diner.table], next_customer, Time.now, @est_duration)
 
         @diner.table_id = nil
-        sms_requeue(@diner)
+        sms_send_back_queue(@diner)
 
         if next_customer_table
           assign_table(next_customer, next_customer_table)
@@ -139,31 +139,31 @@ class DinersController < ApplicationController
     table.save!
   end
 
-  def find_next_customer(table)
-    # Next Customer must be able to fit into current table
-    filtered_queue = Reservation.where('restaurant_id = ?', @restaurant.id).where('status = ?', 'queuing').where('party_size <= ?', table.capacity_total)
-    p '====QUEUE where size <= Table===='
-    p filtered_queue
-
-    # Next customer must fulfill business criteria (party_size big enough for table's minimum capacity) # allowance 2?
-
-    # If Potential Next Customers can fit, sort by queue_number
-    if filtered_queue.count > 1
-      sorted_queue = filtered_queue.sort_by { |customer| customer[:queue_number] }
-      p '====QUEUE sorted by q num===='
-      p sorted_queue
-      sorted_queue.each do |queue|
-        p queue.queue_number
-      end
-
-      next_customer = sorted_queue[0]
-
-    elsif filtered_queue.count == 1
-      next_customer = filtered_queue[0]
-    else
-      next_customer = nil
-    end
-  end
+  # def find_next_customer(table)
+  #   # Next Customer must be able to fit into current table
+  #   filtered_queue = Reservation.where('restaurant_id = ?', @restaurant.id).where('status = ?', 'queuing').where('party_size <= ?', table.capacity_total)
+  #   p '====QUEUE where size <= Table===='
+  #   p filtered_queue
+  #
+  #   # Next customer must fulfill business criteria (party_size big enough for table's minimum capacity) # allowance 2?
+  #
+  #   # If Potential Next Customers can fit, sort by queue_number
+  #   if filtered_queue.count > 1
+  #     sorted_queue = filtered_queue.sort_by { |customer| customer[:queue_number] }
+  #     p '====QUEUE sorted by q num===='
+  #     p sorted_queue
+  #     sorted_queue.each do |queue|
+  #       p queue.queue_number
+  #     end
+  #
+  #     next_customer = sorted_queue[0]
+  #
+  #   elsif filtered_queue.count == 1
+  #     next_customer = filtered_queue[0]
+  #   else
+  #     next_customer = nil
+  #   end
+  # end
 
   def assign_table(next_customer, table)
     next_customer.table_id = table.id

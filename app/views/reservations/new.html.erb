@@ -1,26 +1,28 @@
+<div class="container">
+  <%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 <h1>Add a new reservation</h1>
-<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %>
 <%= form_for :reservation, :url => restaurant_reservations_path do |f|%>
 
   <% if !current_user or current_user.restaurants.include? @restaurant %>
-  <div class="row">
+  <div class="field">
   <%= f.label :name, 'Name' %>
   <%= f.text_field :name, placeholder: 'Locavorusrex', :required => true %>
   </div>
 
-  <div class="row">
+  <div class="field">
   <%= f.label :email, 'Email' %>
   <%= f.email_field :email, placeholder: 'Locavorus@rex.com'%>
   </div>
 
-  <div class="row">
+  <div class="field">
   <%= f.label :phone, 'Phone' %>
   <%= f.number_field :phone, placeholder: '98765432', min:10000000, max:99999999%>
   </div>
   <% end %>
 
-  <div class="row">
     <%= f.label :party_size, "Number of Diners" %>
+    <div class="res-field">
+
     <% if @restaurant.tables.count > 0 %>
       <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
     <% else %>
@@ -28,21 +30,22 @@
     <% end %>
   </div>
 
-  <div class="row">
+  <div class="res-field">
     <%= f.label :date, 'Date' %>
-    <%= f.date_select :date, :start_year => Time.now.year, :end_year => Time.now.year + 1, :required => true %>
+    <%= f.date_select :date, order: [:day, :month, :year], :start_year => Time.now.year, :end_year => Time.now.year + 1, :required => true %>
   </div>
 
-  <div class="row">
+  <div class="res-field">
     <%= f.label :time, 'Time' %>
     <%= f.time_select :time, start_hour: 9, end_hour: 20, minute_step: 30, :required => true %>
   </div>
 
-  <div class="row">
+  <div class="field">
   <%= f.label :special_requests, 'Special Requests' %>
   <%= f.text_field :special_requests%>
   </div>
 
-  <%= f.submit "Submit" %>
+  <%= f.submit "Submit", class: 'waves-effect waves-light btn light-blue lighten-3' %>
 <% end %>
 <!-- <p><%= flash[:alert] %></p> -->
+</div>
