@@ -88,6 +88,8 @@
     data-description='Order'
     data-locale="auto"
     data-currency="SGD"></script>
+    <% elsif @reservation.length > 0 %>
+    5
   <% else %>
     Table: <%= label_tag :table_id, @table %>
     <% if @existing_invoice.length > 0 %>

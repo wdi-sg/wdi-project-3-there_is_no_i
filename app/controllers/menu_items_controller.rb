@@ -4,7 +4,7 @@ class MenuItemsController < ApplicationController
   before_action :set_restaurant_id, except: [:redirect]
   before_action :set_menu_item, only: [:edit, :show, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:index, :show, :redirect]
-  before_action :check_if_invoice_exists, only: [:index]
+  before_action :check_if_invoice_or_reservation_exists, only: [:index]
   helper MenuItemsHelper
 
   def index
@@ -84,8 +84,9 @@ class MenuItemsController < ApplicationController
     params.require(:menu_item).permit(:name, :price, :description, :ingredients, :tags)
   end
 
-  def check_if_invoice_exists
+  def check_if_invoice_or_reservation_exists
     @existing_invoice = params[:invoice_id] ? params[:invoice_id] : ''
+    @reservation = params[:reservation_id] ? params[:reservation_id] : ''
     if params[:invoice_id]
       @table = Invoice.find(params[:invoice_id]).table ? Invoice.find(params[:invoice_id]).table.name : '-'
     else

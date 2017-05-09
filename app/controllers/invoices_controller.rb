@@ -40,14 +40,15 @@ class InvoicesController < ApplicationController
         @x = []
       end
 
-      takeaway_time = Time.zone.local( params[:order]["time(1i)"].to_i, params[:order]["time(2i)"].to_i, params[:order]["time(3i)"].to_i, params[:order]["time(4i)"].to_i, params[:order]["time(5i)"].to_i, 0)
-
+      if params[:order] && params[:order][:time]
+        @takeaway_time = Time.zone.local( params[:order]["time(1i)"].to_i, params[:order]["time(2i)"].to_i, params[:order]["time(3i)"].to_i, params[:order]["time(4i)"].to_i, params[:order]["time(5i)"].to_i, 0)
+      end
       if params[:invoice_id]
         @invoice = Invoice.find(params[:invoice_id])
-      elsif params[:order][:time]
-        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, takeaway_time: takeaway_time)
-      # elsif Reservations.where(user_id: current_user.id).where(status: 'reservation').count > 0
-      #   @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, takeaway_time: takeaway_time)
+      elsif params[:order] && params[:order][:time]
+        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, takeaway_time: @takeaway_time)
+      elsif params[:reservation_id]
+        @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, reservation_id: params[:reservation_id])
       elsif @x.count > 0
         @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: @x[0].id)
       else

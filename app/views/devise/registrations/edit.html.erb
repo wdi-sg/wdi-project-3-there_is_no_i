@@ -46,56 +46,46 @@
 <br/>
 <% if current_user.restaurants.count > 0 %>
   <h2><i class="material-icons">restaurant_menu</i> My restaurants</h2>
-<table>
-  <thead>
-    <tr>
-      <th>
-        ID
-      </th>
-      <th>
-        Restaurant
-      </th>
-      <th>
-        Primary
-      </th>
-      <th>
-        Password
-      </th>
-      <th>
-      </th>
-      <th>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% current_user.restaurants.each do |restaurant| %>
-    <tr>
-      <td>
-        <%= restaurant.id %>
-      </td>
-      <td>
-        <%= restaurant.name %>
-      </td>
-      <td>
-        <%= current_user.restaurant_id == restaurant.id ? 'Primary' : '' %>
-      </td>
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <td>
-        <% if current_user.restaurant_id != restaurant.id %>
-            <%= f.hidden_field :restaurant_id, value: restaurant.id %>
-            <%= f.password_field :current_password, autocomplete: "off", required: true, placeholder: 'Your current password' %>
+  <table>
+    <thead>
+      <tr>
+        <th>
+          ID
+        </th>
+        <th>
+          Restaurant
+        </th>
+        <th>
+          Primary
+        </th>
+        <th>
+          Password
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, id: 'test' }  do |f| %>
+          <% current_user.restaurants.each do |restaurant| %>
+          <tr>
+            <td>
+              <%= restaurant.id %>
+            </td>
+            <td>
+              <%= restaurant.name %>
+            </td>
+            <td>
+              <%= current_user.restaurant_id == restaurant.id ? 'Primary' : '' %>
+            </td>
+
+          </tr>
           <% end %>
-      </td>
-      <td>
-        <% if current_user.restaurant_id != restaurant.id %>
-        <%= f.submit "Make Primary" %>
-        <% end %>
-      </td>
       <% end %>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
 <% else %>
   <%= link_to "Register a restaurant", new_restaurant_path, class: 'waves-effect waves-light btn indigo accent-1' %>
 <% end %>
