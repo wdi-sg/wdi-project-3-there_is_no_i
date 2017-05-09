@@ -45,7 +45,7 @@
   <span style="margin-left:40px"><%= @restaurant.address_country %> (<%= @restaurant.address_postal %>)<br></span>
 </p>
 
-<% if @restaurant.email or @restaurant.phone %>
+<% if !@restaurant.email.empty? or !@restaurant.phone.empty? %>
 <p>
 <i class="material-icons left">perm_phone_msg</i>
   <a href="mailto:<%= @restaurant.email %>"><%= @restaurant.email %></a><br>
@@ -53,7 +53,7 @@
 </p>
 <% end %>
 
-<% if @restaurant.website %>
+<% if !@restaurant.website.empty? %>
 <p>
   <i class="material-icons left">personal_video</i>
   <a href="<%= @restaurant.website %>"><%= @restaurant.website %></a>
@@ -93,7 +93,6 @@
     <%= link_to 'Current Queue', restaurant_walkins_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <%= link_to 'Current Diners', restaurant_diners_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <%= link_to 'View Tables', restaurant_tables_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
-    <!-- <%= link_to 'Invoices', restaurant_invoices_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %> -->
     <%= link_to 'Walk-in Queue', restaurant_new_public_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <% end %>
     <br><br>
