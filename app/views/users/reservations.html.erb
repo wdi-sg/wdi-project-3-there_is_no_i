@@ -37,10 +37,17 @@
       <td>
         <%= reservation.party_size %>
       </td>
-      <td><%= form_tag restaurant_menu_items_path(reservation.restaurant.id), method: :get do %>
-        <%= hidden_field_tag :reservation_id, reservation.id %>
-        <%= submit_tag 'Add' %>
-      <% end %></td>
+      <td>
+        <% x = Invoice.where(reservation_id: reservation.id).count > 0 ? Invoice.where(reservation_id: reservation.id)[0].id : nil  %>
+        <% if x %>
+        <%= link_to 'Change Order', restaurant_invoice_path(reservation.restaurant.id, x) %>
+        <% else %>
+          <%= form_tag restaurant_menu_items_path(reservation.restaurant.id), method: :get do %>
+          <%= hidden_field_tag :reservation_id, reservation.id %>
+          <%= submit_tag 'Add' %>
+          <% end %>
+        <% end %>
+      </td>
     </tr>
     <% @index += 1 %>
     <% end %>

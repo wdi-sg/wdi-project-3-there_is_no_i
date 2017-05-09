@@ -9,6 +9,7 @@ class InvoicesController < ApplicationController
   helper InvoicesHelper
 
     def index
+      gon.restaurant = @restaurant
       @invoices = Invoice.where(restaurant_id: params[:restaurant_id]).order('created_at ASC')
     end
 

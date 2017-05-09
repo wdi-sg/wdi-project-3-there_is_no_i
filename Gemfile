@@ -41,12 +41,11 @@ gem 'material_icons'
 gem 'cloudinary'
 # Add Foreman to save environment variables
 gem 'foreman'
+# Add RestClient for Mailgun
+gem 'rest-client'
 
 # Gem to use jquery with Materialize
 gem 'jquery-turbolinks'
-
-# Testing Mailgun
-gem 'rest-client'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
