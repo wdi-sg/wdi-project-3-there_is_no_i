@@ -94,16 +94,16 @@ class MenuItemsController < ApplicationController
       @is_take_away = false
     elsif params[:reservation_id]
       @is_take_away = false
-      @table = ''
+      @table = '-'
     elsif !current_user
       @is_take_away = true
-      @table = ''
+      @table = '-'
     elsif current_user.restaurants.include? @restaurant
       @is_take_away = false
-      @table = ''
+      @table = '-'
     else
       @is_take_away = true
-      @table = ''
+      @table = '-'
     end
   end
 end

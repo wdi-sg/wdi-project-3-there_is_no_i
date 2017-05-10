@@ -1,4 +1,4 @@
-<h1>Show Menu Item</h1>
+<h1><%= @menu_item.name %></h1>
 <p>
   <% if @menu_item.picture  %>
     <%= cl_image_tag(@menu_item.picture, width: 200, height: 100, crop: :fill) %>
@@ -7,13 +7,10 @@
   <% end %>
 </p>
 <p>
-  <b><%= @menu_item.name %></b>
+  <%= @menu_item.description %>
 </p>
 <p>
   <%= formatPrice(@menu_item.price) %>
-</p>
-<p>
-  <%= @menu_item.description %>
 </p>
 <p>
   <%= @menu_item.ingredients %>

@@ -16,7 +16,7 @@
     <% @orders.select{|order| correctStartTime(order) > (DateTime.now - 12.hours) && correctStartTime(order) < (DateTime.now + 12.hours) }.select{|order| !order.time_end}.sort{|first, second| correctStartTime(first).to_i - correctStartTime(second).to_i}.each do |order| %>
     <tr>
       <td>
-        <%= order.invoice.id %>
+        <%= link_to order.invoice.id, restaurant_invoice_path(@restaurant, order.invoice) %>
       </td>
       <td>
         <%= formatOrderDate(correctStartTime(order)) %>
@@ -52,7 +52,6 @@
   <thead>
     <tr>
       <th>Invoice</th>
-      <th>Received</th>
       <th>Completed</th>
       <th>Item</th>
       <th>Table</th>
@@ -61,13 +60,10 @@
     </tr>
   </thead>
   <tbody id="orders-for-<%=@restaurant.id%>">
-    <% @orders.select{|order| order.time_end}.sort{|first, second| correctStartTime(second).to_i - correctStartTime(first).to_i}.each do |order| %>
+    <% @orders.select{|order| correctStartTime(order) > (DateTime.now - 12.hours) && correctStartTime(order) < (DateTime.now + 12.hours) }.select{|order| order.time_end}.sort{|first, second| correctStartTime(second).to_i - correctStartTime(first).to_i}.each do |order| %>
     <tr>
       <td>
-        <%= order.invoice.id %>
-      </td>
-      <td>
-        <%= formatOrderDate(correctStartTime(order)) %>
+        <%= link_to order.invoice.id, restaurant_invoice_path(@restaurant, order.invoice) %>
       </td>
       <td>
         <%= formatOrderDate(order.time_end) %>
