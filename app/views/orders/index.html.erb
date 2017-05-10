@@ -36,7 +36,11 @@
         <%= order.invoice.id %>
       </td>
       <td>
+        <% if order.invoice.takeaway_time %>
+        <%= formatOrderDate(order.invoice.takeaway_time) %>
+        <% else %>
         <%= formatOrderDate(order.created_at) %>
+        <% end %>
       </td>
       <td>
         <% if order.time_end %>
