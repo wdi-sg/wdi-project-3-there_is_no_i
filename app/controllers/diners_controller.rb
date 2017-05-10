@@ -14,8 +14,13 @@ class DinersController < ApplicationController
   def edit
     add_breadcrumb "Restaurants", :restaurants_path
     add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
-    @table_options = @restaurant.tables.map do |table|
+    @table_options = @restaurant.tables.where(capacity_current: 0).map do |table|
       [table.name, table.id]
+    end
+    if @diner.table != nil
+      @table_options << [@diner.table.name, @diner.table.id]
+    else
+      @table_options << ['', nil]
     end
   end
 
@@ -31,48 +36,68 @@ class DinersController < ApplicationController
     old_start_time = @diner.start_time
 
 ##########
-    if @diner.status == 'queuing' && @diner.table_id == nil
-      if params[:reservation][:status] == 'queuing'
-        @diner.party_size = params[:reservation][:party_size]
-        save_update(@diner)
-      elsif params[:reservation][:status] == 'cancelled'
+    if @diner.status == 'queuing' && @diner.table_id == nil && params[:reservation][:status] == 'cancelled'
+      # if params[:reservation][:status] == 'queuing'
+      #   @diner.party_size = params[:reservation][:party_size]
+      #   save_update(@diner)
+      # elsif params[:reservation][:status] == 'cancelled'
         @diner.status = params[:reservation][:status]
         save_update(@diner)
-      end
+      # end
 #########
-    elsif @diner.status == 'queuing' && @diner.table_id
+    # elsif @diner.status == 'queuing' && @diner.table_id
+    elsif @diner.status == 'queuing'
       # Queuing to Queuing / Awaiting
       if params[:reservation][:status] == 'queuing' or params[:reservation][:status] == 'awaiting'
         # @diner.party_size = params[:reservation][:party_size]
         set_values(@diner, params[:reservation][:party_size], nil, nil)
 
-        table = determine_table(@restaurant, [Table.find(params[:reservation][:table_id])], @diner, Time.now, @est_duration)
+        if params[:reservation][:table_id] != ''
 
-        if table
-          assign_table(@diner, table)
+          table = determine_table(@restaurant, [Table.find(params[:reservation][:table_id])], @diner, Time.now, @est_duration)
 
-          set_values(@diner, params[:reservation][:party_size], table.id, Time.now)
+          if table
+            assign_table(@diner, table)
 
-          @diner.start_time = Time.now
-          @diner.end_time = Time.now + @est_duration
+            set_values(@diner, params[:reservation][:party_size], table.id, Time.now)
 
-          if params[:reservation][:status] == 'awaiting'
-            @diner.status = 'awaiting'
-            sms_awaiting(@diner)
-            save_update(@diner)
+            @diner.start_time = Time.now
+            @diner.end_time = Time.now + @est_duration
+
+            if params[:reservation][:status] == 'awaiting'
+              @diner.status = 'awaiting'
+              sms_awaiting(@diner)
+              save_update(@diner)
+            else
+              save_update(@diner)
+            end
+
           else
-            save_update(@diner)
-          end
+            set_values(@diner, old_party_size, old_table_id, Time.now)
 
+            flash['alert'] = 'New parameters not permitted.'
+            @table_options = @restaurant.tables.where(capacity_current: 0).map do |table|
+              [table.name, table.id]
+            end
+            if @diner.table != nil
+              @table_options << [@diner.table.name, @diner.table.id]
+            else
+              @table_options << ['', nil]
+            end
+            render :edit
+          end
         else
-          set_values(@diner, old_party_size, old_table_id, Time.now)
-
-          flash['alert'] = 'New parameters not permitted.'
-          @table_options = @restaurant.tables.map do |table|
-            [table.name, table.id]
+          if old_table_id != nil
+            old_table = Table.find(old_table_id)
+            if old_table != nil
+              old_table.capacity_current = 0
+              old_table.save!
+            end
           end
-          render :edit
+          @diner.table = nil
+          save_update(@diner)
         end
+
         # Queuing to Cancelled
       elsif params[:reservation][:status] == 'cancelled'
         @diner.status = 'cancelled'
@@ -111,8 +136,13 @@ class DinersController < ApplicationController
           set_values(@diner, old_party_size, old_table_id, Time.now)
 
           flash['alert'] = 'New parameters not permitted.'
-          @table_options = @restaurant.tables.map do |table|
+          @table_options = @restaurant.tables.where(capacity_current: 0).map do |table|
             [table.name, table.id]
+          end
+          if @diner.table != nil
+            @table_options << [@diner.table.name, @diner.table.id]
+          else
+            @table_options << ['', nil]
           end
           render :edit
         end
