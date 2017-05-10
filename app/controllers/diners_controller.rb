@@ -35,21 +35,14 @@ class DinersController < ApplicationController
     old_table_id = @diner.table_id
     old_start_time = @diner.start_time
 
-##########
+
     if @diner.status == 'queuing' && @diner.table_id == nil && params[:reservation][:status] == 'cancelled'
-      # if params[:reservation][:status] == 'queuing'
-      #   @diner.party_size = params[:reservation][:party_size]
-      #   save_update(@diner)
-      # elsif params[:reservation][:status] == 'cancelled'
-        @diner.status = params[:reservation][:status]
-        save_update(@diner)
-      # end
-#########
-    # elsif @diner.status == 'queuing' && @diner.table_id
+      @diner.status = params[:reservation][:status]
+      save_update(@diner)
+######### Diner was QUEUING
     elsif @diner.status == 'queuing'
       # Queuing to Queuing / Awaiting
       if params[:reservation][:status] == 'queuing' or params[:reservation][:status] == 'awaiting'
-        # @diner.party_size = params[:reservation][:party_size]
         set_values(@diner, params[:reservation][:party_size], nil, nil)
 
         if params[:reservation][:table_id] != ''
@@ -108,7 +101,7 @@ class DinersController < ApplicationController
         save_update(@diner)
       end
 
-#######
+####### Diner was AWAITING or DINING
     elsif @diner.status == 'awaiting' || @diner.status == 'dining'
 
       if params[:reservation][:status] == 'dining' or params[:reservation][:status] == 'awaiting'
@@ -176,7 +169,7 @@ class DinersController < ApplicationController
         end
         save_update(@diner)
       end
-######## Reservation
+######## DINER was on RESERVATION (editable status only)
       elsif @diner.status == 'reservation'
         if params[:reservation][:status] == 'reservation'
           save_update(@diner)
