@@ -1,42 +1,27 @@
-<div class="show-container">
-  <!-- ====== PICTURE AND DESCRIPTION ===== -->
-  <% if @restaurant.picture  %>
-  <div class="row" id="res-whole">
-    <div class="col s6" style="margin-left:25px" id="res-pic">
-  <p>
-  <%= cl_image_tag(@restaurant.picture, width: 900, height: 600, crop: :fill) %>
-  </p>
-</div>
-<% else %>
 <div class="container">
-<% end %>
+  <h1>
+    <%= @restaurant.name %>
+  </h1><br>
 
+  <div class="row" id="res-whole">
 
 <!-- ==== WHOLE CHUNK OF RESTAURANT DESCRIPTION ====  -->
-<div class="col s5" style="margin-right:20px;" id="res-description">
-
-  <!-- ==== LEFT SIDE OF THE PAGE ==== -->
-
-    <h1>
-      <%= @restaurant.name %>
-    </h1>
+<div class="col s7"><!-- div for description and icons -->
+<div class="row">
+<div class="col s8" id="res-description">
   <p id="description-box">
      All the food you eat, whether it’s a snack or a meal, should be very tasty and gratifying. If you choose delicious foods every time you eat, rather than trying to choke down foods you don’t like but you think are good for you, you’ll be much more satisfied.
-  </p>
-
+  </p><br>
+  <%= link_to 'Make a Reservation', new_restaurant_reservation_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3', i_class: 'material-icons' %>
+  <%= link_to 'Menu', restaurant_menu_items_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3' %>
 </div>
-  <!-- ==== RIGHT SIDE OF THE PAGE ==== -->
 
-<div class="col s3">
+  <!-- ==== RIGHT SIDE OF THE PAGE ==== -->
+<div class="col s4">
     <p>
       <i class="material-icons left">local_offer</i>
       <%= @restaurant.cuisine %>
     </p>
-
-    <!-- <p>
-      <i class="material-icons left">thumbs_up_down</i>
-      <%= @restaurant.rating %>%
-    </p> -->
 
 <p>
   <i class="material-icons left">place</i>
@@ -64,30 +49,29 @@
   Current Queue Ahead:
   <%= Reservation.where(restaurant_id: @restaurant.id).where(status: 'queueing').or(Reservation.where(restaurant_id: @restaurant.id).where(status: 'awaiting')).count %>
 </p>
-
-
-<!-- <% if current_user and current_user.restaurants.include? @restaurant %>
-<h4>NEED TO PUT THIS SOMEWHERE ELSE</h4>
-<p>
-  Next Queue Number:
-  <%= @restaurant.next_queue_number %>
-</p>
-<%= link_to 'Reset Queue Number', restaurant_reset_queue_path(@restaurant), method: :put, data: { confirm: 'This will reset the queue. OK to procced?'}%>
-<% end %> -->
 </div>
-</div>
-</div>
-</div>
-
+</div> <!-- div for icons column-->
+</div> <!-- div for restaurant description row -->
 <!-- ==== WHOLE CHUNK OF RESTAURANT DESCRIPTION ====  -->
+
+<!-- ====== PICTURE  ===== -->
+<div class="col s4" id="res-pic">
+<% if @restaurant.picture  %>
+<p>
+<%= cl_image_tag(@restaurant.picture, width: 600, height: 400, crop: :fill) %>
+</p>
+<% else %>
+<img src="http://cdni.condenast.co.uk/642x390/k_n/Michael02_GQ_08Mar13_pr_b_642x390.jpg">
+<% end %>
+</div>
+<!-- ====== PICTURE  ===== -->
+
+</div> <!-- div for res-whole row -->
+</div> <!-- div for container -->
+
 
 <!-- ==== ROW OF LINKS AT BOTTOM OF PAGE ==== -->
 <div class="container">
-    <%= link_to 'Make a Reservation', new_restaurant_reservation_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3', i_class: 'material-icons' %>
-    <%= link_to 'Menu', restaurant_menu_items_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3' %>
-
-    <br><br>
-
     <% if current_user and current_user.restaurants.include? @restaurant %>
     <%= link_to 'Current Queue', restaurant_walkins_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <%= link_to 'Current Diners', restaurant_diners_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
@@ -96,7 +80,5 @@
     <%= link_to 'Walk-in Queue', restaurant_new_public_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <% end %>
     <br><br>
-  </div>
 
   </div>
-</div>

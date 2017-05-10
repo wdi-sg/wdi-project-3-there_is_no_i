@@ -6,7 +6,7 @@
   <% if !current_user %>
   <a href='<%= new_user_session_path %>'><button id="takeaway-login" type="button" name="button" class="waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:5px; margin-top:20px;">Login To Order Takeaway</button></a>
   <% else %>
-  <button id="takeaway-show-hide" type="button" name="button" class="pulse waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:5px; margin-top:20px;">Order</button>
+  <button id="takeaway-show-hide" type="button" name="button" class="pulse waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:5px; margin-top:20px; width:180px;">Order</button>
 <% end %>
 <br>
 <% if current_user && current_user.restaurants.include?(@restaurant) %>
@@ -16,9 +16,9 @@
 <br>
 
 <h2>Sort by:</h2>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?sort=name">Name</a><br>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?sort=price" style="margin-top:5px">Price</a><br>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?ort=description" style="margin-top:5px">Description</a>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?sort=name" style="width:180px">Name</a><br>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?sort=price" style="margin-top:5px; width:180px;">Price</a><br>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/menu_items?ort=description" style="margin-top:5px; width:180px">Description</a>
 </center>
 </div> <!-- div for left column -->
 
