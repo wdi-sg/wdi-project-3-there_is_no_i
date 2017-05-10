@@ -88,11 +88,11 @@ function redrawList () {
     list.removeChild(list.firstChild)
   }
   count(orders).sort((a, b) => { return a['id'] - b['id'] }).forEach((item) => {
-    addToList('<button class="remove-one" value=' + item['id'] + ' type="button">-</button> ' + item['count'] + ' <button class="add-one" value=' + item['id'] + ' type="button">+</button>' + ' x ' + item['name'] + ' => $' + (item['count'] * item['price']).toFixed(2).toString())
+    addToList('<td><button class="remove-one" value=' + item['id'] + ' type="button">-</button></td><td>' + item['count'] + '</td><td><button class="add-one" value=' + item['id'] + ' type="button">+</button></td><td>' + item['name'] + '</td><td>$' + (item['count'] * item['price']).toFixed(2).toString() + '</td>')
   })
   if (orders.length > 0) {
     document.querySelector('.ordered-items').style.display = 'block'
-    addToList('Total: $' + totalPrice().toFixed(2))
+    addToList('<td colspan="4">Total</td><td>$' + totalPrice().toFixed(2) + '</td>')
     var stripeButton = document.querySelector('.stripe-button-el')
     var createOrdersButton = document.getElementById('create-orders-button')
     if (stripeButton) {
@@ -111,7 +111,7 @@ function redrawList () {
 
 // adds a <li> to the orders
 function addToList (html) {
-  var newOrder = document.createElement('li')
+  var newOrder = document.createElement('tr')
   newOrder.innerHTML = html
   document.querySelector('.ordered-items-list').appendChild(newOrder)
 }

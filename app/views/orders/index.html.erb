@@ -1,51 +1,25 @@
 <div class="container">
-<h1>All Orders</h1>
+<h1>Active Orders</h1>
 <table>
   <thead>
     <tr>
-      <th>
-        Invoice
-      </th>
-      <th>
-        Received
-      </th>
-      <th>
-        Completed
-      </th>
-      <th>
-        Item
-      </th>
-      <th>
-        Table
-      </th>
-      <th>
-        Request
-      </th>
-      <th>
-        Takeaway?
-      </th>
-      <th>
-        Complete
-      </th>
+      <th>Invoice</th>
+      <th>Received</th>
+      <th>Item</th>
+      <th>Table</th>
+      <th>Request</th>
+      <th>Takeaway</th>
+      <th>Complete</th>
     </tr>
   </thead>
   <tbody id="orders-for-<%=@restaurant.id%>">
-    <% @orders.sort{|first, second| first.created_at - second.created_at}.each do |order| %>
+    <% @orders.select{|order| correctStartTime(order) > (DateTime.now - 12.hours) && correctStartTime(order) < (DateTime.now + 12.hours) }.select{|order| !order.time_end}.sort{|first, second| correctStartTime(first).to_i - correctStartTime(second).to_i}.each do |order| %>
     <tr>
       <td>
         <%= order.invoice.id %>
       </td>
       <td>
-        <% if order.invoice.takeaway_time %>
-        <%= formatOrderDate(order.invoice.takeaway_time) %>
-        <% else %>
-        <%= formatOrderDate(order.created_at) %>
-        <% end %>
-      </td>
-      <td>
-        <% if order.time_end %>
-        <%= formatOrderDate(order.time_end) %>
-        <% end %>
+        <%= formatOrderDate(correctStartTime(order)) %>
       </td>
       <td>
         <%= order.menu_item.name %>
@@ -57,7 +31,7 @@
         <%= order.request_description %>
       </td>
       <td>
-        <%= order.is_take_away ? order.invoice.takeaway_time : '' %>
+        <%= order.is_take_away ? 'Yes' : '' %>
       </td>
       <td>
         <% if !order.time_end %>
@@ -65,6 +39,50 @@
           <%= f.submit 'Complete' %>
         <% end %>
         <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<div class="container">
+<h1>Completed Orders</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Invoice</th>
+      <th>Received</th>
+      <th>Completed</th>
+      <th>Item</th>
+      <th>Table</th>
+      <th>Request</th>
+      <th>Takeaway?</th>
+    </tr>
+  </thead>
+  <tbody id="orders-for-<%=@restaurant.id%>">
+    <% @orders.select{|order| order.time_end}.sort{|first, second| correctStartTime(second).to_i - correctStartTime(first).to_i}.each do |order| %>
+    <tr>
+      <td>
+        <%= order.invoice.id %>
+      </td>
+      <td>
+        <%= formatOrderDate(correctStartTime(order)) %>
+      </td>
+      <td>
+        <%= formatOrderDate(order.time_end) %>
+      </td>
+      <td>
+        <%= order.menu_item.name %>
+      </td>
+      <td>
+        <%= order.invoice.table.name if order.invoice.table%>
+      </td>
+      <td>
+        <%= order.request_description %>
+      </td>
+      <td>
+        <%= order.is_take_away ? 'Yes' : '' %>
       </td>
     </tr>
     <% end %>

@@ -40,4 +40,25 @@ module Format
     end
     orders_array
   end
+
+  def correctStartTime(order)
+    # if takeaway return takeaway_time
+    if order.invoice.takeaway_time
+      order.invoice.takeaway_time
+    # if reservation/queuing
+    elsif order.invoice.reservation_id
+      # if reservation return reservation start_time
+      if order.invoice.reservation.status == 'reservation'
+        order.invoice.reservation.start_time
+      # if queuing/awaiting return estimated start_time
+      else
+        checked_queue_number = order.invoice.reservation.queue_number
+        first_queue_number = Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing', 'awaiting']).count > 0 ? Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing', 'awaiting']).order('queue_number ASC').first.queue_number : checked_queue_number
+        DateTime.now + ((checked_queue_number - first_queue_number) * 5).minutes
+      end
+    # if local order return created_at
+    else
+      order.created_at
+    end
+  end
 end

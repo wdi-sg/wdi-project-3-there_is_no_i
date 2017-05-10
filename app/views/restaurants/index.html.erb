@@ -6,7 +6,8 @@
 <h2> Sort by </h2>
 <a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=name&search=<%= @search %>&city=<%= @city %>" style="width:150px">Name</a><br>
 <a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=cuisine&search=<%= @search %>&city=<%= @city %>" style="margin-top: 5px; width:150px">Cuisine</a><br>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=city&search=<%= @search %>&city=<%= @city %>" style="margin-top: 5px; width:150px">City</a>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=city&search=<%= @search %>&city=<%= @city %>" style="margin-top: 5px; width:150px">City</a><br>
+<a class="waves-effect waves-light btn indigo accent-1" href="/restaurants" style="margin-top: 10px; width:150px">Reset</a>
 </center>
   </div>
   <!-- SORT BUTTONS DIV -->
@@ -24,10 +25,14 @@
       </div>
       <div class="card-content">
         <p><i class="material-icons left">local_offer</i><%= restaurant.cuisine %></p><br>
-        <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_city %></p><br>
+        <% if !restaurant.phone.empty?%>
+        <p><i class="material-icons left">phone</i><%= restaurant.phone %></p>
+        <% end %><br>
+        <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_city %></p>
       </div>
       <div class="card-action">
-        <i class="material-icons left">person_add</i><%= link_to 'Book a table', new_restaurant_reservation_path(restaurant.id), class: 'valign-wrapper blue-text' %>
+        <i class="material-icons left">person_add</i><%= link_to 'Book a table', new_restaurant_reservation_path(restaurant.id), class: 'blue-text' %>
+        <%= link_to 'View Menu', restaurant_menu_items_path(restaurant.id), class: 'waves-effect waves-light btn light-blue lighten-3', style: 'margin-left:48px' %>
       </div>
     </div>
   </div>
