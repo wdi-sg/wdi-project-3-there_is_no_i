@@ -26,6 +26,9 @@ class WalkinsController < ApplicationController
   end
 
   def new
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_breadcrumb "View Current Queue", restaurant_walkins_path(@restaurant)
     @walkin = Reservation.new
   end
 

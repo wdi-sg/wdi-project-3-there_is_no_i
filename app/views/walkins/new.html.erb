@@ -1,5 +1,6 @@
+<div class="container">
 <h1><%= @restaurant.name%></h1>
-<h1>Add New Walk-in Customer</h1>
+<h2>Add New Walk-in Customer</h2>
 
 <%= form_for @walkin, url: restaurant_walkins_path(@restaurant), html: {method: :post} do |f| %>
 
@@ -8,20 +9,21 @@
     <%= @restaurant.next_queue_number %>
   </p>
 
-  <p>
+  <div class="field">
     <%= f.label :name, "Name" %>
     <%= f.text_field :name, placeholder: "Customer " + @restaurant.next_queue_number.to_s , value: "Customer " + @restaurant.next_queue_number.to_s, :required => true %>
-  </p>
+  </div>
 
-  <p>
     <%= f.label :party_size, "Number of Diners" %>
+    <div class="res-field">
     <% if @restaurant.tables.count > 0 %>
       <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
     <% else %>
       <%= f.select :party_size,[0]%>
     <% end %>
-  </p>
+  </div>
 
-  <%= f.submit "Submit" %>
+  <%= f.submit "Submit", class: 'waves-effect waves-light btn light-blue lighten-3' %>
 
 <% end %>
+</div>
