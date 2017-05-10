@@ -1,6 +1,7 @@
+<div class="container">
 <h1>Current Queue</h1>
 
-<%= link_to 'Add New Customer', new_restaurant_walkin_path(@restaurant, @walkin)%>
+<%= link_to 'Add New Customer', new_restaurant_walkin_path(@restaurant, @walkin), class: 'waves-effect waves-light btn light-blue lighten-3'%>
 
 <h2>Queuing</h2>
 <table>
@@ -200,3 +201,4 @@
     <% end %>
   </tbody>
 </table>
+</div>

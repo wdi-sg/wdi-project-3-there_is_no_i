@@ -2,21 +2,14 @@
 <div class="row">
   <!-- ==== LEFT SIDE OF THE PAGE ==== -->
   <div class="col s6" id="left-side"> <!-- DO NOT TOUCH -->
-    <div class="row" id="reservation-and-button">
-    <div class="col s6">
+
   <!-- <h1 style="font-size:55px">All Reservations</h1> -->
 <p><%= link_to 'Reservations', restaurant_reservations_path(current_user.restaurant_id) %> |
-  Queue |
+  <%= link_to 'Add Reservations', new_restaurant_reservation_path(current_user.restaurant_id) %> |
+  <%= link_to 'Queue', restaurant_walkins_path(current_user.restaurant_id) %> |
   Takeaways</p>
 <p><%= link_to 'Current Diners', restaurant_diners_path(current_user.restaurant_id) %> |
   <%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id) %></p>
-
-
-    </div>
-    <div class="col s6">
-  <a class="waves-effect waves-light btn" id="add-reservation" href="/restaurants/<%= @restaurant_id %>/reservations/new"><i class="material-icons left">person_add</i>Add Reservation</a>
-</div>
-  </div> <!-- for id:reservation-and-button -->
 
   <!-- ======================== -->
 
