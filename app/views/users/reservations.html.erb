@@ -1,33 +1,33 @@
-<% if @user.reservations.select{ |reservation| reservation.status == 'queuing' }.count > 0 %>
+<% if Reservation.where(status: ['queuing', 'awaiting']).where(phone: @user.phone).count > 0 %>
   <div class="container">
     <h2>My Queues</h2>
 
     <table>
       <thead>
         <tr>
-          <th>No.</th>
           <th>Date</th>
           <th>Restaurant</th>
           <th>Party</th>
+          <th>Est. Wait</th>
           <th>Orders</th>
           <th>Cancel</th>
         </tr>
       </thead>
       <tbody>
-        <% @index = 1 %>
-        <% Reservation.where(status: 'queuing').where(phone: @user.phone).sort{ |a, b| a.start_time <=> b.start_time }.each do |reservation| %>
+        <% Reservation.where(status: ['queuing', 'awaiting']).where(phone: @user.phone).sort{ |a, b| a.start_time <=> b.start_time }.each do |reservation| %>
+        <% reservation.update(user_id: current_user.id) %>
         <tr>
           <td>
-            <%= @index %>
-          </td>
-          <td>
-            <%= formatDate(reservation.start_time) %>
+            <%= formatInvoiceDate(reservation.start_time) %>
           </td>
           <td>
             <%= reservation.restaurant.name %>
           </td>
           <td>
             <%= reservation.party_size %>
+          </td>
+          <td>
+            <%= estimatedReservationWaitTime(reservation, 5) %> minutes
           </td>
           <td>
             <% x = Invoice.where(reservation_id: reservation.id).count > 0 ? Invoice.where(reservation_id: reservation.id)[0].id : nil  %>
@@ -44,7 +44,6 @@
             <%= link_to 'X', restaurant_reservation_path(reservation.restaurant, reservation), method: :delete, data: { confirm: 'Are you sure?' } %>
           </td>
         </tr>
-        <% @index += 1 %>
         <% end %>
       </tbody>
     </table>
@@ -62,7 +61,7 @@
       <th>Date</th>
       <th>Restaurant</th>
       <th>Party</th>
-      <th>Order</th>
+      <th>Orders</th>
       <th>Cancel</th>
     </tr>
   </thead>

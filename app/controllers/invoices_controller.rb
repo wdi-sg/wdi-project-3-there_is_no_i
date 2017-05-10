@@ -83,7 +83,8 @@ class InvoicesController < ApplicationController
   end
 
   def show
-    add_full_breadcrumbs('Invoices', restaurant_invoices_path(@restaurant))
+    add_index_breadcrumbs
+    add_breadcrumb('Invoices', restaurant_invoices_path(@restaurant)) if current_user.restaurants.include? @restaurant
   end
 
   def update

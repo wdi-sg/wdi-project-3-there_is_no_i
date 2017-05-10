@@ -193,10 +193,10 @@ class ReservationsController < ApplicationController
       end
     end
     if @reservation.destroy!
-      if current_user.restaurants.include?(@restaurant)
-        redirect_to restaurant_reservations_path(@restaurant)
-      else
+      if !current_user.restaurants.include?(@restaurant) || current_user[:id] == @reservation[:user_id]
         redirect_to reservations_path
+      else
+        redirect_to restaurant_reservations_path(@restaurant)
       end
     else
       render :new
