@@ -47,7 +47,12 @@
           </td>
 
           <td>
-            Not Ordered
+            <% if Invoice.where(reservation_id: reservation.id).where(time_end: nil).count > 0 %>
+            <% x = Invoice.where(reservation_id: reservation.id).where(time_end: nil)[0] %>
+            $<%= formatPrice(showTotalPrice(x.menu_items)) %>
+            <% else %>
+            No Order
+            <% end %>
           </td>
 
           <td>
@@ -104,7 +109,12 @@
             </td>
 
             <td>
-              Not Ordered
+              <% if Invoice.where(reservation_id: queuing.id).where(time_end: nil).count > 0 %>
+              <% x = Invoice.where(reservation_id: queuing.id).where(time_end: nil)[0] %>
+              $<%= formatPrice(showTotalPrice(x.menu_items)) %>
+              <% else %>
+              No Order
+              <% end %>
             </td>
 
             <td>
@@ -169,7 +179,12 @@
           </td>
 
           <td>
-            Not Ordered
+            <% if Invoice.where(reservation_id: awaiting.id).where(time_end: nil).count > 0 %>
+            <% x = Invoice.where(reservation_id: awaiting.id).where(time_end: nil)[0] %>
+            $<%= formatPrice(showTotalPrice(x.menu_items)) %>
+            <% else %>
+            No Order
+            <% end %>
           </td>
 
           <td>
@@ -230,7 +245,12 @@
           </td>
 
           <td>
-            Not Ordered
+            <% if Invoice.where(reservation_id: dining.id).where(time_end: nil).count > 0 %>
+            <% x = Invoice.where(reservation_id: dining.id).where(time_end: nil)[0] %>
+            $<%= formatPrice(showTotalPrice(x.menu_items)) %>
+            <% else %>
+            No Order
+            <% end %>
           </td>
 
           <td>
@@ -310,7 +330,12 @@
               <i class="material-icons left">
                 local_atm
               </i>
-              $30.20
+              <% if Invoice.where(table_id: table.id).where(time_end: nil).count > 0 %>
+              <% x = Invoice.where(table_id: table.id).where(time_end: nil)[0] %>
+              $<%= formatPrice(showTotalPrice(x.menu_items)) %>
+              <% else %>
+              No Order
+              <% end %>
             </td>
           </tr>
           <tr>
