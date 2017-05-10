@@ -13,6 +13,6 @@ class Restaurant < ApplicationRecord
   validates :address_city, presence: true
   validates :address_country, presence: true
   validates :address_postal, presence: true
-  validates :description, presence: true
+  # validates :description, presence: true
   validates :cuisine, presence: true
 end

@@ -37,9 +37,9 @@ gem 'twilio-ruby'
 gem 'materialize-sass'
 # Gem for offline Materialize icons
 gem 'material_icons'
-# Add Cloudinary for image storage
+# Add Cloudinary for image upload/storage
 gem 'cloudinary'
-# Add Foreman to save environment variables
+# Add Foreman to save environment variables to .env
 gem 'foreman'
 # Add RestClient for Mailgun
 gem 'rest-client'
@@ -59,7 +59,7 @@ gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.7'
+# gem 'bcrypt', '~> 3.1.7'
 # gem 'bcrypt-ruby', '3.1.2'
 
 # Email Validator
