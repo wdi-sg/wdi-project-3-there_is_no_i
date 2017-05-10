@@ -63,26 +63,25 @@
         </th>
         <th>
         </th>
-        <th>
-        </th>
       </tr>
     </thead>
     <tbody>
-      <%= form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, id: 'test' }  do |f| %>
-          <% current_user.restaurants.each do |restaurant| %>
-          <tr>
-            <td>
-              <%= restaurant.id %>
-            </td>
-            <td>
-              <%= restaurant.name %>
-            </td>
-            <td>
-              <%= current_user.restaurant_id == restaurant.id ? 'Primary' : '' %>
-            </td>
-
-          </tr>
+      <% current_user.restaurants.each do |restaurant| %>
+        <tr>
+          <td><%= restaurant.id %></td>
+          <td><%= restaurant.name %></td>
+          <td><%= current_user.restaurant_id == restaurant.id ? 'Primary' : '' %></td>
+          <% if current_user.restaurant_id != restaurant.id %>
+             <%= form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }  do |f| %>
+                <%= f.hidden_field :restaurant_id, value: restaurant.id %>
+                 <td><%= f.password_field :current_password, autocomplete: "off", required: true %></td>
+                 <td><%= f.submit "Make Primary" %></td>
+             <% end %>
+          <% else %>
+            <td></td>
+            <td></td>
           <% end %>
+        </tr>
       <% end %>
     </tbody>
   </table>
