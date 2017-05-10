@@ -24,7 +24,7 @@
 
 <!-- ===== MIDDLE COLUMN: display menu items ===== -->
 <div class="col s7" id="menu-middle">
-  <center><h1>Menu Items</h1></center>
+  <center><h1>Menu</h1></center>
 <div class="all-menu-items">
   <div class="row">
     <% @menu_items.each do |item| %>
@@ -114,7 +114,9 @@
       Invoice: <%= label_tag :invoice, @existing_invoice %>
       <%= hidden_field_tag :invoice_id, @existing_invoice %>
     <% end %>
-    <%= f.submit 'Create Orders', id: 'create-orders-button'%>
+    <p>
+      <%= f.submit 'Create Orders', id: 'create-orders-button'%>
+    </p
   <% end %>
 <% end %>
 </div>

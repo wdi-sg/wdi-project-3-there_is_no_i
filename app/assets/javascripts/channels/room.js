@@ -20,8 +20,8 @@ App.room = App.cable.subscriptions.create('RoomChannel', {
 
 function appendOrders (data) {
   var tableToAttachTo = $('#' + 'orders-for-' + data.restaurant.toString())
-  var tr = $('<tr>')
-  tr.html('<tr><td>' + data.invoice + '</td><td>' + data.received + '</td><td> </td><td>' + data.item + '</td><td>-</td><td>' + data.is_take_away + '</td><td>-</td></tr>')
+  var tr = document.createElement('tr')
+  tr.innerHTML = '<td><a href="/restaurants/' + data.restaurant + '/invoices/' + data.invoice + '">' + data.invoice + '</a></td><td>' + data.received + '</td><td>' + data.item + '</td><td>' + data.table + '</td><td>' + data.request + '</td><td>' + data.is_take_away + '</td><td><input type="button" value="Reload" onClick="window.location.reload()"></td>'
   tableToAttachTo.append(tr)
 }
 
