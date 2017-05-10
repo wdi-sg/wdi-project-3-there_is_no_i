@@ -34,12 +34,12 @@
 
   <p>
     <%= label :date, 'Date selected' %>
-    <%= date_select :datetime, :date, default: @reservation.start_time, :required => true %>
+    <%= date_select :datetime, :date, default: @reservation.start_time, order: [:day, :month, :year], :start_year => Time.now.year, :end_year => Time.now.year + 1, :required => true %>
   </p>
 
   <p>
     <%= label :time, 'Time selected' %>
-    <%= time_select :datetime, :time, minute_step: 30, default: {hour: @hour, minute: @minute}%>
+    <%= time_select :datetime, :time, start_hour: 9, end_hour: 20, minute_step: 30%>
   </p>
 
   <% if current_user.restaurants.include? @restaurant %>

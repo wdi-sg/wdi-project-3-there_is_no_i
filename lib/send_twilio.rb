@@ -13,7 +13,7 @@ module SendTwilio
   # SMS Templates
   def sms_awaiting(walkin)
     if walkin.phone != nil and walkin.phone != ''
-      message = "Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} is ready. Please proceed to table: #{walkin.table.name}"
+      message = "Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} is ready. Please proceed to table: #{walkin.table.name}. Your queue number is #{walkin.queue_number}."
 
       # send_message('+65' + walkin.phone, message)
     end
@@ -56,7 +56,7 @@ module SendTwilio
 
   def sms_cancelled(walkin)
     if walkin.phone != nil and walkin.phone != ''
-      message = "Dear #{walkin.name}, your reservation at #{walkin.restaurant.name} has been cancelled."
+      message = "Dear #{walkin.name}, we regret to inform you that your reservation at #{walkin.restaurant.name} has been cancelled."
 
       # send_message('+65' + walkin.phone, message)
     end
