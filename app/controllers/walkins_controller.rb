@@ -70,6 +70,7 @@ class WalkinsController < ApplicationController
 
   def public_save(walkin)
     if walkin.save!
+      # ActionCable.server.broadcast('room_channel', {walkin: walkin})
       redirect_to restaurant_public_path(@restaurant)
     else
       render :public_new
@@ -89,57 +90,57 @@ class WalkinsController < ApplicationController
 
   # def show; end
 
-  def update
-    if params[:reservation][:status] == 'cancelled'
-      @walkin.status = 'cancelled'
-      @walkin.table.capacity_current = 0
-      @walkin.table.save
-      update_save
-    elsif params[:reservation][:status] == 'reservation'
-      redirect_to restaurant_walkins_path(@restaurant)
-    elsif params[:reservation][:status] == 'queuing'
-      @walkin.party_size = params[:reservation][:party_size]
-      update_save
-    elsif params[:reservation][:status] == 'awaiting'
-      old_start_time = @walkin.start_time
-      old_table_id = @walkin.table_id
-      old_party_size = @walkin.party_size
-
-      @walkin.start_time = nil
-      @walkin.end_time = nil
-      # @walkin.table_id = params[:reservation][:table_id]
-      @walkin.party_size = params[:reservation][:party_size]
-      @walkin.save
-
-      table_if_possible = determine_table(@restaurant, [@walkin.table], @walkin, Time.now, @est_duration)
-
-      if table_if_possible
-        @walkin.start_time = Time.now
-        @walkin.end_time = Time.now + @est_duration
-        @walkin.status = params[:reservation][:status]
-        sms_awaiting(@walkin)
-        update_save
-      else
-        @walkin.start_time = old_start_time
-        @walkin.end_time = old_start_time + @est_duration
-        @walkin.table_id = old_table_id
-        @walkin.party_size = old_party_size
-        @walkin.save
-        flash['alert'] = 'Error. New parameters are not permitted.'
-        redirect_to restaurant_edit_walkin_path(@restaurant, @walkin)
-      end
-
-    elsif params[:reservation][:status] == 'dining'
-      # Check if table is empty
-      if @walkin.table.capacity_total > 0
-        flash['alert'] = 'Unable to commit. There are currently customers at the table.'
-        render :edit
-      else
-        @walkin.status = 'dining'
-        update_save
-      end
-    end
-  end
+  # def update
+  #   if params[:reservation][:status] == 'cancelled'
+  #     @walkin.status = 'cancelled'
+  #     @walkin.table.capacity_current = 0
+  #     @walkin.table.save
+  #     update_save
+  #   elsif params[:reservation][:status] == 'reservation'
+  #     redirect_to restaurant_walkins_path(@restaurant)
+  #   elsif params[:reservation][:status] == 'queuing'
+  #     @walkin.party_size = params[:reservation][:party_size]
+  #     update_save
+  #   elsif params[:reservation][:status] == 'awaiting'
+  #     old_start_time = @walkin.start_time
+  #     old_table_id = @walkin.table_id
+  #     old_party_size = @walkin.party_size
+  #
+  #     @walkin.start_time = nil
+  #     @walkin.end_time = nil
+  #     # @walkin.table_id = params[:reservation][:table_id]
+  #     @walkin.party_size = params[:reservation][:party_size]
+  #     @walkin.save
+  #
+  #     table_if_possible = determine_table(@restaurant, [@walkin.table], @walkin, Time.now, @est_duration)
+  #
+  #     if table_if_possible
+  #       @walkin.start_time = Time.now
+  #       @walkin.end_time = Time.now + @est_duration
+  #       @walkin.status = params[:reservation][:status]
+  #       sms_awaiting(@walkin)
+  #       update_save
+  #     else
+  #       @walkin.start_time = old_start_time
+  #       @walkin.end_time = old_start_time + @est_duration
+  #       @walkin.table_id = old_table_id
+  #       @walkin.party_size = old_party_size
+  #       @walkin.save
+  #       flash['alert'] = 'Error. New parameters are not permitted.'
+  #       redirect_to restaurant_edit_walkin_path(@restaurant, @walkin)
+  #     end
+  #
+  #   elsif params[:reservation][:status] == 'dining'
+  #     # Check if table is empty
+  #     if @walkin.table.capacity_total > 0
+  #       flash['alert'] = 'Unable to commit. There are currently customers at the table.'
+  #       render :edit
+  #     else
+  #       @walkin.status = 'dining'
+  #       update_save
+  #     end
+  #   end
+  # end
 
   def update_save
     if @walkin.save!

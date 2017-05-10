@@ -303,7 +303,11 @@
               <i class="material-icons left">
                 access_time
               </i>
-              <%= formatOrderDate(@reservations.where(table_id: table.id).where(status: ['reservation', 'awaiting'])[0].start_time) %>
+              <% if @reservations.where(table_id: table.id).where(status: ['reservation', 'awaiting']).count > 0 %>
+                <%= formatOrderDate(@reservations.where(table_id: table.id).where(status: ['reservation', 'awaiting'])[0].start_time) %>
+              <% else %>
+                No Upcoming Reservations
+              <% end %>
             </td>
           </tr>
           <% else %>
