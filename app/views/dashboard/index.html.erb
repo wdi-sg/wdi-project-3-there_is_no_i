@@ -13,23 +13,249 @@
 
   <!-- ======================== -->
 
-  <h2>Incoming Dine-in Reservations</h2>
+  <h2>Reservation</h2>
+    <table class="striped">
+      <tbody>
+        <% @reservations.where(status:'reservation').each do |reservation| %>
+        <tr>
+          <td href="/restaurants/<%= @restaurant_id %>/reservations/<%= @reservation_id %>/edit">
+            <i class="material-icons left">
+              edit
+            </i>
+            <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, reservation) %>
+          </td>
+
+          <td>
+            <%= reservation.name %>
+            <br>
+            <%= formatPhone(reservation.phone) %>
+          </td>
+
+          <td>
+            <i class="material-icons left">
+              people
+            </i>
+            <%= reservation.party_size  %>
+             pax
+          </td>
+
+          <td>
+            <i class="material-icons left">
+              access_time
+            </i>
+            <% if reservation.start_time %>
+              <%= formatOrderDate(reservation.start_time) %>
+            <% end %>
+          </td>
+
+          <td>
+            Not Ordered
+          </td>
+
+          <td>
+            T<%= reservation.table.name %>
+          </td>
+          <td>
+            <%= link_to 'Confirm', restaurant_seated_path(@restaurant, reservation), method: :put %>
+          </td>
+
+        </tr>
+        <% end %>
+    </tbody>
+  </table>
+
+<!-- ================================= -->
+
+  <h2>Queue</h2>
   <table class="striped">
         <tbody>
-          <% @reservations.where(status:'reservation').each do |reservation| %>
+          <% @reservations.where(status:'queuing').each do |queuing| %>
           <tr>
-            <td href="/restaurants/<%= @restaurant_id %>/reservations/<%= @reservation_id %>/edit"><i class="material-icons left">edit</i>Edit</td>
             <td>
-              <%= reservation.name %><br>
-              <%= formatPhone(reservation.phone) %>
+              <i class="material-icons left">
+                edit
+              </i>
+              <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, queuing) %>
             </td>
-            <td><i class="material-icons left">people</i><%= reservation.party_size  %> pax</td>
-            <td><i class="material-icons left">access_time</i>reservation.start_time</td>
-            <td>Not Ordered</td>
-            <td><a class="waves-effect waves-light btn">Assign Table</a></td>
+
+            <td>
+              #<%= queuing.queue_number %>
+            </td>
+
+            <td>
+              <%= queuing.name %>
+              <br>
+              <%= formatPhone(queuing.phone) %>
+            </td>
+
+            <td>
+              <i class="material-icons left">
+                people
+              </i>
+              <%= queuing.party_size  %>
+               pax
+            </td>
+
+            <td>
+              <i class="material-icons left">
+                access_time
+              </i>
+              <% if queuing.start_time %>
+                <%= formatOrderDate(queuing.start_time) %>
+              <% end %>
+            </td>
+
+            <td>
+              Not Ordered
+            </td>
+
+            <td>
+              <% if queuing.table %>
+                T<%= queuing.table.name %>
+              <% end %>
+            </td>
+
+            <td>
+              <% if queuing.table %>
+              <%= link_to 'Notify', restaurant_notify_path(@restaurant, queuing), method: :put%>
+              <% elsif queuing.queue_number + 1 != queuing.restaurant.next_queue_number %>
+              <%= link_to 'Requeue', restaurant_requeue_path(@restaurant, queuing), method: :put, data: { confirm: 'This will send the customer to the back of the queue. This action is undoable. OK to procced?'} %>
+              <% end %>
+            </td>
+
           </tr>
           <% end %>
 
+        </tbody>
+      </table>
+
+<!-- ================================= -->
+
+<h2>Notified</h2>
+<table class="striped">
+      <tbody>
+        <% @reservations.where(status:'awaiting').each do |awaiting| %>
+        <tr>
+          <td>
+            <i class="material-icons left">
+              edit
+            </i>
+            <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, awaiting) %>
+          </td>
+
+          <td>
+            #<%= awaiting.queue_number %>
+          </td>
+
+          <td>
+            <%= awaiting.name %>
+            <br>
+            <%= formatPhone(awaiting.phone) %>
+          </td>
+
+          <td>
+            <i class="material-icons left">
+              people
+            </i>
+            <%= awaiting.party_size  %>
+             pax
+          </td>
+
+          <td>
+            <i class="material-icons left">
+              access_time
+            </i>
+            <% if awaiting.start_time %>
+              <%= formatOrderDate(awaiting.start_time) %>
+            <% end %>
+          </td>
+
+          <td>
+            Not Ordered
+          </td>
+
+          <td>
+            <% if awaiting.table %>
+              T<%= awaiting.table.name %>
+            <% end %>
+          </td>
+
+          <td>
+            <%= link_to 'Confirm', restaurant_seated_path(@restaurant, awaiting), method: :put %>
+          </td>
+
+        </tr>
+        <% end %>
+
+      </tbody>
+    </table>
+
+<!-- ================================= -->
+
+<h2>Dining</h2>
+<table class="striped">
+      <tbody>
+        <% @reservations.where(status:'dining').each do |dining| %>
+        <tr>
+          <td>
+            <i class="material-icons left">
+              edit
+            </i>
+            <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, dining) %>
+          </td>
+
+          <td>
+            #<%= dining.queue_number %>
+          </td>
+
+          <td>
+            <%= dining.name %>
+            <br>
+            <%= formatPhone(dining.phone) %>
+          </td>
+
+          <td>
+            <i class="material-icons left">
+              people
+            </i>
+            <%= dining.party_size  %>
+             pax
+          </td>
+
+          <td>
+            <i class="material-icons left">
+              access_time
+            </i>
+            <% if dining.start_time %>
+              <%= formatOrderDate(dining.start_time) %>
+            <% end %>
+          </td>
+
+          <td>
+            Not Ordered
+          </td>
+
+          <td>
+            <% if dining.table %>
+              T<%= dining.table.name %>
+            <% end %>
+          </td>
+
+          <td>
+            <%= link_to 'Check Out', restaurant_checked_out_path(@restaurant, dining), method: :put, data: { confirm: 'This will check the customer out and end their session. This action is undoable. OK to procced?'} %>
+          </td>
+
+        </tr>
+        <% end %>
+
+      </tbody>
+    </table>
+
+<!-- ================================= -->
+
+  <h2>ARCHIVE</h2>
+  <table class="striped">
+        <tbody>
           <tr>
             <td><i class="material-icons left">edit</i>Edit</td>
             <td>
@@ -42,37 +268,6 @@
             <td><a class="waves-effect waves-light btn">Assign Table</a></td>
           </tr>
 
-          <tr>
-            <td><i class="material-icons left">edit</i>Edit</td>
-            <td>
-              Tubbs<br>
-              12345678
-            </td>
-            <td><i class="material-icons left">people</i>1 pax</td>
-            <td><i class="material-icons left">access_time</i>3:00pm</td>
-            <td>Paid $200</td>
-            <td><a class="waves-effect waves-light btn">Assign Table</a></td>
-          </tr>
-
-          <tr>
-            <td><i class="material-icons left">edit</i>Edit</td>
-            <td>
-              Rilakkuma<br>
-              12345678
-            </td>
-            <td><i class="material-icons left">people</i>2 pax</td>
-            <td><i class="material-icons left">access_time</i>4:00pm</td>
-            <td>Paid $20</td>
-            <td><a class="waves-effect waves-light btn">Assign Table</a></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- ======================== -->
-
-  <h2>Assigned Dine-in Reservations</h2>
-  <table class="striped">
-        <tbody>
           <tr>
             <td><i class="material-icons left">edit</i>Edit</td>
             <td>
@@ -125,6 +320,8 @@
     <div class="col s7" id="right-side"> <!-- DO NOT TOUCH -->
 
   <!-- ============TABLE START============= -->
+
+  
   <div class="row">
 
     <div class="col s3">
