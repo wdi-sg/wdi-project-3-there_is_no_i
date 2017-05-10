@@ -47,12 +47,7 @@
           </td>
 
           <td>
-            <% if Invoice.where(reservation_id: reservation.id).where(time_end: nil).count > 0 %>
-            <% x = Invoice.where(reservation_id: reservation.id).where(time_end: nil)[0] %>
-            $<%= formatPrice(showTotalPrice(x.menu_items)) %>
-            <% else %>
-            No Order
-            <% end %>
+            Not Ordered
           </td>
 
           <td>
@@ -109,12 +104,7 @@
             </td>
 
             <td>
-              <% if Invoice.where(reservation_id: queuing.id).where(time_end: nil).count > 0 %>
-              <% x = Invoice.where(reservation_id: queuing.id).where(time_end: nil)[0] %>
-              $<%= formatPrice(showTotalPrice(x.menu_items)) %>
-              <% else %>
-              No Order
-              <% end %>
+              Not Ordered
             </td>
 
             <td>
@@ -179,12 +169,7 @@
           </td>
 
           <td>
-            <% if Invoice.where(reservation_id: awaiting.id).where(time_end: nil).count > 0 %>
-            <% x = Invoice.where(reservation_id: awaiting.id).where(time_end: nil)[0] %>
-            $<%= formatPrice(showTotalPrice(x.menu_items)) %>
-            <% else %>
-            No Order
-            <% end %>
+            Not Ordered
           </td>
 
           <td>
@@ -245,12 +230,7 @@
           </td>
 
           <td>
-            <% if Invoice.where(reservation_id: dining.id).where(time_end: nil).count > 0 %>
-            <% x = Invoice.where(reservation_id: dining.id).where(time_end: nil)[0] %>
-            $<%= formatPrice(showTotalPrice(x.menu_items)) %>
-            <% else %>
-            No Order
-            <% end %>
+            Not Ordered
           </td>
 
           <td>
@@ -270,6 +250,63 @@
     </table>
 
 <!-- ================================= -->
+
+  <h2>ARCHIVE</h2>
+  <table class="striped">
+        <tbody>
+          <tr>
+            <td><i class="material-icons left">edit</i>Edit</td>
+            <td>
+              Goldilocks<br>
+              12345678
+            </td>
+            <td><i class="material-icons left">people</i>4 pax</td>
+            <td><i class="material-icons left">access_time</i>2:30pm</td>
+            <td>Paid $80</td>
+            <td><a class="waves-effect waves-light btn">Assign Table</a></td>
+          </tr>
+
+          <tr>
+            <td><i class="material-icons left">edit</i>Edit</td>
+            <td>
+              Dottie<br>
+              12345678
+            </td>
+            <td><i class="material-icons left">people</i>2 pax</td>
+            <td><i class="material-icons left">access_time</i>5:00pm</td>
+            <td>Not Ordered</td>
+            <td>11</td>
+            <td><a class="waves-effect waves-light btn">Seat</a></td>
+          </tr>
+
+          <tr>
+            <td><i class="material-icons left">edit</i>Edit</td>
+            <td>
+              Mr Meowmi<br>
+              12345678
+            </td>
+            <td><i class="material-icons left">people</i>4 pax</td>
+            <td><i class="material-icons left">access_time</i>6:30pm</td>
+            <td>Paid $80</td>
+            <td>3</td>
+            <td><a class="waves-effect waves-light btn">Seat</a></td>
+          </tr>
+
+          <tr>
+            <td><i class="material-icons left">edit</i>Edit</td>
+            <td>
+              Lady Meow Meow<br>
+              12345678
+            </td>
+            <td><i class="material-icons left">people</i>20 pax</td>
+            <td><i class="material-icons left">access_time</i>7:30pm</td>
+            <td>Paid $800</td>
+            <td>1</td>
+            <td><a class="waves-effect waves-light btn">Seat</a></td>
+          </tr>
+
+        </tbody>
+      </table>
 
       <!-- ==== END OF TABLES, BUTTONS HERE ==== -->
 
@@ -295,7 +332,7 @@
           <% if @reservations.where(table_id: table.id).where(status: 'dining').count == 0%>
           <tr>
             <td>
-              <img src="http://simpleicon.com/wp-content/uploads/table.png" height="127" width="126">
+              <img src="http://simpleicon.com/wp-content/uploads/table.png" height="177" width="126">
             </td>
           </tr>
           <tr>
@@ -330,12 +367,7 @@
               <i class="material-icons left">
                 local_atm
               </i>
-              <% if Invoice.where(table_id: table.id).where(time_end: nil).count > 0 %>
-              <% x = Invoice.where(table_id: table.id).where(time_end: nil)[0] %>
-              $<%= formatPrice(showTotalPrice(x.menu_items)) %>
-              <% else %>
-              No Order
-              <% end %>
+              $30.20
             </td>
           </tr>
           <tr>
@@ -349,6 +381,149 @@
       </div>
       <% end %>
     </div>
+
+
+  <div class="row">
+
+    <div class="col s3" id="right-tables">
+      <table class="bordered centered">
+        <thead>
+        <tr>
+            <th>Table 1</th>
+        </tr>
+      </thead>
+        <tbody>
+          <tr><td><i class="material-icons left">people</i>2 pax</td></tr>
+          <tr><td><i class="material-icons left">access_time</i>1:00pm</td></tr>
+          <tr><td><i class="material-icons left">local_atm</i>$30.20</td></tr>
+          <tr><td>
+            New | Add | Pay
+          </td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="col s3" id="right-tables">
+        <table class="bordered centered">
+          <thead>
+          <tr>
+              <th>Table 2</th>
+          </tr>
+        </thead>
+          <tbody>
+            <tr><td><i class="material-icons left">people</i>5 pax</td></tr>
+            <tr><td><i class="material-icons left">access_time</i>2:30pm</td></tr>
+            <tr><td><i class="material-icons left">local_atm</i>$27.60</td></tr>
+            <tr><td>
+              New | Add | Pay
+            </td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="col s3" id="right-tables">
+          <table class="bordered centered">
+            <thead>
+            <tr>
+                <th>Table 3</th>
+            </tr>
+          </thead>
+            <tbody>
+              <tr><td><i class="material-icons left">people</i>4 pax</td></tr>
+              <tr><td><i class="material-icons left">access_time</i>5:00pm</td></tr>
+              <tr><td><i class="material-icons left">local_atm</i>$19.90</td></tr>
+              <tr><td>
+                New | Add | Pay
+              </td></tr>
+            </tbody>
+          </table>
+          </div>
+
+          <div class="col s3" id="right-tables">
+            <table class="bordered centered">
+              <thead>
+              <tr>
+                  <th>Table 4</th>
+              </tr>
+            </thead>
+              <tbody>
+                <tr><td><i class="material-icons left">people</i>8 pax</td></tr>
+                <tr><td><i class="material-icons left">access_time</i>6:00pm</td></tr>
+                <tr><td><i class="material-icons left">local_atm</i>$49.90</td></tr>
+                <tr><td>
+                  New | Add | Pay
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
+
+            <!-- ===== SECOND ROW ===== -->
+
+            <div class="col s3" id="right-tables">
+              <table class="bordered centered">
+                <thead>
+                <tr>
+                    <th>Table 5</th>
+                </tr>
+              </thead>
+                <tbody>
+                  <tr><td><i class="material-icons left">people</i>2 pax</td></tr>
+                  <tr><td><i class="material-icons left">access_time</i>1:00pm</td></tr>
+                  <tr><td><i class="material-icons left">local_atm</i>$30.20</td></tr>
+                  <tr><td>
+                    New | Add | Pay
+                  </td></tr>
+                </tbody>
+              </table>
+              </div>
+
+              <div class="col s3" id="right-tables">
+                <table class="bordered centered">
+                  <thead>
+                  <tr>
+                      <th>Table 6</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    <tr><td><i class="material-icons left">people</i>5 pax</td></tr>
+                    <tr><td><i class="material-icons left">access_time</i>2:30pm</td></tr>
+                    <tr><td><i class="material-icons left">local_atm</i>$27.60</td></tr>
+                    <tr><td>
+                      New | Add | Pay
+                    </td></tr>
+                  </tbody>
+                </table>
+                </div>
+
+                <div class="col s3" id="right-tables">
+                  <table class="bordered centered">
+                    <thead>
+                    <tr>
+                        <th>Table 7</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>
+                      <img src="http://simpleicon.com/wp-content/uploads/table.png" height="177" width="126">
+                    </td></tr>
+                  </tbody>
+                  </table>
+                  </div>
+
+                  <div class="col s3" id="right-tables">
+                    <table class="bordered centered">
+                      <thead>
+                      <tr>
+                          <th>Table 8</th>
+                      </tr>
+                    </thead>
+                      <tbody>
+                        <tr rowspan="4"><td>
+                          <img src="http://simpleicon.com/wp-content/uploads/table.png" height="177" width="126">
+                        </td></tr>
+                      </tbody>
+                    </table>
+                  </div>
 
         <!-- ===== THIRD ROW ===== -->
 

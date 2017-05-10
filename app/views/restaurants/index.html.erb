@@ -1,13 +1,18 @@
-<center>
+<div class="row">
 
-<h2>- Sort by -</h2>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=name&search=<%= @search %>&city=<%= @city %>">Name</a>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=cuisine&search=<%= @search %>&city=<%= @city %>">Cuisine</a>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=city&search=<%= @search %>&city=<%= @city %>">City</a>
+  <!-- SORT BUTTONS DIV -->
+  <div class="col s2" style="margin-top:35px">
+    <center>
+<h2> Sort by </h2>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=name&search=<%= @search %>&city=<%= @city %>" style="width:150px">Name</a><br>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=cuisine&search=<%= @search %>&city=<%= @city %>" style="margin-top: 5px; width:150px">Cuisine</a><br>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants?sort=city&search=<%= @search %>&city=<%= @city %>" style="margin-top: 5px; width:150px">City</a>
 </center>
+  </div>
+  <!-- SORT BUTTONS DIV -->
 
+<div class="col s8" id="res-column">
 <div class="row" id="restaurant-cards"> <!-- START OF CARD DISPLAY -->
-
   <!-- CARD START -->
   <% @restaurants.each do |restaurant, index| %>
   <div class="col s4">
@@ -29,5 +34,10 @@
   <% end %>
   <!-- CARD END -->
 
-</div>
-<%= will_paginate @restaurants %>
+</div><!-- div for all restaurant cards -->
+</div> <!-- div for restaurant card column -->
+</div><!-- div for main row -->
+<!-- VERY BOTTOM OF THE PAGE LEAVE THIS HERE -->
+<center>
+    <%= will_paginate @restaurants %>
+</center>

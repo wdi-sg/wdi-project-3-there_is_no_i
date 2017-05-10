@@ -3,9 +3,48 @@
   <head>
     <title>Locavorus</title>
     <%= csrf_meta_tags %>
+    <style>
+    body {
+      background: #CDEDFD;
+    }
+    h1 {
+      font-family: "Unica One";
+      font-size: 70px;
+      text-align: center;
+    }
+    h2 {
+      text-align: center;
+      font-size: 40px;
+      font-family: "Contrail One";
+      margin: 0;
+    }
+    p {
+      font-family: "Nunito";
+      text-align: center;
+      font-size: 25px;
+    }
+    input {
+      font-size: 25px;
+      font-family: "Nunito";
+      width: 250px;
+    }
+    select {
+      font-size: 20px;
+    }
+    #submit-button {
+      border-radius: 5px;
+      border: 3px solid;
+      background-color: #81d4fa;
+      color: white;
+    }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Unica+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Contrail+One" rel="stylesheet">
   </head>
   <body>
-    <h1><%= @restaurant.name%> Walk-in Queue</h1>
+    <h1><%= @restaurant.name%> </h1>
+      <h2>Walk-in Queue</h2>
 
     <%= form_for @walkin, url: restaurant_public_path(@restaurant), html: {method: :post} do |f| %>
 
@@ -20,10 +59,12 @@
 
       <p>
         <%= f.label :phone, "Mobile" %>
-        <%= f.number_field :phone, placeholder: '98765432', min:10000000, max:99999999, :required => true %>
+        <%= f.number_field :phone, placeholder: '98765432', min:10000000, max:99999999, :required => true, class: 'num-field' %>
       </p>
 
-      <%= f.submit "Submit" %>
+      <center>
+      <%= f.submit "Submit", id: 'submit-button' %>
+    </center>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
 
