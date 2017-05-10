@@ -6,7 +6,7 @@ class WalkinsController < ApplicationController
   before_action :set_restaurant
   before_action :check_user_is_part_of_restaurant
   before_action :set_walkin, only: %i[show edit update destroy]
-  before_action :set_duration, only: [:create, :public_create, :update]
+  before_action :set_duration
   helper WalkinHelper
 
   def index
@@ -159,14 +159,18 @@ class WalkinsController < ApplicationController
       walkin.status = 'awaiting'
       if walkin.save!
         sms_awaiting(walkin)
-        redirect_to restaurant_walkins_path(params[:restaurant_id])
+        flash['alert'] = "#{walkin.name} was notified"
+        # redirect_to restaurant_walkins_path(params[:restaurant_id])
+        redirect_to dashboard_path
       else
         flash['alert'] = 'Error 500. Unable to update status'
-        redirect_to restaurant_walkins_path(params[:restaurant_id])
+        # redirect_to restaurant_walkins_path(params[:restaurant_id])
+        redirect_to dashboard_path
       end
     else
       flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
-      redirect_to restaurant_walkins_path(params[:restaurant_id])
+      # redirect_to restaurant_walkins_path(params[:restaurant_id])
+      redirect_to dashboard_path
     end
   end
 
@@ -177,14 +181,42 @@ class WalkinsController < ApplicationController
       set_next_queue_number(walkin.restaurant)
       if walkin.save!
         sms_requeue(walkin)
-        redirect_to restaurant_walkins_path(params[:restaurant_id])
+        flash['alert'] = "#{walkin.name} was requeued"
+        # redirect_to restaurant_walkins_path(params[:restaurant_id])
+        redirect_to dashboard_path
       else
         flash['alert'] = 'Error 500. Unable to update'
-        redirect_to restaurant_walkins_path(params[:restaurant_id])
+        # redirect_to restaurant_walkins_path(params[:restaurant_id])
+        redirect_to dashboard_path
       end
     else
       flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
-      redirect_to restaurant_walkins_path(params[:restaurant_id])
+      # redirect_to restaurant_walkins_path(params[:restaurant_id])
+      redirect_to dashboard_path
+    end
+  end
+
+  def seated
+    if Reservation.find(params[:id]) && Restaurant.find(params[:restaurant_id])
+      diner = Reservation.find(params[:id])
+      old_status = diner.status
+      diner.status = 'dining'
+      diner.start_time = Time.now
+      diner.end_time = Time.now + @est_duration
+      diner.table.capacity_current = diner.party_size
+      diner.save!
+      diner.table.save!
+      if old_status = 'reservation'
+        flash['alert'] = "#{diner.name} (Reservation ##{diner.id}) has checked into the restaurant"
+        redirect_to dashboard_path
+      else
+        flash['alert'] = "#{diner.name} (##{diner.queue_number}) has checked into the restaurant"
+        redirect_to dashboard_path
+      end
+
+    else
+      flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
+      redirect_to dashboard_path
     end
   end
 

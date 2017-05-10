@@ -8,7 +8,8 @@ module FindingTableLogic
 
     p 'TABLES CONSIDERED'
     p tables_considered
-
+    p block
+    
     # Find Tables that cannot be used
     affecting_tables = find_affecting_tables(restaurant, start_time_given, block)
 
@@ -30,6 +31,10 @@ module FindingTableLogic
 
   def find_affecting_tables(restaurant, start_time_given, block)
     # end_time_est = start_time_given.utc + block
+    p 'CHECK TIME'
+    p start_time_given
+    p block
+
     end_time_est = start_time_given + block
     date = start_time_given.strftime('%Y-%m-%d')
 

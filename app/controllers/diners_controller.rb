@@ -6,7 +6,7 @@ class DinersController < ApplicationController
   before_action :set_restaurant
   before_action :check_user_is_part_of_restaurant
   before_action :set_diner, only: %i[show edit update]
-  before_action :set_duration, only: [:update, :reassign_table, :assign_table]
+  before_action :set_duration
 
   def index
     add_breadcrumb "Restaurants", :restaurants_path
@@ -195,7 +195,7 @@ class DinersController < ApplicationController
     next_customer = find_next_customer(diner.table)
     if next_customer
       # Check if current table has reservations that will clash
-      next_customer_table = determine_table(restaurant, [diner.table], next_customer, Time.now, @est_duration)
+      next_customer_table = determine_table(restaurant, [diner.table], next_customer, Time.now, 2.hours)
       if next_customer_table
 
         assign_table(next_customer, next_customer_table)
@@ -216,6 +216,21 @@ class DinersController < ApplicationController
     else
       flash['alert'] = 'Error 500. Unable to save lastest changes.'
       render :edit
+    end
+  end
+
+  def checked_out
+    if Reservation.find(params[:id]) && Restaurant.find(params[:restaurant_id])
+      diner = Reservation.find(params[:id])
+      diner.status = 'checked_out'
+      diner.end_time = Time.now
+      diner.save
+      reassign_table(diner, @restaurant)
+      flash['alert'] = "#{diner.name} was checked out from the restaurant"
+      redirect_to dashboard_path
+    else
+      flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
+      redirect_to dashboard_path
     end
   end
 
