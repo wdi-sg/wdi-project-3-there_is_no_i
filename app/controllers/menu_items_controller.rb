@@ -32,7 +32,9 @@ class MenuItemsController < ApplicationController
 
     @menu_item = MenuItem.new(menu_item_params)
     @menu_item.restaurant_id = @restaurant.id
-    @menu_item.picture = @cloudinary_file["secure_url"]
+    if params[:menu_item][:picture] && params[:menu_item][:picture].path
+      @menu_item.picture = @cloudinary_file["secure_url"]
+    end
     if @menu_item.save!
       redirect_to restaurant_menu_items_path(@restaurant)
     else
