@@ -24,10 +24,14 @@
       </div>
       <div class="card-content">
         <p><i class="material-icons left">local_offer</i><%= restaurant.cuisine %></p><br>
-        <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_city %></p><br>
+        <% if !restaurant.phone.empty?%>
+        <p><i class="material-icons left">phone</i><%= restaurant.phone %></p>
+        <% end %><br>
+        <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_city %></p>
       </div>
       <div class="card-action">
-        <i class="material-icons left">person_add</i><%= link_to 'Book a table', new_restaurant_reservation_path(restaurant.id), class: 'valign-wrapper blue-text' %>
+        <i class="material-icons left">person_add</i><%= link_to 'Book a table', new_restaurant_reservation_path(restaurant.id), class: 'blue-text' %>
+        <%= link_to 'View Menu', restaurant_menu_items_path(restaurant.id), class: 'waves-effect waves-light btn light-blue lighten-3', style: 'margin-left:48px' %>
       </div>
     </div>
   </div>
