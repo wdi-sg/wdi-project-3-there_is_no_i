@@ -16,6 +16,7 @@
       <th>Requests</th>
       <th>Start Time</th>
       <th>Est End Time</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -52,6 +53,9 @@
         <%= formatOrderDate(diner.end_time.getlocal('+08:00')) %>
         <% end %>
         <% end %>
+      </td>
+      <td>
+        <%= link_to 'Seated', restaurant_seated_path(@restaurant, walkin), method: :put %>
       </td>
     </tr>
     <% end %>

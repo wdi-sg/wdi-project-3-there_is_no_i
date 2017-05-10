@@ -30,7 +30,7 @@
  }
  #search-bar {
    position:absolute;
-   overflow: hidden;
+   float: left;
    top: 60px;
    right:0;
  }
@@ -53,3 +53,7 @@
    font-weight: bold;
    margin-left: 8px
  }
+
+.pagination a li.active {
+  color: #fff;
+}

@@ -29,6 +29,8 @@ gem 'faker'
 gem 'stripe'
 # Add Devise for authentication
 gem 'devise'
+# Use bcrypt for Devise
+gem 'bcrypt', '~> 3.1.7'
 # Add Gon for javascript things
 gem 'gon'
 # Add Twilio for SMS
@@ -37,9 +39,11 @@ gem 'twilio-ruby'
 gem 'materialize-sass'
 # Gem for offline Materialize icons
 gem 'material_icons'
-# Add Cloudinary for image storage
+# Gem for pagination (Thanks Raymond!)
+gem 'will_paginate-materialize'
+# Add Cloudinary for image upload/storage
 gem 'cloudinary'
-# Add Foreman to save environment variables
+# Add Foreman to save environment variables to .env
 gem 'foreman'
 # Add RestClient for Mailgun
 gem 'rest-client'
@@ -58,8 +62,7 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.7'
+
 # gem 'bcrypt-ruby', '3.1.2'
 
 # Email Validator

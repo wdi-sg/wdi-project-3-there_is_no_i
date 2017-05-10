@@ -11,7 +11,9 @@ h2 {
 
 #add-reservation {
   margin-top: 10px;
-  margin-left: 180px;
+  margin-right: 0;
+  // margin-left: 220px;
+  position: absolute;
 }
 
 #left-side {
@@ -19,8 +21,9 @@ h2 {
   vertical-align: middle;
 }
 
-#buttons {
-  margin-top: 30px;
+#buttons-1 {
+  display: inline-block;
+  width: 600px
 }
 
 .page-footer {
@@ -34,4 +37,14 @@ h2 {
 
 #right-butan {
   width: 250px;
+}
+
+// #dash-container {
+//   width: 70%;
+//   margin: 0 auto;
+// }
+
+#right-side {
+  width: 750px;
+  margin: 0 auto;
 }

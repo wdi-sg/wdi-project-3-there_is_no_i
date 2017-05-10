@@ -1,5 +1,6 @@
 class WalkinsController < ApplicationController
   include AuthenticateRestaurantUser
+  include AddBreadcrumbs
   include FindingTableLogic
   include SendTwilio
   before_action :authenticate_user!
@@ -10,8 +11,7 @@ class WalkinsController < ApplicationController
   helper WalkinHelper
 
   def index
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_index_breadcrumbs
     @walkins = Reservation.where(restaurant_id: params[:restaurant_id], status: 'queuing').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting')).or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'reservation'))
   end
 
@@ -26,6 +26,9 @@ class WalkinsController < ApplicationController
   end
 
   def new
+    add_breadcrumb "Restaurants", :restaurants_path
+    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_breadcrumb "View Current Queue", restaurant_walkins_path(@restaurant)
     @walkin = Reservation.new
   end
 
@@ -155,21 +158,17 @@ class WalkinsController < ApplicationController
   def notify
     if Reservation.find(params[:id]) && Restaurant.find(params[:restaurant_id])
       walkin = Reservation.find(params[:id])
-      # restaurant = Restaurant.find(params[:restaurant_id])
       walkin.status = 'awaiting'
       if walkin.save!
         sms_awaiting(walkin)
         flash['alert'] = "#{walkin.name} was notified"
-        # redirect_to restaurant_walkins_path(params[:restaurant_id])
         redirect_to dashboard_path
       else
         flash['alert'] = 'Error 500. Unable to update status'
-        # redirect_to restaurant_walkins_path(params[:restaurant_id])
         redirect_to dashboard_path
       end
     else
       flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
-      # redirect_to restaurant_walkins_path(params[:restaurant_id])
       redirect_to dashboard_path
     end
   end
@@ -182,16 +181,13 @@ class WalkinsController < ApplicationController
       if walkin.save!
         sms_requeue(walkin)
         flash['alert'] = "#{walkin.name} was requeued"
-        # redirect_to restaurant_walkins_path(params[:restaurant_id])
         redirect_to dashboard_path
       else
         flash['alert'] = 'Error 500. Unable to update'
-        # redirect_to restaurant_walkins_path(params[:restaurant_id])
         redirect_to dashboard_path
       end
     else
       flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
-      # redirect_to restaurant_walkins_path(params[:restaurant_id])
       redirect_to dashboard_path
     end
   end

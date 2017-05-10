@@ -1,5 +1,6 @@
 class RestaurantsController < ApplicationController
   include AuthenticateRestaurantUser
+  include AddBreadcrumbs
   before_action :authenticate_user!, except: [:index, :show, :name_sort]
   before_action :set_restaurant, only: [:show, :update, :destroy]
   before_action :set_user_restaurant, only: [:edit]
@@ -8,19 +9,17 @@ class RestaurantsController < ApplicationController
   helper RestaurantsHelper
 
   def index
-    first = params[:search]? params[:search].downcase : ''
-    second = params[:city]? params[:city].downcase : ''
-    x = Restaurant.where("LOWER(name) LIKE ? AND LOWER(address_city) LIKE ?", "%#{first}%", "%#{second}%")
-    if request.fullpath == '/restaurants?name=sort'
-      @restaurant = x.order(:name)
-    elsif request.fullpath == '/restaurants?cuisine=sort'
-      @restaurant = x.order(:cuisine)
-    elsif request.fullpath == '/restaurants?city=sort'
-      @restaurant = x.order(:address_city)
-    elsif request.fullpath == '/restaurants?rating=sort'
-      @restaurant = x.order('rating DESC')
+    @search = params[:search]? params[:search].downcase : ''
+    @city = params[:city]? params[:city].downcase : ''
+    x = Restaurant.where("LOWER(name) LIKE ? OR LOWER(cuisine) LIKE ?", "%#{@search}%", "%#{@search}%").where("LOWER(address_city) LIKE ?", "%#{@city}%").paginate(page: params[:page], per_page: 10)
+    if request.fullpath == "/restaurants?sort=name&search=#{@search}&city=#{@city}"
+      @restaurants = x.order(:name)
+    elsif request.fullpath == "/restaurants?sort=cuisine&search=#{@search}&city=#{@city}"
+      @restaurants = x.order(:cuisine)
+    elsif request.fullpath == "/restaurants?sort=city&search=#{@search}&city=#{@city}"
+      @restaurants = x.order(:address_city)
     else
-      @restaurant = x.order('id ASC')
+      @restaurants = x.order('id ASC')
     end
   end
 
@@ -38,14 +37,11 @@ class RestaurantsController < ApplicationController
   end
 
   def new
-    add_breadcrumb "Restaurants", :restaurants_path
     @restaurant = Restaurant.new
   end
 
   def edit
-    # @users = User.where(restaurant_id: @restaurant[:id])
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_index_breadcrumbs
   end
 
   def show

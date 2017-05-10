@@ -15,7 +15,6 @@ Rails.application.routes.draw do
     sign_out: 'logout',
     edit: 'account'
   }
-
   get '/invoices' => 'users#invoices'
   get '/reservations' => 'users#reservations'
 
