@@ -15,7 +15,7 @@
       </thead>
       <tbody>
         <% @index = 1 %>
-        <% @user.reservations.select{ |reservation| reservation.status == 'queuing' }.sort{ |a, b| a.start_time <=> b.start_time }.each do |reservation| %>
+        <% Reservation.where(status: 'queuing').where(phone: @user.phone).sort{ |a, b| a.start_time <=> b.start_time }.each do |reservation| %>
         <tr>
           <td>
             <%= @index %>

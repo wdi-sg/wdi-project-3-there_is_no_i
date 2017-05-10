@@ -7,7 +7,7 @@ class RoomChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def receive(data)
+  def receive(data)    
     ActionCable.server.broadcast('room_channel', {invoice: data.invoice, received: data.received, item: data.item, is_take_away: data.is_take_away, restaurant: data.restaurant_invoices_path, request: data.request})
   end
 end

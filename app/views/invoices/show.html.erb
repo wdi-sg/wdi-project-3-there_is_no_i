@@ -15,24 +15,23 @@
   <%= formatPrice(showTotalPrice(@invoice.menu_items)) %>
 </p>
 <p>
-<% if !current_user.restaurants.include?(@restaurant) %>
+  <% if current_user.restaurants.include?(@restaurant) %>
+    User:
+    <% if @invoice.user_id %>
+      <%= @invoice.user.name %>
+    <% elsif @invoice.user_name %>
+      <%= @invoice.user_name %>
+    <% else %>
+      <%= '' %>
+    <% end %>
+  <% end %>
+</p>
+<p>
   <%= form_tag restaurant_menu_items_path(@restaurant), method: :get do %>
     <%= hidden_field_tag :invoice_id, @invoice.id %>
     <%= hidden_field_tag :reservation_id, @invoice.reservation_id %>
     <%= submit_tag 'Add to order' %>
   <% end %>
-<% end %>
-
-<% if current_user.restaurants.include?(@restaurant) %>
-  User:
-  <% if @invoice.user_id %>
-    <%= @invoice.user.name %>
-  <% elsif @invoice.user_name %>
-    <%= @invoice.user_name %>
-  <% else %>
-    <%= '' %>
-  <% end %>
-<% end %>
 </p>
 <% if current_user.restaurants.include?(@restaurant) %>
 <p>
