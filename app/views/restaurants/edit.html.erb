@@ -46,13 +46,24 @@
   </tbody>
 </table>
 <br/>
-<h6>Add employee by email</h6>
-<div class="field">
-<%= form_for @restaurant do |f| %>
-  <%= f.hidden_field :add, value: true %>
-  <%= f.email_field :email, value: nil, placeholder: 'employee@company.com' %>
-  <%= f.submit "Add", class: 'waves-effect waves-light btn light-blue lighten-3' %>
-<% end %>
-</div>
-<br><br>
+  <table>
+    <thead>
+      <tr>
+        <th>Add employee by email</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <%= form_for @restaurant do |f| %>
+          <td>
+            <%= f.hidden_field :add, value: true %>
+            <%= f.email_field :email, value: nil, placeholder: 'employee@company.com' %>
+          </td>
+          <td>
+            <%= f.submit "Add", class: 'waves-effect waves-light btn light-blue lighten-3' %>
+          </td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
 </div>

@@ -6,7 +6,7 @@ class InvoicesController < ApplicationController
   before_action :set_restaurant_id
   before_action :set_invoice, only: [:edit, :show, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:create, :show]
-  before_action :check_user_is_part_of_invoice, only: [:show]
+  # before_action :check_user_is_part_of_invoice, only: [:show]
   helper InvoicesHelper
 
   def index
@@ -17,8 +17,8 @@ class InvoicesController < ApplicationController
 
   def create
     # pay for takeaway
-    if params[:is_take_away]
-      pay_with_stripe
+    if params[:is_take_away] == "true"
+      :pay_with_stripe
     end
 
     # set takeaway_time if takeaway
@@ -28,13 +28,13 @@ class InvoicesController < ApplicationController
 
     # check if invoice exists
     if params[:invoice_id]
-      @invoice = Invoice.find(params[:invoice_id])
+      @invoice = Invoice.find(params[:invoice_id].to_i)
     # check if takeaway
     elsif params[:is_take_away] == "true"
       @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, user_name: current_user.name, takeaway_time: @takeaway_time)
     # check if reservation or queuing
     elsif params[:reservation_id]
-      @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, user_name: current_user.name, reservation_id: params[:reservation_id])
+      @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, user_name: current_user.name, reservation_id: params[:reservation_id].to_i)
     # new restaurant order
     else
       @invoice = Invoice.new(restaurant_id: @restaurant.id, table_id: params[:table_id])
@@ -96,7 +96,7 @@ class InvoicesController < ApplicationController
       redirect_to restaurant_invoices_path(@restaurant)
     # invoice - pay and complete action
     elsif params[:stripeToken]
-      payWithStripe
+      :payWithStripe
       @x = User.where(email: params[:stripeEmail]).count > 0 ? User.where(email: params[:stripeEmail]).first.id : nil
 
       if @invoice.update(time_end: DateTime.now, user_id: @x)
@@ -152,7 +152,7 @@ class InvoicesController < ApplicationController
       charge = Stripe::Charge.create(
       :customer => customer.id,
       :amount => @amount,
-      :description => "Invoice:#{@invoice.id}",
+      :description => @invoice ? "Invoice:#{@invoice.id}" : "Order",
       :currency => 'SGD'
       )
     rescue Stripe::CardError => e

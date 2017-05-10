@@ -39,10 +39,12 @@ Rails.application.routes.draw do
 
     put 'notify/:id' => 'walkins#notify', as: 'notify'
     put 'requeue/:id' => 'walkins#requeue', as: 'requeue'
+    put 'seated/:id' => 'walkins#seated', as: 'seated'
+    put 'checked_out/:id' => 'diners#checked_out', as: 'checked_out'
 
     get 'diners' => 'diners#index'
     get 'diners/:id/edit' => 'diners#edit', as: 'edit_diner'
-    # get 'diners/:id' => 'diners#show', as: 'diner'
+    get 'diners/:id' => 'diners#show', as: 'diner'
     put 'diners/:id' => 'diners#update'
 
     put 'reset_queue' => 'restaurants#reset_queue'

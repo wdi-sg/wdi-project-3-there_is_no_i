@@ -6,8 +6,8 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!, except: [:create, :new]
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-  before_action :check_user_is_part_of_restaurant, except: [:create, :new]
-  before_action :check_user_is_part_of_reservation, only: [:show, :edit, :update, :delete]
+  before_action :check_user_is_part_of_restaurant, except: [:create, :new, :destroy]
+  before_action :check_user_is_part_of_reservation, only: [:show, :edit, :update, :destroy]
 
   before_action :set_duration, only: [:create, :update]
   helper ReservationsHelper
@@ -121,10 +121,16 @@ class ReservationsController < ApplicationController
 
     if r_start_time < Time.now
       flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'
-      render :new
-    elsif r_start_time < Time.now + @reservation_allowance.hours
-      flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
-      render :new
+      @table_options = @restaurant.tables.map do |table|
+        [table.name, table.id]
+      end
+      render :edit
+    elsif r_start_time < Time.now + @est_duration
+      flash['alert'] = "Cannot make a reservation within #{@est_duration} hours from now."
+      @table_options = @restaurant.tables.map do |table|
+        [table.name, table.id]
+      end
+      render :edit
     else
       @reservation.start_time = nil
       @reservation.save
@@ -136,7 +142,24 @@ class ReservationsController < ApplicationController
         @reservation.end_time = @reservation.start_time + @est_duration
 
         if @reservation.update(reservation_params)
-          redirect_to restaurant_reservations_path(@restaurant)
+
+          if @reservation.email == nil or @reservation.email.length < 2
+            flash['alert'] = 'Successfully updated reservation'
+            redirect_to restaurant_reservations_path(@restaurant)
+
+          else
+            subject = "Reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for #{@reservation.party_size}"
+
+            body = "Dear #{@reservation.name}, \nYour reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for a table of #{@reservation.party_size} has been updated. You may place an advance order at https://locavorusrex.herokuapp.com/reservations . Thank you and see you soon! \nBest regards, \n#{@reservation.restaurant.name} \n \n \nPowered by Locavorus"
+
+            p body
+
+            send_email(@reservation.name, @reservation.email, subject, body)
+
+            flash['alert'] = 'Successfully updated reservation'
+            redirect_to restaurant_reservations_path(@restaurant)
+          end
+
         else
           @reservation.start_time = old_start_time
           @reservation.save
@@ -165,11 +188,15 @@ class ReservationsController < ApplicationController
     all_invoices = Invoice.where(reservation_id: @reservation.id)
     if all_invoices
       all_invoices.each do |invoice|
-        invoice.update(reservation_id: nil)
+        invoice.destroy!
       end
     end
     if @reservation.destroy!
-      redirect_to restaurant_reservations_path(@restaurant)
+      if current_user.restaurants.include?(@restaurant)
+        redirect_to restaurant_reservations_path(@restaurant)
+      else
+        redirect_to reservations_path
+      end
     else
       render :new
     end
@@ -186,7 +213,7 @@ class ReservationsController < ApplicationController
   end
 
   def check_user_is_part_of_reservation
-    if current_user[:id] != @reservation[:user_id] && !current_user.restaurants.include?(@reservation.restaurant)
+    if current_user[:id] != @reservation[:user_id]
       flash['alert'] = 'You do not have permission to access that page'
       redirect_to edit_user_registration_path
     end
