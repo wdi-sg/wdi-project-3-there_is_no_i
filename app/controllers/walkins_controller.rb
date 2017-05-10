@@ -3,6 +3,7 @@ class WalkinsController < ApplicationController
   include AddBreadcrumbs
   include FindingTableLogic
   include SendTwilio
+  include Format
   before_action :authenticate_user!
   before_action :set_restaurant
   before_action :check_user_is_part_of_restaurant
@@ -70,7 +71,13 @@ class WalkinsController < ApplicationController
 
   def public_save(walkin)
     if walkin.save!
-      # ActionCable.server.broadcast('room_channel', {walkin: walkin})
+      walkin_name = walkin.name != nil ? walkin.name : ''
+      walkin_phone = formatPhone(walkin.phone)
+      walkin_start_time = walkin.start_time != nil ? formatOrderDate(walkin.start_time) : ''
+      walkin_table_name = walkin.table != nil ? 'T' + walkin.table.name : ''
+
+      ActionCable.server.broadcast('room_channel', { walkin: walkin.id, queue_number: walkin.queue_number, name: walkin_name, phone: walkin_phone, party_size: walkin.party_size, start_time: walkin_start_time, table_name: walkin_table_name } )
+
       redirect_to restaurant_public_path(@restaurant)
     else
       render :public_new
