@@ -9,37 +9,16 @@ h2 {
   font-size: 25px;
 }
 
-#add-reservation {
-  margin-top: 10px;
-  margin-right: 0;
-  // margin-left: 220px;
-  position: absolute;
-}
-
 #left-side {
   border-right: 5px solid black;
   vertical-align: middle;
 }
 
-#buttons-1 {
-  display: inline-block;
-  width: 600px
-}
-
-.page-footer {
-  background: none;
-}
-
-#see-schedule {
-  margin-top: 10px;
-  margin-left: 200px;
-}
-
-#right-butan {
-  width: 250px;
-}
-
 #right-side {
-  width: 750px;
-  margin: 0 auto;
+  max-width: 50%;
+  margin-left:auto;
+  margin-right:auto;
+}
+#right-tables {
+  position:relative;
 }
