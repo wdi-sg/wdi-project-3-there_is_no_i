@@ -1,9 +1,17 @@
+<div class="dash-container">
 <div class="row">
   <!-- ==== LEFT SIDE OF THE PAGE ==== -->
   <div class="col s6" id="left-side"> <!-- DO NOT TOUCH -->
     <div class="row" id="reservation-and-button">
     <div class="col s6">
   <!-- <h1 style="font-size:55px">All Reservations</h1> -->
+<p><%= link_to 'Reservations', restaurant_reservations_path(current_user.restaurant_id) %> |
+  Queue |
+  Takeaways</p>
+<p><%= link_to 'Current Diners', restaurant_diners_path(current_user.restaurant_id) %> |
+  <%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id) %></p>
+
+
     </div>
     <div class="col s6">
   <a class="waves-effect waves-light btn" id="add-reservation" href="/restaurants/<%= @restaurant_id %>/reservations/new"><i class="material-icons left">person_add</i>Add Reservation</a>
@@ -115,46 +123,49 @@
       </table>
 
       <!-- ==== END OF TABLES, BUTTONS HERE ==== -->
-      <footer class="page-footer">
-      <div id="buttons">
-          <center>
-          <a class="waves-effect waves-light btn">Reservations</a>
-          <a class="waves-effect waves-light btn">Takeaways</a>
-          <a class="waves-effect waves-light btn">Current Diners</a>
-        </center>
-        <center>
-          <a class="waves-effect waves-light btn" style="width:518px; margin-top:5px;">See All Orders</a>
-        </center>
-      </div>
-    </footer>
+
   </div> <!-- DO NOT TOUCH -->
 
 
   <!-- ==== RIGHT SIDE OF THE PAGE ==== -->
 
-    <div class="col s6"> <!-- DO NOT TOUCH -->
-      <div class="row" id="reservation-and-button">
-      <div class="col s6">
+    <div class="col s7" id="right-side"> <!-- DO NOT TOUCH -->
+
+  <!-- ============TABLE START============= -->
+  <div class="row">
+
+    <div class="col s3">
+      <table class="bordered centered">
+        <thead>
+        <tr>
+            <th>Table 1</th>
+        </tr>
+      </thead>
+        <tbody>
+          <tr><td><i class="material-icons left">people</i>2 pax</td></tr>
+          <tr><td><i class="material-icons left">access_time</i>1:00pm</td></tr>
+          <tr><td><i class="material-icons left">local_atm</i>$30.20</td></tr>
+          <tr><td>
+            New | Add | Pay
+          </td></tr>
+        </tbody>
+      </table>
       </div>
-      <!-- <div class="col s6">
-    <a class="waves-effect waves-light btn" id="see-schedule"><i class="material-icons left">event_note</i>See schedule</a>
-  </div> -->
-    </div> <!-- for id:reservation-and-button -->
 
-
-  <!-- ========================= -->
-    <div class="row">
       <div class="col s3">
         <table class="bordered centered">
           <thead>
           <tr>
-              <th>Table 1</th>
+              <th>Table 2</th>
           </tr>
         </thead>
           <tbody>
-            <tr><td><i class="material-icons left">people</i>2 pax</td></tr>
-            <tr><td><i class="material-icons left">access_time</i>1:00pm</td></tr>
-            <tr><td><i class="material-icons left">local_atm</i>$30.20</td></tr>
+            <tr><td><i class="material-icons left">people</i>5 pax</td></tr>
+            <tr><td><i class="material-icons left">access_time</i>2:30pm</td></tr>
+            <tr><td><i class="material-icons left">local_atm</i>$27.60</td></tr>
+            <tr><td>
+              New | Add | Pay
+            </td></tr>
           </tbody>
         </table>
         </div>
@@ -163,13 +174,16 @@
           <table class="bordered centered">
             <thead>
             <tr>
-                <th>Table 2</th>
+                <th>Table 3</th>
             </tr>
           </thead>
             <tbody>
-              <tr><td><i class="material-icons left">people</i>5 pax</td></tr>
-              <tr><td><i class="material-icons left">access_time</i>2:30pm</td></tr>
-              <tr><td><i class="material-icons left">local_atm</i>$27.60</td></tr>
+              <tr><td><i class="material-icons left">people</i>4 pax</td></tr>
+              <tr><td><i class="material-icons left">access_time</i>5:00pm</td></tr>
+              <tr><td><i class="material-icons left">local_atm</i>$19.90</td></tr>
+              <tr><td>
+                New | Add | Pay
+              </td></tr>
             </tbody>
           </table>
           </div>
@@ -178,45 +192,51 @@
             <table class="bordered centered">
               <thead>
               <tr>
-                  <th>Table 3</th>
+                  <th>Table 4</th>
               </tr>
             </thead>
               <tbody>
-                <tr><td><i class="material-icons left">people</i>4 pax</td></tr>
-                <tr><td><i class="material-icons left">access_time</i>5:00pm</td></tr>
-                <tr><td><i class="material-icons left">local_atm</i>$19.90</td></tr>
+                <tr><td>
+                  <img src="http://simpleicon.com/wp-content/uploads/table.png" height="177" width="126">
+                </td></tr>
               </tbody>
             </table>
-            </div>
+          </div>
+
+            <!-- ===== SECOND ROW ===== -->
 
             <div class="col s3">
               <table class="bordered centered">
                 <thead>
                 <tr>
-                    <th>Table 4</th>
+                    <th>Table 5</th>
                 </tr>
               </thead>
                 <tbody>
+                  <tr><td><i class="material-icons left">people</i>2 pax</td></tr>
+                  <tr><td><i class="material-icons left">access_time</i>1:00pm</td></tr>
+                  <tr><td><i class="material-icons left">local_atm</i>$30.20</td></tr>
                   <tr><td>
-                    <img src="http://simpleicon.com/wp-content/uploads/table.png" height="126" width="126">
+                    New | Add | Pay
                   </td></tr>
                 </tbody>
               </table>
-            </div>
-
-              <!-- ===== SECOND ROW ===== -->
+              </div>
 
               <div class="col s3">
                 <table class="bordered centered">
                   <thead>
                   <tr>
-                      <th>Table 5</th>
+                      <th>Table 6</th>
                   </tr>
                 </thead>
                   <tbody>
-                    <tr><td><i class="material-icons left">people</i>2 pax</td></tr>
-                    <tr><td><i class="material-icons left">access_time</i>1:00pm</td></tr>
-                    <tr><td><i class="material-icons left">local_atm</i>$30.20</td></tr>
+                    <tr><td><i class="material-icons left">people</i>5 pax</td></tr>
+                    <tr><td><i class="material-icons left">access_time</i>2:30pm</td></tr>
+                    <tr><td><i class="material-icons left">local_atm</i>$27.60</td></tr>
+                    <tr><td>
+                      New | Add | Pay
+                    </td></tr>
                   </tbody>
                 </table>
                 </div>
@@ -225,14 +245,14 @@
                   <table class="bordered centered">
                     <thead>
                     <tr>
-                        <th>Table 6</th>
+                        <th>Table 7</th>
                     </tr>
                   </thead>
-                    <tbody>
-                      <tr><td><i class="material-icons left">people</i>5 pax</td></tr>
-                      <tr><td><i class="material-icons left">access_time</i>2:30pm</td></tr>
-                      <tr><td><i class="material-icons left">local_atm</i>$27.60</td></tr>
-                    </tbody>
+                  <tbody>
+                    <tr><td>
+                      <img src="http://simpleicon.com/wp-content/uploads/table.png" height="177" width="126">
+                    </td></tr>
+                  </tbody>
                   </table>
                   </div>
 
@@ -240,37 +260,25 @@
                     <table class="bordered centered">
                       <thead>
                       <tr>
-                          <th>Table 7</th>
+                          <th>Table 8</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr><td>
-                        <img src="http://simpleicon.com/wp-content/uploads/table.png" height="126" width="126">
-                      </td></tr>
-                    </tbody>
+                      <tbody>
+                        <tr><td>
+                          <img src="http://simpleicon.com/wp-content/uploads/table.png" height="177" width="126">
+                        </td></tr>
+                      </tbody>
                     </table>
-                    </div>
+                  </div>
 
-                    <div class="col s3">
-                      <table class="bordered centered">
-                        <thead>
-                        <tr>
-                            <th>Table 8</th>
-                        </tr>
-                      </thead>
-                        <tbody>
-                          <tr><td>
-                            <img src="http://simpleicon.com/wp-content/uploads/table.png" height="126" width="126">
-                          </td></tr>
-                        </tbody>
-                      </table>
-                    </div>
+        <!-- ===== THIRD ROW ===== -->
 
-          <!-- ===== THIRD ROW ===== -->
-
-
-    </div>
 
   </div>
+
+  </div>
+
+
   <!-- DO NOT TOUCH -->
+  </div>
 </div>
