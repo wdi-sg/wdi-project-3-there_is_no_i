@@ -3,6 +3,7 @@ class ReservationsController < ApplicationController
   include AddBreadcrumbs
   include FindingTableLogic
   include SendEmail
+  include Format
   before_action :authenticate_user!, except: [:create, :new]
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
@@ -29,8 +30,11 @@ class ReservationsController < ApplicationController
   def create
     r_start_time =  Time.zone.local( params[:reservation]["date(1i)"].to_i, params[:reservation]["date(2i)"].to_i, params[:reservation]["date(3i)"].to_i, params[:reservation]["time(4i)"].to_i, params[:reservation]["time(5i)"].to_i, 0)
 
+    # if params[:reservation][:phone] !=~ /\d/ && params[:reservation][:phone] != nil
+    #   flash['alert'] = 'Phone input must be in numbers'
+    #   render :new
     if r_start_time < Time.now
-      flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'
+      flash['alert'] = 'Cannot reserve a timeslot from the past. Please check input parameters.'
       render :new
     elsif r_start_time < Time.now + @reservation_allowance.hours
       flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
@@ -78,6 +82,13 @@ class ReservationsController < ApplicationController
 
             send_email(new_res.name, new_res.email, subject, body)
 
+            new_res_name = new_res.name != nil ? new_res.name : ''
+            new_res_phone = formatPhone(new_res.phone)
+            new_res_start_time = new_res.start_time != nil ? formatOrderDate(new_res.start_time) : ''
+            new_res_table_name = new_res.table != nil ? 'Table: ' + new_res.table.name : ''
+
+            ActionCable.server.broadcast('room_channel', { reservation: new_res.id, name: new_res_name, phone: new_res_phone, party_size: new_res.party_size, start_time: new_res_start_time, table_name: new_res_table_name, restaurant: @restaurant.id} )
+
             flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
             redirect_to restaurant_path(params[:restaurant_id])
           end
@@ -106,7 +117,9 @@ class ReservationsController < ApplicationController
       redirect_to new_user_session_path
     end
     add_index_breadcrumbs
-    add_breadcrumb 'Reservations', restaurant_reservations_path(@restaurant) if current_user.restaurants.include? @restaurant
+    if current_user != nil
+      add_breadcrumb 'Reservations', restaurant_reservations_path(@restaurant) if current_user.restaurants.include? @restaurant
+    end
   end
 
   def show

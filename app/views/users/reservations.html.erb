@@ -21,10 +21,14 @@
             <%= @index %>
           </td>
           <td>
-            <%= formatDate(reservation.start_time) %>
+            <% if reservation.start_time%>
+              <%= formatDate(reservation.start_time.getlocal('+08:00')) %>
+            <% end %>
           </td>
           <td>
+            <% if reservation.restaurant_id %>
             <%= reservation.restaurant.name %>
+            <% end %>
           </td>
           <td>
             <%= reservation.party_size %>

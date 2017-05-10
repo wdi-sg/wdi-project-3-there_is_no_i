@@ -54,7 +54,7 @@
 
 <p>
   Current Queue Ahead:
-  <%= Reservation.where(restaurant_id: @restaurant.id).where(status: 'queueing').or(Reservation.where(restaurant_id: @restaurant.id).where(status: 'awaiting')).count %>
+  <%= Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing','awaiting']).count %>
 </p>
 </div> <!-- div for icons column-->
 </div> <!-- div for the column -->

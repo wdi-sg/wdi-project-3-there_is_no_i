@@ -22,9 +22,8 @@ class DinersController < ApplicationController
     end
     if @diner.table != nil
       @table_options << [@diner.table.name, @diner.table.id]
-    else
-      @table_options << ['', nil]
     end
+    @table_options << ['', nil]
   end
 
   def show
@@ -76,9 +75,8 @@ class DinersController < ApplicationController
             end
             if @diner.table != nil
               @table_options << [@diner.table.name, @diner.table.id]
-            else
-              @table_options << ['', nil]
             end
+            @table_options << ['', nil]
             render :edit
           end
         else
@@ -135,9 +133,8 @@ class DinersController < ApplicationController
           end
           if @diner.table != nil
             @table_options << [@diner.table.name, @diner.table.id]
-          else
-            @table_options << ['', nil]
           end
+          @table_options << ['', nil]
           render :edit
         end
       elsif params[:reservation][:status] == 'cancelled' || params[:reservation][:status] == 'queuing' || params[:reservation][:status] == 'checked_out'
@@ -157,11 +154,12 @@ class DinersController < ApplicationController
           reassign_table(@diner, @restaurant)
           @diner.status = 'queuing'
 
-          # send to back of queue
+          # send to back of queue (requeue)
           @diner.queue_number = @diner.restaurant.next_queue_number
           @diner.restaurant.next_queue_number += 1
           @diner.restaurant.save!
           sms_send_back_queue(@diner)
+
         elsif params[:reservation][:status] == 'checked_out'
           @diner.status = 'checked_out'
           @diner.end_time = Time.now
@@ -212,10 +210,27 @@ class DinersController < ApplicationController
   # Update leaving customer
   def save_update(diner)
     if diner.save!
+      flash['alert'] = 'Successfully updated parameters.'
       redirect_to dashboard_path
     else
       flash['alert'] = 'Error 500. Unable to save lastest changes.'
       render :edit
+    end
+  end
+
+  def cancelled
+    if Reservation.find(params[:id]) && Restaurant.find(params[:restaurant_id])
+      diner = Reservation.find(params[:id])
+      diner.status = 'cancelled'
+      diner.end_time = Time.now
+      diner.save
+      reassign_table(diner, @restaurant)
+      sms_cancelled(diner)
+      flash['alert'] = "#{diner.name}(##{diner.queue_number}) was removed from the queue."
+      redirect_to dashboard_path
+    else
+      flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
+      redirect_to dashboard_path
     end
   end
 
