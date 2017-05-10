@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   include AuthenticateRestaurantUser
+  include AddBreadcrumbs
   before_action :authenticate_user!
   before_action :set_restaurant_id
   before_action :set_invoice, only: [:create, :new]
@@ -7,8 +8,7 @@ class OrdersController < ApplicationController
   before_action :check_user_is_part_of_restaurant, except: [:destroy]
 
     def index
-      add_breadcrumb "All Restaurants", :restaurants_path
-      add_breadcrumb "Back to restaurant", restaurant_path(@restaurant)
+      add_index_breadcrumbs
       @orders = @restaurant.orders
     end
 

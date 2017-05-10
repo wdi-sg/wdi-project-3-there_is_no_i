@@ -1,13 +1,13 @@
 class TablesController < ApplicationController
   include AuthenticateRestaurantUser
+  include AddBreadcrumbs
   before_action :authenticate_user!
   before_action :set_restaurant_id
   before_action :set_table, only: [:edit, :show, :update, :destroy]
   before_action :check_user_is_part_of_restaurant
 
   def index
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_index_breadcrumbs
     @tables = Table.where(restaurant_id: params[:restaurant_id]).order('LOWER(name) ASC')
   end
 
@@ -24,22 +24,16 @@ class TablesController < ApplicationController
   end
 
   def new
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
-    add_breadcrumb "Tables", restaurant_tables_path(@restaurant)
+    add_full_breadcrumbs("Tables", restaurant_tables_path(@restaurant))
     @table = Table.new
   end
 
   def edit
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
-    add_breadcrumb "Tables", restaurant_tables_path(@restaurant)
+    add_full_breadcrumbs("Tables", restaurant_tables_path(@restaurant))
   end
 
   def show
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
-    add_breadcrumb "Tables", restaurant_tables_path(@restaurant)
+    add_full_breadcrumbs("Tables", restaurant_tables_path(@restaurant))
   end
 
   def update

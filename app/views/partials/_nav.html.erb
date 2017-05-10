@@ -50,6 +50,8 @@
     </div>
 </nav>
 
+
+
 <!-- ===== BREADCRUMBS & SEARCH BAR ===== -->
 <p style="margin-left:15px; font-size:18px;"> <%= render_breadcrumbs :separator => ' / ' %> </p>
 
@@ -57,10 +59,12 @@
   <form class="" action="/restaurants" method="get" style="display:inline-block;">
     <table>
       <tr>
-    <td><input type="text" name="search" value="" placeholder="Search for Restaurants"></td>
+        <td> <p style="margin-bottom:38px">Find</p> </td>
+    <td><input type="text" name="search" value="" placeholder="restaurants and cuisines"></td>
     <td> <p style="margin-bottom:38px">In</p> </td>
     <td><input type="text" name="city" value="" placeholder="City"></td>
   <td><button type="submit" class="waves-effect waves-light btn blue lighten-3" style="margin-bottom:12px">Search</button></td>
+
 </tr>
 </table>
   </form>

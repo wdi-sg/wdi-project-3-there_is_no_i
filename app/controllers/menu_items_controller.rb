@@ -1,5 +1,6 @@
 class MenuItemsController < ApplicationController
   include AuthenticateRestaurantUser
+  include AddBreadcrumbs
   before_action :authenticate_user!, except: [:index, :show, :redirect]
   before_action :set_restaurant_id, except: [:redirect]
   before_action :set_menu_item, only: [:edit, :show, :update, :destroy]
@@ -8,21 +9,16 @@ class MenuItemsController < ApplicationController
   helper MenuItemsHelper
 
   def index
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_index_breadcrumbs
     gon.restaurant = @restaurant.name
     gon.description = @existing_invoice == '' && @reservation == '' ? 'Takeaway' : 'Order'
       @restaurant_id = params[:restaurant_id]
-    if request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?name=sort"
+    if request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?sort=name"
       @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order(:name)
-    elsif request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?price=sort"
+    elsif request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?sort=price"
       @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order(:price)
-    elsif request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?description=sort"
+    elsif request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?sort=description"
       @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order(:description)
-    elsif request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?ingredient=sort"
-      @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order(:ingredients)
-    elsif request.fullpath == "/restaurants/#{@restaurant_id}/menu_items?tag=sort"
-      @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order(:tags)
     else
       @menu_items = MenuItem.where(restaurant_id: params[:restaurant_id]).order('LOWER(name) ASC')
     end
@@ -45,22 +41,16 @@ class MenuItemsController < ApplicationController
   end
 
   def new
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
-    add_breadcrumb "Menu", restaurant_menu_items_path(@restaurant)
+    add_full_breadcrumbs('Menu', restaurant_menu_items_path(@restaurant))
     @menu_item = MenuItem.new
   end
 
   def edit
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
-    add_breadcrumb "Menu", restaurant_menu_items_path(@restaurant)
+    add_full_breadcrumbs('Menu', restaurant_menu_items_path(@restaurant))
   end
 
   def show
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
-    add_breadcrumb "Menu", restaurant_menu_items_path(@restaurant)
+    add_full_breadcrumbs('Menu', restaurant_menu_items_path(@restaurant))
   end
 
   def update
