@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # home
-  root to: 'main#index'
+  root to: 'restaurants#index'
 
   # serve websocket cable requests
   mount ActionCable.server, at: '/cable'
