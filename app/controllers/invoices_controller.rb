@@ -47,7 +47,7 @@ class InvoicesController < ApplicationController
     # action cable the orders to /orders
       orders.each do |menu_item|
         @order = Order.create(user_id: current_user.id, is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item, request_description: params[:request])
-        ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: correctStartTime(@order), item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id, request_description: params[:request]})
+        ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: correctStartTime(@order), item: @order.menu_item.name, is_take_away: (params[:is_take_away] == "true" ? 'yes' : ''), restaurant: @restaurant.id, request: params[:request], table: (@invoice.table_id ? @invoice.table_id : '')})
       end
 
       # send takeaway user a confirmation email

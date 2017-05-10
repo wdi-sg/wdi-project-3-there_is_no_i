@@ -8,8 +8,7 @@ App.room = App.cable.subscriptions.create('RoomChannel', {
   received: function (data) {
     if (data.walkin) {
       appendQueue(data)
-    }
-    else {
+    } else {
       appendOrders(data)
     }
   }
@@ -17,8 +16,8 @@ App.room = App.cable.subscriptions.create('RoomChannel', {
 
 function appendOrders (data) {
   var tableToAttachTo = $('#' + 'orders-for-' + data.restaurant.toString())
-  var tr = $('<tr>')
-  tr.html('<tr><td>' + data.invoice + '</td><td>' + data.received + '</td><td> </td><td>' + data.item + '</td><td>-</td><td>' + data.is_take_away + '</td><td>-</td></tr>')
+  var tr = document.createElement('tr')
+  tr.innerHTML = '<td><a href="/restaurants/' + data.restaurant + '/invoices/' + data.invoice + '">' + data.invoice + '</a></td><td>' + data.received + '</td><td>' + data.item + '</td><td>' + data.table + '</td><td>' + data.request + '</td><td>' + data.is_take_away + '</td><td><input type="button" value="Reload" onClick="window.location.reload()"></td>'
   tableToAttachTo.append(tr)
 }
 
@@ -26,7 +25,7 @@ function appendQueue (data) {
   var tableToAttachTo = $('#queue-' + 101)
 
   var newR = document.createElement('tr')
-  newR.innerHTML = '<tr><td><i class="material-icons left">edit</i>Edit</td>' + '<td>#' + data.queue_number + '</td>'  + '<td>' + data.name + '<br>' + data.phone + '</td>' + '<td><i class="material-icons left">people</i>' + data.party_size + 'pax</td>' + '<td><i class="material-icons left">access_time</i>' + data.start_time + '</td>' + '<td>No Order</td>'+ '<td>' + data.table_name + '</td></tr>'
+  newR.innerHTML = '<tr><td><i class="material-icons left">edit</i>Edit</td>' + '<td>#' + data.queue_number + '</td>' + '<td>' + data.name + '<br>' + data.phone + '</td>' + '<td><i class="material-icons left">people</i>' + data.party_size + 'pax</td>' + '<td><i class="material-icons left">access_time</i>' + data.start_time + '</td>' + '<td>No Order</td>' + '<td>' + data.table_name + '</td></tr>'
 
   tableToAttachTo.append(newR)
   console.log(data)
