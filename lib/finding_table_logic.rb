@@ -20,9 +20,8 @@ module FindingTableLogic
     # Filter off tables by capacity_total (>= party_size)
     filtered_aval_tables = filter_by_capacity(tables_considered, this_customer)
 
-    # && this.customer.party_size < recommended_table.capacity_minimum...
-
     p 'SELECTED'
+    p this_customer
     p filtered_aval_tables[0]
 
     # Select smallest size available
@@ -38,6 +37,9 @@ module FindingTableLogic
     all_reservations = Reservation.where(restaurant_id: restaurant.id).where('DATE(start_time) = ?', date).where.not(status: 'checked_out').where.not(status: 'cancelled')
 
     affecting_reservations = all_reservations.where('start_time < ?', end_time_est).where('end_time > ?', start_time_given)
+
+    p all_reservations
+    p affecting_reservations
 
     # Find Tables that cannot be used
     affecting_tables = []
@@ -60,10 +62,12 @@ module FindingTableLogic
 
   def filter_by_capacity(tables_considered, this_customer)
     filtered_aval_tables = []
+    if tables_considered.count > 0
     tables_considered.each do |table|
       if table.capacity_total && table.capacity_total >= this_customer.party_size
         filtered_aval_tables.push(table)
       end
+    end
     end
 
     # Sort by smallest table size
@@ -71,12 +75,14 @@ module FindingTableLogic
   end
 
   def find_next_customer(table)
-    # Next Customer must be able to fit into current table
-    filtered_queue = Reservation.where('restaurant_id = ?', @restaurant.id).where('status = ?', 'queuing').where('party_size <= ?', table.capacity_total)
-    p '====QUEUE where size <= Table===='
-    p filtered_queue
-
-    # Next customer must fulfill business criteria (party_size big enough for table's minimum capacity) # allowance 2?
+    # Next Customer must be able to fit into current table if there is a table
+    if table
+      filtered_queue = Reservation.where('restaurant_id = ?', @restaurant.id).where('status = ?', 'queuing').where('party_size <= ?', table.capacity_total).where(table_id: nil)
+      p '====QUEUE where size <= Table===='
+      p filtered_queue
+    else
+      filtered_queue = []
+    end
 
     # If Potential Next Customers can fit, sort by queue_number
     if filtered_queue.count > 1

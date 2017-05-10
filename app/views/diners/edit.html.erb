@@ -41,7 +41,7 @@
   <% elsif @diner.status == 'awaiting' %>
   <p>
     <%= f.label :status, "Status" %>
-    <%= f.select(:status, [['Queuing','queuing'], ['Awaiting','awaiting'], ['Dining','dining'], ['Cancelled','cancelled']])%>
+    <%= f.select(:status, [['Cancelled','cancelled'], ['Queuing','queuing'], ['Awaiting','awaiting'], ['Dining','dining']])%>
   </p>
   <% elsif @diner.status == 'dining' %>
   <p>
@@ -50,6 +50,12 @@
   </p>
   <% end %>
 
+  <% if @diner.status == 'reservation' %>
+  <p>
+    Party Size:
+    <%= @diner.party_size %>
+  </p>
+  <% else %>
   <p>
     <%= f.label :party_size, "Number of Diners" %>
     <% if @restaurant.tables.count > 0 %>
@@ -58,13 +64,20 @@
       <%= f.select :party_size,[0]%>
     <% end %>
   </p>
-
-  <% if @diner.table_id %>
-  <p>
-    <%= f.label :status, "Table" %>
-    <%= f.select(:table_id, @table_options)%>
-  </p>
   <% end %>
+
+  <% if @diner.status == 'reservation'%>
+  <p>
+    Table:
+    <%= @diner.table_id %>
+  </p>
+  <% else %>
+
+    <%= f.label :table_id, "Table" %>
+    <%= f.select(:table_id, @table_options)%>
+
+  <% end %>
+
 
   <p>
     <%= f.label :special_requests, "Special Requests" %>
