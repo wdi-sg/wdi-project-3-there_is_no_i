@@ -213,7 +213,7 @@ class ReservationsController < ApplicationController
   end
 
   def check_user_is_part_of_reservation
-    if current_user[:id] != @reservation[:user_id]
+    if current_user[:id] != @reservation[:user_id] && current_user.restaurants.exclude?(@restaurant)
       flash['alert'] = 'You do not have permission to access that page'
       redirect_to edit_user_registration_path
     end
