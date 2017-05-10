@@ -33,19 +33,16 @@
         <% if item.picture  %>
           <a href='<%= restaurant_menu_item_path(@restaurant.id, item) %>'><%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %></a>
           <% else %>
-          <img src="https://media3.s-nbcnews.com/j/MSNBC/Components/Video/201702/x_tdy_ov_food_perfectfriedegg_170207.today-inline-vid-featured-desktop.jpg" width=200 height=100>
+          <a href='<%= restaurant_menu_item_path(@restaurant.id, item) %>'><img src="https://media3.s-nbcnews.com/j/MSNBC/Components/Video/201702/x_tdy_ov_food_perfectfriedegg_170207.today-inline-vid-featured-desktop.jpg" width=200 height=100></a>
         <% end %>
       </p>
       <p>
-        Name:
-        <%= item.name %>
+        <b><%= item.name %></b>
       </p>
       <p>
-        Description:
         <%= item.description %>
       </p>
       <p>
-        Price:
         <%= formatPrice(item.price) %>
       </p>
 

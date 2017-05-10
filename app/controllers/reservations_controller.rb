@@ -105,7 +105,8 @@ class ReservationsController < ApplicationController
       flash['alert'] = 'Please login or register before making a reservation.'
       redirect_to new_user_session_path
     end
-    add_full_breadcrumbs('Reservations', restaurant_reservations_path(@restaurant))
+    add_index_breadcrumbs
+    add_breadcrumb 'Reservations', restaurant_reservations_path(@restaurant) if current_user.restaurants.include? @restaurant
   end
 
   def show

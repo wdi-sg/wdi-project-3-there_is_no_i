@@ -1,12 +1,10 @@
 <div class="row">
   <!-- ==== LEFT SIDE OF THE PAGE ==== -->
   <div class="col s6" id="left-side"> <!-- DO NOT TOUCH -->
-
 <p><%= link_to 'Reservations', restaurant_reservations_path(current_user.restaurant_id) %> |
   <%= link_to 'Add Reservations', new_restaurant_reservation_path(current_user.restaurant_id) %> |
   <%= link_to 'Queue', restaurant_walkins_path(current_user.restaurant_id) %> |
-  Takeaways</p>
-<p><%= link_to 'Current Diners', restaurant_diners_path(current_user.restaurant_id) %> |
+  Takeaways | <%= link_to 'Current Diners', restaurant_diners_path(current_user.restaurant_id) %> |
   <%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id) %></p>
 
   <!-- ======================== -->
