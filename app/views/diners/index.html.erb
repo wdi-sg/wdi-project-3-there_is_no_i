@@ -1,6 +1,6 @@
 <div class="container">
 <h1>Diners</h1>
-<p>Current Time: <%= Time.now%></p>
+<p>Current Time: <%= formatOrderDate(Time.now)%></p>
 
 <h2>Awaiting</h2>
 <table>
@@ -16,6 +16,7 @@
       <th>Requests</th>
       <th>Start Time</th>
       <th>Est End Time</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -41,17 +42,20 @@
       <td><%= diner.special_requests %></td>
       <td>
         <% if diner.start_time != nil %>
-        <%= diner.start_time.getlocal('+08:00') %>
+        <%= formatOrderDate(diner.start_time.getlocal('+08:00')) %>
         <% end %>
       </td>
       <td>
         <% if diner.end_time %>
         <% if Time.now > diner.end_time %>
-        <font color="red"><b><%= diner.end_time.getlocal('+08:00') %></b></font>
+        <font color="red"><b><%= formatOrderDate(diner.end_time.getlocal('+08:00')) %></b></font>
         <% else %>
-        <%= diner.end_time.getlocal('+08:00') %>
+        <%= formatOrderDate(diner.end_time.getlocal('+08:00')) %>
         <% end %>
         <% end %>
+      </td>
+      <td>
+        <%= link_to 'Seated', restaurant_seated_path(@restaurant, walkin), method: :put %>
       </td>
     </tr>
     <% end %>
@@ -72,7 +76,6 @@
       <th>Requests</th>
       <th>Start Time</th>
       <th>Est End Time</th>
-      <th></th>
       <th></th>
     </tr>
   </thead>
@@ -100,21 +103,21 @@
       <td><%= diner.special_requests %></td>
       <td>
         <% if diner.start_time != nil %>
-        <%= diner.start_time.getlocal('+08:00') %>
+        <%= formatOrderDate(diner.start_time.getlocal('+08:00')) %>
         <% end %>
       </td>
       <td>
         <% if diner.end_time %>
         <% if Time.now > diner.end_time %>
-        <font color="red"><b><%= diner.end_time.getlocal('+08:00') %></b></font>
+        <font color="red"><b><%= formatOrderDate(diner.end_time.getlocal('+08:00')) %></b></font>
         <% else %>
-        <%= diner.end_time.getlocal('+08:00') %>
+        <%= formatOrderDate(diner.end_time.getlocal('+08:00')) %>
         <% end %>
         <% end %>
       </td>
-      <!-- <td><%= link_to 'Show', restaurant_diner_path(@restaurant.id, diner) %></td> -->
-      <!-- <td><%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, diner) %></td> -->
-      <!-- <%= link_to 'Destroy', restaurant_diner_path(@restaurant.id, diner), method: :delete, data: { confirm: 'Are you sure?' } %> -->
+      <td>
+        <%= link_to 'Check Out', restaurant_checked_out_path(@restaurant, diner), method: :put, data: { confirm: 'This will check the customer out and end their session. This action is undoable. OK to procced?'} %>
+      </td>
     </tr>
     <% end %>
   </tbody>

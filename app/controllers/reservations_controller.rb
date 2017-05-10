@@ -121,10 +121,16 @@ class ReservationsController < ApplicationController
 
     if r_start_time < Time.now
       flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'
-      render :new
-    elsif r_start_time < Time.now + @reservation_allowance.hours
-      flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
-      render :new
+      @table_options = @restaurant.tables.map do |table|
+        [table.name, table.id]
+      end
+      render :edit
+    elsif r_start_time < Time.now + @est_duration
+      flash['alert'] = "Cannot make a reservation within #{@est_duration} hours from now."
+      @table_options = @restaurant.tables.map do |table|
+        [table.name, table.id]
+      end
+      render :edit
     else
       @reservation.start_time = nil
       @reservation.save
@@ -136,7 +142,24 @@ class ReservationsController < ApplicationController
         @reservation.end_time = @reservation.start_time + @est_duration
 
         if @reservation.update(reservation_params)
-          redirect_to restaurant_reservations_path(@restaurant)
+
+          if @reservation.email == nil or @reservation.email.length < 2
+            flash['alert'] = 'Successfully updated reservation'
+            redirect_to restaurant_reservations_path(@restaurant)
+
+          else
+            subject = "Reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for #{@reservation.party_size}"
+
+            body = "Dear #{@reservation.name}, \nYour reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for a table of #{@reservation.party_size} has been updated. You may place an advance order at https://locavorusrex.herokuapp.com/reservations . Thank you and see you soon! \nBest regards, \n#{@reservation.restaurant.name} \n \n \nPowered by Locavorus"
+
+            p body
+
+            send_email(@reservation.name, @reservation.email, subject, body)
+
+            flash['alert'] = 'Successfully updated reservation'
+            redirect_to restaurant_reservations_path(@restaurant)
+          end
+
         else
           @reservation.start_time = old_start_time
           @reservation.save
