@@ -1,6 +1,3 @@
-<p><%= current_user.restaurants.include?(@restaurant) %></p>
-<p><%= current_user.restaurants.inspect %></p>
-
 <div class="show-container">
   <!-- ====== PICTURE AND DESCRIPTION ===== -->
   <% if @restaurant.picture  %>
@@ -94,7 +91,7 @@
     <% if current_user and current_user.restaurants.include? @restaurant %>
     <%= link_to 'Current Queue', restaurant_walkins_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <%= link_to 'Current Diners', restaurant_diners_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
-    <%= link_to 'View Reservations', restaurant_reservations_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3' %>
+    <%= link_to 'View Reservations', restaurant_reservations_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <%= link_to 'View Tables', restaurant_tables_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <%= link_to 'Walk-in Queue', restaurant_new_public_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
     <% end %>

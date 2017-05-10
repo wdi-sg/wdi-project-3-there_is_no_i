@@ -74,7 +74,7 @@ class ReservationsController < ApplicationController
           else
             subject = "Reservation at #{new_res.restaurant.name} on #{new_res.start_time} for #{new_res.party_size}"
 
-            body = "Dear #{new_res.name}, \nYour reservation at #{new_res.restaurant.name} on #{new_res.start_time} for a table of #{new_res.party_size} has been recorded. Thank you and see you soon! \nBest regards, \n#{new_res.restaurant.name} \n \n \nPowered by Locavorus"
+            body = "Dear #{new_res.name}, \nYour reservation at #{new_res.restaurant.name} on #{new_res.start_time} for a table of #{new_res.party_size} has been recorded. You may place an advance order at https://locavorusrex.herokuapp.com/reservations . Thank you and see you soon! \nBest regards, \n#{new_res.restaurant.name} \n \n \nPowered by Locavorus"
 
             send_email(new_res.name, new_res.email, subject, body)
 
@@ -98,8 +98,6 @@ class ReservationsController < ApplicationController
     @table_options = @restaurant.tables.map do |table|
       [table.name, table.id]
     end
-    @hour = @reservation.start_time.hour
-    @minute = @reservation.start_time.min
   end
 
   def new
@@ -143,13 +141,21 @@ class ReservationsController < ApplicationController
           @reservation.start_time = old_start_time
           @reservation.save
           flash['alert'] = 'Error. Please check input parameters.'
-          redirect_to edit_restaurant_reservation_path(@restaurant, @reservation)
+          @table_options = @restaurant.tables.map do |table|
+            [table.name, table.id]
+          end
+          render :edit
+          # redirect_to edit_restaurant_reservation_path(@restaurant, @reservation)
         end
       else
         @reservation.start_time = old_start_time
         @reservation.save
         flash['alert'] = 'Not possible to update changes. Please try again with a different parameter.'
-        redirect_to edit_restaurant_reservation_path(@restaurant, @reservation)
+        @table_options = @restaurant.tables.map do |table|
+          [table.name, table.id]
+        end
+        render :edit
+        # redirect_to edit_restaurant_reservation_path(@restaurant, @reservation)
       end
     end
   end

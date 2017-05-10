@@ -50,27 +50,23 @@
     </div>
 </nav>
 
-<!-- ===== SEARCH BAR ===== -->
+
+
+<!-- ===== BREADCRUMBS & SEARCH BAR ===== -->
 <p style="margin-left:15px; font-size:18px;"> <%= render_breadcrumbs :separator => ' / ' %> </p>
 
-<div id="search-bar">
-  <form class="" action="/restaurants" method="get">
-    <span>Find</span><input type="text" name="search" value="" placeholder="restaurants or cuisines">
-    <span>Near</span><input type="text" name="city" value="" placeholder="city/neighbourhood">
-  <button type="submit" class="waves-effect waves-light btn light-blue lighten-3">Search</button>
+<div id="search-bar" style="margin-bottom:100px;">
+  <form class="" action="/restaurants" method="get" style="display:inline-block;">
+    <table>
+      <tr>
+        <td> <p style="margin-bottom:38px">Find</p> </td>
+    <td><input type="text" name="search" value="" placeholder="restaurants and cuisines"></td>
+    <td> <p style="margin-bottom:38px">In</p> </td>
+    <td><input type="text" name="city" value="" placeholder="Singapore"></td>
+  <td><button type="submit" class="waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:12px">Search</button></td>
+</tr>
+</table>
   </form>
-    <!-- <form id="search-field" class="" action="/restaurants" method="get">
-      <div class="input-field">
-        <input id="search" type="search" name="search" value="" required placeholder="Search for a restaurant">
-        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-        <i class="material-icons">close</i>
-      </div>
-      <div class="input-field">
-        <input id="search" type="search" name="city" value="" required placeholder="Search for a location">
-        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-        <i class="material-icons">close</i>
-      </div>
-    </form> -->
   </div>
-  <br><br><br><br>
+  <br><br>
   <!-- end of search bar -->
