@@ -32,6 +32,8 @@
         <p>
         <% if item.picture  %>
           <a href='<%= restaurant_menu_item_path(@restaurant.id, item) %>'><%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %></a>
+          <% else %>
+          <img src="https://media3.s-nbcnews.com/j/MSNBC/Components/Video/201702/x_tdy_ov_food_perfectfriedegg_170207.today-inline-vid-featured-desktop.jpg" width=200 height=100>
         <% end %>
       </p>
       <p>

@@ -13,7 +13,6 @@
     description: Faker::Company.buzzword,
     cuisine: Faker::Demographic.demonym,
     rating: rand(101),
-    picture: Faker::Placeholdit.image,
     next_queue_number: 1
   )
 end
@@ -40,7 +39,6 @@ end
     price: ActionController::Base.helpers.number_with_precision(rand * 100, precision: 2),
     description: Faker::Food.ingredient,
     restaurant_id: rand(100) + 1,
-    picture: Faker::Placeholdit.image
   )
 end
 
