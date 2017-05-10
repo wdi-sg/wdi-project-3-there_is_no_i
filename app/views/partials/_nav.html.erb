@@ -1,12 +1,14 @@
 <!-- dropdown menu -->
 <ul id="dropdown2" class="dropdown-content">
     <% if current_user && current_user.restaurant_id %>
+    <li style="text-align:center">Restaurant</li>
     <li><%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
-    <li><%= link_to 'Restaurant Invoices', restaurant_invoices_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
+    <li><%= link_to 'Invoices', restaurant_invoices_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <li><%= link_to 'Menu', restaurant_menu_items_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
-    <li><%= link_to 'Restaurant Profile', edit_restaurant_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
+    <li><%= link_to 'Profile', edit_restaurant_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <%end%>
     <li class="divider"></li>
+    <li style="text-align:center">User</li>
     <li><a href="/invoices">My Invoices</a></li>
     <li><a href="/reservations">My Reservations</a></li>
     <li><a href="/account">My Profile</a></li>
@@ -16,41 +18,31 @@
 
 <!-- nav bar itself -->
 <nav>
-    <div class="nav-wrapper light-blue lighten-3">
-        <!-- left side (logo and dropdown) -->
-        <ul id="nav-mobile" class="left hide-on-med-and-down valign-wrapper">
-            <li>
-                <a href="/"><img src="<%= asset_path 'logo.png' %>" height="40" width="120" style="margin-top: 10px"></a>
-            </li>
-        </ul>
+  <div class="nav-wrapper light-blue lighten-3">
+    <!-- left side (logo and dropdown) -->
+    <ul id="nav-mobile" class="left hide-on-med-and-down valign-wrapper">
+      <li>
+        <a href="/"><img src="<%= asset_path 'logo.png' %>" height="40" width="120" style="margin-top: 10px"></a>
+      </li>
+    </ul>
 
-        <!-- right side of nav -->
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-
-            <% if user_signed_in? %>
-            <% if current_user && current_user.restaurant_id %>
-            <li>
-                <%= link_to 'Dashboard', dashboard_path, :class => 'navbar-link' %>
-            </li>
-            <% end %>
-            <li>
-                <a class="dropdown-button" data-beloworigin="true" href="#!" data-constrainWidth="false" data-activates="dropdown2">Account<i class="material-icons right">arrow_drop_down</i>
-                </a>
-            </li>
-        <% else %>
-            <li>
-                <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %>
-            </li>
-            <li>
-                <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
-            </li>
-            <% end %>
-
-        </ul>
-    </div>
+      <!-- right side of nav -->
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <% if user_signed_in? %>
+        <% if current_user.restaurant_id %>
+          <li><%= link_to 'Dashboard', dashboard_path, :class => 'navbar-link' %></li>
+        <% end %>
+        <li>
+          <a class="dropdown-button" data-beloworigin="true" href="#!" data-constrainWidth="false" data-activates="dropdown2">Account<i class="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
+      <% else %>
+        <li><%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link' %></li>
+        <li><%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %></li>
+      <% end %>
+    </ul>
+  </div>
 </nav>
-
-
 
 <!-- ===== BREADCRUMBS & SEARCH BAR ===== -->
 <p style="margin-left:15px; font-size:18px;"> <%= render_breadcrumbs :separator => ' / ' %> </p>
@@ -59,15 +51,15 @@
   <form class="" action="/restaurants" method="get" style="display:inline-block;">
     <table>
       <tr>
-        <td> <p style="margin-bottom:38px">Find</p> </td>
-    <td><input type="text" name="search" value="" placeholder="restaurants and cuisines"></td>
-    <td> <p style="margin-bottom:38px">In</p> </td>
-    <td><input type="text" name="city" value="" placeholder="City"></td>
-  <td><button type="submit" class="waves-effect waves-light btn blue lighten-3" style="margin-bottom:12px">Search</button></td>
-
-</tr>
-</table>
+        <td><p style="margin-bottom:38px">Find</p></td>
+        <td><input type="text" name="search" value="" placeholder="restaurants and cuisines"></td>
+        <td><p style="margin-bottom:38px">In</p></td>
+        <td><input type="text" name="city" value="" placeholder="Singapore"></td>
+        <td><button type="submit" class="waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:12px">Search</button></td>
+      </tr>
+    </table>
   </form>
-  </div>
-  <br><br>
-  <!-- end of search bar -->
+</div>
+<br/>
+<br/>
+<!-- end of search bar -->
