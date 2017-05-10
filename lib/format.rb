@@ -61,4 +61,12 @@ module Format
       order.created_at
     end
   end
+
+  def allOrdersAreCompleted(invoice)
+    done = true
+    invoice.orders.each do |order|
+      done = false if !order.time_end
+    end
+    done
+  end
 end
