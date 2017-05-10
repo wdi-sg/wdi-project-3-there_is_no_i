@@ -93,6 +93,9 @@ class MenuItemsController < ApplicationController
     elsif params[:reservation_id]
       @is_take_away = false
       @table = ''
+    elsif !current_user
+      @is_take_away = true
+      @table = ''
     elsif current_user.restaurants.include? @restaurant
       @is_take_away = false
       @table = ''

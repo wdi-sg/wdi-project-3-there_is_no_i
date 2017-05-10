@@ -84,7 +84,10 @@
       data-locale="auto"
       data-currency="SGD"></script>
   <% elsif @reservation.length > 0 %>
-    reservation is <%= @reservation %>
+    <% if @existing_invoice.length > 0 %>
+      Invoice: <%= label_tag :invoice, @existing_invoice %>
+      <%= hidden_field_tag :invoice_id, @existing_invoice %>
+    <% end %>
     <%= hidden_field_tag :reservation_id, @reservation %>
     <%= f.submit 'Create Orders', id: 'create-orders-button'%>
   <% else %>

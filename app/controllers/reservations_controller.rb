@@ -6,8 +6,8 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!, except: [:create, :new]
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-  before_action :check_user_is_part_of_restaurant, except: [:create, :new]
-  before_action :check_user_is_part_of_reservation, only: [:show, :edit, :update, :delete]
+  before_action :check_user_is_part_of_restaurant, except: [:create, :new, :destroy]
+  before_action :check_user_is_part_of_reservation, only: [:show, :edit, :update, :destroy]
 
   before_action :set_duration, only: [:create, :update]
   helper ReservationsHelper
@@ -165,11 +165,15 @@ class ReservationsController < ApplicationController
     all_invoices = Invoice.where(reservation_id: @reservation.id)
     if all_invoices
       all_invoices.each do |invoice|
-        invoice.update(reservation_id: nil)
+        invoice.destroy!
       end
     end
     if @reservation.destroy!
-      redirect_to restaurant_reservations_path(@restaurant)
+      if current_user.restaurants.include?(@restaurant)
+        redirect_to restaurant_reservations_path(@restaurant)
+      else
+        redirect_to reservations_path
+      end
     else
       render :new
     end
@@ -186,7 +190,7 @@ class ReservationsController < ApplicationController
   end
 
   def check_user_is_part_of_reservation
-    if current_user[:id] != @reservation[:user_id] && !current_user.restaurants.include?(@reservation.restaurant)
+    if current_user[:id] != @reservation[:user_id]
       flash['alert'] = 'You do not have permission to access that page'
       redirect_to edit_user_registration_path
     end
