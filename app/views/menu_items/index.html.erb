@@ -66,6 +66,25 @@
 <!-- ===== RIGHT COLUMN: display submitted orders ===== -->
 <div class="col s3">
 <div style="display:none" class="ordered-items">
+  <% if @is_take_away %>
+    <h2>Takeaway</h2>
+  <% else %>
+    <h2>Your Order</h2>
+  <% end %>
+
+  <table>
+    <thead>
+      <tr>
+        <th>-</th>
+        <th>No.</th>
+        <th>+</th>
+        <th>Item</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody class="ordered-items-list">
+    </tbody>
+  </table>
 <ul class="ordered-items-list">
 </ul>
 <%= form_for :order, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
