@@ -1,5 +1,6 @@
 class WalkinsController < ApplicationController
   include AuthenticateRestaurantUser
+  include AddBreadcrumbs
   include FindingTableLogic
   include SendTwilio
   before_action :authenticate_user!
@@ -10,8 +11,7 @@ class WalkinsController < ApplicationController
   helper WalkinHelper
 
   def index
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_index_breadcrumbs
     @walkins = Reservation.where(restaurant_id: params[:restaurant_id], status: 'queuing').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting')).or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'reservation'))
   end
 

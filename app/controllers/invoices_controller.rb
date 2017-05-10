@@ -1,5 +1,6 @@
 class InvoicesController < ApplicationController
   include AuthenticateRestaurantUser
+  include AddBreadcrumbs
   include SendEmail
   before_action :authenticate_user!, except: [:create]
   before_action :set_restaurant_id
@@ -9,8 +10,7 @@ class InvoicesController < ApplicationController
   helper InvoicesHelper
 
   def index
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_index_breadcrumbs
     gon.restaurant = @restaurant
     @invoices = Invoice.where(restaurant_id: params[:restaurant_id])
   end
@@ -18,9 +18,10 @@ class InvoicesController < ApplicationController
   def create
     # pay for takeaway
     if params[:is_take_away]
-      :pay_with_stripe
+      pay_with_stripe
     end
 
+    # set takeaway_time if takeaway
     if params[:order] && params[:order]["time(1i)"]
       @takeaway_time = Time.zone.local( params[:order]["time(1i)"].to_i, params[:order]["time(2i)"].to_i, params[:order]["time(3i)"].to_i, params[:order]["time(4i)"].to_i, params[:order]["time(5i)"].to_i, 0)
     end
@@ -74,34 +75,32 @@ class InvoicesController < ApplicationController
   end
 
   def edit
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_full_breadcrumbs('Invoices', restaurant_invoices_path(@restaurant))
     @table_options = @restaurant.tables.map do |table|
       [table.name, table.id]
     end
   end
 
   def show
-    add_breadcrumb "Restaurants", :restaurants_path
-    add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
+    add_full_breadcrumbs('Invoices', restaurant_invoices_path(@restaurant))
   end
 
   def update
     # invoice - complete action
     if params[:time_end] == ''
       if @invoice.update(time_end: DateTime.now)
-        flash[:notice] = 'Invoice successfully updated'
+        flash[:notice] = 'Invoice successfully completed.'
       else
         flash[:alert] = 'There was a problem updating the invoice. Please try again.'
       end
       redirect_to restaurant_invoices_path(@restaurant)
     # invoice - pay and complete action
     elsif params[:stripeToken]
-      :payWithStripe
+      payWithStripe
       @x = User.where(email: params[:stripeEmail]).count > 0 ? User.where(email: params[:stripeEmail]).first.id : nil
 
       if @invoice.update(time_end: DateTime.now, user_id: @x)
-        flash[:notice] = 'Invoice successfully updated.'
+        flash[:notice] = 'Invoice successfully paid and completed.'
       else
         flash[:alert] = 'There was a problem updating the invoice. Please try again.'
       end
@@ -109,7 +108,7 @@ class InvoicesController < ApplicationController
     # invoice - update action
     else
       if @invoice.update(invoice_params)
-        flash[:notice] = 'Invoice successfully updated'
+        flash[:notice] = 'Invoice successfully updated.'
         redirect_to restaurant_invoices_path(@restaurant)
       else
         flash[:alert] = 'There was a problem updating the invoice. Please try again.'
