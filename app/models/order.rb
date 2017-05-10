@@ -4,7 +4,7 @@ class Order < ApplicationRecord
   has_one :restaurant, through: :invoice
   belongs_to :user, optional: true
 
-  validates :menu_item_id, presence: true
-  validates :invoice_id, presence: true
-  validates :is_take_away, presence: true
+  # validates :menu_item_id, presence: true
+  # validates :invoice_id, presence: true
+  # validates :is_take_away, presence: true
 end

@@ -28,4 +28,16 @@ module Format
   def formatPhone (phone)
     number_to_phone(phone.to_i, :country_code => 65, :pattern => /(\d{4})(\d{4})$/, :delimiter => ' ')
   end
+
+  def formatMenuItems(invoice)
+    new_obj = {}
+    orders_array = []
+    invoice.orders.map{|order| order.menu_item.name }.each do |item|
+      new_obj[item] == nil ? new_obj[item] = 1 : new_obj[item] += 1
+    end
+    new_obj.each do |key, value|
+      orders_array << [key, value]
+    end
+    orders_array
+  end
 end

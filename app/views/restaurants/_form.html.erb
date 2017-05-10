@@ -5,12 +5,12 @@
   </div>
 
   <div class="field">
-    <%= f.label "Address" %>
+    <%= f.label "Address Line 1" %>
     <%= f.text_field :address1, placeholder: "Address Line 1 (Required)", required: true %>
   </div>
 
   <div class="field">
-    <%= f.label "Address" %>
+    <%= f.label "Address Line 2" %>
     <%= f.text_field :address2, placeholder: "Address Line 2" %>
   </div>
 
@@ -62,22 +62,17 @@
 
   <div class="field">
     <%= f.label :picture %>
-  <% if restaurant.picture  %>
-  <%= cl_image_tag(restaurant.picture, width: 200, height: 100, crop: :fill) %>
-  <% end %>
+    <% if restaurant.picture  %>
+      <p><%= cl_image_tag(restaurant.picture, width: 200, height: 100, crop: :fill) %></p>
+    <% end %>
   </div>
 
   <div class="field">
     <%= f.file_field :picture %>
   </div>
-<br>
+  <br>
 
   <div class="field">
-
-      <%= f.submit 'Save', class: 'waves-effect waves-light btn light-blue lighten-3' %>
+    <%= f.submit 'Save', class: 'waves-effect waves-light btn light-blue lighten-3' %>
   </div>
-
 <% end %>
-<br><br>
-
-<%= cloudinary_js_config %>

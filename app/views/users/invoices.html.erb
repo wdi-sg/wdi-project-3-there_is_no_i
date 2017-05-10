@@ -41,10 +41,8 @@
         <%= invoice.restaurant.name %>
       </td>
       <td>
-        <% invoice.orders.each do |order| %>
-        <p>
-          <%= order.menu_item.name %>
-        </p>
+        <% formatMenuItems(invoice).each do |item| %>
+          <p><%= item[1] %> x <%= item[0] %></p>
         <% end %>
       </td>
       <td><%= formatPrice(showTotalPrice(invoice.menu_items)) %></td>
@@ -97,10 +95,8 @@
         <%= invoice.restaurant.name %>
       </td>
       <td>
-        <% invoice.orders.each do |order| %>
-        <p>
-          <%= order.menu_item.name %>
-        </p>
+        <% formatMenuItems(invoice).each do |item| %>
+          <p><%= item[1] %> x <%= item[0] %></p>
         <% end %>
       </td>
       <td><%= formatPrice(showTotalPrice(invoice.menu_items)) %></td>
