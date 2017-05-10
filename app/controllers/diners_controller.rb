@@ -1,7 +1,10 @@
 class DinersController < ApplicationController
+  include AuthenticateRestaurantUser
   include FindingTableLogic
   include SendTwilio
-  before_action :set_restaurant, only: %i[index show edit update]
+  before_action :authenticate_user!
+  before_action :set_restaurant
+  before_action :check_user_is_part_of_restaurant
   before_action :set_diner, only: %i[show edit update]
   before_action :set_duration, only: [:update, :reassign_table, :assign_table]
 
@@ -35,13 +38,12 @@ class DinersController < ApplicationController
     old_table_id = @diner.table_id
     old_start_time = @diner.start_time
 
-
+#Check if change in table / party size is possible in next status
     if @diner.status == 'queuing' && @diner.table_id == nil && params[:reservation][:status] == 'cancelled'
       @diner.status = params[:reservation][:status]
       save_update(@diner)
 ######### Diner was QUEUING
     elsif @diner.status == 'queuing'
-      # Queuing to Queuing / Awaiting
       if params[:reservation][:status] == 'queuing' or params[:reservation][:status] == 'awaiting'
         set_values(@diner, params[:reservation][:party_size], nil, nil)
 
@@ -91,7 +93,6 @@ class DinersController < ApplicationController
           save_update(@diner)
         end
 
-        # Queuing to Cancelled
       elsif params[:reservation][:status] == 'cancelled'
         @diner.status = 'cancelled'
         @diner.end_time = Time.now

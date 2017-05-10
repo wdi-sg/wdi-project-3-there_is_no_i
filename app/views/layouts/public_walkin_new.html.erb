@@ -6,7 +6,9 @@
   </head>
   <body>
     <h1><%= @restaurant.name%> Walk-in Queue</h1>
+
     <%= form_for @walkin, url: restaurant_public_path(@restaurant), html: {method: :post} do |f| %>
+
       <p>
         <%= f.label :party_size, "Number of Diners" %>
         <% if @restaurant.tables.count > 0 %>
@@ -18,12 +20,14 @@
 
       <p>
         <%= f.label :phone, "Mobile" %>
-        <%= f.number_field :phone, placeholder: '98765432', min:10000000, max:99999999%>
+        <%= f.number_field :phone, placeholder: '98765432', min:10000000, max:99999999, :required => true %>
       </p>
 
       <%= f.submit "Submit" %>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
+
     <% end %>
+
   </body>
 </html>
