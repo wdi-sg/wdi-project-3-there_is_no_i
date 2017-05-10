@@ -1,8 +1,10 @@
 class WalkinsController < ApplicationController
+  include AuthenticateRestaurantUser
   include FindingTableLogic
   include SendTwilio
-  before_action :authenticate_user!, except: [:new]
-  before_action :set_restaurant, only: %i[index new create_walkin create public_new public_create public_save public_show edit update destroy notify]
+  before_action :authenticate_user!
+  before_action :set_restaurant
+  before_action :check_user_is_part_of_restaurant
   before_action :set_walkin, only: %i[show edit update destroy]
   before_action :set_duration, only: [:create, :public_create, :update]
   helper WalkinHelper
@@ -13,18 +15,19 @@ class WalkinsController < ApplicationController
     @walkins = Reservation.where(restaurant_id: params[:restaurant_id], status: 'queuing').or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'awaiting')).or(Reservation.where(restaurant_id: params[:restaurant_id], status: 'reservation'))
   end
 
-  # def create
-  #   create_walkin(walkin_params)
-  #   if @walkin.save!
-  #     redirect_to restaurant_walkins_path(@restaurant)
-  #   else
-  #     render :new
-  #   end
-  # end
-  #
-  # def new
-  #   @walkin = Reservation.new
-  # end
+  def create
+    create_walkin(walkin_params)
+    @walkin.status = 'queuing'
+    if @walkin.save!
+      redirect_to dashboard_path
+    else
+      render :new
+    end
+  end
+
+  def new
+    @walkin = Reservation.new
+  end
 
   def public_create
     create_walkin(public_params)
@@ -79,7 +82,7 @@ class WalkinsController < ApplicationController
     render 'layouts/public_walkin', layout: false
   end
 
-  def edit; end
+  # def edit; end
 
   # def show; end
 
@@ -200,7 +203,9 @@ class WalkinsController < ApplicationController
     @walkin = Reservation.new(params)
     @walkin.restaurant_id = @restaurant.id
     @walkin.queue_number = @restaurant.next_queue_number
-    find_user(@walkin)
+    if @walkin.phone
+      find_user(@walkin)
+    end
     set_next_queue_number(@restaurant)
   end
 

@@ -72,12 +72,10 @@
     <%= @diner.table_id %>
   </p>
   <% else %>
-  <% if @diner.table_id %>
-  <p>
+
     <%= f.label :table_id, "Table" %>
     <%= f.select(:table_id, @table_options)%>
-  </p>
-  <% end %>
+
   <% end %>
 
 
