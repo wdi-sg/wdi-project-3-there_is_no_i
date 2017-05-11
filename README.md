@@ -45,6 +45,8 @@ Simple interface to manage user accounts and business dashboard
 ### Models
 
 ### Website Wireframes
+**Dashboard**
+![Dashboard](app/assets/images/dashboard.png)
 
 
 ## Future Development
