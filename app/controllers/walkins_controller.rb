@@ -125,7 +125,7 @@ class WalkinsController < ApplicationController
       walkin.status = 'awaiting'
       if walkin.save!
         sms_awaiting(walkin)
-        flash['alert'] = "#{walkin.name} was notified"
+        flash['notice'] = "#{walkin.name} was notified"
         redirect_to dashboard_path
       else
         flash['alert'] = 'Error 500. Unable to update status'
@@ -167,7 +167,7 @@ class WalkinsController < ApplicationController
       diner.save!
       diner.table.save!
       if old_status == 'reservation'
-        flash['alert'] = "#{diner.name}(Reservation ##{diner.id}) has checked into the restaurant"
+        flash['notice'] = "#{diner.name}(Reservation ##{diner.id}) has checked into the restaurant"
         redirect_to dashboard_path
       else
         flash['alert'] = "#{diner.name}(##{diner.queue_number}) has checked into the restaurant"

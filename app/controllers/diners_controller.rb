@@ -29,7 +29,7 @@ class DinersController < ApplicationController
     # @table_options = @restaurant.tables.where(capacity_current: 0).map do |table|
     #   [table.name, table.id]
     # end
-    if @diner.table != nil
+    if @diner.table != nil and @diner.status == 'dining'
       @table_options << [@diner.table.name, @diner.table.id]
     end
     @table_options << ['', nil]
@@ -252,7 +252,7 @@ class DinersController < ApplicationController
   # Update leaving customer
   def save_update(diner)
     if diner.save!
-      flash['alert'] = 'Successfully updated parameters.'
+      flash['notice'] = 'Successfully updated parameters.'
       redirect_to dashboard_path
     else
       flash['alert'] = 'Error 500. Unable to save lastest changes.'
@@ -295,7 +295,7 @@ class DinersController < ApplicationController
       diner.end_time = Time.now
       diner.save
       reassign_table(diner, @restaurant)
-      flash['alert'] = "#{diner.name} was checked out from the restaurant"
+      flash['notice'] = "#{diner.name} was checked out from the restaurant"
       redirect_to dashboard_path
     else
       flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
