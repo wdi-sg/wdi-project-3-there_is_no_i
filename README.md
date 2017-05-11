@@ -156,7 +156,7 @@ Tables will only be assigned when a diner is 'queuing' or when an existing diner
 
 [Louisa Lee](https://github.com/imouto2005)
 
-Jasmine Lee
+Jasmine Lee (UX)
 
 ### Acknowledgments :sparkling_heart:
 We acknowledge ourselves for all the hard work that has gone into this project over the past 2 weeks and, more importantly, the people who have helped us along the way.

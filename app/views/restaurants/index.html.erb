@@ -31,7 +31,12 @@
     <div class="card sticky-action">
       <div class="card-image">
         <a href="/restaurants/<%= restaurant.id %>">
-        <img src="http://www.ultimatebali.com/wp-content/uploads/2015/11/Best-Fine-Dining-Indonesian-Restaurants-Bali1.jpg"></a>
+          <% if restaurant.picture  %>
+          <%= cl_image_tag(restaurant.picture, width: 411, height: 230, crop: :fill) %>
+          <% else %>
+        <img src="http://www.ultimatebali.com/wp-content/uploads/2015/11/Best-Fine-Dining-Indonesian-Restaurants-Bali1.jpg">
+        <% end %>
+      </a>
         <a href="/restaurants/<%= restaurant.id %>"><span class="card-title white-text" id="restaurant-title"><%= restaurant.name %></span></a>
       </div>
       <div class="card-content">
