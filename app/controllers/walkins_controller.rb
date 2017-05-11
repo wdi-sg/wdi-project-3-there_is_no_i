@@ -80,7 +80,7 @@ class WalkinsController < ApplicationController
       walkin_name = walkin.name != nil ? walkin.name : ''
       walkin_phone = formatPhone(walkin.phone)
       walkin_start_time = walkin.start_time != nil ? formatOrderDate(walkin.start_time) : ''
-      walkin_table_name = walkin.table != nil ? 'Table: ' + walkin.table.name : ''
+      walkin_table_name = walkin.table != nil ? walkin.table.name : ''
 
       ActionCable.server.broadcast('room_channel', { walkin: walkin.id, queue_number: walkin.queue_number, name: walkin_name, phone: walkin_phone, party_size: walkin.party_size, start_time: walkin_start_time, table_name: walkin_table_name, restaurant: @restaurant.id} )
 
@@ -221,7 +221,12 @@ class WalkinsController < ApplicationController
 
   # Find Available Tables For New Customer
   def find_aval_tables(restaurant)
-    aval_tables = Table.where(restaurant_id: restaurant.id).where('capacity_current = ?', 0)
+    # aval_tables = Table.where(restaurant_id: restaurant.id).where('capacity_current = ?', 0)
+
+    tables_occupied = Reservation.where(restaurant_id: @restaurant.id).where(status: 'dining').where.not(table_id: nil).map do |reservation|
+      reservation.table
+    end
+    aval_tables = @restaurant.tables - tables_occupied
   end
 
   # Change Table's new capacity once customer is assigned

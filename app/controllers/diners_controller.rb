@@ -17,10 +17,19 @@ class DinersController < ApplicationController
   def edit
     add_breadcrumb "Restaurants", :restaurants_path
     add_breadcrumb @restaurant.name, restaurant_path(@restaurant)
-    @table_options = @restaurant.tables.where(capacity_current: 0).map do |table|
+
+    tables_occupied = Reservation.where(restaurant_id: @restaurant.id).where(status: 'dining').where.not(table_id: nil).map do |reservation|
+      reservation.table
+    end
+    all_tables = @restaurant.tables
+    tables_avail = all_tables - tables_occupied
+    @table_options = tables_avail.map do |table|
       [table.name, table.id]
     end
-    if @diner.table != nil
+    # @table_options = @restaurant.tables.where(capacity_current: 0).map do |table|
+    #   [table.name, table.id]
+    # end
+    if @diner.table != nil and @diner.status == 'dining'
       @table_options << [@diner.table.name, @diner.table.id]
     end
     @table_options << ['', nil]
@@ -69,7 +78,12 @@ class DinersController < ApplicationController
             set_values(@diner, old_party_size, old_table_id, Time.now)
 
             flash['alert'] = 'New parameters not permitted.'
-            @table_options = @restaurant.tables.where(capacity_current: 0).map do |table|
+            tables_occupied = Reservation.where(restaurant_id: @restaurant.id).where(status: 'dining').where.not(table_id: nil).map do |reservation|
+              reservation.table
+            end
+            all_tables = @restaurant.tables
+            tables_avail = all_tables - tables_occupied
+            @table_options = tables_avail.map do |table|
               [table.name, table.id]
             end
             if @diner.table != nil
@@ -128,7 +142,12 @@ class DinersController < ApplicationController
             set_values(@diner, old_party_size, old_table_id, Time.now)
 
             flash['alert'] = 'New parameters not permitted.'
-            @table_options = @restaurant.tables.where(capacity_current: 0).map do |table|
+            tables_occupied = Reservation.where(restaurant_id: @restaurant.id).where(status: 'dining').where.not(table_id: nil).map do |reservation|
+              reservation.table
+            end
+            all_tables = @restaurant.tables
+            tables_avail = all_tables - tables_occupied
+            @table_options = tables_avail.map do |table|
               [table.name, table.id]
             end
             if @diner.table != nil
@@ -189,6 +208,18 @@ class DinersController < ApplicationController
             save_update(@diner)
           else
             flash['alert'] = 'The table is currently occupied.'
+            tables_occupied = Reservation.where(restaurant_id: @restaurant.id).where(status: 'dining').where.not(table_id: nil).map do |reservation|
+              reservation.table
+            end
+            all_tables = @restaurant.tables
+            tables_avail = all_tables - tables_occupied
+            @table_options = tables_avail.map do |table|
+              [table.name, table.id]
+            end
+            if @diner.table != nil
+              @table_options << [@diner.table.name, @diner.table.id]
+            end
+            @table_options << ['', nil]
             render :edit
           end
         elsif params[:reservation][:status] == 'cancelled'
@@ -225,6 +256,18 @@ class DinersController < ApplicationController
       redirect_to dashboard_path
     else
       flash['alert'] = 'Error 500. Unable to save lastest changes.'
+      tables_occupied = Reservation.where(restaurant_id: @restaurant.id).where(status: 'dining').where.not(table_id: nil).map do |reservation|
+        reservation.table
+      end
+      all_tables = @restaurant.tables
+      tables_avail = all_tables - tables_occupied
+      @table_options = tables_avail.map do |table|
+        [table.name, table.id]
+      end
+      if @diner.table != nil
+        @table_options << [@diner.table.name, @diner.table.id]
+      end
+      @table_options << ['', nil]
       render :edit
     end
   end
@@ -252,7 +295,7 @@ class DinersController < ApplicationController
       diner.end_time = Time.now
       diner.save
       reassign_table(diner, @restaurant)
-      flash['alert'] = "#{diner.name} was checked out from the restaurant"
+      flash['notice'] = "#{diner.name} was checked out from the restaurant"
       redirect_to dashboard_path
     else
       flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'

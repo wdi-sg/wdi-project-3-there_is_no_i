@@ -80,10 +80,11 @@
     <% end %>
   </div>
   <% else %>
+  <div class="field">
     <%= f.label :table_id, "Table" %>
     <%= f.select(:table_id, @table_options)%>
+  </div>
   <% end %>
-
 
   <div class="field">
     <%= f.label :special_requests, "Special Requests" %>
