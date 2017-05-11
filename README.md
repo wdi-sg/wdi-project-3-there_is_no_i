@@ -40,11 +40,21 @@ Simple interface to manage user accounts and business dashboard
 
 ### Entity Relationship Diagram (ERD)
 
-![ERD]()
+![Initial ERD](http://i.imgur.com/2T5CDGE.jpg)
 
 ### Models
 
 ### Website Wireframes
+
+
+## Future Development
+
+
+### Possible future features / ideas
+
+
+### Bugs
+
 
 ## Getting Started
 
