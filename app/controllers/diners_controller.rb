@@ -32,7 +32,6 @@ class DinersController < ApplicationController
   end
 
   def update
-
     old_party_size = @diner.party_size
     old_table_id = @diner.table_id
     old_start_time = @diner.start_time

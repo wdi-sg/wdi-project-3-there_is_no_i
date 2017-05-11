@@ -1,18 +1,20 @@
+<div class="container">
 <h1>Edit Table</h1>
 <%= form_for @table, url: restaurant_table_path do |f| %>
-<p>
+<div class="field">
   <%= f.label :name %>
   <%= f.text_field :name, placeholder: "Name" %>
-</p>
-<p>
+</div>
+<div class="field">
   <%= f.label 'Current Capacity' %>
   <%= f.number_field :capacity_current, placeholder: "Current Capacity", min: 0 %>
-</p>
-<p>
+</div>
+<div class="field">
   <%= f.label "Total Capacity" %>
   <%= f.number_field :capacity_total, placeholder: "Total Capacity", min: 0 %>
-</p>
-<p>
-  <%= f.submit "Save" %>
-</p>
+</div>
+<div class="field">
+  <%= f.submit "Save", class: 'waves-effect waves-light btn light-blue lighten-3'%>
+</div>
 <% end %>
+</div>
