@@ -221,7 +221,7 @@ class DinersController < ApplicationController
   # Update leaving customer
   def save_update(diner)
     if diner.save!
-      flash['alert'] = 'Successfully updated parameters.'
+      flash['notice'] = 'Successfully updated parameters.'
       redirect_to dashboard_path
     else
       flash['alert'] = 'Error 500. Unable to save lastest changes.'
@@ -237,7 +237,7 @@ class DinersController < ApplicationController
       diner.save
       reassign_table(diner, @restaurant)
       sms_cancelled(diner)
-      flash['alert'] = "#{diner.name}(##{diner.queue_number}) was removed from the queue."
+      flash['notice'] = "#{diner.name}(##{diner.queue_number}) was removed from the queue."
       redirect_to dashboard_path
     else
       flash['alert'] = 'Error. Unable to find reservation or restaurant in DB.'
