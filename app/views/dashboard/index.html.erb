@@ -57,7 +57,12 @@
 
           <td>
             <% if reservation.table_id != nil %>
-            Table: <%= reservation.table.name %>
+              <% if Reservation.where(table_id: reservation.table_id).where(status: 'dining').count > 0 %>
+                <font color="red"><b>Table: <%= reservation.table.name %></b></font>
+              <% else %>
+                Table:
+                <%= reservation.table.name %>
+              <% end %>
             <% end %>
           </td>
           <td>
@@ -125,7 +130,12 @@
 
             <td>
               <% if queuing.table_id != nil %>
-                Table: <%= queuing.table.name %>
+                <% if Reservation.where(table_id: queuing.table_id).where(status: 'dining').count > 0 %>
+                  <font color="red"><b>Table: <%= queuing.table.name %></b></font>
+                <% else %>
+                  Table:
+                  <%= queuing.table.name %>
+                <% end %>
               <% end %>
             </td>
 
@@ -198,7 +208,12 @@
 
           <td>
             <% if awaiting.table_id != nil %>
-              Table: <%= awaiting.table.name %>
+              <% if Reservation.where(table_id: awaiting.table_id).where(status: 'dining').count > 0 %>
+                <font color="red"><b>Table: <%= awaiting.table.name %></b></font>
+              <% else %>
+                Table:
+                <%= awaiting.table.name %>
+              <% end %>
             <% end %>
           </td>
 
