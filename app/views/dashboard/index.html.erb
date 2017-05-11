@@ -50,7 +50,7 @@
             <%= dining.name %>
             <br>
             <% if dining.phone != nil %>
-            <%= formatPhone(dining.phone) %>
+            <a href="tel:65<%= dining.phone %>"><%= formatPhone(dining.phone) %></a>
             <% end %>
           </td>
 
@@ -131,7 +131,7 @@
             <%= reservation.name %>
             <br>
             <% if reservation.phone != nil %>
-            <%= formatPhone(reservation.phone) %>
+            <a href="tel:65<%= reservation.phone %>"><%= formatPhone(reservation.phone) %></a>
             <% end %>
           </td>
 
@@ -216,7 +216,7 @@
               <%= queuing.name %>
               <br>
               <% if queuing.phone != nil %>
-                <%= formatPhone(queuing.phone) %>
+                <a href="tel:65<%= queuing.phone %>"><%= formatPhone(queuing.phone) %></a>
               <% end %>
             </td>
 
@@ -305,7 +305,7 @@
             <%= awaiting.name %>
             <br>
             <% if awaiting.phone != nil %>
-              <%= formatPhone(awaiting.phone) %>
+              <a href="tel:65<%= awaiting.phone %>"><%= formatPhone(awaiting.phone) %></a>
             <% end %>
           </td>
 

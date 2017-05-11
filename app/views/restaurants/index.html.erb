@@ -42,7 +42,7 @@
       <div class="card-content">
         <p><i class="material-icons left">local_offer</i><%= restaurant.cuisine %></p><br>
         <% if !restaurant.phone.empty?%>
-        <p><i class="material-icons left">phone</i><%= formatPhone(restaurant.phone) %></p>
+        <p><i class="material-icons left">phone</i><a href="tel:65<%= restaurant.phone %>"><%= formatPhone(restaurant.phone) %></a></p>
         <% end %><br>
         <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_city %></p>
       </div>
