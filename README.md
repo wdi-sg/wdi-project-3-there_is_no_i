@@ -73,7 +73,7 @@ If you choose to go with Heroku, you will need to connect a Redis add-on in orde
 
 #### Customer
 
-![Customer Flow]()
+![Customer Flow](http://i.imgur.com/0uOX0D6.jpg)
 
 #### Restaurant
 
