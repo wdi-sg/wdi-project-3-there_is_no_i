@@ -72,8 +72,8 @@ class ReservationsController < ApplicationController
         if new_res.save!
 
           if new_res.email == nil or new_res.email.length < 2
-            flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
-            redirect_to restaurant_path(params[:restaurant_id])
+            flash['alert'] = "Please enter a valid email."
+            render :new
 
           else
             subject = "Reservation at #{new_res.restaurant.name} on #{formatOrderDate(new_res.start_time)} for #{new_res.party_size}"
@@ -199,6 +199,11 @@ class ReservationsController < ApplicationController
         invoice.destroy!
       end
     end
+
+    subject = "Reservation at #{@reservation.restaurant.name} on #{formatOrderDate(@reservation.start_time)} for #{@reservation.party_size}"
+
+    GmailerMailer.send_reservation_delete(@reservation, @reservation.email, subject).deliver_later
+
     if @reservation.destroy!
       if !current_user.restaurants.include?(@restaurant) || current_user[:id] == @reservation[:user_id]
         redirect_to reservations_path

@@ -1,0 +1,8 @@
+Dear <%= @reservation.name %>,
+Your reservation at <%= @reservation.restaurant.name %> on <%= @reservation.start_time %> for a table of <%= @reservation.party_size %> has been cancelled.
+Thank you.
+Best regards,
+<%= @reservation.restaurant.name %>
+
+
+Powered by Locavorus

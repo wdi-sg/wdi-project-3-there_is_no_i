@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-    <title>Reservation confirmation</title>
+    <title>Reservation cancellation</title>
   </head>
   <body>
     <p>Dear <%= @reservation.name %>,</p>
       <p>
-        Your reservation at <%= @reservation.restaurant.name %> on <%= @reservation.start_time %> for a table of <%= @reservation.party_size %> has been updated. You may place an advance order at <a href="https://locavorusrex.herokuapp.com/reservations">https://locavorusrex.herokuapp.com/reservations</a>.
+        Your reservation at <%= @reservation.restaurant.name %> on <%= @reservation.start_time %> for a table of <%= @reservation.party_size %> has been cancelled.
       </p>
-      <p>Thank you and see you soon!</p>
+      <p>Thank you.</p>
       <p>
         Best regards,
       </p>
