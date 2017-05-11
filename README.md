@@ -1,4 +1,5 @@
 # Locavorus _Rex_
+_Simple reservations, queuing and ordering_
 
 ![Rex](http://i.imgur.com/VMuQpkL.png)
 
@@ -8,19 +9,19 @@
 
 ### Objective
 
-:white_check_mark: Customers must be able to join the queue from a front-end interface (in this case, from a browser). They must be notified by SMS and must be able to submit their food orders online.
+:white_check_mark: Customers to be able to join the queue from a front-end interface (in this case, from a browser). They must be notified via SMS and must be able to submit their food orders online.
 
-:white_check_mark: Customers must be able to submit their reservation and receive email confirmations
+:white_check_mark: Customers to be able to submit their reservation and receive email confirmations.
 
-:white_check_mark: Takeaway front end to process takeaway orders with email confirmations
+:white_check_mark: Customers to be able to place takeaway orders with email confirmations.
 
-:white_check_mark: Reservation and queuing backend with automatic assignation, ordering and notification
+:white_check_mark: System to handle reservation and queuing with automatic assignation, ordering and notification.
 
-:white_check_mark: Order backend to process takeaway and local orders with logic to prioritise orders
+:white_check_mark: System to handle takeaway and local orders with logic to prioritise orders.
 
-:white_check_mark: Simple interface to find restaurants and view details
+:white_check_mark: Simple interface to find restaurants and view details.
 
-:white_check_mark: Simple interface to manage user accounts and business dashboard
+:white_check_mark: Simple interface to manage user accounts and business dashboard.
 
 ## Getting Started
 ### Prerequisites
@@ -51,21 +52,53 @@ This application is deployed on Heroku and can be accessed [here](https://locavo
 * CSS
 * jQuery
 
-### Using the Application
+### Snapshots of the Application
 
-#### Customer
+#### Customer View
 
-![Customer Flow]()
+**Making a Reservation**
 
-#### Restaurant Employees
+![Imgur](http://i.imgur.com/jVyNNTP.png)
 
-![Restaurant Employee's Flow]()
+<img src="http://i.imgur.com/ItgnGDt.png" height="500">
+<br>
+<br>
+
+**Queuing**
+
+<img src="http://i.imgur.com/VNEfRAt.png" height="500">
+
+<img src="http://i.imgur.com/ljKzWwo.png" height="500">
+<br>
+<br>
+
+**Takeaway Orders**
+
+![Takeaway](http://i.imgur.com/PZEJ5xC.png)
+
+![Stripe](http://i.imgur.com/DasuCUa.png)
+
+![Takeaway Email](http://i.imgur.com/FQF7bCi.png)
+
+#### Restaurant Users' view
+
+**Dashboard**
+
+![Dashboard](http://i.imgur.com/iCsmqur.png)
+
+**Orders**
+
+![Orders](http://i.imgur.com/NimOPLj.png)
+
+**Invoices**
+
+![Invoice](http://i.imgur.com/B1IQLuQ.png)
 
 ## Development
 
 ### Entity Relationship Diagram (ERD)
 
-![Initial ERD](http://i.imgur.com/2T5CDGE.jpg)
+<img src="http://i.imgur.com/2T5CDGE.jpg" height="800">
 
 ### Models
 * User
@@ -76,33 +109,6 @@ This application is deployed on Heroku and can be accessed [here](https://locavo
 * Table
 * Invoice (previously known as 'Transaction')
 
-## Notable Areas
-### Table-finding Logic
-1. Find all tables in the restaurant.
-2. Find all unavailable tables where the start time of the reservation is before the end time of that table OR the end time of the reservation is after the start time of that table.
-![find unavailable table chart](http://i.imgur.com/DUb03pn.jpg)
-3. Remove these unavailable tables from all tables in that restaurant.
-4. From the remaining tables, filter out and accept only the tables with capacity greater than or equal to the number of diners.
-5. Sort these tables in ascending order of capacity and select the first table in the array to reduce inefficiencies in seating. E.g. Assigning 2 people to an empty table meant for 6 people.
-6. Use `Gmail` (connected to `Rails` framework) and active jobs to send an automated email asynchronously to the user to confirm their reservation.
-![email](http://i.imgur.com/ItgnGDt.png)
-
-FOR FUTURE DEVELOPMENT: If no available tables are found, repeat the logic with wider time params and suggest other available time-slots to the user.
-
-### Queuing Logic
-Tables will only be assigned when a diner is 'queuing' or when an existing diner is 'checked out'.
-![user status](http://i.imgur.com/AJ66htW.jpg)
-1. Use table-finding logic to find unoccupied tables and submit a reservation with `DateTime.now`.
-2. If there are no available tables, add the user to the queue. User will receive a `Twilio` SMS with an estimated wait time.
-![join queue](http://i.imgur.com/VNEfRAt.png)
-3. When a diner checks out, run the table-finding logic again to find future reservations.
-4. If there are no future reservations, assign a table to the first 'queuer' who can fit the table and send another `Twilio` SMS to inform the 'queuer' that they can make their way to the restaurant.
-![confirmation](http://i.imgur.com/ljKzWwo.png)
-5. Change status of the 'queuer' to 'diner'.
-
-### Payment Logic
-
-
 ### Website Wireframes
 **Dashboard**
 ![Dashboard](http://i.imgur.com/rW4d54q.png)
@@ -110,6 +116,41 @@ Tables will only be assigned when a diner is 'queuing' or when an existing diner
 **Nav Bar Dropdown**
 ![Right Nav](http://i.imgur.com/Wk8yk4z.png)
 
+
+### Notable Areas
+
+Customer dining events are represented by the Reservation model. Below is the rough flow of how the status of the diner changes during each event.
+
+<img src="http://i.imgur.com/AJ66htW.jpg" height="400">
+
+#### Table-allocation Logic
+The method below is called to determine a table for a potential diner.
+
+**Method**
+1. Find all tables in the restaurant.
+
+2. Find all unavailable tables where the start time of the reservation is before the end time of that table OR the end time of the reservation is after the start time of that table.
+
+3. Remove these unavailable tables from all tables in that restaurant.
+
+4. From the remaining tables, filter out and accept only the tables with capacity greater than or equal to the number of diners.
+
+5. Sort these tables in ascending order of capacity and select the first table in the array to reduce inefficiencies in seating. E.g. Assigning 3 people to an empty table meant for 4 people.
+
+6. Select the table with the smallest possible capacity.
+
+<img src="http://i.imgur.com/DUb03pn.jpg" height="400">
+
+#### Queuing Logic
+Tables will only be assigned / suggested whenever a diner starts 'queuing' or when an existing diner is 'checked out'.
+
+1. Use table-finding logic to find unoccupied tables (tables with no 'Reservations' that are 'dining') and submit a reservation with `DateTime.now`.
+
+2. If there are no available tables, add the user to the queue. User will receive a `Twilio` SMS with the number of people ahead of them and an estimated wait time if requested.
+
+3. When a diner checks out, find the most suitable customer from the queue (one that can fit into the table with the priority going to the smallest queue number)and run the table-finding logic again to find future reservations.
+
+4. If there are no future reservations, assign a table to the first 'queuer' who can fit the table and send another `Twilio` SMS to inform the 'queuer' that they can make their way to the restaurant.
 
 ## Future Development
 ### Wireframes for possible future features
@@ -134,23 +175,23 @@ Tables will only be assigned when a diner is 'queuing' or when an existing diner
 **See All Orders**
 ![See all orders](http://i.imgur.com/CJjCfXi.png)
 
+<!-- **Kitchen View of Ready Tickets**
+
+![Ready Tickets](app/assets/images/Kitchen_view.png) -->
+
+**Suggestions for new Reservation Entries**
+
+If no available tables are found, repeat the logic with wider time params and suggest other available time-slots to the user.
+
 ### Bugs :bug::gun:
+The following bugs will also have to be fixed.
 
-<<<<<<< HEAD
-**Kitchen View of Ready Tickets**
-![Ready Tickets](app/assets/images/Kitchen_view.png)
-
-### Bugs
 **date_select**
-'date_select' is used in the form_for inputs. This allows invalid dates (eg. 31 February) to be selected. Currently, validation checks in the controller are used, but a more robust method could be used for date inputs in forms.
 
-### Authors
-[Louisa Lee](https://github.com/imouto2005)
-=======
+'date_select' is used in the form_for inputs. This allows invalid dates (eg. 31 February) to be selected. Currently, validation checks in the controller are used, but a more robust method could be used for date inputs in forms.
 
 ## Authors
 [Darrell Teo](https://github.com/darrelltzj)
->>>>>>> 0943684c2fcdab2fb506877b73b448f0ace25abd
 
 [Jonathan Louis Ng](https://github.com/noll-fyra)
 
@@ -159,4 +200,4 @@ Tables will only be assigned when a diner is 'queuing' or when an existing diner
 Jasmine Lee
 
 ### Acknowledgments :sparkling_heart:
-We acknowledge ourselves for all the hard work that has gone into this project over the past 2 weeks and, more importantly, the people who have helped us along the way.
+We acknowledge ourselves for all the hard work that has gone into this project over the past 2 weeks, but more importantly, the people who have helped us along the way.
