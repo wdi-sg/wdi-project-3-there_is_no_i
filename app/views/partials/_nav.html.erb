@@ -20,10 +20,10 @@
     <!-- left side (logo and dropdown) -->
     <ul id="nav-mobile" class="left hide-on-med-and-down valign-wrapper">
       <li>
-        <a href="/"><img src="<%= asset_path 'rex.png' %>" height="40" width="40" style="margin-top: 10px; margin-left:15px"></a>
+        <img src="<%= asset_path 'rex.png' %>" height="40" width="40" style="margin-top: 10px; margin-left:15px">
       </li>
     </ul>
- <a href="#" class="brand-logo center" id="logo">locavorus</a>
+ <a href="/" class="brand-logo center" id="logo">locavorus</a>
       <!-- right side of nav -->
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <% if user_signed_in? %>
@@ -53,7 +53,7 @@
         <td><input type="text" name="search" value="" placeholder="restaurants & cuisines"></td>
         <td><p style="margin-bottom:38px">In</p></td>
         <td><input type="text" name="city" value="" placeholder="Singapore"></td>
-        <td><button type="submit" class="waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:12px">Search</button></td>
+        <td><button type="submit" class="waves-effect waves-light btn pink accent-1" style="margin-bottom:12px">Search</button></td>
       </tr>
     </table>
   </form>

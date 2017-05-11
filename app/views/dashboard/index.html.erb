@@ -6,6 +6,16 @@
 
   <h2>Reservations <%= link_to '[+]', new_restaurant_reservation_path(current_user.restaurant_id) %> <%= link_to '[All]', restaurant_reservations_path(current_user.restaurant_id) %></h2>
     <table class="striped">
+      <thead>
+        <th></th>
+        <th>#</th>
+        <th>Customer</th>
+        <th>Cover</th>
+        <th>Estimated Start Time</th>
+        <th>Payable</th>
+        <th>Table</th>
+        <th></th>
+      </thead>
       <tbody id="reservation_<%= @restaurant_id %>">
         <% @reservations.where(status:'reservation').each do |reservation| %>
         <tr>
@@ -79,6 +89,16 @@
 <!-- ================================= -->
   <h2>Queue <%= link_to '[+]', new_restaurant_walkin_path(current_user.restaurant_id) %></h2>
   <table class="striped">
+    <thead>
+      <th></th>
+      <th>#</th>
+      <th>Customer</th>
+      <th>Cover</th>
+      <th>Estimated Start Time</th>
+      <th>Payable</th>
+      <th>Table</th>
+      <th></th>
+    </thead>
         <tbody id="queue_<%= @restaurant_id %>">
           <% @reservations.where(status:'queuing').each do |queuing| %>
           <tr>
@@ -157,6 +177,16 @@
 
 <h2>Notified</h2>
 <table class="striped">
+  <thead>
+    <th></th>
+    <th>#</th>
+    <th>Customer</th>
+    <th>Cover</th>
+    <th>Estimated Start Time</th>
+    <th>Payable</th>
+    <th>Table</th>
+    <th></th>
+  </thead>
       <tbody>
         <% @reservations.where(status:'awaiting').each do |awaiting| %>
         <tr>
@@ -233,6 +263,16 @@
 
 <h2>Dining</h2>
 <table class="striped">
+  <thead>
+    <th></th>
+    <th>#</th>
+    <th>Customer</th>
+    <th>Cover</th>
+    <th>Estimated Start Time</th>
+    <th>Payable</th>
+    <th>Table</th>
+    <th></th>
+  </thead>
       <tbody>
         <% @reservations.where(status:'dining').each do |dining| %>
         <tr>
