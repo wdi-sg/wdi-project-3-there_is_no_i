@@ -5,7 +5,11 @@ class GmailerMailerPreview < ActionMailer::Preview
   end
 
   def send_reservation_update_preview
-    GmailerMailer.send_reservation_update(Reservation.last, Reservation.first.email, 'Reservation confirmed!!!')
+    GmailerMailer.send_reservation_update(Reservation.last, Reservation.last.email, 'Reservation confirmed!!!')
+  end
+
+  def send_reservation_delete_preview
+    GmailerMailer.send_reservation_delete(Reservation.last, Reservation.last.email, 'Reservation confirmed!!!')
   end
 
   def send_takeaway_confirmation_preview
