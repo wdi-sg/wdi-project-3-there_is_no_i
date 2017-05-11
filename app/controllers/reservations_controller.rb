@@ -87,7 +87,11 @@ class ReservationsController < ApplicationController
             ActionCable.server.broadcast('room_channel', { reservation: new_res.id, name: new_res_name, phone: new_res_phone, party_size: new_res.party_size, start_time: new_res_start_time, table_name: new_res_table_name, restaurant: @restaurant.id} )
 
             flash['notice'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
-            redirect_to restaurant_path(params[:restaurant_id])
+            if !current_user.restaurants.include?(@restaurant)
+              redirect_to reservations_path
+            else
+              redirect_to dashboard_path
+            end
           end
 
         else
