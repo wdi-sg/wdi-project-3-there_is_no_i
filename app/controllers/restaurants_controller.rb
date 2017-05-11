@@ -73,7 +73,7 @@ class RestaurantsController < ApplicationController
         if params[:restaurant][:picture] && params[:restaurant][:picture].path
           @restaurant.update(picture: @cloudinary_file["secure_url"])
         end
-        flash[:notice] = "Your restaurant profile has been successfully updated."
+        flash[:notice] = 'Your restaurant profile has been successfully updated.'
         redirect_to restaurant_path
       else
         flash[:alert] = "There was an error editing. Please try again."
