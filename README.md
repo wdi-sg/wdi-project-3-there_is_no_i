@@ -136,7 +136,7 @@ Tables will only be assigned when a diner is 'queuing' or when an existing diner
 **See All Orders**
 ![See all orders](http://i.imgur.com/CJjCfXi.png)
 
-### Bugs
+### Bugs :bug::gun:
 
 
 ## Authors
@@ -148,5 +148,5 @@ Tables will only be assigned when a diner is 'queuing' or when an existing diner
 
 Jasmine Lee
 
-### Acknowledgments
-We acknowledge ourselves for all the hard work that has gone into this project over the past 2 weeks and, more importantly, the people who have helped us along the way. :sparkling_heart:
+### Acknowledgments :sparkling_heart:
+We acknowledge ourselves for all the hard work that has gone into this project over the past 2 weeks and, more importantly, the people who have helped us along the way.
