@@ -136,21 +136,11 @@ Tables will only be assigned when a diner is 'queuing' or when an existing diner
 
 ### Bugs :bug::gun:
 
-<<<<<<< HEAD
-**Kitchen View of Ready Tickets**
-![Ready Tickets](app/assets/images/Kitchen_view.png)
-
-### Bugs
-**date_select**
+#### date_select
 'date_select' is used in the form_for inputs. This allows invalid dates (eg. 31 February) to be selected. Currently, validation checks in the controller are used, but a more robust method could be used for date inputs in forms.
-
-### Authors
-[Louisa Lee](https://github.com/imouto2005)
-=======
 
 ## Authors
 [Darrell Teo](https://github.com/darrelltzj)
->>>>>>> 0943684c2fcdab2fb506877b73b448f0ace25abd
 
 [Jonathan Louis Ng](https://github.com/noll-fyra)
 
@@ -159,4 +149,4 @@ Tables will only be assigned when a diner is 'queuing' or when an existing diner
 Jasmine Lee (UX)
 
 ### Acknowledgments :sparkling_heart:
-We acknowledge ourselves for all the hard work that has gone into this project over the past 2 weeks and, more importantly, the people who have helped us along the way.
+We would like to acknowledge ourselves for all the hard work that has gone into this project over the past 2 weeks and, more importantly, the people who have helped us along the way.
