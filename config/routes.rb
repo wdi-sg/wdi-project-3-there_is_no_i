@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # home
-  root to: 'main#index'
+  root to: 'restaurants#index'
 
   # serve websocket cable requests
   mount ActionCable.server, at: '/cable'
@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     put 'notify/:id' => 'walkins#notify', as: 'notify'
     put 'requeue/:id' => 'walkins#requeue', as: 'requeue'
     put 'seated/:id' => 'walkins#seated', as: 'seated'
+    put 'cancelled/:id' => 'diners#cancelled', as: 'cancelled'
     put 'checked_out/:id' => 'diners#checked_out', as: 'checked_out'
 
     get 'diners' => 'diners#index'

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <title>Reservation confirmation</title>
+  </head>
+  <body>
+    <p>Dear <%= @reservation.name %>,</p>
+      <p>
+        Your reservation at <%= @reservation.restaurant.name %> on <%= @reservation.start_time %> for a table of <%= @reservation.party_size %> has been updated. You may place an advance order at <a href="https://locavorusrex.herokuapp.com/reservations">https://locavorusrex.herokuapp.com/reservations</a>.
+      </p>
+      <p>Thank you and see you soon!</p>
+      <p>
+        Best regards,
+      </p>
+      <p>
+         <%= @reservation.restaurant.name %>
+      </p>
+      <br>
+      <br>
+      <p>Powered by <a href="http://locavorusrex@herokuapp.com">Locavorus</a></p>
+      <br/>
+      <img src="https://res.cloudinary.com/noll-fyra/image/upload/v1492657381/locavorus-large_hdxwpf.png" alt="Rex.png">
+  </body>
+</html>

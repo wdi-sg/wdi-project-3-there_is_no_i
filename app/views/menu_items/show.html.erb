@@ -1,26 +1,20 @@
-<h1>Show Menu Item</h1>
+<h1><%= @menu_item.name %></h1>
 <p>
   <% if @menu_item.picture  %>
     <%= cl_image_tag(@menu_item.picture, width: 200, height: 100, crop: :fill) %>
+    <% else %>
+    <img src="https://media3.s-nbcnews.com/j/MSNBC/Components/Video/201702/x_tdy_ov_food_perfectfriedegg_170207.today-inline-vid-featured-desktop.jpg" width=200 height=100>
   <% end %>
 </p>
 <p>
-  Name:
-  <%= @menu_item.name %>
-</p>
-<p>
-  Price:
-  <%= formatPrice(@menu_item.price) %>
-</p>
-<p>
-  Description:
   <%= @menu_item.description %>
 </p>
 <p>
-  Ingedients:
+  <%= formatPrice(@menu_item.price) %>
+</p>
+<p>
   <%= @menu_item.ingredients %>
 </p>
 <p>
-  Tags:
   <%= @menu_item.tags %>
 </p>

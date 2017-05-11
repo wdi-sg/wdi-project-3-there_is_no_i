@@ -2,7 +2,7 @@ class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
   include AddBreadcrumbs
   include FindingTableLogic
-  include SendEmail
+  include Format
   before_action :authenticate_user!, except: [:create, :new]
   before_action :set_restaurant_id
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
@@ -29,8 +29,11 @@ class ReservationsController < ApplicationController
   def create
     r_start_time =  Time.zone.local( params[:reservation]["date(1i)"].to_i, params[:reservation]["date(2i)"].to_i, params[:reservation]["date(3i)"].to_i, params[:reservation]["time(4i)"].to_i, params[:reservation]["time(5i)"].to_i, 0)
 
+    # if params[:reservation][:phone] !=~ /\d/ && params[:reservation][:phone] != nil
+    #   flash['alert'] = 'Phone input must be in numbers'
+    #   render :new
     if r_start_time < Time.now
-      flash['alert'] = 'Error. Cannot reserve a timeslot from the past. Please check input parameters.'
+      flash['alert'] = 'Cannot reserve a timeslot from the past. Please check input parameters.'
       render :new
     elsif r_start_time < Time.now + @reservation_allowance.hours
       flash['alert'] = "Cannot make a reservation within #{@reservation_allowance} hours from now."
@@ -68,15 +71,19 @@ class ReservationsController < ApplicationController
         if new_res.save!
 
           if new_res.email == nil or new_res.email.length < 2
-            flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
-            redirect_to restaurant_path(params[:restaurant_id])
+            flash['alert'] = "Please enter a valid email."
+            render :new
 
           else
-            subject = "Reservation at #{new_res.restaurant.name} on #{new_res.start_time} for #{new_res.party_size}"
+            subject = "Reservation at #{new_res.restaurant.name} on #{formatOrderDate(new_res.start_time)} for #{new_res.party_size}"
+            GmailerMailer.send_reservation_confirmation(new_res, new_res.email, subject).deliver_later
 
-            body = "Dear #{new_res.name}, \nYour reservation at #{new_res.restaurant.name} on #{new_res.start_time} for a table of #{new_res.party_size} has been recorded. You may place an advance order at https://locavorusrex.herokuapp.com/reservations . Thank you and see you soon! \nBest regards, \n#{new_res.restaurant.name} \n \n \nPowered by Locavorus"
+            new_res_name = new_res.name != nil ? new_res.name : ''
+            new_res_phone = formatPhone(new_res.phone)
+            new_res_start_time = new_res.start_time != nil ? formatOrderDate(new_res.start_time) : ''
+            new_res_table_name = new_res.table != nil ? 'Table: ' + new_res.table.name : ''
 
-            send_email(new_res.name, new_res.email, subject, body)
+            ActionCable.server.broadcast('room_channel', { reservation: new_res.id, name: new_res_name, phone: new_res_phone, party_size: new_res.party_size, start_time: new_res_start_time, table_name: new_res_table_name, restaurant: @restaurant.id} )
 
             flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
             redirect_to restaurant_path(params[:restaurant_id])
@@ -105,7 +112,10 @@ class ReservationsController < ApplicationController
       flash['alert'] = 'Please login or register before making a reservation.'
       redirect_to new_user_session_path
     end
-    add_full_breadcrumbs('Reservations', restaurant_reservations_path(@restaurant))
+    add_index_breadcrumbs
+    if current_user != nil
+      add_breadcrumb 'Reservations', restaurant_reservations_path(@restaurant) if current_user.restaurants.include? @restaurant
+    end
   end
 
   def show
@@ -148,13 +158,8 @@ class ReservationsController < ApplicationController
             redirect_to restaurant_reservations_path(@restaurant)
 
           else
-            subject = "Reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for #{@reservation.party_size}"
-
-            body = "Dear #{@reservation.name}, \nYour reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for a table of #{@reservation.party_size} has been updated. You may place an advance order at https://locavorusrex.herokuapp.com/reservations . Thank you and see you soon! \nBest regards, \n#{@reservation.restaurant.name} \n \n \nPowered by Locavorus"
-
-            p body
-
-            send_email(@reservation.name, @reservation.email, subject, body)
+            subject = "Updated - Reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for #{@reservation.party_size}"
+            GmailerMailer.send_reservation_update(@reservation, @reservation.email, subject).deliver_later
 
             flash['alert'] = 'Successfully updated reservation'
             redirect_to restaurant_reservations_path(@restaurant)
@@ -191,11 +196,16 @@ class ReservationsController < ApplicationController
         invoice.destroy!
       end
     end
+
+    subject = "Reservation at #{@reservation.restaurant.name} on #{formatOrderDate(@reservation.start_time)} for #{@reservation.party_size}"
+
+    GmailerMailer.send_reservation_delete(@reservation, @reservation.email, subject).deliver_later
+
     if @reservation.destroy!
-      if current_user.restaurants.include?(@restaurant)
-        redirect_to restaurant_reservations_path(@restaurant)
-      else
+      if !current_user.restaurants.include?(@restaurant) || current_user[:id] == @reservation[:user_id]
         redirect_to reservations_path
+      else
+        redirect_to restaurant_reservations_path(@restaurant)
       end
     else
       render :new

@@ -1,93 +1,97 @@
 <h1>Edit Invoice</h1>
-<%= link_to "Back to Restaurant", restaurant_path(@restaurant) %> <br/>
-<%= link_to 'Back to Invoices', restaurant_invoice_path(@restaurant) %>
-<br/>
+
+<table>
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Total</th>
+      <% if current_user.restaurants.include?(@restaurant) %>
+      <th>User</th>
+      <th>Table</th>
+      <th></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <%= @invoice.id %>
+      </td>
+      <%= form_for @invoice, url: restaurant_invoice_path(@restaurant, @invoice) do |f| %>
+      <td>
+        <%= formatPrice(showTotalPrice(@invoice.menu_items)) %>
+      </td>
+      <td>
+        <% if @invoice.user_id %>
+          <%= @invoice.user.name %>
+        <% else %>
+          <%= f.text_field :user_name, placeholder: "Name" %>
+        <% end %>
+      </td>
+      <td>
+        <%= f.select(:table_id, @table_options)%>
+      </td>
+      <td>
+        <%= f.submit "Save" %>
+      </td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+
 <p>
-  Invoice number:
-  <%= @invoice.id %>
-  <%= form_for @invoice, url: restaurant_invoice_path(@restaurant, @invoice) do |f| %>
-  <p>
-    <% if @invoice.user %>
-      <%= f.label :user %>
-      <%= @invoice.user.name %>
-    <% else %>
-      <%= f.label "Customer Name" %>
-      <%= f.text_field :user_name, placeholder: "Name" %>
-    <% end %>
-  </p>
-  <p>
-    <%= f.label :status, "Table" %>
-    <%= f.select(:table_id, @table_options)%>
-  </p>
-  <p>
-    <%= f.submit "Save" %>
-  </p>
+  <%= form_tag restaurant_menu_items_path(@restaurant), method: :get do %>
+    <%= hidden_field_tag :invoice_id, @invoice.id %>
+    <%= hidden_field_tag :reservation_id, @invoice.reservation_id %>
+    <%= submit_tag 'Add orders' %>
   <% end %>
-
-<p>
-  Total:
-  <%= formatPrice(showTotalPrice(@invoice.menu_items)) %>
 </p>
-<p>
-  Ordered:
-  <table>
-    <thead>
-      <tr>
-        <th>
-          No.
-        </th>
-        <th>
-          Item
-        </th>
-        <th>
-          Price
-        </th>
-        <th>
-          Takeaway?
-        </th>
-        <th>
-          User Name
-        </th>
-        <th>
-          Request
-        </th>
-        <th>
 
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @index = 1 %>
-      <% @invoice.orders.each do |order| %>
-<tr>
-  <td>
-    <%= @index %>
-  </td>
-  <td>
-    <%= order.menu_item.name %>
-  </td>
-  <td>
-    <%= formatPrice(order.menu_item.price) %>
-  </td>
-  <td>
-    <%= order.is_take_away %>
-  </td>
-  <td>
-    <% if order.user %>
-      <%= order.user.name %>
-    <% else %>
-      <%= '' %>
-    <% end %>
-  </td>
-  <td>
-    <%= order.request_description %>
-  </td>
-  <td>
-<%= link_to 'Destroy', restaurant_invoice_order_path(@restaurant.id, @invoice, order), method: :delete, data: { confirm: 'Are you sure?' } %>
-  </td>
-</tr>
-<% @index += 1 %>
-<% end %>
-    </tbody>
-  </table>
-</p>
+<table>
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Item</th>
+      <th>Price</th>
+      <% if current_user.restaurants.include?(@restaurant) %>
+        <th>Takeaway</th>
+        <th>User Name</th>
+      <% end %>
+      <th>Request</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @index = 1 %>
+    <% @invoice.orders.each do |order| %>
+    <tr>
+      <td>
+        <%= @index %>
+      </td>
+      <td>
+        <%= order.menu_item.name %>
+      </td>
+      <td>
+        <%= formatPrice(order.menu_item.price) %>
+      </td>
+      <% if current_user.restaurants.include?(@restaurant) %>
+      <td>
+        <%= order.is_take_away %>
+      </td>
+      <td>
+        <% if order.user %>
+          <%= order.user.name %>
+        <% else %>
+          <%= '' %>
+        <% end %>
+      </td>
+      <% end %>
+      <td>
+        <%= order.request_description %>
+      </td>
+      <td><%= link_to 'Remove', restaurant_invoice_order_path(@restaurant, @invoice, order), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% @index += 1 %>
+  <% end %>
+  </tbody>
+</table>

@@ -13,6 +13,15 @@
   <!-- SORT BUTTONS DIV -->
 
 <div class="col s8" id="res-column">
+  <% if @search != '' || @city != '' %>
+    <% if @search != '' && @city != ''  %>
+      Your search for <b><%= @search %></b> in <b><%= @city %></b> returned <%= @restaurants.count %> <%= @restaurants.count > 1 ? 'results' : 'result' %>
+      <% elsif @search != '' %>
+      Your search for <b><%= @search %></b> returned <%= @restaurants.count %> <%= @restaurants.count > 1 ? 'results' : 'result' %>
+      <% else %>
+      Your search for <b><%= @city %></b> returned <%= @restaurants.count %> <%= @restaurants.count > 1 ? 'results' : 'result' %>
+      <% end %>
+  <% end %>
 <div class="row" id="restaurant-cards"> <!-- START OF CARD DISPLAY -->
   <!-- CARD START -->
   <% @restaurants.each do |restaurant, index| %>
@@ -26,7 +35,7 @@
       <div class="card-content">
         <p><i class="material-icons left">local_offer</i><%= restaurant.cuisine %></p><br>
         <% if !restaurant.phone.empty?%>
-        <p><i class="material-icons left">phone</i><%= restaurant.phone %></p>
+        <p><i class="material-icons left">phone</i><%= formatPhone(restaurant.phone) %></p>
         <% end %><br>
         <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_city %></p>
       </div>

@@ -63,10 +63,6 @@ body {
    font-weight: bold;
  }
 
-.pagination a li.active {
-  color: #fff;
-}
-
 #footer-text{
   font-family: "Raleway"
 }
@@ -89,4 +85,16 @@ body {
   width: 650px;
   font-family: "Raleway";
   padding: 5px;
+}
+
+.pagination {
+  font-size: 28px;
+}
+
+.pagination a {
+  margin: 0 10px;
+}
+
+.pagination a li.active {
+  color: #fff;
 }

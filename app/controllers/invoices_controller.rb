@@ -1,12 +1,12 @@
 class InvoicesController < ApplicationController
   include AuthenticateRestaurantUser
   include AddBreadcrumbs
-  include SendEmail
+  include Format
   before_action :authenticate_user!, except: [:create]
   before_action :set_restaurant_id
   before_action :set_invoice, only: [:edit, :show, :update, :destroy]
   before_action :check_user_is_part_of_restaurant, except: [:create, :show]
-  # before_action :check_user_is_part_of_invoice, only: [:show]
+  before_action :check_user_is_part_of_invoice, only: [:show]
   helper InvoicesHelper
 
   def index
@@ -29,35 +29,15 @@ class InvoicesController < ApplicationController
     # check if invoice exists
     if params[:invoice_id]
       @invoice = Invoice.find(params[:invoice_id].to_i)
-      if params[:reservation_id]
-        if Reservation.find(params[:reservation_id].to_i).status == "reservation"
-          @order_time = Reservation.find(params[:reservation_id].to_i).start_time
-        else
-          checked_queue_number = Reservation.find(params[:reservation_id].to_i).queue_number
-          first_queue_number = Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing', 'awaiting']).count > 0 ? Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing', 'awaiting']).order('queue_number ASC').first.queue_number : checked_queue_number
-          @order_time = DateTime.now + ((checked_queue_number - first_queue_number) * 5).minutes
-        end
-      else
-        @order_time = DateTime.now
-      end
     # check if takeaway
     elsif params[:is_take_away] == "true"
       @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, user_name: current_user.name, takeaway_time: @takeaway_time)
-      @order_time = @takeaway_time
     # check if reservation or queuing
     elsif params[:reservation_id]
       @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, user_name: current_user.name, reservation_id: params[:reservation_id].to_i)
-      if Reservation.find(params[:reservation_id].to_i).status == "reservation"
-        @order_time = Reservation.find(params[:reservation_id].to_i).start_time
-      else
-        checked_queue_number = Reservation.find(params[:reservation_id].to_i).queue_number
-        first_queue_number = Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing', 'awaiting']).count > 0 ? Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing', 'awaiting']).order('queue_number ASC').first.queue_number : checked_queue_number
-        @order_time = DateTime.now + ((checked_queue_number - first_queue_number) * 5).minutes
-      end
     # new restaurant order
     else
       @invoice = Invoice.new(restaurant_id: @restaurant.id, table_id: params[:table_id])
-      @order_time = DateTime.now
     end
 
     if @invoice.save!
@@ -66,13 +46,14 @@ class InvoicesController < ApplicationController
     # action cable the orders to /orders
       orders.each do |menu_item|
         @order = Order.create(user_id: current_user.id, is_take_away: params[:is_take_away], invoice_id: @invoice.id, menu_item_id: menu_item, request_description: params[:request])
-        ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: @order_time, item: @order.menu_item.name, is_take_away: params[:is_take_away], restaurant: @restaurant.id, request_description: params[:request]})
+        ActionCable.server.broadcast('room_channel', {invoice: @invoice.id, received: correctStartTime(@order), item: @order.menu_item.name, is_take_away: (params[:is_take_away] == "true" ? 'yes' : ''), restaurant: @restaurant.id, request: params[:request], table: (@invoice.table_id ? @invoice.table_id : '')})
       end
 
       # send takeaway user a confirmation email
       if params[:is_take_away] == "true"
-        body = "Dear #{current_user.name},\nYour takeaway order ID:#{@invoice.id} at #{@restaurant.name} for #{@takeaway_time} has been received.\nThank you and see you soon! \n \n \nPowered by Locavorus"
-        send_email(current_user.name, current_user.email, @restaurant.name, body)
+        subject = "Takeaway at #{@restaurant.name} for #{formatOrderDate(@takeaway_time)} for #{current_user.name}"
+        GmailerMailer.send_takeaway_confirmation(@invoice, current_user.email, subject).deliver_later
+
         flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation of your order soon."
         redirect_to invoices_path
       # reservation/queuing order confirmation
@@ -102,7 +83,8 @@ class InvoicesController < ApplicationController
   end
 
   def show
-    add_full_breadcrumbs('Invoices', restaurant_invoices_path(@restaurant))
+    add_index_breadcrumbs
+    add_breadcrumb('Invoices', restaurant_invoices_path(@restaurant)) if current_user.restaurants.include? @restaurant
   end
 
   def update

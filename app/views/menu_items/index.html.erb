@@ -24,7 +24,7 @@
 
 <!-- ===== MIDDLE COLUMN: display menu items ===== -->
 <div class="col s7" id="menu-middle">
-  <center><h1>Menu Items</h1></center>
+  <center><h1>Menu</h1></center>
 <div class="all-menu-items">
   <div class="row">
     <% @menu_items.each do |item| %>
@@ -33,19 +33,17 @@
         <% if item.picture  %>
           <a href='<%= restaurant_menu_item_path(@restaurant.id, item) %>'><%= cl_image_tag(item.picture, width: 200, height: 100, crop: :fill) %></a>
           <% else %>
-          <img src="http://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/quizzes/food_safety_quiz/650x350_food_safety_quiz.jpg" width=200 height=100 style="border-radius:5px">
+
+          <a href='<%= restaurant_menu_item_path(@restaurant.id, item) %>'><img src="http://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/quizzes/food_safety_quiz/650x350_food_safety_quiz.jpg" width=200 height=100 style="border-radius:5px"></a>
         <% end %>
       </p>
       <p>
-        Name:
-        <%= item.name %>
+        <b><%= item.name %></b>
       </p>
       <p>
-        Description:
         <%= item.description %>
       </p>
       <p>
-        Price:
         <%= formatPrice(item.price) %>
       </p>
 
@@ -66,6 +64,25 @@
 <!-- ===== RIGHT COLUMN: display submitted orders ===== -->
 <div class="col s3">
 <div style="display:none" class="ordered-items">
+  <% if @is_take_away %>
+    <h2>Takeaway</h2>
+  <% else %>
+    <h2>Your Order</h2>
+  <% end %>
+
+  <table>
+    <thead>
+      <tr>
+        <th>-</th>
+        <th>No.</th>
+        <th>+</th>
+        <th>Item</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody class="ordered-items-list">
+    </tbody>
+  </table>
 <ul class="ordered-items-list">
 </ul>
 <%= form_for :order, url: restaurant_invoices_path(@restaurant.id), html: {class:'ordered-items-form'} do |f| %>
@@ -98,7 +115,9 @@
       Invoice: <%= label_tag :invoice, @existing_invoice %>
       <%= hidden_field_tag :invoice_id, @existing_invoice %>
     <% end %>
-    <%= f.submit 'Create Orders', id: 'create-orders-button'%>
+    <p>
+      <%= f.submit 'Create Orders', id: 'create-orders-button'%>
+    </p
   <% end %>
 <% end %>
 </div>

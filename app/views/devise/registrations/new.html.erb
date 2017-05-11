@@ -16,7 +16,7 @@
 
   <div class="field">
     <%= f.label :phone %><br />
-    <%= f.text_field :phone, placeholder: 'Phone (required)', required: true %>
+    <%= f.number_field :phone, placeholder: 'Phone (required)', min:10000000, max:99999999, required: true %>
   </div>
 
   <div class="field">
