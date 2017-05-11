@@ -1,5 +1,67 @@
 <div class="container">
 <%= link_to 'New Invoice', restaurant_menu_items_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3' %>
+</div>
+
+<% if @invoices.select{|invoice| invoice.takeaway_time}.select{|invoice| !invoice.time_end}.count > 0 %>
+  <div class="container">
+  <h2>Takeaway Orders</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Takeaway Time</th>
+        <th>User</th>
+        <th>Total</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invoices.select{|invoice| invoice.takeaway_time}.select{|invoice| !invoice.time_end}.sort{|first, second| first.created_at - second.created_at}.each do |invoice| %>
+      <tr>
+        <td><%= invoice.id %></td>
+        <td><%= formatInvoiceDate(invoice.created_at) %></td>
+        <td><%= invoice.user ? invoice.user.name : invoice.user_name %></td>
+        <td><%= formatPrice(showTotalPrice(invoice.menu_items)) %></td>
+        <% @table_id = invoice.table ? invoice.table.id : '' %>
+        <td><%= link_to 'Show', restaurant_invoice_path(@restaurant, invoice) %></td>
+        <td><%= link_to 'Edit', edit_restaurant_invoice_path(@restaurant, invoice) %></td>
+        <td><%= link_to 'Destroy', restaurant_invoice_path(@restaurant, invoice), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <% if allOrdersAreCompleted(invoice) %>
+            <%= form_tag restaurant_invoice_path(@restaurant, invoice), method: :put do %>
+              <%= hidden_field_tag :time_end %>
+              <%= hidden_field_tag :complete, value: true %>
+              <%= submit_tag 'Complete' %>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <% if allOrdersAreCompleted(invoice) %>
+            <%= form_tag restaurant_invoice_path(@restaurant, invoice), method: :put do %>
+            <%= hidden_field_tag :total_price, showTotalPrice(invoice.menu_items) %>
+            <%= hidden_field_tag :invoice_id, invoice.id %>
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+            data-name="<%= @restaurant.name %>"
+            data-amount=""
+            data-description='Order'
+            data-locale="auto"
+            data-currency="SGD"></script>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+<% end %>
+
+<div class="container">
 <h2>Active Invoices</h2>
 <table>
   <thead>
@@ -18,7 +80,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @invoices.select{|invoice| !invoice.time_end}.sort{|first, second| first.created_at - second.created_at}.each do |invoice| %>
+    <% @invoices.select{|invoice| !invoice.takeaway_time}.select{|invoice| !invoice.time_end}.sort{|first, second| first.created_at - second.created_at}.each do |invoice| %>
     <tr>
       <td><%= invoice.id %></td>
       <td><%= formatInvoiceDate(invoice.created_at) %></td>

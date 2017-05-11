@@ -1,7 +1,12 @@
 <div class="container">
 <h1>Edit Diner</h1>
 
+<% if @diner.status == 'reservation' %>
+  <%= link_to "Edit Reservation",edit_restaurant_reservation_path(@restaurant, @diner)%>
+<% end %>
+
 <%= form_for @diner, url: restaurant_diner_path(@restaurant, @diner), html: {method: :put} do |f| %>
+
   <div class="field">
     Name:
     <%= @diner.name %>
@@ -70,13 +75,13 @@
   <% if @diner.status == 'reservation'%>
   <div class="field">
     Table:
-    <%= @diner.table_id %>
+    <% if @diner.table_id != nil %>
+      <%= @diner.table.name %>
+    <% end %>
   </div>
   <% else %>
-
     <%= f.label :table_id, "Table" %>
     <%= f.select(:table_id, @table_options)%>
-
   <% end %>
 
 
