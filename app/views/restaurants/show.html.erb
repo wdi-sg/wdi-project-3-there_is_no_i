@@ -73,16 +73,3 @@
 
 </div> <!-- div for res-whole row -->
 <!-- </div>--> <!-- div for container -->
-
-
-<!-- ==== ROW OF LINKS AT BOTTOM OF PAGE ==== -->
-  <center>
-    <% if current_user and current_user.restaurants.include? @restaurant %>
-    <%= link_to 'Current Queue', restaurant_walkins_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
-    <%= link_to 'Current Diners', restaurant_diners_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
-    <%= link_to 'View Reservations', restaurant_reservations_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
-    <%= link_to 'View Tables', restaurant_tables_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
-    <%= link_to 'Walk-in Queue', restaurant_new_public_path(@restaurant), class: 'waves-effect waves-light btn light-blue accent-4' %>
-    <% end %>
-    <br><br>
-  </center>

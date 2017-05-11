@@ -14,5 +14,6 @@ class DashboardController < ApplicationController
     @restaurant_id = current_user.restaurant_id
     @reservations = Reservation.where(restaurant_id: @restaurant_id).order('start_time ASC')
     @tables = Table.where(restaurant_id: @restaurant_id).order('LOWER(name) ASC')
+    gon.restaurant_id = @restaurant.id
   end
 end

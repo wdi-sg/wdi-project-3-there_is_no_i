@@ -30,3 +30,11 @@ allSections.forEach((section) => {
 })
 diningSection.style.display = 'block'
 diningButton.className = 'waves-effect waves-light btn pink accent-1'
+
+var x = 'notice-' +  gon.restaurant_id.toString()
+console.log(x);
+var notice = document.getElementById(x)
+console.log(notice);
+notice.addEventListener('click', function () {
+  this.style.display = 'none'
+})
