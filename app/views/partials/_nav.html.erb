@@ -4,7 +4,7 @@
     <li><%= link_to 'Orders', restaurant_orders_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <li><%= link_to 'Invoices', restaurant_invoices_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <li><%= link_to 'Menu', restaurant_menu_items_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
-    <li><%= link_to 'Profile', edit_restaurant_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
+    <li><%= link_to 'Edit Restaurant', edit_restaurant_path(current_user.restaurant_id), :class => 'navbar-link' %></li>
     <%end%>
     <li class="divider"></li>
     <li><a href="/invoices">My Invoices</a></li>
@@ -20,7 +20,7 @@
     <!-- left side (logo and dropdown) -->
     <ul id="nav-mobile" class="left hide-on-med-and-down valign-wrapper">
       <li>
-        <img src="<%= asset_path 'rex.png' %>" height="40" width="40" style="margin-top: 10px; margin-left:15px">
+        <a href="/" class="brand-logo" id="rex-logo"><img src="<%= asset_path 'rex.png' %>" height="35" width="35" style="margin-top: 10px; margin-left:18px"></a>
       </li>
     </ul>
  <a href="/" class="brand-logo center" id="logo">locavorus</a>

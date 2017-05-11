@@ -10,6 +10,20 @@
 
 ### Objective
 
+Queuing front end to accept walk-ins with customer SMS notifications and ability to submit food order online
+
+Reservation front end to make reservations with email confirmations
+
+Takeaway front end to process takeaway orders with email confirmations
+
+Reservation and queuing backend with automatic assignation, ordering and notification
+
+Order backend to process takeaway and local orders with logic to prioritise orders
+
+Simple interface to find restaurants and view details
+
+Simple interface to manage user accounts and business dashboard
+
 ### Using the Application
 
 #### Customer

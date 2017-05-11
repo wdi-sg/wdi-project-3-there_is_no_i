@@ -170,7 +170,7 @@ class WalkinsController < ApplicationController
         flash['notice'] = "#{diner.name}(Reservation ##{diner.id}) has checked into the restaurant"
         redirect_to dashboard_path
       else
-        flash['alert'] = "#{diner.name}(##{diner.queue_number}) has checked into the restaurant"
+        flash['notice'] = "#{diner.name}(##{diner.queue_number}) has checked into the restaurant"
         redirect_to dashboard_path
       end
 
