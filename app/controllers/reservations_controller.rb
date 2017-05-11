@@ -76,11 +76,9 @@ class ReservationsController < ApplicationController
             redirect_to restaurant_path(params[:restaurant_id])
 
           else
-            subject = "Reservation at #{new_res.restaurant.name} on #{new_res.start_time} for #{new_res.party_size}"
+            subject = "Reservation at #{new_res.restaurant.name} on #{formatOrderDate(new_res.start_time)} for #{new_res.party_size}"
 
-            body = "Dear #{new_res.name}, \nYour reservation at #{new_res.restaurant.name} on #{new_res.start_time} for a table of #{new_res.party_size} has been recorded. You may place an advance order at https://locavorusrex.herokuapp.com/reservations . Thank you and see you soon! \nBest regards, \n#{new_res.restaurant.name} \n \n \nPowered by Locavorus"
-
-            send_email(new_res.name, new_res.email, subject, body)
+            GmailerMailer.send_reservation_confirmation(new_res, new_res.email, subject).deliver_later
 
             new_res_name = new_res.name != nil ? new_res.name : ''
             new_res_phone = formatPhone(new_res.phone)
@@ -162,14 +160,10 @@ class ReservationsController < ApplicationController
             redirect_to restaurant_reservations_path(@restaurant)
 
           else
-            subject = "Reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for #{@reservation.party_size}"
+            subject = "Updated - Reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for #{@reservation.party_size}"
 
-            body = "Dear #{@reservation.name}, \nYour reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for a table of #{@reservation.party_size} has been updated. You may place an advance order at https://locavorusrex.herokuapp.com/reservations . Thank you and see you soon! \nBest regards, \n#{@reservation.restaurant.name} \n \n \nPowered by Locavorus"
-
-            p body
-
-            send_email(@reservation.name, @reservation.email, subject, body)
-
+            # send_email(@reservation.name, @reservation.email, subject, body)
+            GmailerMailer.send_reservation_update(@reservation, @reservation.email, subject).deliver_later
             flash['alert'] = 'Successfully updated reservation'
             redirect_to restaurant_reservations_path(@restaurant)
           end
