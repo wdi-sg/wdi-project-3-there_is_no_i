@@ -39,9 +39,8 @@ function appendQueue (data) {
   newQueue.innerHTML = '<tr><td><i class="material-icons left">edit</i><br><a href="/restaurants/'+ data.restaurant +'/diners/'+ data.walkin + '/edit">Edit</a></td>' + '<td>' + data.queue_number + '</td>'  + '<td>' + data.name + '<br>' + data.phone + '</td>' + '<td><i class="material-icons left">people</i>' + data.party_size + 'pax</td>' + '<td><i class="material-icons left">access_time</i>' + data.start_time + '</td>' + '<td>No Order</td>'+ '<td>' + data.table_name + '</td><td><a data-confirm="This will remove the customer from the queue. This action is permanent. OK to procced?" rel="nofollow" data-method="put" href="/restaurants/'+ data.restaurant +'/cancelled/'+ data.walkin + '">Cancel</a></td></tr>'
 
   var notice = $('#notice-' + data.restaurant)
-
   queueTable.append(newQueue)
-  notice.text('New Customer in Queue')
+  notice.text( data.name + 'has joined the Queue')
   notice.css('display', 'block')
 }
 
@@ -54,6 +53,6 @@ function appendReservation (data) {
   var notice = $('#notice-' + data.restaurant)
 
   reservationTable.append(newReservation)
-  notice.text('New reservation received')
+  notice.text(data.name + 'has made a reservation')
   notice.css('display', 'block')
 }

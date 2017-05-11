@@ -2,15 +2,15 @@
 
 ![Rex](http://i.imgur.com/VMuQpkL.png)
 
-[**Locavorus**](https://locavorusrex.herokuapp.com/) is a (work-in-progress) web application for restaurants and other food businesses to manage their reservations, queue and orders. It aims to reduce the time needed for customers to wait for their food to be served by allowing them to place their others beforehand. It also aims to reduce queues by notifying customers when their turn is up.
+[**Locavorus**](https://locavorusrex.herokuapp.com/) is a (work-in-progress) web application for restaurants and other food businesses to manage their reservations, queue and orders. It aims to reduce the time needed for customers to wait for their food to be served by allowing them to place their orders beforehand. It also aims to reduce queues by notifying customers on when their turn is up.
 
 ## The Project
 
 ### Objective
 
-:white_check_mark: Queuing front end to accept walk-ins with customer SMS notifications and ability to submit food order online
+:white_check_mark: Customers must be able to join the queue from a front-end interface (in this case, from a browser). They must be notified by SMS and must be able to submit their food orders online.
 
-:white_check_mark: Reservation front end to make reservations with email confirmations
+:white_check_mark: Customers must be able to submit their reservation and receive email confirmations
 
 :white_check_mark: Takeaway front end to process takeaway orders with email confirmations
 
@@ -44,14 +44,12 @@ rails db:reset
 #### Deployment
 This application is deployed on Heroku and can be accessed [here](https://locavorusrex.herokuapp.com/). (if it hasn't been taken down already)
 
-
 ### Built With
 * Ruby on Rails
 * PostgreSQL
 * ERB (embedded ruby)
 * CSS
 * jQuery
-
 
 ### Using the Application
 
@@ -138,9 +136,21 @@ Tables will only be assigned when a diner is 'queuing' or when an existing diner
 
 ### Bugs :bug::gun:
 
+<<<<<<< HEAD
+**Kitchen View of Ready Tickets**
+![Ready Tickets](app/assets/images/Kitchen_view.png)
+
+### Bugs
+**date_select**
+'date_select' is used in the form_for inputs. This allows invalid dates (eg. 31 February) to be selected. Currently, validation checks in the controller are used, but a more robust method could be used for date inputs in forms.
+
+### Authors
+[Louisa Lee](https://github.com/imouto2005)
+=======
 
 ## Authors
 [Darrell Teo](https://github.com/darrelltzj)
+>>>>>>> 0943684c2fcdab2fb506877b73b448f0ace25abd
 
 [Jonathan Louis Ng](https://github.com/noll-fyra)
 
