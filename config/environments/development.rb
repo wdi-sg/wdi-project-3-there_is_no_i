@@ -44,6 +44,8 @@ Rails.application.configure do
    :enable_starttls_auto => true
   }
 
+  # Route exceptions to the application router vs. default
+  config.exceptions_app = self.routes
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

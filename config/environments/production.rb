@@ -55,9 +55,8 @@ Rails.application.configure do
    :enable_starttls_auto => true
   }
 
-
-
-
+  # Route exceptions to the application router vs. default
+  config.exceptions_app = self.routes
 
   # Devise mailer setting
   config.action_mailer.default_url_options = { host: 'https://locavorusrex.herokuapp.com', port: ENV['PORT'] }
