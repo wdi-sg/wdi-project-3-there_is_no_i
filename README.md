@@ -9,8 +9,7 @@ For example, queuing is automated, allowing customers to spend their time waitin
 
 ## The Project
 
-### Objective
-The application was targeted to include the following features:
+### Objectives
 
 :white_check_mark: Customers to be able to join the queue from a front-end interface (in this case, from a browser). They must be notified via SMS and must be able to submit their food orders online.
 
@@ -222,7 +221,6 @@ Online payment is managed through the easy-to-implement Stripe API.
 **Nav Bar Dropdown Wireframe**
 ![Right Nav Wireframe](http://i.imgur.com/Wk8yk4z.png)
 
-
 ## Future Development
 ### Wireframes for possible future features
 **View Seated Diners**
@@ -256,48 +254,8 @@ If no available tables are found, repeat the logic with wider time params and su
 ### Bugs :bug::gun:
 The following bugs will also have to be fixed.
 
-**Date_select and time_select**
-'date_select' and 'time_select' allowed invalide date
-
-**CSS Alignment**
-
-
-## Getting Started
-
-### Prerequisites
-
-This project is build with [ruby on rails](http://rubyonrails.org/) and [PostgreSQL](https://www.postgresql.org/). Download and install them before continuing to the following steps to install the application.
-
-#### Installing
-
-Fork, clone or download this repository to your desired directory. Install the required GEM files by entering the following code in your terminal in the directory.
-
-```
-bundle install
-```
-
-Run the following code to reset the database and populate it with seed data.
-
-```
-rails db:reset
-```
-
-### Deployment
-
-
-### Built With
-
-
-### Contributing
-
-
-### Versioning
-
-
 #### date_select
->>>>>>> develop
 'date_select' is used in the form_for inputs. This allows invalid dates (eg. 31 February) to be selected. Currently, validation checks in the controller are used, but a more robust method could be used for date inputs in forms.
->>>>>>> develop
 
 #### ActionCable
 Our ActionCable only uses one room, which means that while restaurants only see orders that belong to them, they are receiving all restaurants' orders, which can greatly affect performance. A per-restaurant system should be implemented to improve performance and security.
