@@ -34,7 +34,7 @@ class InvoicesController < ApplicationController
       @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, user_name: current_user.name, takeaway_time: @takeaway_time)
     # check if reservation or queuing
     elsif params[:reservation_id]
-      @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, user_name: current_user.name, reservation_id: params[:reservation_id].to_i)
+      @invoice = Invoice.new(restaurant_id: @restaurant.id, user_id: current_user.id, user_name: current_user.name, reservation_id: params[:reservation_id].to_i, table_id: params[:table_id])
     # new restaurant order
     else
       @invoice = Invoice.new(restaurant_id: @restaurant.id, table_id: params[:table_id])
@@ -57,7 +57,7 @@ class InvoicesController < ApplicationController
         flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation of your order soon."
         redirect_to invoices_path
       # reservation/queuing order confirmation
-      elsif params[:reservation_id]
+      elsif params[:reservation_id] && !current_user.restaurants.include?(@restaurant)
         flash[:notice] = "Your order has been added to your reservation."
         redirect_to reservations_path
       # restaurant add to order confirmation

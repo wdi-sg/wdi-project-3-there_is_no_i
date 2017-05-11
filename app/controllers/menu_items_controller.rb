@@ -90,20 +90,24 @@ class MenuItemsController < ApplicationController
     @existing_invoice = params[:invoice_id] ? params[:invoice_id] : ''
     @reservation = params[:reservation_id] ? params[:reservation_id] : ''
     if params[:invoice_id]
-      @table = Invoice.find(params[:invoice_id]).table ? Invoice.find(params[:invoice_id]).table.name : '-'
+      @table = Invoice.find(params[:invoice_id]).table ? Invoice.find(params[:invoice_id]).table.name : nil
       @is_take_away = false
     elsif params[:reservation_id]
       @is_take_away = false
-      @table = '-'
+      if params[:table_id]
+        @table = params[:table_id]
+      else
+        @table = nil
+      end
     elsif !current_user
       @is_take_away = true
-      @table = '-'
+      @table = nil
     elsif current_user.restaurants.include? @restaurant
       @is_take_away = false
-      @table = '-'
+      @table = nil
     else
       @is_take_away = true
-      @table = '-'
+      @table = nil
     end
   end
 end
