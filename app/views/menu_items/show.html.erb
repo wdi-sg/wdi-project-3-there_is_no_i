@@ -1,9 +1,10 @@
+<div class="container">
 <h1><%= @menu_item.name %></h1>
 <p>
   <% if @menu_item.picture  %>
     <%= cl_image_tag(@menu_item.picture, width: 200, height: 100, crop: :fill) %>
     <% else %>
-    <img src="https://media3.s-nbcnews.com/j/MSNBC/Components/Video/201702/x_tdy_ov_food_perfectfriedegg_170207.today-inline-vid-featured-desktop.jpg" width=200 height=100>
+    <img src="http://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/quizzes/food_safety_quiz/650x350_food_safety_quiz.jpg" width=200 height=100>
   <% end %>
 </p>
 <p>
@@ -18,3 +19,4 @@
 <p>
   <%= @menu_item.tags %>
 </p>
+</div>

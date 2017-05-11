@@ -28,7 +28,7 @@
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <% if user_signed_in? %>
         <% if current_user.restaurant_id %>
-          <li><%= link_to 'Dashboard', dashboard_path, :class => 'navbar-link' %></li>
+          <li><%= link_to 'Dashboard', dashboard_path, :class => 'navbar-link', id: 'footer-text' %></li>
         <% end %>
         <li>
           <a class="dropdown-button" data-beloworigin="true" href="#!" data-constrainWidth="false" data-activates="dropdown2" id="footer-text">Account<i class="material-icons right">arrow_drop_down</i>
@@ -49,10 +49,10 @@
   <form class="" action="/restaurants" method="get" style="display:inline-block;">
     <table>
       <tr>
-        <td><p style="margin-bottom:38px">Find</p></td>
-        <td><input type="text" name="search" value="" placeholder="restaurants & cuisines"></td>
-        <td><p style="margin-bottom:38px">In</p></td>
-        <td><input type="text" name="city" value="" placeholder="Singapore"></td>
+        <td><p style="margin-bottom:38px" id="footer-text">Find</p></td>
+        <td><input type="text" name="search" value="" id="footer-text" placeholder="restaurants & cuisines"></td>
+        <td><p style="margin-bottom:38px" id="footer-text">In</p></td>
+        <td><input type="text" name="city" value="" id="footer-text" placeholder="Singapore"></td>
         <td><button type="submit" class="waves-effect waves-light btn pink accent-1" style="margin-bottom:12px">Search</button></td>
       </tr>
     </table>
