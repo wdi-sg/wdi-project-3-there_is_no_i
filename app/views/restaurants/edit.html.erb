@@ -50,17 +50,17 @@
     <thead>
       <tr>
         <th>Add employee by email</th>
-    </tr>
+      </tr>
     </thead>
     <tbody>
       <tr>
-        <%= form_for @restaurant do |f| %>
+        <%= form_for @restaurant, url:restaurant_path(@restaurant), method: :put do |f| %>
           <td>
             <%= f.hidden_field :add, value: true %>
-            <%= f.email_field :email, value: nil, placeholder: 'employee@company.com' %>
+            <%= f.email_field :email, placeholder: 'employee@company.com' %>
           </td>
           <td>
-            <%= f.submit "Add", class: 'waves-effect waves-light btn light-blue lighten-3' %>
+            <%= f.submit "Add", class: 'waves-light btn light-blue lighten-3' %>
           </td>
         <% end %>
       </tr>
