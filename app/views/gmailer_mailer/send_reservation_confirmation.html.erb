@@ -7,7 +7,7 @@
   <body>
     <p>Dear <%= @reservation.name %>,</p>
       <p>
-        Your reservation at <%= @reservation.restaurant.name %> on <%= formatOrderDate(@reservation.start_time) %> for a table of <%= @reservation.party_size %> has been recorded. You may place an advance order at <a href="https://locavorusrex.herokuapp.com/reservations">https://locavorusrex.herokuapp.com/reservations</a>.
+        Your reservation at <%= @reservation.restaurant.name %> on <%= @reservation.start_time %> for a table of <%= @reservation.party_size %> has been recorded. You may place an advance order at <a href="https://locavorusrex.herokuapp.com/reservations">https://locavorusrex.herokuapp.com/reservations</a>.
       </p>
       <p>Thank you and see you soon!</p>
       <p>

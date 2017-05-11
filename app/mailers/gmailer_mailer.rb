@@ -16,8 +16,8 @@ class GmailerMailer < ApplicationMailer
     mail(from: 'Locavorus <locavorus@gmail.com>', to: @email, subject: @subject)
   end
 
-  def send_takeaway_confirmation(takeaway, email, subject)
-    @takeaway = takeaway
+  def send_takeaway_confirmation(invoice, email, subject)
+    @invoice = invoice
     @email = email
     @subject = subject
     mail(from: 'Locavorus <locavorus@gmail.com>', to: @email, subject: @subject)

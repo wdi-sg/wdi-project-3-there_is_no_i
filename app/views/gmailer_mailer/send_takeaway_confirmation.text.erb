@@ -1,8 +1,8 @@
-Dear <%= @reservation.name %>,
-Your reservation at <%= @reservation.restaurant.name %> on <%= @reservation.start_time %> for a table of <%= @reservation.party_size %> has been recorded. You may place an advance order at https://locavorusrex.herokuapp.com/reservations.
+Dear <%= @invoice.user.name %>,
+Your takeaway order ID: <%= @invoice.id %> at <%= @invoice.takeaway_time %> has been received.
 Thank you and see you soon!
 Best regards,
-<%= @reservation.restaurant.name %>
+<%= @invoice.restaurant.name %>
 
 
 Powered by Locavorus
