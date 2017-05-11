@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   # place to return to (for example, we don't want to return to the sign in page
   # after signing in), which is what the :unless prevents
   before_action :store_current_location, :unless => :devise_controller?
-  after_filter :return_errors, only: [:show]
 
   protected
 
@@ -29,19 +28,4 @@ class ApplicationController < ActionController::Base
   def after_sign_out_path_for(resource)
     request.referrer || root_path
   end
-
-  def show
-    @status = 404
-    @layout = "application"
-    @template = "404"
-  end
-
-  private
-
-  def return_errors
-        respond_to do |format|
-              format.html { render template: 'errors/' + @template, layout: 'layouts/' + @layout, status: @status }
-              format.all  { render nothing: true, status: @status }
-        end
-    end
 end

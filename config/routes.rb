@@ -50,9 +50,4 @@ Rails.application.routes.draw do
 
     put 'reset_queue' => 'restaurants#reset_queue'
   end
-
-  # error pages
-  %w( 404 422 500 503 ).each do |code|
-    get code, :to => "application#show", :code => code
-  end
 end

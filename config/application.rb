@@ -14,9 +14,6 @@ module WdiProject3ThereIsNoI
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    # Route exceptions to the application router vs. default
-    config.exceptions_app = self.routes
-
     config.autoload_paths += %W(#{config.root}/lib)
   end
 end

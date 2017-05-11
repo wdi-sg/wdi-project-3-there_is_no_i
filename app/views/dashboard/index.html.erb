@@ -16,6 +16,16 @@
 <section id="dashboard-dining-section">
 <h2>Dining</h2>
 <table class="striped">
+  <thead>
+    <th></th>
+    <th>#</th>
+    <th>Customer</th>
+    <th>Cover</th>
+    <th>Estimated Start Time</th>
+    <th>Total</th>
+    <th>Table</th>
+    <th></th>
+  </thead>
       <tbody>
         <% @reservations.where(status:'dining').each do |dining| %>
         <tr>
@@ -92,6 +102,16 @@
 <section id="dashboard-reservations-section">
   <h2>Reservations <%= link_to '[+]', new_restaurant_reservation_path(current_user.restaurant_id) %> <%= link_to '[All]', restaurant_reservations_path(current_user.restaurant_id) %></h2>
     <table class="striped">
+      <thead>
+        <th></th>
+        <th>#</th>
+        <th>Customer</th>
+        <th>Cover</th>
+        <th>Estimated Start Time</th>
+        <th>Total</th>
+        <th>Table</th>
+        <th></th>
+      </thead>
       <tbody id="reservation_<%= @restaurant_id %>">
         <% @reservations.where(status:'reservation').each do |reservation| %>
         <tr>
@@ -104,7 +124,7 @@
           </td>
 
           <td>
-            # <%= reservation.id %>
+            <%= reservation.id %>
           </td>
 
           <td>
@@ -143,7 +163,11 @@
 
           <td>
             <% if reservation.table_id != nil %>
-            Table: <%= reservation.table.name %>
+              <% if Reservation.where(table_id: reservation.table_id).where(status: 'dining').count > 0 %>
+                <font color="red"><b><%= reservation.table.name %></b></font>
+              <% else %>
+                <%= reservation.table.name %>
+              <% end %>
             <% end %>
           </td>
           <td>
@@ -157,10 +181,22 @@
     </tbody>
   </table>
 </section>
+
 <!-- ================================= -->
+
 <section id="dashboard-queue-section">
   <h2>Queue <%= link_to '[+]', new_restaurant_walkin_path(current_user.restaurant_id) %></h2>
   <table class="striped">
+    <thead>
+      <th></th>
+      <th>#</th>
+      <th>Customer</th>
+      <th>Cover</th>
+      <th>Estimated Start Time</th>
+      <th>Total</th>
+      <th>Table</th>
+      <th></th>
+    </thead>
         <tbody id="queue_<%= @restaurant_id %>">
           <% @reservations.where(status:'queuing').each do |queuing| %>
           <tr>
@@ -173,7 +209,7 @@
             </td>
 
             <td>
-              #<%= queuing.queue_number %>
+              <%= queuing.queue_number %>
             </td>
 
             <td>
@@ -212,7 +248,11 @@
 
             <td>
               <% if queuing.table_id != nil %>
-                Table: <%= queuing.table.name %>
+                <% if Reservation.where(table_id: queuing.table_id).where(status: 'dining').count > 0 %>
+                  <font color="red"><b><%= queuing.table.name %></b></font>
+                <% else %>
+                  <%= queuing.table.name %>
+                <% end %>
               <% end %>
             </td>
 
@@ -230,11 +270,22 @@
         </tbody>
       </table>
 </section>
+
 <!-- ================================= -->
 
 <section id="dashboard-notified-section">
 <h2>Notified</h2>
 <table class="striped">
+  <thead>
+    <th></th>
+    <th>#</th>
+    <th>Customer</th>
+    <th>Cover</th>
+    <th>Estimated Start Time</th>
+    <th>Total</th>
+    <th>Table</th>
+    <th></th>
+  </thead>
       <tbody>
         <% @reservations.where(status:'awaiting').each do |awaiting| %>
         <tr>
@@ -286,7 +337,13 @@
 
           <td>
             <% if awaiting.table_id != nil %>
-              Table: <%= awaiting.table.name %>
+              <% if Reservation.where(table_id: awaiting.table_id).where(status: 'dining').count > 0 %>
+                <font color="red"><b>
+                  <%= awaiting.table.name %>
+                </b></font>
+              <% else %>
+                <%= awaiting.table.name %>
+              <% end %>
             <% end %>
           </td>
 
@@ -301,7 +358,6 @@
 
       </tbody>
     </table>
-</section>
 
 <!-- ================================= -->
 
@@ -435,7 +491,6 @@
     </div>
 
         <!-- ===== THIRD ROW ===== -->
-
 
   </div>
 
