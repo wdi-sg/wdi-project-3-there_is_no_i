@@ -18,11 +18,30 @@ class WalkinsController < ApplicationController
 
   def create
     create_walkin(walkin_params)
-    @walkin.status = 'queuing'
-    if @walkin.save!
-      redirect_to dashboard_path
+
+    recommended_table = determine_table(@restaurant, find_aval_tables(@restaurant), @walkin, Time.now, @est_duration)
+
+    if recommended_table
+      # Give customer a table if there is one
+      update_table_count(recommended_table, @walkin.party_size)
+
+      # Update as 'awating'
+      update_customer(@walkin, recommended_table, 'queuing', Time.now, Time.now + @est_duration)
+
+      if @walkin.save!
+        redirect_to dashboard_path
+      else
+        render :new
+      end
     else
-      render :new
+      # Queue customer if there is no table
+      update_customer(@walkin, nil, 'queuing', nil, nil)
+
+      if @walkin.save!
+        redirect_to dashboard_path
+      else
+        render :new
+      end
     end
   end
 
@@ -60,7 +79,6 @@ class WalkinsController < ApplicationController
         # Update as 'awating' here and send sms if automated
         update_customer(@walkin, recommended_table, 'queuing', Time.now, Time.now + @est_duration)
 
-        # WHEN UPDATE TO AWATING, ASK IF OK TO SEND SMS, THEN NOTIFY?
         sms_queue(@walkin, Reservation.where(restaurant_id: params[:restaurant_id]).where('status = ?', 'queuing').count)
 
         public_save(@walkin)

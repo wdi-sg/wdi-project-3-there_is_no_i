@@ -185,6 +185,7 @@ class DinersController < ApplicationController
           @diner.status = 'queuing'
 
           # send to back of queue (requeue)
+          @diner.table_id = nil
           @diner.queue_number = @diner.restaurant.next_queue_number
           @diner.restaurant.next_queue_number += 1
           @diner.restaurant.save!

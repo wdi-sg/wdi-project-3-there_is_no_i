@@ -31,13 +31,18 @@
     <div class="card sticky-action">
       <div class="card-image">
         <a href="/restaurants/<%= restaurant.id %>">
-        <img src="http://www.ultimatebali.com/wp-content/uploads/2015/11/Best-Fine-Dining-Indonesian-Restaurants-Bali1.jpg"></a>
+          <% if restaurant.picture  %>
+          <%= cl_image_tag(restaurant.picture, width: 411, height: 230, crop: :fill) %>
+          <% else %>
+        <img src="http://www.ultimatebali.com/wp-content/uploads/2015/11/Best-Fine-Dining-Indonesian-Restaurants-Bali1.jpg">
+        <% end %>
+      </a>
         <a href="/restaurants/<%= restaurant.id %>"><span class="card-title white-text" id="restaurant-title"><%= restaurant.name %></span></a>
       </div>
       <div class="card-content">
         <p><i class="material-icons left">local_offer</i><%= restaurant.cuisine %></p><br>
         <% if !restaurant.phone.empty?%>
-        <p><i class="material-icons left">phone</i><%= formatPhone(restaurant.phone) %></p>
+        <p><i class="material-icons left">phone</i><a href="tel:65<%= restaurant.phone %>"><%= formatPhone(restaurant.phone) %></a></p>
         <% end %><br>
         <p><i class="material-icons left">place</i><%= restaurant.address1 %>, <%= restaurant.address_city %></p>
       </div>
