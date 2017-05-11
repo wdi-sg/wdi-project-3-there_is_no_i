@@ -2,19 +2,19 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-    <title>Reservation confirmation</title>
+    <title>Takeaway confirmation</title>
   </head>
   <body>
-    <p>Dear <%= @reservation.name %>,</p>
+    <p>Dear <%= @invoice.user.name %>,</p>
       <p>
-        Your reservation at <%= @reservation.restaurant.name %> on <%= @reservation.start_time %> for a table of <%= @reservation.party_size %> has been recorded. You may place an advance order at <a href="https://locavorusrex.herokuapp.com/reservations">https://locavorusrex.herokuapp.com/reservations</a>.
+        Your takeaway order ID: <%= @invoice.id %> at <%= @invoice.takeaway_time %> has been received.
       </p>
       <p>Thank you and see you soon!</p>
       <p>
         Best regards,
       </p>
       <p>
-         <%= @reservation.restaurant.name %>
+         <%= @invoice.restaurant.name %>
       </p>
       <br>
       <br>

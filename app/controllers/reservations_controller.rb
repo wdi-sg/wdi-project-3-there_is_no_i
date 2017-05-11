@@ -2,7 +2,6 @@ class ReservationsController < ApplicationController
   include AuthenticateRestaurantUser
   include AddBreadcrumbs
   include FindingTableLogic
-  include SendEmail
   include Format
   before_action :authenticate_user!, except: [:create, :new]
   before_action :set_restaurant_id
@@ -77,7 +76,6 @@ class ReservationsController < ApplicationController
 
           else
             subject = "Reservation at #{new_res.restaurant.name} on #{formatOrderDate(new_res.start_time)} for #{new_res.party_size}"
-
             GmailerMailer.send_reservation_confirmation(new_res, new_res.email, subject).deliver_later
 
             new_res_name = new_res.name != nil ? new_res.name : ''
@@ -161,9 +159,8 @@ class ReservationsController < ApplicationController
 
           else
             subject = "Updated - Reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for #{@reservation.party_size}"
-
-            # send_email(@reservation.name, @reservation.email, subject, body)
             GmailerMailer.send_reservation_update(@reservation, @reservation.email, subject).deliver_later
+
             flash['alert'] = 'Successfully updated reservation'
             redirect_to restaurant_reservations_path(@restaurant)
           end

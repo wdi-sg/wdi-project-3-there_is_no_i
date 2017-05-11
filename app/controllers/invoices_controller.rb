@@ -1,7 +1,6 @@
 class InvoicesController < ApplicationController
   include AuthenticateRestaurantUser
   include AddBreadcrumbs
-  include SendEmail
   include Format
   before_action :authenticate_user!, except: [:create]
   before_action :set_restaurant_id
@@ -52,8 +51,9 @@ class InvoicesController < ApplicationController
 
       # send takeaway user a confirmation email
       if params[:is_take_away] == "true"
-        body = "Dear #{current_user.name},\nYour takeaway order ID:#{@invoice.id} at #{@restaurant.name} for #{@takeaway_time} has been received.\nThank you and see you soon! \n \n \nPowered by Locavorus"
-        send_email(current_user.name, current_user.email, @restaurant.name, body)
+        subject = "Takeaway at #{@restaurant.name} for #{formatOrderDate(@takeaway_time)} for #{current_user.name}"
+        GmailerMailer.send_takeaway_confirmation(@invoice, current_user.email, subject).deliver_later
+
         flash[:notice] = "Thanks for ordering takeaway. You should receive an email confirmation of your order soon."
         redirect_to invoices_path
       # reservation/queuing order confirmation
