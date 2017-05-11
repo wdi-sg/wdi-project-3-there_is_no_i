@@ -29,7 +29,7 @@ function appendQueue (data) {
   var queueTable = $('#queue_' + data.restaurant)
 
   var newQueue = document.createElement('tr')
-  newQueue.innerHTML = '<tr><td><i class="material-icons left">edit</i>Edit</td>' + '<td>#' + data.queue_number + '</td>'  + '<td>' + data.name + '<br>' + data.phone + '</td>' + '<td><i class="material-icons left">people</i>' + data.party_size + 'pax</td>' + '<td><i class="material-icons left">access_time</i>' + data.start_time + '</td>' + '<td>No Order</td>'+ '<td>' + data.table_name + '</td><td></td></tr>'
+  newQueue.innerHTML = '<tr><td><i class="material-icons left">edit</i><br><a href="https://locavorusrex.herokuapp.com/restaurants/'+ data.restaurant +'/diners/'+ data.walkin + '/edit">Edit</a></td>' + '<td>#' + data.queue_number + '</td>'  + '<td>' + data.name + '<br>' + data.phone + '</td>' + '<td><i class="material-icons left">people</i>' + data.party_size + 'pax</td>' + '<td><i class="material-icons left">access_time</i>' + data.start_time + '</td>' + '<td>No Order</td>'+ '<td>' + data.table_name + '</td><td><a data-confirm="This will remove the customer from the queue. This action is permanent. OK to procced?" rel="nofollow" data-method="put" href="/restaurants/'+ data.restaurant +'/cancelled/'+ data.walkin + '">Cancel</a></td></tr>'
 
   queueTable.append(newQueue)
 }
