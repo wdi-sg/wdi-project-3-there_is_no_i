@@ -66,7 +66,9 @@
             <% end %>
           </td>
           <td>
-            <%= link_to 'Seated', restaurant_seated_path(@restaurant, reservation), method: :put %>
+            <% if reservation.table_id != nil %>
+              <%= link_to 'Seated', restaurant_seated_path(@restaurant, reservation), method: :put %>
+            <% end %>
           </td>
 
         </tr>
@@ -206,7 +208,9 @@
           </td>
 
           <td>
-            <%= link_to 'Seated', restaurant_seated_path(@restaurant, awaiting), method: :put %>
+            <% if awaiting.table_id != nil %>
+              <%= link_to 'Seated', restaurant_seated_path(@restaurant, awaiting), method: :put %>
+            <% end %>
           </td>
 
         </tr>
@@ -332,7 +336,6 @@
               <% else %>
                 No Upcoming Reservations
               <% end %>
-
             </td>
           </tr>
           <% else %>
@@ -341,7 +344,7 @@
               <i class="material-icons left">
                 people
               </i>
-              <%= table.capacity_current%>pax
+              <%= @reservations.where(table_id: table.id).where(status: 'dining')[0].party_size%>pax
             </td>
           </tr>
           <tr>

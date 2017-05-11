@@ -29,10 +29,11 @@ class ReservationsController < ApplicationController
   def create
     r_start_time =  Time.zone.local( params[:reservation]["date(1i)"].to_i, params[:reservation]["date(2i)"].to_i, params[:reservation]["date(3i)"].to_i, params[:reservation]["time(4i)"].to_i, params[:reservation]["time(5i)"].to_i, 0)
 
-    # if params[:reservation][:phone] !=~ /\d/ && params[:reservation][:phone] != nil
-    #   flash['alert'] = 'Phone input must be in numbers'
-    #   render :new
-    if r_start_time < Time.now
+    # This is temporary. Need to validate date or use and alternative to date_select and time_select
+    if (params[:reservation]["date(3i)"].to_i == 31 && params[:reservation]["date(2i)"].to_i == 2) || (params[:reservation]["date(3i)"].to_i == 30 && params[:reservation]["date(2i)"].to_i == 2) || (params[:reservation]["date(3i)"].to_i == 31 && params[:reservation]["date(2i)"].to_i == 4) || (params[:reservation]["date(3i)"].to_i == 31 && params[:reservation]["date(2i)"].to_i == 6) || (params[:reservation]["date(3i)"].to_i == 31 && params[:reservation]["date(2i)"].to_i == 9) || (params[:reservation]["date(3i)"].to_i == 31 && params[:reservation]["date(2i)"].to_i == 11)
+      flash['alert'] = 'Invalid Date Input'
+      render :new
+    elsif r_start_time < Time.now
       flash['alert'] = 'Cannot reserve a timeslot from the past. Please check input parameters.'
       render :new
     elsif r_start_time < Time.now + @reservation_allowance.hours

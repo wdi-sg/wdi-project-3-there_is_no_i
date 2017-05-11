@@ -9,7 +9,7 @@ module FindingTableLogic
     p 'TABLES CONSIDERED'
     p tables_considered
     p block
-    
+
     # Find Tables that cannot be used
     affecting_tables = find_affecting_tables(restaurant, start_time_given, block)
 
@@ -82,7 +82,7 @@ module FindingTableLogic
   def find_next_customer(table)
     # Next Customer must be able to fit into current table if there is a table
     if table
-      filtered_queue = Reservation.where('restaurant_id = ?', @restaurant.id).where('status = ?', 'queuing').where('party_size <= ?', table.capacity_total).where(table_id: nil)
+      filtered_queue = Reservation.where('restaurant_id = ?', @restaurant.id).where('status = ?', 'queuing').where('party_size <= ?', table.capacity_total).where(table_id: nil).where('queue_number != ?', nil)
       p '====QUEUE where size <= Table===='
       p filtered_queue
     else
