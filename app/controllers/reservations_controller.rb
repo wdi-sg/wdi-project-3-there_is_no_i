@@ -82,7 +82,7 @@ class ReservationsController < ApplicationController
             new_res_name = new_res.name != nil ? new_res.name : ''
             new_res_phone = formatPhone(new_res.phone)
             new_res_start_time = new_res.start_time != nil ? formatOrderDate(new_res.start_time) : ''
-            new_res_table_name = new_res.table != nil ? 'Table: ' + new_res.table.name : ''
+            new_res_table_name = new_res.table != nil ? new_res.table.name : ''
 
             ActionCable.server.broadcast('room_channel', { reservation: new_res.id, name: new_res_name, phone: new_res_phone, party_size: new_res.party_size, start_time: new_res_start_time, table_name: new_res_table_name, restaurant: @restaurant.id} )
 
