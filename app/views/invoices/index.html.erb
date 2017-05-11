@@ -5,7 +5,7 @@
 <% if @invoices.select{|invoice| invoice.takeaway_time}.select{|invoice| !invoice.time_end}.count > 0 %>
   <div class="container">
   <h2>Takeaway Orders</h2>
-  <table>
+  <table class="striped centered">
     <thead>
       <tr>
         <th>ID</th>
@@ -63,7 +63,7 @@
 
 <div class="container">
 <h2>Active Invoices</h2>
-<table>
+<table class="striped centered">
   <thead>
     <tr>
       <th>ID</th>
@@ -128,7 +128,7 @@
 
 <div class="container">
 <h2>Completed Invoices</h2>
-<table>
+<table class="striped centered">
   <thead>
     <tr>
       <th>ID</th>

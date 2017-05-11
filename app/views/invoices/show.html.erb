@@ -2,7 +2,7 @@
 <% if !current_user.restaurants.include?(@restaurant) %>
   <%= link_to 'Back to your reservations', reservations_path %>
 <% end %>
-<table>
+<table class="striped centered">
   <thead>
     <tr>
       <th>No.</th>
@@ -47,7 +47,7 @@
   <% end %>
 </p>
 
-<table>
+<table class="striped centered">
   <thead>
     <tr>
       <th>No.</th>
