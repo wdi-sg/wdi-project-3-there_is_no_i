@@ -18,6 +18,7 @@
             <i class="material-icons left">
               edit
             </i>
+            <br>
             <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, reservation) %>
           </td>
 
@@ -83,6 +84,7 @@
               <i class="material-icons left">
                 edit
               </i>
+              <br>
               <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, queuing) %>
             </td>
 
@@ -155,6 +157,7 @@
             <i class="material-icons left">
               edit
             </i>
+            <br>
             <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, awaiting) %>
           </td>
 
@@ -198,7 +201,7 @@
 
           <td>
             <% if awaiting.table_id != nil %>
-              T<%= awaiting.table.name %>
+              Table: <%= awaiting.table.name %>
             <% end %>
           </td>
 
@@ -223,6 +226,7 @@
             <i class="material-icons left">
               edit
             </i>
+            <br>
             <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, dining) %>
           </td>
 
