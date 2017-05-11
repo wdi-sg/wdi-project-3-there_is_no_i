@@ -6,9 +6,8 @@
 
 ## The Project
 
-### Background
-
 ### Objective
+The application was targeted to include the following features:
 
 Queuing front end to accept walk-ins with customer SMS notifications and ability to submit food order online
 
@@ -51,7 +50,6 @@ Simple interface to manage user accounts and business dashboard
 **Nav Bar Dropdown**
 ![Right Nav](app/assets/images/right_nav.png)
 
-
 ## Future Development
 ### Wireframes for possible future features
 **View Seated Diners**
@@ -74,11 +72,22 @@ Simple interface to manage user accounts and business dashboard
 
 **Payment View**
 ![Payment View](app/assets/images/payment.png)
+
+### Potential future Development
+
+**Mobile Application for public walk-in**
+
+
+
 ### Bugs
+
+**Date_select and time_select**
+'date_select' and 'time_select' allowed invalide date 
+
+**CSS Alignment**
 
 
 ## Getting Started
-
 
 ### Prerequisites
 
