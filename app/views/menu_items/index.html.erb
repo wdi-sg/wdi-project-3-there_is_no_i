@@ -4,7 +4,7 @@
   <div class="col s2">
 <center>
   <% if !current_user %>
-  <a href='<%= new_user_session_path %>'><button id="takeaway-login" type="button" name="button" class="waves-effect waves-light btn indigo accent-1" style="margin-bottom:5px; margin-top:20px;">Login To Order Takeaway</button></a>
+  <a href='<%= new_user_session_path %>'><button id="takeaway-login" type="button" name="button" class="pulse waves-effect waves-light btn indigo accent-1" style="margin-bottom:5px; margin-top:20px;">Login To Order Takeaway</button></a>
   <% else %>
   <button id="takeaway-show-hide" type="button" name="button" class="pulse waves-effect waves-light btn light-blue lighten-3" style="margin-bottom:5px; margin-top:20px; width:180px;">Order</button>
 <% end %>

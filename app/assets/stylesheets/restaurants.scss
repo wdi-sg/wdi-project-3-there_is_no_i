@@ -40,3 +40,10 @@ h2 {
 .show-container {
   width: 1840px;
 }
+#res-show-row {
+  margin-left: 480px;
+  width: 1000px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}

@@ -86,7 +86,7 @@ class ReservationsController < ApplicationController
 
             ActionCable.server.broadcast('room_channel', { reservation: new_res.id, name: new_res_name, phone: new_res_phone, party_size: new_res.party_size, start_time: new_res_start_time, table_name: new_res_table_name, restaurant: @restaurant.id} )
 
-            flash['alert'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
+            flash['notice'] = "Successful reservation for #{new_res[:party_size]} on #{new_res[:start_time]}."
             redirect_to restaurant_path(params[:restaurant_id])
           end
 
@@ -158,14 +158,14 @@ class ReservationsController < ApplicationController
         if @reservation.update(reservation_params)
 
           if @reservation.email == nil or @reservation.email.length < 2
-            flash['alert'] = 'Successfully updated reservation'
+            flash['notice'] = 'Successfully updated reservation'
             redirect_to restaurant_reservations_path(@restaurant)
 
           else
             subject = "Updated - Reservation at #{@reservation.restaurant.name} on #{@reservation.start_time} for #{@reservation.party_size}"
             GmailerMailer.send_reservation_update(@reservation, @reservation.email, subject).deliver_later
 
-            flash['alert'] = 'Successfully updated reservation'
+            flash['notice'] = 'Successfully updated reservation'
             redirect_to restaurant_reservations_path(@restaurant)
           end
 
