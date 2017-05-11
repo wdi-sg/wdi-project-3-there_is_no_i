@@ -18,9 +18,6 @@
         <% reservation.update(user_id: current_user.id) %>
         <tr>
           <td>
-            <%= @index %>
-          </td>
-          <td>
             <% if reservation.start_time%>
               <%= formatDate(reservation.start_time.getlocal('+08:00')) %>
             <% end %>
