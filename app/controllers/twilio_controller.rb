@@ -1,5 +1,6 @@
 class TwilioController < ApplicationController
   include SendTwilio
+  include Format
   skip_before_action :verify_authenticity_token
 
   def receive
@@ -18,12 +19,17 @@ class TwilioController < ApplicationController
     begin
       @user = User.find(phone: from[3..10]) # TAKE OUT +65
     rescue ActiveRecord::RecordNotFound => e
-      @user = []
+      @user = nil
     end
-    if @user.count > 0
-        @message = "Hey #{@user[0].name}! Thanks for sending #{body}!"
+    if @user
+      if Reservation.where(status: ['queuing', 'awaiting']).where(user_id: @user.id).count > 0
+        x = Reservation.where(status: ['queuing', 'awaiting']).where(user_id: @user.id)[0]
+        @message = "Hey #{@user.name}! Your estimated wait time is #{estimatedReservationWaitTime(x)} minutes."
+      else
+        @message = "Hmm... Thanks for the message, but you're a complete stranger to us! Find out more at http://locavorusrex.herokuapp.com"
+      end
     else
-        @message = "Hmm... Thanks for the message, but you're a complete stranger to us!"
+        @message = "Hmm... Thanks for the message, but you're a complete stranger to us! Find out more at http://locavorusrex.herokuapp.com"
     end
     send_message(from, @message)
   end
