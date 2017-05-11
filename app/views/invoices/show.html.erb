@@ -58,6 +58,7 @@
         <th>User Name</th>
       <% end %>
       <th>Request</th>
+      <th>Completed</th>
       <th></th>
     </tr>
   </thead>
@@ -88,6 +89,9 @@
       <% end %>
       <td>
         <%= order.request_description %>
+      </td>
+      <td>
+        <%= order.time_end ? 'yes' : '' %>
       </td>
       <td><%= link_to 'Remove', restaurant_invoice_order_path(@restaurant, @invoice, order), method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>

@@ -357,29 +357,63 @@
               <i class="material-icons left">
                 local_atm
               </i>
-              <% if Invoice.where(table_id: table.id).where(time_end: nil).count > 0 %>
-              <% x = Invoice.where(table_id: table.id).where(time_end: nil)[0] %>
-              $<%= formatPrice(showTotalPrice(x.menu_items)) %>
+              <% if @reservations.where(table_id: table.id).where(status: 'dining').count > 0 %>
+                <% if Invoice.where(reservation_id: @reservations.where(table_id: table.id).where(status: 'dining')[0]).count > 0 %>
+                  <% if Invoice.where(table_id: table.id).where(time_end: nil).count > 0 %>
+                    <% x = Invoice.where(table_id: table.id).where(time_end: nil)[0] %>
+                    $<%= formatPrice(showTotalPrice(x.menu_items)) %>
+                  <% else %>
+                    Paid
+                  <% end %>
+                <% else %>
+                  No order yet
+                <% end %>
               <% else %>
-              No Order
+                Not in use
               <% end %>
             </td>
           </tr>
           <tr>
             <td>
               <% if @reservations.where(table_id: table.id).where(status: 'dining').count > 0 %>
-                <% if Invoice.where(table_id: table.id).where(time_end: nil).count == 0 %>
+                <% if Invoice.where(table_id: table.id).where(reservation_id: @reservations.where(table_id: table.id).where(status: 'dining')[0].id).count == 0 %>
                   <%= form_tag restaurant_menu_items_path(@restaurant), method: :get, style: "display:inline-block" do %>
                   <%= hidden_field_tag :reservation_id, @reservations.where(table_id: table.id).where(status: 'dining')[0].id %>
                   <%= hidden_field_tag :table_id, @reservations.where(table_id: table.id).where(status: 'dining')[0].table_id %>
                   <%= submit_tag 'New' %>
                   <% end %>
                 <% else %>
-                  <%= link_to 'View', restaurant_invoice_path(@restaurant, Invoice.where(table_id: table.id).where(time_end: nil)[0]) %> | Add | Pay
+                  <% if Invoice.where(table_id: table.id).where(reservation_id: @reservations.where(table_id: table.id).where(status: 'dining')[0].id).where(time_end: nil).count == 0 %>
+                    Can Check Out
+                  <% else %>
+                  <%= link_to 'View', restaurant_invoice_path(@restaurant, Invoice.where(table_id: table.id).where(time_end: nil)[0]) %> |
+                  <%= form_tag restaurant_menu_items_path(@restaurant), method: :get, style: "display:inline-block" do %>
+                    <%= hidden_field_tag :invoice_id, Invoice.where(table_id: table.id).where(time_end: nil)[0].id %>
+                    <%= hidden_field_tag :table_id, table.id %>
+                    <%= submit_tag 'Add' %>
+                  <% end %>
+                  <% if allOrdersAreCompleted(Invoice.where(table_id: table.id).where(time_end: nil)[0]) %>
+                    <%= form_tag restaurant_invoice_path(@restaurant, Invoice.where(table_id: table.id).where(time_end: nil)[0]), method: :put, style: "display:inline-block" do %>
+                    <%= hidden_field_tag :total_price, showTotalPrice(Invoice.where(table_id: table.id).where(time_end: nil)[0].menu_items) %>
+                    <%= hidden_field_tag :invoice_id, Invoice.where(table_id: table.id).where(time_end: nil)[0].id %>
+                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+                    data-name="<%= @restaurant.name %>"
+                    data-amount=""
+                    data-description='Order'
+                    data-locale="auto"
+                    data-currency="SGD"></script>
+                    <% end %>
+                  <% end %>
+                  <% end %>
+                <% end %>
+              <% else %>
+                Not in use
               <% end %>
 
 
-               <% end  %>
+
+
             </td>
           </tr>
           <% end %>
