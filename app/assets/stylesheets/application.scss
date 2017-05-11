@@ -25,43 +25,79 @@
    font-family: "Unica One";
    font-size: 70px;
  }
+ h5 {
+   font-family: "Unica One";
+   font-size: 25px;
+ }
  #dropdown1 #dropdown2 {
    width: 200px
  }
  #search-bar {
    position:absolute;
-   float: left;
    top: 60px;
-   right:0;
+   right:650px;
  }
-#search-field {
-  // margin-left: 700px;
-   width: 500px;
-   border: none
- }
+// #search-field {
+//   // margin-left: 700px;
+//    width: 700px;
+//    border: none
+//  }
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
  .input-field input[type=search] {
-   width: 500px;
+   width: 700px;
    border: none;
  }
- .input-field input[type=search]:focus {
-   width: 500px;
- }
+
 
  #logo {
    font-family:"Raleway";
-   font-size: 30px;
    font-weight: bold;
-   margin-left: 8px
  }
 
-.pagination a li.active {
-  color: #fff;
+#footer-text{
+  font-family: "Raleway"
+}
+
+#flash-alert {
+  border: 2px solid red;
+  border-radius: 5px;
+  background-color: #ff8a80;
+  margin-top: 50px;
+  width: 650px;
+  font-family: "Raleway";
+  padding: 5px;
+}
+
+#flash-notice {
+  border: 2px solid #00bfa5;
+  border-radius: 5px;
+  background-color: #a7ffeb;
+  margin-top: 50px;
+  width: 650px;
+  font-family: "Raleway";
+  padding: 5px;
 }
 
 .pagination {
-  font-size: 28px;
+  font-size: 22px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .pagination a {
   margin: 0 10px;
+  padding: 5px;
+}
+
+.pagination a li.active {
+  color: #fff;
 }

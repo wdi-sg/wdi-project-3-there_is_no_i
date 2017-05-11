@@ -1,76 +1,77 @@
+<div class="container">
 <h1>Edit Diner</h1>
 
 <%= form_for @diner, url: restaurant_diner_path(@restaurant, @diner), html: {method: :put} do |f| %>
-  <p>
+  <div class="field">
     Name:
     <%= @diner.name %>
-  </p>
+  </div>
 
-  <p>
+  <div class="field">
     Phone:
     <%= @diner.phone %>
-  </p>
+  </div>
 
-  <p>
+  <div class="field">
     Email:
     <%= @diner.email %>
-  </p>
+  </div>
 
-  <p>
+  <div class="field">
     Queue Number:
     <%= @diner.queue_number %>
-  </p>
+  </div>
 
   <% if @diner.status == 'queuing' %>
   <% if @diner.table %>
-    <p>
+    <div class="field">
       <%= f.label :status, "Status" %>
       <%= f.select(:status, [['Cancelled','cancelled'],['Queuing','queuing'], ['Awaiting','awaiting']])%>
-    </p>
+    </div>
   <% else %>
-    <p>
+    <div class="field">
       <%= f.label :status, "Status" %>
       <%= f.select(:status, [['Cancelled','cancelled'],['Queuing','queuing']])%>
-    </p>
+    </div>
   <% end %>
   <% elsif @diner.status == 'reservation' %>
-  <p>
+  <div class="field">
     <%= f.label :status, "Status" %>
     <%= f.select(:status, [['Cancelled','cancelled'],['Reservation','reservation'], ['Dining','dining']])%>
-  </p>
+  </div>
   <% elsif @diner.status == 'awaiting' %>
-  <p>
+  <div class="field">
     <%= f.label :status, "Status" %>
     <%= f.select(:status, [['Cancelled','cancelled'], ['Queuing','queuing'], ['Awaiting','awaiting'], ['Dining','dining']])%>
-  </p>
+  </div>
   <% elsif @diner.status == 'dining' %>
-  <p>
+  <div class="field">
     <%= f.label :status, "Status" %>
     <%= f.select(:status, [['Awaiting','awaiting'], ['Dining','dining'], ['Checked Out','checked_out']])%>
-  </p>
+  </div>
   <% end %>
 
   <% if @diner.status == 'reservation' %>
-  <p>
+  <div class="field">
     Party Size:
     <%= @diner.party_size %>
-  </p>
+  </div>
   <% else %>
-  <p>
+  <div class="field">
     <%= f.label :party_size, "Number of Diners" %>
     <% if @restaurant.tables.count > 0 %>
       <%= f.select :party_size,[*1..@restaurant.tables.reject{|y| y[:capacity_total] == nil}.max_by{|x| x[:capacity_total]}.capacity_total]%>
     <% else %>
       <%= f.select :party_size,[0]%>
     <% end %>
-  </p>
+  </div>
   <% end %>
 
   <% if @diner.status == 'reservation'%>
-  <p>
+  <div class="field">
     Table:
     <%= @diner.table_id %>
-  </p>
+  </div>
   <% else %>
 
     <%= f.label :table_id, "Table" %>
@@ -79,20 +80,21 @@
   <% end %>
 
 
-  <p>
+  <div class="field">
     <%= f.label :special_requests, "Special Requests" %>
     <%= f.text_field :special_requests, placeholder: "Special Requests"%>
-  </p>
+  </div>
 
-  <p>
+  <div class="field">
     Start Time:
     <%= @diner.start_time %>
-  </p>
+  </div>
 
-  <p>
+  <div class="field">
     End Time:
     <%= @diner.end_time %>
-  </p>
+  </div>
 
   <%= f.submit "Submit" %>
 <% end %>
+</div>

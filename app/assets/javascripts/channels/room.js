@@ -38,7 +38,7 @@ function appendReservation (data) {
   var reservationTable = $('#reservation_' + data.restaurant)
 
   var newReservation = document.createElement('tr')
-  newReservation.innerHTML = '<tr><td><i class="material-icons left">edit</i>Edit</td>' + '<td>#' + data.reservation + '</td>'  + '<td>' + data.name + '<br>' + data.phone + '</td>' + '<td><i class="material-icons left">people</i>' + data.party_size + 'pax</td>' + '<td><i class="material-icons left">access_time</i>' + data.start_time + '</td>' + '<td>No Order</td>'+ '<td>' + data.table_name + '</td><td></td></tr>'
+  newReservation.innerHTML = '<tr><td><i class="material-icons left">edit</i><br><a href="https://locavorusrex.herokuapp.com/restaurants/'+ data.restaurant +'/diners/'+ data.reservation + '/edit">Edit</a></td>' + '<td>#' + data.reservation + '</td>'  + '<td>' + data.name + '<br>' + data.phone + '</td>' + '<td><i class="material-icons left">people</i>' + data.party_size + 'pax</td>' + '<td><i class="material-icons left">access_time</i>' + data.start_time + '</td>' + '<td>No Order</td>'+ '<td>' + data.table_name + '</td><td><a rel="nofollow" data-method="put" href="/restaurants/'+ data.restaurant +'/seated/'+ data.reservation + '">Seated</a></td></tr>'
 
   reservationTable.append(newReservation)
 }

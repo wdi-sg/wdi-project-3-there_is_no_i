@@ -1,14 +1,17 @@
-<center><h1>All Reservations</h1></center>
+<div class="row">
 
-
+  <!-- SORT BUTTONS DIV -->
+  <div class="col s2">
 <center>
 <h2>- Sort by -</h2>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/reservations?name=sort">Name</a>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/reservations?pax=sort">Party size</a>
-<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/reservations?date=sort">Date</a>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/reservations?name=sort" style="width:145px">Name</a><br>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/reservations?pax=sort" style="width:145px; margin-top:5px">Party size</a><br>
+<a class="waves-effect waves-light btn light-blue lighten-3" href="/restaurants/<%= @restaurant_id %>/reservations?date=sort" style="width:145px; margin-top:5px">Date</a><br>
 </center>
-
-<div class="container">
+</div>
+<!-- SORT BUTTONS DIV -->
+<div class="col s8">
+  <center><h1>All Reservations</h1></center>
 <% @reservations.where(status: 'reservation').each do |reservation| %>
 
 <% if current_user[:id] == reservation[:user_id] or current_user.restaurants.include? @restaurant %>
@@ -37,4 +40,5 @@
   <br/>
 </div>
 <% end %>
-</div>
+</div><!-- div for reservation info display -->
+</div><!-- div for main row -->
