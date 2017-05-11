@@ -34,7 +34,7 @@ Simple interface to manage user accounts and business dashboard
 
 ![Restaurant Employee's Flow]()
 
-[Try it out](https://locavorusrex.herokuapp.com)
+[Try it out here!](https://locavorusrex.herokuapp.com)
 
 ## Development
 
@@ -48,13 +48,32 @@ Simple interface to manage user accounts and business dashboard
 **Dashboard**
 ![Dashboard](app/assets/images/dashboard.png)
 
+**Nav Bar Dropdown**
+![Right Nav](app/assets/images/right_nav.png)
+
 
 ## Future Development
+### Wireframes for possible future features
+**View Seated Diners**
+![Seated Diners](app/assets/images/seated_diners.png)
 
+**Takeaway Dashboard**
+![Takeaway Dash](app/assets/images/takeaway_dash.png)
 
-### Possible future features / ideas
+**Order Chit**
+![Order Chit](app/assets/images/Individual_Order.png)
 
+**See All Orders**
+![See all orders](app/assets/images/see_all_orders.png)
 
+**Kitchen View of Upcoming Tickets**
+![Upcoming Tickets](app/assets/images/Kitchen_Upcoming.png)
+
+**Kitchen View of Ready Tickets**
+![Ready Tickets](app/assets/images/Kitchen_view.png)
+
+**Payment View**
+![Payment View](app/assets/images/payment.png)
 ### Bugs
 
 
