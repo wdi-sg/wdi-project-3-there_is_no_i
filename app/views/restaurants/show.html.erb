@@ -41,7 +41,7 @@
 <p>
 <i class="material-icons left">perm_phone_msg</i>
   <a href="mailto:<%= @restaurant.email %>"><%= @restaurant.email %></a><br>
-  <%= formatPhone(@restaurant.phone) %><br>
+  <a href="tel:65<%= @restaurant.phone %>"><%= formatPhone(@restaurant.phone) %></a><br>
 </p>
 <% end %>
 
