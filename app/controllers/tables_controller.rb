@@ -38,7 +38,7 @@ class TablesController < ApplicationController
 
   def update
     if @table.update(table_params)
-      redirect_to restaurant_tables_path(@restaurant)
+      redirect_to dashboard_path
     else
       render :edit
     end

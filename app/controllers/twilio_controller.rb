@@ -26,7 +26,7 @@ class TwilioController < ApplicationController
         x = Reservation.where(status: ['queuing', 'awaiting']).where(user_id: @user.id)[0]
         @message = "Hey #{@user.name}! Your estimated wait time is #{estimatedReservationWaitTime(x, 5)} minutes."
       else
-        @message = "Hmm... Thanks for the message, but you're a complete stranger to us! Find out more at https://locavorusrex.herokuapp.com"
+        @message = "Hmm... You don't seem to be in a queue! Find a restaurant at https://locavorusrex.herokuapp.com"
       end
     else
         @message = "Hmm... Thanks for the message, but you're a complete stranger to us! Find out more at https://locavorusrex.herokuapp.com"
