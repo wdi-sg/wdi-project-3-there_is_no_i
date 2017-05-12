@@ -40,7 +40,7 @@ function appendQueue (data) {
 
   var notice = $('#notice-' + data.restaurant)
   queueTable.append(newQueue)
-  notice.text( data.name + 'has joined the Queue')
+  notice.text( data.name + ' has joined the Queue')
   notice.css('display', 'block')
 }
 
@@ -53,6 +53,6 @@ function appendReservation (data) {
   var notice = $('#notice-' + data.restaurant)
 
   reservationTable.append(newReservation)
-  notice.text(data.name + 'has made a reservation')
+  notice.text(data.name + ' has made a reservation')
   notice.css('display', 'block')
 }

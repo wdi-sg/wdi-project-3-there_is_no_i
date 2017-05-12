@@ -45,7 +45,10 @@
   <body>
     <h1><%= @restaurant.name%> </h1>
       <h2>Walk-in Queue</h2>
-
+      <p>
+        Current Queue Ahead:
+        <%= Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing','awaiting']).count %>
+      </p>
     <%= form_for @walkin, url: restaurant_public_path(@restaurant), html: {method: :post} do |f| %>
 
       <p>

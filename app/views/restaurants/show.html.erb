@@ -15,7 +15,10 @@
 <div class="row" id="res-show-row">
 <div class="col s7" id="res-description">
   <p id="description-box" style="text-align:left">
-     All the food you eat, whether it’s a snack or a meal, should be very tasty and gratifying. If you choose delicious foods every time you eat, rather than trying to choke down foods you don’t like but you think are good for you, you’ll be much more satisfied.
+     All the food you eat, whether it’s a snack or a meal, should be very tasty and gratifying. If you choose delicious foods every time you eat, rather than trying to choke down foods you don’t like but you think are good for you, you’ll be much more satisfied. <br><br>
+     <% if @restaurant.description %>
+      <%= @restaurant.description %>
+     <% end %>
   </p><br>
   <center>
   <%= link_to 'Make a Reservation', new_restaurant_reservation_path(@restaurant), class: 'waves-effect waves-light btn light-blue lighten-3', i_class: 'material-icons' %>
@@ -56,6 +59,7 @@
   Current Queue Ahead:
   <%= Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing','awaiting']).count %>
 </p>
+
 </div> <!-- div for icons column-->
 <!-- ==== WHOLE CHUNK OF RESTAURANT DESCRIPTION ====  -->
 

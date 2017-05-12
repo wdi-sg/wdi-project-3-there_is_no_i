@@ -5,97 +5,11 @@
   <!-- ======================== -->
 <div><button style='display:none; width:100%;' class='red lighten-2 white-text waves-effect waves-light btn pulse' id="notice-<%= @restaurant.id %>"></button></div>
 <p>
-  <button class="waves-effect waves-light btn light-blue lighten-3" id="dashboard-dining-button" style="width:24%">Dining</button>
   <button class="waves-effect waves-light btn light-blue lighten-3" id="dashboard-reservations-button" style="width:24%">Reservations</button>
   <button class="waves-effect waves-light btn light-blue lighten-3" id="dashboard-queue-button" style="width:24%">Queue</button>
   <button class="waves-effect waves-light btn light-blue lighten-3" id="dashboard-notified-button" style="width:24%">Notified</button>
+  <button class="waves-effect waves-light btn light-blue lighten-3" id="dashboard-dining-button" style="width:24%">Dining</button>
   </p>
-
-<!-- ================================= -->
-
-<section id="dashboard-dining-section">
-<h2>Dining</h2>
-<table class="striped">
-  <thead>
-    <th></th>
-    <th>#</th>
-    <th>Customer</th>
-    <th>Cover</th>
-    <th>Estimated Start Time</th>
-    <th>Total</th>
-    <th>Table</th>
-    <th></th>
-  </thead>
-      <tbody>
-        <% @reservations.where(status:'dining').each do |dining| %>
-        <tr>
-          <td>
-            <i class="material-icons left">
-              edit
-            </i>
-            <br>
-            <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, dining) %>
-          </td>
-
-          <td>
-            <% if dining.queue_number %>
-              #<%= dining.queue_number %>
-            <% else %>
-              #<%= dining.id %>
-            <% end %>
-
-          </td>
-
-          <td>
-            <%= dining.name %>
-            <br>
-            <% if dining.phone != nil %>
-            <a href="tel:65<%= dining.phone %>"><%= formatPhone(dining.phone) %></a>
-            <% end %>
-          </td>
-
-          <td>
-            <i class="material-icons left">
-              people
-            </i>
-            <%= dining.party_size  %>
-             pax
-          </td>
-
-          <td>
-            <i class="material-icons left">
-              access_time
-            </i>
-            <% if dining.start_time != nil %>
-              <%= formatOrderDate(dining.start_time) %>
-            <% end %>
-          </td>
-
-          <td>
-            <% if Invoice.where(reservation_id: dining.id).where(time_end: nil).count > 0 %>
-            <% x = Invoice.where(reservation_id: dining.id).where(time_end: nil)[0] %>
-            <%= formatPrice(showTotalPrice(x.menu_items)) %>
-            <% else %>
-            No Order
-            <% end %>
-          </td>
-
-          <td>
-            <% if dining.table_id != nil %>
-              Table: <%= dining.table.name %>
-            <% end %>
-          </td>
-
-          <td>
-            <%= link_to 'Check Out', restaurant_checked_out_path(@restaurant, dining), method: :put, data: { confirm: 'This will check the customer out and end their session. This action is undoable. OK to procced?'} %>
-          </td>
-
-        </tr>
-        <% end %>
-
-      </tbody>
-    </table>
-</section>
 
 <!-- ================================= -->
 
@@ -358,6 +272,91 @@
 
       </tbody>
     </table>
+</section>
+<!-- ================================= -->
+<section id="dashboard-dining-section">
+<h2>Dining</h2>
+<table class="striped">
+  <thead>
+    <th></th>
+    <th>#</th>
+    <th>Customer</th>
+    <th>Cover</th>
+    <th>Start Time</th>
+    <th>Total</th>
+    <th>Table</th>
+    <th></th>
+  </thead>
+      <tbody>
+        <% @reservations.where(status:'dining').each do |dining| %>
+        <tr>
+          <td>
+            <i class="material-icons left">
+              edit
+            </i>
+            <br>
+            <%= link_to 'Edit', restaurant_edit_diner_path(@restaurant.id, dining) %>
+          </td>
+
+          <td>
+            <% if dining.queue_number %>
+              #<%= dining.queue_number %>
+            <% else %>
+              #<%= dining.id %>
+            <% end %>
+
+          </td>
+
+          <td>
+            <%= dining.name %>
+            <br>
+            <% if dining.phone != nil %>
+            <%= formatPhone(dining.phone) %>
+            <% end %>
+          </td>
+
+          <td>
+            <i class="material-icons left">
+              people
+            </i>
+            <%= dining.party_size  %>
+             pax
+          </td>
+
+          <td>
+            <i class="material-icons left">
+              access_time
+            </i>
+            <% if dining.start_time != nil %>
+              <%= formatOrderDate(dining.start_time) %>
+            <% end %>
+          </td>
+
+          <td>
+            <% if Invoice.where(reservation_id: dining.id).where(time_end: nil).count > 0 %>
+            <% x = Invoice.where(reservation_id: dining.id).where(time_end: nil)[0] %>
+            <%= formatPrice(showTotalPrice(x.menu_items)) %>
+            <% else %>
+            No Order
+            <% end %>
+          </td>
+
+          <td>
+            <% if dining.table_id != nil %>
+              <%= dining.table.name %>
+            <% end %>
+          </td>
+
+          <td>
+            <%= link_to 'Check Out', restaurant_checked_out_path(@restaurant, dining), method: :put, data: { confirm: 'This will check the customer out and end their session. This action is undoable. OK to procced?'} %>
+          </td>
+
+        </tr>
+        <% end %>
+
+      </tbody>
+    </table>
+</section>
 
 <!-- ================================= -->
 
@@ -489,10 +488,7 @@
       </div>
       <% end %>
     </div>
-
-
   </div>
-
   </div>
 
 

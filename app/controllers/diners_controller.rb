@@ -2,6 +2,7 @@ class DinersController < ApplicationController
   include AuthenticateRestaurantUser
   include FindingTableLogic
   include SendTwilio
+  include Format
   before_action :authenticate_user!
   before_action :set_restaurant
   before_action :check_user_is_part_of_restaurant
@@ -108,8 +109,8 @@ class DinersController < ApplicationController
         @diner.status = 'cancelled'
         @diner.end_time = Time.now
         @diner.save
-        reassign_table(@diner, @restaurant)
         sms_cancelled(@diner)
+        reassign_table(@diner, @restaurant)
         save_update(@diner)
       end
 
@@ -174,8 +175,9 @@ class DinersController < ApplicationController
           @diner.status = 'cancelled'
           @diner.end_time = Time.now
           @diner.save
-          reassign_table(@diner, @restaurant)
           sms_cancelled(@diner)
+          reassign_table(@diner, @restaurant)
+
 
         elsif params[:reservation][:status] == 'queuing'
           @diner.start_time = nil
@@ -185,6 +187,7 @@ class DinersController < ApplicationController
           @diner.status = 'queuing'
 
           # send to back of queue (requeue)
+          @diner.table_id = nil
           @diner.queue_number = @diner.restaurant.next_queue_number
           @diner.restaurant.next_queue_number += 1
           @diner.restaurant.save!
@@ -226,6 +229,11 @@ class DinersController < ApplicationController
           @diner.status = 'cancelled'
           @diner.table_id = nil
           @diner.end_time = nil
+
+          subject = "Reservation at #{@diner.restaurant.name} on #{formatOrderDate(@diner.start_time)} for #{@diner.party_size}"
+
+          GmailerMailer.send_reservation_delete(@diner, @diner.email, subject).deliver_later
+
           save_update(@diner)
         end
     end
@@ -278,8 +286,8 @@ class DinersController < ApplicationController
       diner.status = 'cancelled'
       diner.end_time = Time.now
       diner.save
-      reassign_table(diner, @restaurant)
       sms_cancelled(diner)
+      reassign_table(diner, @restaurant)
       flash['notice'] = "#{diner.name}(##{diner.queue_number}) was removed from the queue."
       redirect_to dashboard_path
     else
