@@ -46,6 +46,10 @@
     <h1><%= @restaurant.name%> </h1>
       <h2>Walk-in Queue</h2>
       <p>
+        Currently Serving:
+        <%= Reservation.where(restaurant_id: @restaurant.id).where(status: 'queuing')[0].queue_number - 1 %>
+      </p>
+      <p>
         Current Queue Ahead:
         <%= Reservation.where(restaurant_id: @restaurant.id).where(status: ['queuing','awaiting']).count %>
       </p>
