@@ -159,7 +159,6 @@ The method below is called to determine a table for a potential diner.
 3. Remove these unavailable tables from all tables in that restaurant.
 
 4. From the remaining tables, filter out and accept only the tables with capacity greater than or equal to the number of diners.
-<<<<<<< HEAD
 
 5. Sort these tables in ascending order of capacity and select the first table in the array to reduce inefficiencies in seating. E.g. Assigning 3 people to an empty table meant for 4 people.
 
