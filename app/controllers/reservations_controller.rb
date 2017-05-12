@@ -144,7 +144,7 @@ class ReservationsController < ApplicationController
       end
       render :edit
     elsif r_start_time < Time.now + @est_duration
-      flash['alert'] = "Cannot make a reservation within #{@est_duration} hours from now."
+      flash['alert'] = "Cannot make a reservation within 2 hours from now."
       @table_options = @restaurant.tables.map do |table|
         [table.name, table.id]
       end
