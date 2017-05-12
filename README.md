@@ -270,7 +270,7 @@ For an unsolvable reason, the orders array is changed by methods applied to a co
 
 - [Louisa Lee](https://github.com/imouto2005)
 
-- Jasmine Lee (UX)
+- [Jasmine Lee](https://balance.net/jasminely)
 
 ### Acknowledgments :sparkling_heart:
 
