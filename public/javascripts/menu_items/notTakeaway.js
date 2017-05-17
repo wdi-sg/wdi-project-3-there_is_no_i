@@ -1,10 +1,7 @@
 $(document).on('ready', function () {
   var hide = true
   var orders = []
-  var clicked = false
 
-// $(document).on('ready page:load', function () {
-// show and hide takeaway
   document.getElementById('takeaway-show-hide').addEventListener('click', () => {
     if (hide) {
       document.getElementById('takeaway-show-hide').textContent = 'Cancel'
@@ -158,15 +155,12 @@ $(document).on('ready', function () {
 
 // convert the orders array into a string of menu-item ids and submits that string
   function updateOrders () {
-    if (!clicked) {
-      var realTP = totalPrice()
-      console.log(orders)
-      var allOrders = orders
-      var first = allOrders.shift().id.toString()
-      var ordersStr = allOrders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
-      document.getElementById('orders').value = ordersStr
-      document.getElementById('total_price').value = realTP.toString()
-      clicked = true
-    }
+    var realTP = totalPrice()
+    console.log(orders)
+    var allOrders = orders
+    var first = allOrders.shift().id.toString()
+    var ordersStr = allOrders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
+    document.getElementById('orders').value = ordersStr
+    document.getElementById('total_price').value = realTP.toString()
   }
 })
