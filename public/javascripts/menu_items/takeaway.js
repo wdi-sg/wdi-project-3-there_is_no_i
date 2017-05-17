@@ -169,7 +169,6 @@ $(document).on('ready', function () {
 // convert the orders array into a string of menu-item ids and submits that string
   function updateOrders () {
     var realTP = totalPrice()
-    console.log(orders)
     var allOrders = orders.slice()
     var first = allOrders.shift().id.toString()
     var ordersStr = allOrders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
