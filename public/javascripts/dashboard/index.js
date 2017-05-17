@@ -37,4 +37,5 @@ var notice = document.getElementById(x)
 console.log(notice);
 notice.addEventListener('click', function () {
   this.style.display = 'none'
+  window.location.reload()
 })
