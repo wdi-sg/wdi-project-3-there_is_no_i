@@ -1,7 +1,6 @@
 $(document).on('ready', function () {
   var hide = true
   var orders = []
-  var clicked = false
   // update the Stripe Checkout fields and submit
   var handler = StripeCheckout.configure({
     key: 'pk_test_9yHOz6zrh9nnjNOGLjV2Pvcq',
@@ -169,16 +168,12 @@ $(document).on('ready', function () {
 
 // convert the orders array into a string of menu-item ids and submits that string
   function updateOrders () {
-    if (!clicked) {
-      var realTP = totalPrice()
-      console.log(orders)
-      var allOrders = orders
-      var first = allOrders.shift().id.toString()
-      var ordersStr = allOrders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
-      document.getElementById('orders').value = ordersStr
-      document.getElementById('total_price').value = realTP.toString()
-      clicked = true
-    }
+    var realTP = totalPrice()
+    var allOrders = orders.slice()
+    var first = allOrders.shift().id.toString()
+    var ordersStr = allOrders.reduce((one, two) => { return one + '/' + two.id.toString() }, first)
+    document.getElementById('orders').value = ordersStr
+    document.getElementById('total_price').value = realTP.toString()
     handler.open({
       amount: parseFloat(document.getElementById('total_price').value) * 100
     })

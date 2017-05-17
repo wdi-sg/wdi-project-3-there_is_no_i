@@ -1,5 +1,5 @@
 # Locavorus _Rex_
-_Simple reservations, queuing and ordering_
+_**Simple reservations, queuing and ordering**_
 
 ![Rex](http://i.imgur.com/VMuQpkL.png)
 
@@ -134,14 +134,6 @@ If you choose to go with Heroku, you will need to connect a Redis add-on in orde
 * Table
 * Invoice (previously 'Transaction')
 
-### Website Wireframes
-**Dashboard**
-![Dashboard](http://i.imgur.com/rW4d54q.png)
-
-**Nav Bar Dropdown**
-![Right Nav](http://i.imgur.com/Wk8yk4z.png)
-
-
 ### Notable Areas
 
 Customer dining events are represented by the Reservation model. Below is the rough flow of how the status of the diner changes during each event.
@@ -177,9 +169,7 @@ Tables will only be assigned / suggested whenever a diner starts 'queuing' or wh
 
 4. If there are no future reservations, assign a table to the first 'queuer' who can fit the table and send another `Twilio` SMS to inform the 'queuer' that they can make their way to the restaurant.
 
-5. Sort these tables in ascending order of capacity and select the first table in the array to reduce inefficiencies in seating e.g. assigning 2 people to an empty table meant for 6 people.
-
-6. Change status of the customer from _queuing_ to _dining_.
+5. Change status of the customer from _queuing_ to _dining_.
 
 ### Ordering
 
@@ -213,11 +203,11 @@ Online payment is managed through the easy-to-implement Stripe API.
 
 ![Stripe](http://i.imgur.com/x45HAc5.png)
 
-### Wireframe
-**Dashboard Wireframe**
+### Wireframes
+**Dashboard**
 ![Dashboard Wireframe](http://i.imgur.com/rW4d54q.png)
 
-**Nav Bar Dropdown Wireframe**
+**Nav Bar Dropdown**
 ![Right Nav Wireframe](http://i.imgur.com/Wk8yk4z.png)
 
 ## Future Development
@@ -257,23 +247,23 @@ The following bugs will also have to be fixed.
 'date_select' is used in the form_for inputs. This allows invalid dates (eg. 31 February) to be selected. Currently, validation checks in the controller are used, but a more robust method could be used for date inputs in forms.
 
 #### ActionCable
-Our ActionCable only uses one room, which means that while restaurants only see orders that belong to them, they are receiving all restaurants' orders, which can greatly affect performance. A per-restaurant system should be implemented to improve performance and security.
+Our ActionCable only uses one room, which means that while we apply filters so restaurants only see orders that belong to them, they are receiving all restaurants' orders, which can greatly affect performance. A per-restaurant system should be implemented to improve performance and security.
 
 #### Ordering + Payment
-For an unsolvable reason, the orders array is changed by methods applied to a copy of the array, which means that cancelling payment to add an item to the order will fail.
+For an unsolvable reason, the orders array is changed by methods applied to a copy of the array, which means that cancelling payment to add an item to the order will fail as the array will now be empty. The previous values are stored, however, so if the customer pays immediately without adding any items, the order will proceed normally.
 
 ## Authors
 - [Darrell Teo](https://github.com/darrelltzj)
-
-- [Jonathan Louis Ng](https://github.com/noll-fyra)
 
 - [Louisa Lee](https://github.com/imouto2005)
 
 - [Jasmine Lee](https://balance.net/jasminely)
 
+- [Jonathan Louis Ng](https://github.com/noll-fyra)
+
 ### Acknowledgments :sparkling_heart:
 
-We acknowledge ourselves for all the hard work that has gone into this project over the past 2 weeks, but more importantly, the people who have helped us along the way.
+We acknowledge :smirk: ourselves :wink: for all the hard work that has gone into this project over the past 2 weeks, but more importantly, the people who have helped us along the way.
 
 #### Coding assistance:
 - Prima Aulia
