@@ -76,7 +76,7 @@ If you choose to go with Heroku, you will need to connect a Redis add-on in orde
 
 ![Right Nav](http://i.imgur.com/NrsI8Ue.png)
 
-#### Customer
+#### Customer Flow
 
 <!-- ![Customer Flow](http://i.imgur.com/0uOX0D6.jpg) -->
 <img src="http://i.imgur.com/0uOX0D6.jpg" height="500">
@@ -213,25 +213,32 @@ Online payment is managed through the easy-to-implement Stripe API.
 ## Future Development
 ### Wireframes for possible future features
 **View Seated Diners**
-![Seated Diners](http://i.imgur.com/36Qj59B.png)
+<img src="http://i.imgur.com/36Qj59B.png" height="500">
+<!-- ![Seated Diners](http://i.imgur.com/36Qj59B.png) -->
 
 **Kitchen View of Upcoming Tickets**
-![Upcoming Tickets](http://i.imgur.com/IYXhqaQ.png)
+<img src="http://i.imgur.com/IYXhqaQ.png" height="500">
+<!-- ![Upcoming Tickets](http://i.imgur.com/IYXhqaQ.png) -->
 
 **Kitchen View of Ready Tickets**
-![Ready Tickets](http://i.imgur.com/mQE13Ee.png)
+<img src="http://i.imgur.com/mQE13Ee.png" height="500">
+<!-- ![Ready Tickets](http://i.imgur.com/mQE13Ee.png) -->
 
 **Takeaway Dashboard**
-![Takeaway Dash](http://i.imgur.com/PUgn0ws.png)
+<img src="http://i.imgur.com/mQE13Ee.png" height="500">
+<!-- ![Takeaway Dash](http://i.imgur.com/PUgn0ws.png) -->
 
 **Ordering Menu**
-![Ordering Menu](http://i.imgur.com/nRXZ7EV.png)
+<img src="http://i.imgur.com/mQE13Ee.png" height="500">
+<!-- ![Ordering Menu](http://i.imgur.com/nRXZ7EV.png) -->
 
 **Order Chit**
-![Order Chit](http://i.imgur.com/pRaPPjE.png)
+<img src="http://i.imgur.com/mQE13Ee.png" height="500">
+<!-- ![Order Chit](http://i.imgur.com/pRaPPjE.png) -->
 
 **See All Orders**
-![See all orders](http://i.imgur.com/CJjCfXi.png)
+<img src="http://i.imgur.com/mQE13Ee.png" height="500">
+<!-- ![See all orders](http://i.imgur.com/CJjCfXi.png) -->
 
 <!-- **Kitchen View of Ready Tickets**
 ![Ready Tickets](app/assets/images/Kitchen_view.png) -->
@@ -250,7 +257,7 @@ The following bugs will also have to be fixed.
 Our ActionCable only uses one room, which means that while we apply filters so restaurants only see orders that belong to them, they are receiving all restaurants' orders, which can greatly affect performance. A per-restaurant system should be implemented to improve performance and security.
 
 #### Ordering + Payment
-For an unsolvable reason, the orders array is changed by methods applied to a copy of the array, which means that cancelling payment to add an item to the order will fail as the array will now be empty. The previous values are stored, however, so if the customer pays immediately without adding any items, the order will proceed normally.
+For an unsolvable reason, the orders array is changed by methods applied to a copy of the array, which means that cancelling payment to add an item to the order will fail as the array will now be empty. The previous values are stored, so if the customer pays immediately without adding any items, the order will proceed normally.
 
 ## Authors
 - [Darrell Teo](https://github.com/darrelltzj)
