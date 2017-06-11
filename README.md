@@ -5,7 +5,7 @@ _**Simple reservations, queuing and ordering**_
 
 [**Locavorus**](https://locavorusrex.herokuapp.com/) is a proof-of-concept web application for restaurants and other food businesses to manage their reservations, queue and orders. It aims to improve customer service by making various aspects of the service life cycle more efficient.
 
-For example, queuing is automated, allowing customers to spend their time waiting for their table somewhere other than in a line. The system also automatically allocates the best available table to each customer and notifies them whenever the restaurant is ready. In addition, customers can place their orders beforehand, further reducing waiting time.
+One aspect would be to allow customers to queue somewhere else other than in a line. The system also automatically allocates the best available table to each customer and notifies them whenever the restaurant is ready. In addition, customers can place their orders beforehand, thus further reducing waiting time.
 
 ## The Project
 
