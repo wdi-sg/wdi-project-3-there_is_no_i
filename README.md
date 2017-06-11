@@ -3,9 +3,9 @@ _**Simple reservations, queuing and ordering**_
 
 ![Rex](http://i.imgur.com/VMuQpkL.png)
 
-[**Locavorus**](https://locavorusrex.herokuapp.com/) is a (work-in-progress) web application for restaurants and other food businesses to manage their reservations, queue and orders. It aims to improve customer service by making various aspects of the service life cycle more efficient.
+[**Locavorus**](https://locavorusrex.herokuapp.com/) is a proof-of-concept web application for restaurants and other food businesses to manage their reservations, queue and orders. It aims to improve customer service by making various aspects of the service life cycle more efficient.
 
-For example, queuing is automated, allowing customers to spend their time waiting for their table somewhere other than in a line. When it is their turn, the system will automatically notify them. In addition, customers can place their orders beforehand, so that their food can arrive at the table at the same time as them.
+For example, queuing is automated, allowing customers to spend their time waiting for their table somewhere other than in a line. The system also automatically allocates the best available table to each customer and notifies them whenever the restaurant is ready. In addition, customers can place their orders beforehand, further reducing waiting time.
 
 ## The Project
 
@@ -257,7 +257,7 @@ For an unsolvable reason, the orders array is changed by methods applied to a co
 
 - [Louisa Lee](https://github.com/imouto2005)
 
-- [Jasmine Lee](https://balance.net/jasminely)
+- [Jasmine Lee](https://www.behance.net/jasminely)
 
 - [Jonathan Louis Ng](https://github.com/noll-fyra)
 
