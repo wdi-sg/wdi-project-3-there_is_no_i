@@ -5,7 +5,8 @@ module SendTwilio
     client = Twilio::REST::Client.new twilio_account_sid, twilio_auth_token
     begin
       client.account.messages.create(
-        :from => "+61428086370", # My Twilio number
+        # :from => "+61428086370", # My Twilio number
+        :from => "+13345399487", # My Twilio number
         :to => recipient,
         :body => message
       )
