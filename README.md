@@ -144,7 +144,7 @@ The method below is called to determine a table for a potential diner.
 **Method**
 1. Find all tables in the restaurant.
 
-2. Find all unavailable tables where the start time of the reservation is before the end time of that table OR the end time of the reservation is after the start time of that table.
+2. Find all unavailable tables where the start time of the reservation is before the end time of that table AND the end time of the reservation is after the start time of that table.
 
 3. Remove these unavailable tables from all tables in that restaurant.
 
