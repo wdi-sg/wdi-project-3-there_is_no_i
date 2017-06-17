@@ -77,7 +77,7 @@ If you choose to go with Heroku, you will need to connect a Redis add-on in orde
 #### Customer Flow
 
 <!-- ![Customer Flow](http://i.imgur.com/0uOX0D6.jpg) -->
-<img src="http://i.imgur.com/0uOX0D6.jpg" height="500">
+<img src="http://i.imgur.com/8DqrPAk.png" height="500">
 
 **Making a Reservation**
 
@@ -136,7 +136,7 @@ If you choose to go with Heroku, you will need to connect a Redis add-on in orde
 
 Customer dining events are represented by the Reservation model. Below is the rough flow of how the status of the diner changes during each event.
 
-<img src="http://i.imgur.com/AJ66htW.jpg" height="400">
+<img src="http://i.imgur.com/0zuslyk.pngE" height="400">
 
 #### Table-allocation Logic
 The method below is called to determine a table for a potential diner.
@@ -154,7 +154,7 @@ The method below is called to determine a table for a potential diner.
 
 6. Select the table with the smallest possible capacity.
 
-<img src="http://i.imgur.com/DUb03pn.jpg" height="400">
+<img src="http://i.imgur.com/J23s1va.png" height="400">
 
 #### Queuing Logic
 Tables will only be assigned / suggested whenever a diner starts 'queuing' or when an existing diner is 'checked out'.
