@@ -121,7 +121,7 @@ If you choose to go with Heroku, you will need to connect a Redis add-on in orde
 
 #### Entity Relationship Diagram (ERD)
 
-<img src="http://i.imgur.com/2T5CDGE.jpg" height="800">
+<img src="http://i.imgur.com/ZjEWIYr.png" height="800">
 
 ### Models
 * User
