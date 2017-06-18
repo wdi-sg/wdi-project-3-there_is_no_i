@@ -136,7 +136,7 @@ If you choose to go with Heroku, you will need to connect a Redis add-on in orde
 
 Customer dining events are represented by the Reservation model. Below is the rough flow of how the status of the diner changes during each event.
 
-<img src="http://i.imgur.com/0zuslyk.pngE" height="400">
+<img src="http://i.imgur.com/dwEy9KP.png" height="400">
 
 #### Table-allocation Logic
 The method below is called to determine a table for a potential diner.
