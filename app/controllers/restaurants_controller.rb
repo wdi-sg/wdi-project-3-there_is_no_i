@@ -9,8 +9,8 @@ class RestaurantsController < ApplicationController
   helper RestaurantsHelper
 
   def index
-    @search = params[:search]? params[:search].downcase : ''
-    @city = params[:city]? params[:city].downcase : ''
+    @search = params[:search] ? params[:search].downcase : ''
+    @city = params[:city] ? params[:city].downcase : ''
     x = Restaurant.where("LOWER(name) LIKE ? OR LOWER(cuisine) LIKE ?", "%#{@search}%", "%#{@search}%").where("LOWER(address_city) LIKE ?", "%#{@city}%").paginate(page: params[:page], per_page: 9)
     if request.fullpath == "/restaurants?sort=name&search=#{@search}&city=#{@city}"
       @restaurants = x.order(:name)
